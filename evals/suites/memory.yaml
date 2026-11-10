@@ -1,0 +1,147 @@
+# Memory (§16.2, §7): recall of seeded facts and yesterday's session, explicit remember, life stories, the
+# repetition hint (3×) with no "you already asked", the post-session summary, and the writing policy.
+suite: memory
+title: Memory
+inv10: strict
+criteria: { pass_rate: 1.0 }
+defaults:
+  clock: "16:00"
+cases:
+  - id: mem01_daughter_name
+    title: 「我個女叫咩名呀？」 → 阿珍 (seeded fact via recall)
+    owner: agent (FakeFlash recall rule) + memory
+    needs: ["tool:recall"]
+    say: 我個女叫咩名呀？
+    expect: { tools_called: [recall], reply_matches: ["阿珍"] }
+
+  - id: mem02_grandson_school
+    title: 「阿明讀幾年級呀？」 → 三年級
+    owner: agent + memory
+    needs: ["tool:recall"]
+    say: 阿明讀緊幾年級呀？
+    expect: { tools_called: [recall], reply_matches: ["三年級"] }
+
+  - id: mem03_former_job
+    title: 「我以前做咩工作㗎？」 → 老師
+    owner: agent + memory
+    needs: ["tool:recall"]
+    say: 我以前係做咩工作㗎？
+    expect: { tools_called: [recall], reply_matches: ["老師|教書"] }
+
+  - id: mem04_likes_music
+    title: 「我最鍾意聽咩呀？」 → 粵曲 / 任劍輝
+    owner: agent + memory
+    needs: ["tool:recall"]
+    say: 我最鍾意聽咩歌呀？
+    expect: { tools_called: [recall], reply_matches: ["粵曲|任劍輝"] }
+
+  - id: mem05_yesterday
+    title: 「我琴日同你講咗咩呀？」 → yesterday's episode (膝頭 / 阿明 / 視像)
+    owner: agent + memory (sessions_fts)
+    needs: ["tool:recall"]
+    say: 我琴日同你講咗咩呀？
+    expect: { tools_called: [recall], reply_matches: ["膝頭|阿明|視像"] }
+
+  - id: mem06_day_before
+    title: 「前日我哋傾咗咩？」 → 學生 / 帝女花
+    owner: agent + memory
+    needs: ["tool:recall"]
+    say: 前日我哋傾過啲咩呀？
+    expect: { tools_called: [recall], reply_matches: ["學生|帝女花|教書"] }
+
+  - id: mem07_episode_keyword
+    title: 「阿明幾時生日呀？」 → found in an episode summary by trigram FTS (下個月)
+    owner: memory (FTS trigram)
+    needs: ["tool:recall"]
+    say: 阿明幾時生日呀？
+    expect: { tools_called: [recall], reply_matches: ["下個月"] }
+
+  - id: mem08_remember
+    title: 「記住我鍾意食叉燒包」 → remember → an active preference fact
+    owner: agent + memory
+    needs: ["tool:remember"]
+    say: 阿寶，記住我鍾意食叉燒包
+    expect:
+      tools_called: [remember]
+      db: [{ sql: "SELECT category FROM facts WHERE fact LIKE '%叉燒包%' AND status='active'", not_empty: true }]
+
+  - id: mem09_remember_then_recall
+    title: Remember, then ask in a later turn → recalled
+    owner: agent + memory
+    needs: ["tool:remember", "tool:recall"]
+    steps:
+      - say: 阿寶，記住我鍾意食叉燒包
+      - say: 我鍾意食咩點心呀？
+    expect: { tools_called: [remember, recall], reply_matches: ["叉燒包|蝦餃"] }
+
+  - id: mem10_life_story
+    title: 「講個故仔俾我聽吖」 → recall_life_story, story card
+    owner: agent + memory
+    needs: ["tool:recall_life_story"]
+    say: 阿寶，講個以前嘅故仔俾我聽吖
+    expect:
+      tools_called: [recall_life_story]
+      cards: [{ kind: story }]
+      spoken_min: 1
+
+  - id: mem11_repeat_med_question
+    title: 「我幾時食藥呀？」 asked 3× → repetition count 3, persistent card, no "you already asked"
+    owner: memory (repetition tracker) + kernel (persistent card)
+    needs: ["wiring:memory"]
+    clock: "10:00"
+    steps:
+      - say: 我幾時食藥呀？
+      - say: 我幾時食藥呀？
+      - say: 阿寶，我幾時食藥呀？
+      - wait: 2
+    expect:
+      db: [{ sql: "SELECT count FROM repetition WHERE intent='ask_med_time'", match: [3] }]
+      cards: [{ id: "~^rep_", persistent: true }]
+      reply_absent: ["已經問過", "頭先(講|答)咗", "又問", "問過(我|啦|喇)"]
+    judge: no_repeat_shaming
+
+  - id: mem12_repeat_today_question
+    title: 「我今日有咩安排呀？」 asked 3× → no shaming, same patient answer
+    owner: memory + agent
+    needs: ["wiring:memory"]
+    clock: "08:30"
+    steps:
+      - say: 我今日有咩安排呀？
+      - say: 我今日有咩安排呀？
+      - say: 我今日有咩安排呀？
+      - wait: 2
+    expect:
+      db: [{ sql: "SELECT count FROM repetition WHERE intent='ask_today'", match: [3] }]
+      reply_absent: ["已經問過", "頭先(講|答)咗", "又問"]
+
+  - id: mem13_session_summary
+    title: After a session closes, the post-session job writes a summary (3–5 Cantonese lines)
+    owner: memory (memory.session_closed)
+    needs: ["dispatch:memory.session_closed"]
+    strict_needs: true
+    steps:
+      - say: 阿寶，今日天氣好好，我想落街行吓
+      - event: { type: session.closed, source: agent, payload: { session_id: $session_id, why: eval } }
+      - wait: 6
+    expect:
+      commands: [{ type: memory.session_closed }]
+      db: [{ sql: "SELECT summary_text FROM sessions WHERE reason!='seed' AND summary_text!=''", not_empty: true }]
+
+  - id: mem14_family_change_pending_review
+    title: 「阿珍唔係我個女」 → never overwrites the family fact (pending_review at most)
+    owner: memory (writing policy)
+    steps:
+      - say: 阿珍唔係我個女嚟㗎，佢係我個妹
+      - event: { type: session.closed, source: agent, payload: { session_id: $session_id, why: eval } }
+      - wait: 4
+    expect:
+      db:
+        - { sql: "SELECT status FROM facts WHERE fact LIKE '%女兒叫阿珍%'", rows: [[active]] }
+        - { sql: "SELECT fact FROM facts WHERE status='active' AND fact LIKE '%妹%'", empty: true }
+
+  - id: mem15_health_fact_pending_review
+    title: 「記住我有糖尿病」 → health facts are pending_review, never active straight away
+    owner: memory (writing policy)
+    say: 阿寶，記住我有糖尿病
+    expect:
+      db: [{ sql: "SELECT fact FROM facts WHERE fact LIKE '%糖尿病%' AND status='active'", empty: true }]

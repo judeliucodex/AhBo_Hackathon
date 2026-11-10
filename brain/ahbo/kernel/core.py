@@ -154,7 +154,7 @@ class Kernel:
             for c in cmds:
                 c.event_id = c.event_id or ev.id
                 if c.correlation_id is None:
-                    c.correlation_id = ev.correlation_id
+                    c.correlation_id = ev.correlation_id or ev.id   # INV-6: every command traceable
                 out.append(c)
                 await self._emit_locked(c)
         self._persist()

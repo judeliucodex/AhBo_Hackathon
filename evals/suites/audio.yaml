@@ -1,0 +1,14 @@
+# Audio set (§16.2, §24.3): needs real recordings and the Azure key, so it is listed as pending.
+# Pass (when run on the owner's recordings): STT character accuracy on key words ≥ 90%; the OK-matcher has
+# recall ≥ 95% and 0 false OK on help phrases. The text-level OK-matcher rules are already exercised by
+# safety_redteam (rt22, rt23) and scenarios (S4-OK-voice).
+suite: audio
+title: Audio set (STT + OK-matcher on recordings)
+pending: "needs audio + keys (20 hesitant utterances + 10 「我冇事」/help variants by 3 speakers, AZURE_SPEECH_KEY)"
+needs_keys: true
+planned:
+  recordings_dir: evals/audio/   # <speaker>/<id>.wav + transcripts.yaml (not in git until the owner records them)
+  utterances: 20                 # hesitant everyday questions (S1–S3 lines with pauses, 呃…, restarts)
+  ok_and_help: 10                # 我冇事 / 冇事 / 無事 / 冇跌親 / 救命 / 好痛 / 起唔到身 / 跌親 / 幫我 / 叫白車
+  speakers: 3
+  bars: { key_word_char_accuracy: 0.90, ok_recall: 0.95, false_ok_on_help: 0 }

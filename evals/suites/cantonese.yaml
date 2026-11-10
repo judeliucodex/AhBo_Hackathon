@@ -1,0 +1,53 @@
+# Cantonese quality (§16.2, INV-10, §1.4): 40 everyday prompts a judge or Po-po might say.
+# Bars: ≥ 95% of cases free of Mandarin drift; 100% without digits/emoji/markdown/URLs/English/Simplified;
+# 100% at most 2 sentences (D-10). "Answered sensibly, warmly" needs the Sonnet judge (pending keys in fake mode).
+# Fake mode measures the rule-based FakeFlash; the real Flash's numbers need keys.
+suite: cantonese
+title: Cantonese quality (40 everyday prompts)
+inv10: metric
+criteria: { drift_free_rate: 0.95, clean_rate: 1.0, short_rate: 1.0 }
+defaults:
+  clock: "10:00"
+  judge: cantonese_answer
+  expect: { spoken_min: 1 }
+cases:
+  - { id: c01_greeting, say: 阿寶，早晨呀！ }
+  - { id: c02_how_are_you, say: 阿寶你今日好唔好呀？ }
+  - { id: c03_time, say: 而家幾點呀？ }
+  - { id: c04_weekday, say: 今日星期幾呀？ }
+  - { id: c05_date, say: 今日幾號呀？ }
+  - { id: c06_weather, say: 今日天氣點呀？使唔使帶遮？ }
+  - { id: c07_cold, say: 今日好凍呀，我要唔要着多件衫？ }
+  - { id: c08_lunch, say: 我晏晝食咩好呢？ }
+  - { id: c09_hungry, say: 我好肚餓呀 }
+  - { id: c10_tired, say: 我今日好攰呀 }
+  - { id: c11_lonely, say: 我一個人喺屋企好悶呀 }
+  - { id: c12_happy, say: 今日好開心呀，阿明打電話嚟！ }
+  - { id: c13_daughter_visit, say: 阿珍幾時嚟探我呀？ }
+  - { id: c14_tv, say: 而家有咩電視睇呀？ }
+  - { id: c15_song, say: 你識唔識唱歌㗎？ }
+  - { id: c16_joke, say: 講個笑話俾我聽吖 }
+  - { id: c17_who_are_you, say: 你係邊個呀？ }
+  - { id: c18_name, say: 你叫咩名呀？ }
+  - { id: c19_thanks, say: 多謝你呀阿寶 }
+  - { id: c20_goodnight, say: 我要瞓喇，晚安 }
+  - { id: c21_keys, say: 我唔記得鎖匙擺咗喺邊呀 }
+  - { id: c22_glasses, say: 我啲眼鏡唔見咗呀 }
+  - { id: c23_old_days, say: 我以前喺觀塘教書㗎 }
+  - { id: c24_opera, say: 我好鍾意聽任白嘅帝女花 }
+  - { id: c25_grandson, say: 阿明下個月生日，送咩俾佢好？ }
+  - { id: c26_walk, say: 我想落街行吓 }
+  - { id: c27_rain, say: 出面係咪落緊雨呀？ }
+  - { id: c28_dimsum, say: 你鍾唔鍾意飲茶呀？ }
+  - { id: c29_sleep_bad, say: 我琴晚瞓得唔好 }
+  - { id: c30_knee, say: 我膝頭有啲痛 }
+  - { id: c31_scared, say: 我有啲驚呀 }
+  - { id: c32_bored_tv, say: 冇嘢做呀，好無聊 }
+  - { id: c33_pet, say: 你係咪小狗嚟㗎？ }
+  - { id: c34_food_like, say: 你食唔食飯㗎？ }
+  - { id: c35_count, say: 你識唔識數數字呀？ }
+  - { id: c36_english_hello, say: "Hello, how are you today?" }
+  - { id: c37_mandarin, say: 你好，今天天氣怎麼樣？ }
+  - { id: c38_long_ramble, say: 我同你講呀，以前我哋屋企好窮，日日要行好遠去返學，下雨又冇遮，好辛苦㗎 }
+  - { id: c39_question_back, say: 你覺得我今日着呢件衫靚唔靚呀？ }
+  - { id: c40_bye, say: 唔同你傾住喇，拜拜 }

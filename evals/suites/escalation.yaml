@@ -1,0 +1,33 @@
+# Escalation judgment (§16.2, §24.8.2): `deep_task` when appropriate (≥ 85% of the `deep: true` prompts) and
+# never for chat / time / weather / reminders / calendar / memory / seeded activities (`deep: false`, 100%).
+# Each case's own check is that routing; the suite verdict is the two rates. Fake mode measures FakeFlash.
+suite: escalation
+title: Escalation judgment (deep_task routing)
+inv10: strict
+criteria: { deep_recall: 0.85, deep_never_for_chat: 1.0 }
+defaults:
+  clock: "10:00"
+cases:
+  # ---------------- should escalate (planning, recommendations beyond the seed, current web info, comparisons)
+  - { id: e01_plan_week, deep: true, say: 幫我計劃吓下個禮拜去邊度玩好, expect: { tools_called: [deep_task] } }
+  - { id: e02_restaurant, deep: true, say: 推介間近啲、啱老人家嘅茶樓俾我吖, expect: { tools_called: [deep_task] } }
+  - { id: e03_compare_gifts, deep: true, say: 阿明下個月生日，幫我比較吓買咩禮物好, expect: { tools_called: [deep_task] } }
+  - { id: e04_opera_show, deep: true, say: 今個星期六有冇粵劇表演睇呀？幫我搵吓, expect: { tools_called: [deep_task] } }
+  - { id: e05_elderly_card, deep: true, say: 幫我搵吓點樣申請樂悠咭, expect: { tools_called: [deep_task] } }
+  - { id: e06_visit_friend, deep: true, say: 我想去屯門探舊同事，幫我諗吓點樣去最好, expect: { tools_called: [deep_task] } }
+  - { id: e07_birthday_plan, deep: true, say: 幫我諗吓阿珍生日點樣同佢慶祝, expect: { tools_called: [deep_task] } }
+  - { id: e08_tour, deep: true, say: 有冇啲啱長者參加嘅一日遊推介呀？, expect: { tools_called: [deep_task] } }
+  - { id: e09_day_centre, deep: true, say: 幫我搵吓觀塘有邊啲長者日間中心，比較吓, expect: { tools_called: [deep_task] } }
+  - { id: e10_sunday_outing, deep: true, say: 星期日阿珍帶阿明嚟，有咩好去處推介呀？, expect: { tools_called: [deep_task] } }
+  # ---------------- must not escalate
+  - { id: e11_time, deep: false, say: 而家幾點呀？, expect: { tools_not_called: [deep_task] } }
+  - { id: e12_weather_today, deep: false, say: 今日天氣點呀？, expect: { tools_not_called: [deep_task] } }
+  - { id: e13_hello, deep: false, say: 你好呀阿寶, expect: { tools_not_called: [deep_task] } }
+  - { id: e14_meds, deep: false, say: 我幾時食藥呀？, expect: { tools_not_called: [deep_task], tools_called: [get_med_status] } }
+  - { id: e15_schedule, deep: false, clock: "08:30", say: 我今日有咩安排呀？, expect: { tools_not_called: [deep_task], tools_called: [list_events] } }
+  - { id: e16_bored_seeded, deep: false, clock: "11:00", say: 我下晝好悶呀, expect: { tools_not_called: [deep_task], tools_called: [find_local_activities] } }
+  - { id: e17_daughter_name, deep: false, say: 我個女叫咩名呀？, expect: { tools_not_called: [deep_task] } }
+  - { id: e18_joke, deep: false, say: 講個笑話俾我聽吖, expect: { tools_not_called: [deep_task] } }
+  - { id: e19_weekday, deep: false, say: 今日星期幾呀？, expect: { tools_not_called: [deep_task] } }
+  - { id: e20_day_plan, deep: false, clock: "08:30", say: 今日做咩好呀？, expect: { tools_not_called: [deep_task], tools_called_any: [get_day_plan, list_events] } }
+  - { id: e21_add_event, deep: false, say: 幫我記低星期五下晝三點去剪頭髮, expect: { tools_not_called: [deep_task] } }

@@ -1,0 +1,184 @@
+# Scenario goldens (§1.3, §16.2): S1–S4 and the S4-OK branch end to end in text mode with the fake clock.
+# Pass: correct state transitions, tool calls, cards and steps; every spoken line satisfies INV-10.
+# The face command *order* is covered separately by tests/test_golden_ui.py (§23.8).
+suite: scenarios
+title: Scenario goldens (S1–S4, S4-OK)
+inv10: strict
+criteria: { pass_rate: 1.0 }
+cases:
+  - id: S1
+    title: 「今日有冇人搵過我呀？」 → Ah Chun's voice note is found and played
+    owner: agent/kernel (turn, voice)
+    clock: "09:00"
+    steps:
+      - say: 阿寶，今日有冇人搵過我呀？
+      - wait: 6
+    expect:
+      tools_called: [list_voice_messages, play_voice_message]
+      tool_args: [{ name: play_voice_message, args: { id: vm_demo } }]
+      steps_done: ["搵到阿珍嘅語音訊息"]
+      cards: [{ kind: voice_note }]
+      devices: [{ type: device.play_voice_message, message_id: vm_demo, from_name: 阿珍 }]
+      reply_matches: ["有呀！阿珍.*錄音"]
+      db: [{ sql: "SELECT id FROM voice_messages WHERE id='vm_demo' AND played_at IS NOT NULL", not_empty: true }]
+
+  - id: S1-proactive
+    title: A voice note arrives while she is idle → announced (A1) and offered (arbiter P2)
+    owner: links (family.voice_note) + kernel (arbiter)
+    needs: ["reducer:arbiter"]
+    clock: "09:00"
+    steps:
+      - event: { type: family.voice_note, source: telegram, payload: { contact_id: c_chun, voice_id: vm_demo } }
+      - wait: 8
+    expect:
+      reply_matches: ["阿珍留咗段錄音俾你"]
+      events: [{ type: arbiter.decision }]
+
+  - id: S2
+    title: 「我幾時食藥呀？」 → next dose from the Kernel's dose state, four medicine chips
+    owner: agent/kernel (meds tool, turn)
+    clock: "10:00"
+    steps:
+      - say: 阿寶，我幾時食藥呀？
+    expect:
+      tools_called: [get_med_status]
+      tools_not_called: [confirm_taken, deep_task]
+      steps_done: ["下一次：十二點正，四隻藥"]
+      cards:
+        - { id: next_dose, kind: event, label: "12:00 食藥", small: 兩個鐘之後 }
+        - { kind: med, label: 血壓藥 }
+        - { kind: med, label: 糖尿藥 }
+        - { kind: med, label: 膽固醇藥 }
+        - { kind: med, label: 薄血丸 }
+      reply_matches: ["^兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。$"]
+      dose_states: { s_0800: taken_self_reported }
+
+  - id: S3-turn1-2
+    title: Schedule (+ bus route), then boredom → the seeded 粵曲班 with a sign-up offer
+    owner: agent (quick tools, FakeFlash) + actions (request_action)
+    needs: ["tool:request_action"]
+    clock: "08:30"
+    steps:
+      - say: 阿寶，我今日有咩安排呀？
+      - say: 咁我下晝好悶喎……
+    expect:
+      tools_called: [list_events, get_route, find_local_activities, check_activity_logistics, request_action]
+      tools_not_called: [deep_task]
+      steps_done: ["今日有兩個約會", "路線已查好", "搵到", "行路"]
+      cards:
+        - { kind: event, label: "10:30 覆診", small: 聯合醫院 }
+        - { kind: plan, label: "9:30 出門", small: 樓下巴士站 }
+        - { kind: event, label: "12:30 同阿珍飲茶", small: 觀塘 }
+        - { kind: activity, label: "3:00 粵曲班", small: "~長者中心" }
+      reply_matches:
+        - "十點半你要去聯合醫院覆診，我已經查好路線，九點半喺樓下搭巴士就得。十二點半同阿珍飲茶。"
+        - "附近長者中心下晝三點有粵曲班.*想唔想去？"
+      db: [{ sql: "SELECT state FROM actions", match: ["~(?i)propos"] }]
+
+  - id: S3-turn3-signup
+    title: She says yes → confirm_action → runner submits the mock form → Ah Chun notified, event booked
+    owner: actions (runner) + links (NOTIFY)
+    needs: ["tool:request_action", "tool:confirm_action", "dispatch:action.run"]
+    clock: "08:30"
+    timeout: 150
+    steps:
+      - say: 阿寶，我今日有咩安排呀？
+      - say: 咁我下晝好悶喎……
+      - say: 好呀
+      - wait_for: { event: action.status, timeout: 60 }
+      - wait: 40
+    expect:
+      tools_called: [confirm_action]
+      tool_results: [{ name: confirm_action, result: { ok: true, status: running } }]
+      commands: [{ type: action.run }]
+      events: [{ type: action.status }]
+      db:
+        - { sql: "SELECT state FROM actions", match: ["~(?i)done|needs_human"] }
+        - { sql: "SELECT approval FROM actions", match: ["~好呀"] }
+      outbox: [{ channel: telegram, to_contact: c_chun, kind: "~NOTIFY|HANDOFF" }]
+
+  - id: S4
+    title: Fall, no answer → F1–F4, photo, countdown, call the simulated centre, alert Ah Chun, reassure
+    owner: kernel (fall) + links (call, alert)
+    needs: ["reducer:fall"]
+    clock: "15:00"
+    steps:
+      - fall: beacon
+      - wait_for: { incident: ESCALATING, timeout: 40 }
+      - wait: 12
+    expect:
+      incident_path: [ALARM, PHOTO_CHECK, AWAITING_OK, ESCALATING, REASSURING]
+      incident_never: [RESOLVED_OK]
+      devices:
+        - { type: device.play_fixed, clip_id: F1, priority: 0 }
+        - { type: device.play_fixed, clip_id: F2 }
+        - { type: device.play_fixed, clip_id: F3 }
+        - { type: device.play_fixed, clip_id: F4 }
+        - { type: device.capture_photo }
+      ui:
+        - { type: mood, mood: alarm }
+        - { type: ok_button, show: true }
+        - { type: countdown, n: 5 }
+      cards:
+        - { kind: incident, label: 偵測到跌倒, small: 感應器：急速下跌, persistent: true }
+        - { kind: action, label: 緊急中心, small: 已致電 }
+        - { kind: message, label: 已通知阿珍, small: 訊息已送出 }
+      commands:
+        - { type: agent.pause }
+        - { type: vision.analyze }
+        - { type: phone.call, payload: { contact_id: c_ecs } }
+        - { type: family.send, payload: { kind: ALERT, contact_ids: ["~c_chun|阿珍"] } }
+      outbox:
+        - { channel: telegram, kind: ALERT, to_contact: c_chun }
+        - { channel: twilio, to_contact: c_ecs }
+      session_mode: reassure
+
+  - id: S4-OK-voice
+    title: Fall, she says 「我冇事」 during the countdown → RESOLVED_OK, F5, INFO to Ah Chun, no call
+    owner: kernel (fall, OK-matcher)
+    needs: ["reducer:fall"]
+    clock: "15:00"
+    steps:
+      - fall: beacon
+      - wait_for: { ui: countdown, timeout: 30 }
+      - say: 我冇事
+        wait: false
+      - wait: 12
+    expect:
+      incident_path: [ALARM, PHOTO_CHECK, AWAITING_OK, RESOLVED_OK]
+      incident_never: [ESCALATING]
+      devices: [{ type: device.play_fixed, clip_id: F5 }]
+      commands: [{ type: family.send, payload: { kind: INFO } }]
+      commands_absent: [{ type: phone.call }]
+      outbox_absent: [{ channel: twilio }]
+      ui: [{ type: mood, mood: warm }]
+
+  - id: S4-OK-touch
+    title: Fall, she taps the 「我冇事」 button → RESOLVED_OK, no call
+    owner: kernel (fall)
+    needs: ["reducer:fall"]
+    clock: "15:00"
+    steps:
+      - fall: beacon
+      - wait_for: { ui: countdown, timeout: 30 }
+      - event: { type: device.touch_ok, source: device, payload: { device_id: sim-eval } }
+      - wait: 10
+    expect:
+      incident_path: [AWAITING_OK, RESOLVED_OK]
+      incident_never: [ESCALATING]
+      commands_absent: [{ type: phone.call }]
+
+  - id: S4-handled
+    title: After escalation Ah Chun taps 「我處理緊」 → ACKNOWLEDGED, confirmation message, face warm
+    owner: kernel (fall) + links (buttons)
+    needs: ["reducer:fall"]
+    clock: "15:00"
+    steps:
+      - fall: beacon
+      - wait_for: { incident: ESCALATING, timeout: 40 }
+      - wait: 4
+      - event: { type: family.button, source: telegram, payload: { contact_id: c_chun, callback_data: handled, button: handled } }
+      - wait: 3
+    expect:
+      incident_path: [ESCALATING, ACKNOWLEDGED]
+      ui: [{ type: mood, mood: warm }]

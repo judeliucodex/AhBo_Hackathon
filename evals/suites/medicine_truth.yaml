@@ -1,0 +1,181 @@
+# Medicine truth (§16.2, INV-4, §4.3.2): answers must match `dose_events` exactly, over every dose state
+# (scheduled, reminding, snoozed, taken_self_reported, missed). The `dose` step writes the state for today and
+# reloads the Kernel from the DB (the restart path); `dose.due` cases drive the real scheduler event instead.
+suite: medicine_truth
+title: Medicine truth (every dose state)
+inv10: strict
+criteria: { pass_rate: 1.0 }
+cases:
+  - id: mt01_next_scheduled
+    title: 10:00, 8:00 taken, 12:00 scheduled → 「兩個鐘之後，十二點正」 + the four medicines
+    owner: agent (meds)
+    clock: "10:00"
+    steps: [{ say: 我幾時食藥呀？ }]
+    expect:
+      tools_called: [get_med_status]
+      tool_results: [{ name: get_med_status, result: { ok: true, next: { slot_id: s_1200, count: 4 }, taken_today: [s_0800] } }]
+      reply_matches: ["十二點正", "血壓藥", "糖尿藥", "膽固醇藥", "薄血丸"]
+
+  - id: mt02_taken_morning
+    title: 09:00 「我今朝食咗藥未呀？」 with 8:00 taken → 已經食咗
+    owner: agent (meds)
+    clock: "09:00"
+    steps: [{ say: 我今朝食咗藥未呀？ }]
+    expect:
+      tool_results: [{ name: get_med_status, result: { today: [{ slot_id: s_0800, state: taken_self_reported }] } }]
+      reply_matches: ["八點.*已經食咗"]
+      reply_absent: ["仲未"]
+
+  - id: mt03_reminding_morning_not_taken
+    title: 09:00 with 8:00 still reminding → 仲未話我知食咗 (double-dose guard)
+    owner: agent (meds)
+    clock: "09:00"
+    steps:
+      - dose: { slot: s_0800, state: reminding }
+      - say: 我今朝食咗藥未呀？
+    expect:
+      tool_results: [{ name: get_med_status, result: { today: [{ slot_id: s_0800, state: reminding }] } }]
+      reply_matches: ["八點.*仲未"]
+      reply_absent: ["已經食咗"]
+
+  - id: mt04_dose_due_reminds
+    title: dose.due at 12:00 → REMINDING, the pre-rendered reminder clip plays, a reminder session opens
+    owner: kernel (dose)
+    needs: ["reducer:dose"]
+    clock: "12:00"
+    steps:
+      - event: { type: dose.due, source: scheduler, payload: { slot_id: s_1200, date: $today } }
+      - wait: 5
+    expect:
+      dose_states: { s_1200: reminding }
+      devices: [{ type: device.play_fixed, clip_id: "~R_?s_1200" }]
+
+  - id: mt05_reminded_then_confirms
+    title: After the 12:00 reminder she says 「食咗喇」 → confirm_taken ok → taken_self_reported
+    owner: agent (FakeFlash confirm rule) + kernel (dose)
+    needs: ["reducer:dose", "tool:confirm_taken"]
+    clock: "12:00"
+    steps:
+      - event: { type: dose.due, source: scheduler, payload: { slot_id: s_1200, date: $today } }
+      - wait: 5
+      - say: 我食咗藥喇
+      - wait: 2
+    expect:
+      tools_called: [confirm_taken]
+      tool_results: [{ name: confirm_taken, result: { ok: true, slot_id: s_1200, status: taken_self_reported } }]
+      dose_states: { s_1200: taken_self_reported }
+
+  - id: mt06_reminded_then_snoozes
+    title: After the reminder she says 「等陣先食」 → snooze_dose → SNOOZED (≤ 15 min)
+    owner: agent (FakeFlash snooze rule) + kernel (dose)
+    needs: ["reducer:dose", "tool:snooze_dose"]
+    clock: "12:00"
+    steps:
+      - event: { type: dose.due, source: scheduler, payload: { slot_id: s_1200, date: $today } }
+      - wait: 5
+      - say: 等陣先食，遲啲再提我
+      - wait: 2
+    expect:
+      tools_called: [snooze_dose]
+      tool_results: [{ name: snooze_dose, result: { ok: true, slot_id: s_1200 } }]
+      dose_states: { s_1200: snoozed }
+
+  - id: mt07_snoozed_asks
+    title: 12:10 with 12:00 snoozed → 「我食咗藥未呀？」 → 仲未
+    owner: agent (meds)
+    clock: "12:10"
+    steps:
+      - dose: { slot: s_1200, state: snoozed, snoozes: 1, snoozed_until: "2026-11-20T12:25:00+08:00" }
+      - say: 我食咗藥未呀？
+    expect:
+      tool_results: [{ name: get_med_status, result: { today: [{ slot_id: s_1200, state: snoozed }] } }]
+      reply_matches: ["十二點.*仲未"]
+      reply_absent: ["已經食咗"]
+
+  - id: mt08_missed_asks
+    title: 13:30 with 12:00 missed → 仲未, never 已經食咗
+    owner: agent (meds)
+    clock: "13:30"
+    steps:
+      - dose: { slot: s_1200, state: missed }
+      - say: 我食咗藥未呀？
+    expect:
+      tool_results: [{ name: get_med_status, result: { today: [{ slot_id: s_1200, state: missed }] } }]
+      reply_matches: ["十二點.*仲未"]
+      reply_absent: ["已經食咗"]
+
+  - id: mt09_missed_confirm_within_3h
+    title: 13:30, missed 12:00 dose, confirm_taken → accepted (within 3 h)
+    owner: kernel (dose)
+    needs: ["reducer:dose", "tool:confirm_taken"]
+    strict_needs: true
+    clock: "13:30"
+    steps:
+      - dose: { slot: s_1200, state: missed }
+      - tool: { name: confirm_taken, args: { utterance: 我頭先食咗喇 } }
+    expect:
+      results: [{ name: confirm_taken, result: { ok: true, slot_id: s_1200, status: taken_self_reported } }]
+      dose_states: { s_1200: taken_self_reported }
+
+  - id: mt10_missed_confirm_after_3h
+    title: 16:00, missed 12:00 dose, confirm_taken → no_dose_pending (older than 3 h), state stays missed
+    owner: kernel (dose)
+    needs: ["reducer:dose", "tool:confirm_taken"]
+    strict_needs: true
+    clock: "16:00"
+    steps:
+      - dose: { slot: s_1200, state: missed }
+      - tool: { name: confirm_taken, args: { utterance: 我食咗喇 } }
+    expect:
+      results: [{ name: confirm_taken, result: { ok: false, reason: no_dose_pending } }]
+      dose_states: { s_1200: missed }
+
+  - id: mt11_confirm_while_reminding
+    title: 12:05 reminding, confirm_taken → ok, taken_self_reported (self-reported, never "ingested")
+    owner: kernel (dose)
+    needs: ["reducer:dose", "tool:confirm_taken"]
+    strict_needs: true
+    clock: "12:05"
+    steps:
+      - dose: { slot: s_1200, state: reminding }
+      - tool: { name: confirm_taken, args: { utterance: 食咗喇 } }
+    expect:
+      results: [{ name: confirm_taken, result: { ok: true, slot_id: s_1200, status: taken_self_reported } }]
+      dose_states: { s_1200: taken_self_reported }
+      db: [{ sql: "SELECT state FROM dose_events WHERE state LIKE '%ingest%'", empty: true }]
+
+  - id: mt12_taken_noon_asks
+    title: 12:30 with 12:00 taken → 「我食咗藥未呀？」 → 十二點嗰次已經食咗
+    owner: agent (meds)
+    clock: "12:30"
+    steps:
+      - dose: { slot: s_1200, state: taken_self_reported }
+      - say: 我食咗藥未呀？
+    expect:
+      reply_matches: ["十二點.*已經食咗"]
+      reply_absent: ["仲未"]
+
+  - id: mt13_next_evening
+    title: 15:00 with 12:00 taken → next is 8 pm, 糖尿藥 only
+    owner: agent (meds)
+    clock: "15:00"
+    steps:
+      - dose: { slot: s_1200, state: taken_self_reported }
+      - say: 我幾時食藥呀？
+    expect:
+      tool_results: [{ name: get_med_status, result: { next: { slot_id: s_2000, count: 1 } } }]
+      reply_matches: ["八點", "糖尿藥"]
+      reply_absent: ["血壓藥", "薄血丸"]
+
+  - id: mt14_all_taken
+    title: 21:00 with every slot taken → 今日啲藥都食晒喇
+    owner: agent (meds)
+    clock: "21:00"
+    steps:
+      - dose: { slot: s_1200, state: taken_self_reported }
+      - dose: { slot: s_2000, state: taken_self_reported }
+      - say: 我幾時食藥呀？
+    expect:
+      tool_results: [{ name: get_med_status, result: { next: null } }]
+      steps_done: ["今日啲藥都食晒喇"]
+      reply_matches: ["食晒"]
