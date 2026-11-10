@@ -57,7 +57,7 @@ are fixed before the component is accepted.
 | Memory | `brain/ahbo/memory` | Claude agent | ✅ committed (105 tests) |
 | Evals + invariant tests | `evals/`, `brain/ahbo/evals`, `brain/tests/invariants` | Claude agent | ✅ committed (most cases blocked on unbuilt components) |
 | iOS app + Python wake matcher | `ios/`, `brain/ahbo/wake` | Claude agent | ✅ committed; **never compiled for iOS** |
-| Kernel flows (fall, dose, concern, checkin, action, arbiter, matchers, scheduler, wiring) | `brain/ahbo/kernel/**` | Claude (fresh agent needed) | ⬜ not built |
+| Kernel flows (fall, dose, concern, checkin, action, arbiter, matchers, scheduler, wiring) | `brain/ahbo/kernel/**` | Claude agent | ✅ committed `52779d1` (68 kernel+golden tests; S1–S4ok golden pass) |
 | Agent + models + deep (remaining tools, context, real adapters, deep loop, LiveKit worker, intent) | `brain/ahbo/{agent,models,deep}` | Claude (fresh agent needed) | ⬜ partial on disk: `agent/prompts/`, `filters/spoken.py` edits (uncommitted) |
 | Links (Telegram, Twilio + INV-9 guard, sensors, outbox, fakes) | `brain/ahbo/links/*` except device_hub, `sim/*.py` | Claude (fresh agent needed) | ⬜ partial: `links/{__init__,outbox,family}.py` |
 | Browser iPad | `sim/` (web) | Claude (fresh agent needed) | ⬜ partial: `sim/{index.html,channel.js,talk.js,sim.css}` |
@@ -127,12 +127,12 @@ what to add.
 ## 5. Open integration items (apply when the owning component is (re)built; tick off here)
 
 **Kernel flows**
-- [ ] `ahbo.kernel.wiring.install(svc)` (reducers + scheduler + loaded/persist hooks).
-- [ ] Handle `operator.reset/ok/escalate/resolve/play_fixed/say/dose_now/checkin_now/plan_now/force_tool_result/provider_switch/model_config`, `device.online/offline`; console fall/SOS arrive as `sensor.*` with source `operator` (card small 操作員觸發).
-- [ ] Session loaded hook (no stale `listening` mood after restart).
-- [ ] Dose reducer accepts `face_event reminder_confirmed {slot_id, at, source:"touch_offline"}`.
-- [ ] Invariant tests expect state names ALARM/PHOTO_CHECK/AWAITING_OK/RESOLVED_OK/ESCALATING/REASSURING/ACKNOWLEDGED; agent-sourced `operator.ok`/`device.touch_ok` must not resolve.
-- [ ] S4 + S4ok golden traces pass.
+- [x] `ahbo.kernel.wiring.install(svc)` (reducers + scheduler + loaded/persist hooks).
+- [x] Handle `operator.reset/ok/escalate/resolve/play_fixed/say/dose_now/checkin_now/plan_now/force_tool_result/provider_switch/model_config`, `device.online/offline`; console fall/SOS arrive as `sensor.*` with source `operator` (card small 操作員觸發).
+- [x] Session loaded hook (no stale `listening` mood after restart).
+- [x] Dose reducer accepts `face_event reminder_confirmed {slot_id, at, source:"touch_offline"}`.
+- [x] Invariant tests expect state names ALARM/PHOTO_CHECK/AWAITING_OK/RESOLVED_OK/ESCALATING/REASSURING/ACKNOWLEDGED; agent-sourced `operator.ok`/`device.touch_ok` must not resolve.
+- [x] S4 + S4ok golden traces pass.
 
 **Agent + models**
 - [ ] Memory tools: recall → `store.recall(db,q,5,clock=)`; remember → `store.remember` (MemoryRejected → ok:false reason); recall_life_story → `pick_life_story` + `mark_story_used` + story card.
@@ -143,6 +143,7 @@ what to add.
 - [ ] LiveKit worker Stage 3: `ahbo.wake.matcher.stage3_check` on `s2_text` when opened by the wake word; `s2_text` is her first utterance.
 
 **Links**
+- [ ] Register `family.send` and `phone.call` dispatchers (Kernel ALERT payload carries `incident_id`, `time`, `address`; `family.button` may be a plain button or `b:<button>:<outbox_id>`). Until then S4 eval fails on empty outbox and 9 invariant tests skip.
 - [ ] `press(svc, outbox_id, button)`, `outbox_list`, `inject_voice_note`, `inject_text` (match `api/demo.py`).
 - [ ] Telegram `/fact` → `store.remember(source="telegram")`; `/story` → `life_stories.add_life_story`; `[確認資料]` → `store.confirm_fact`; digest uses `pending_review_facts` + `repetition.trend_summary`.
 - [ ] INV-9 dial-guard test file; `tests/invariants/test_inv_09_never_999.py` passes.
@@ -153,11 +154,15 @@ what to add.
 - [ ] `evals/visual/screens.py` for `make screens` (G3).
 
 **Defects found by evals in committed code (orchestrator fixes)**
+- [ ] `tests/invariants/test_inv_09_never_999.py`: whitelist `recall` / `recall_life_story` (false positive on "call").
+- [ ] Optionally install models wiring in `tests/conftest.py` so golden S4 uses the real fake vision.
 - [x] (a) Kernel commands carry `correlation_id = ev.correlation_id or ev.id`.
 - [ ] (b) Memory `rep_*` cards emitted via `kernel.emit` with no event → route through an event (`memory.repetition`) or set `event_id` (fails `test_inv_06…repeated_questions`).
-- [ ] (c) Platform `api/demo.py` say/play_fixed fallbacks not linked to their `operator.*` event (fails `test_inv_08…console_overrides`).
+- [x] (c) Platform `api/demo.py` say/play_fixed fallbacks not linked to their `operator.*` event (fails `test_inv_08…console_overrides`).
 
 **Contracts / BUILD_LOG updates still to write**
+- [ ] CONTRACTS from Kernel: `arbiter.decision` (via `Kernel.note`), `checkin.skipped`; reply reasons `not_affirmative`, deep `daily_cap`; SOS card 求救掣, emergency concern card 緊急關注 + group 緊急處理; scheduler jump rule (due items in a >120 s clock jump are skipped).
+- [ ] BUILD_LOG Kernel deviations: 冇跌親 escalates (help wins); kernel_listen opens at F3 start; photo step waits ≤0.8 s for vision; clip max wait max(1,0.19×chars)+0.3 s; RESOLVED_OK self-closes; calls centre→阿珍→centre ≤3; deep results re-validated.
 - [ ] CONTRACTS §4: `memory.extracted`, `memory.write_result`, `memory.write` ops; §5/§9: `/operator/api/reset`, `/operator/api/panic`, `/internal/reset`, `/internal/clock`; §2.2 `session.close.why` (`wake_rejected`); §2.3 device event `settings {interruption_enabled}` and `face_event reminder_confirmed`.
 - [ ] BUILD_LOG: no host `make` → `deploy/make.sh`; WS 4401 accept-then-close; memory deviations (summary 1–5 lines, voice family/health facts pending_review, medicine facts never auto-written, story photos exempt from 7-day deletion); platform VERIFY rows (livekit-api 1.2.2 symbols, caddy:2.11.9 digest); iOS VERIFY rows (LiveKit Swift 2.18.0 @93a7251, PyCantonese 阿→aa via HKCanCor, 喂寶寶 reduplication guard, pre-roll fallback).
 - [ ] Platform: `/media/photo/{id}` needs device-token access for life-story photos shown on the iPad.
@@ -170,6 +175,6 @@ what to add.
 - Tests: `docker run --rm -v /opt/ahbo:/repo ahbo-api python -m pytest -q` (workdir `/repo/brain`).
 - Evals: `docker run --rm -v /opt/ahbo:/repo -w /repo/brain ahbo-api python -m ahbo.evals` → `evals/report.md`.
 - Kit capture: `evals/visual/kit_capture.py` in the browser image → `docs/screens/kit/`, `brain/tests/golden/kit/`.
-- Commits so far: `e8fded3` spine · `7974af7` platform + memory (M0 live) · `dbfd521` evals + iOS + INV-6 fix.
+- Commits so far: `e8fded3` spine · `7974af7` platform + memory (M0 live) · `dbfd521` evals + iOS + INV-6 fix · `02a9f7d` guide + GLM hand-off · `52779d1` Kernel (M1).
 - Usage limits: the owner's Claude credits are limited. Run few agents at a time; don't resume or launch builders
   without the owner's go-ahead.
