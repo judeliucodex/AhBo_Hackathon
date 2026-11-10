@@ -59,8 +59,8 @@ are fixed before the component is accepted.
 | iOS app + Python wake matcher | `ios/`, `brain/ahbo/wake` | Claude agent | ✅ committed; **never compiled for iOS** |
 | Kernel flows (fall, dose, concern, checkin, action, arbiter, matchers, scheduler, wiring) | `brain/ahbo/kernel/**` | Claude agent | ✅ committed `52779d1` (68 kernel+golden tests; S1–S4ok golden pass) |
 | Agent + models + deep (remaining tools, context, real adapters, deep loop, LiveKit worker, intent) | `brain/ahbo/{agent,models,deep}` | Claude agent | ✅ committed (LiveKit worker imports but never ran: no keys) |
-| Links (Telegram, Twilio + INV-9 guard, sensors, outbox, fakes) | `brain/ahbo/links/*` except device_hub, `sim/*.py` | Claude (fresh agent needed) | ⬜ partial: `links/{__init__,outbox,family}.py` |
-| Browser iPad | `sim/` (web) | Claude (fresh agent needed) | ⬜ partial: `sim/{index.html,channel.js,talk.js,sim.css}` |
+| Links (Telegram, Twilio + INV-9 guard, sensors, outbox, fakes) | `brain/ahbo/links/*` except device_hub, `sim/*.py` | **GLM** (`04_*`), Claude reviews safety code line by line | ⬜ partial: `links/{__init__,outbox,family}.py` |
+| Browser iPad | `sim/` (web) | **GLM** (`05_*`) | ⬜ partial: `sim/{index.html,channel.js,talk.js,sim.css}` |
 | Ops / speech / trace (fixed clips, doctor, costs, caps, wipe, backup) | `brain/ahbo/{speech,trace}`, `ops/{doctor,render_fixed,wipe,backup,caps}.py` | **GLM** (`docs/handoff/glm/01_*`) | ⬜ partial on disk |
 | Actions + mock centre | `brain/ahbo/actions`, `mock-centre/` | **GLM** (`02_*`) | ⬜ partial on disk |
 | Operator console | `operator-ui/` | **GLM** (`03_*`) | ⬜ partial on disk |
