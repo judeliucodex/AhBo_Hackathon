@@ -58,7 +58,7 @@ are fixed before the component is accepted.
 | Evals + invariant tests | `evals/`, `brain/ahbo/evals`, `brain/tests/invariants` | Claude agent | ✅ committed (most cases blocked on unbuilt components) |
 | iOS app + Python wake matcher | `ios/`, `brain/ahbo/wake` | Claude agent | ✅ committed; **never compiled for iOS** |
 | Kernel flows (fall, dose, concern, checkin, action, arbiter, matchers, scheduler, wiring) | `brain/ahbo/kernel/**` | Claude agent | ✅ committed `52779d1` (68 kernel+golden tests; S1–S4ok golden pass) |
-| Agent + models + deep (remaining tools, context, real adapters, deep loop, LiveKit worker, intent) | `brain/ahbo/{agent,models,deep}` | Claude (fresh agent needed) | ⬜ partial on disk: `agent/prompts/`, `filters/spoken.py` edits (uncommitted) |
+| Agent + models + deep (remaining tools, context, real adapters, deep loop, LiveKit worker, intent) | `brain/ahbo/{agent,models,deep}` | Claude agent | ✅ committed (LiveKit worker imports but never ran: no keys) |
 | Links (Telegram, Twilio + INV-9 guard, sensors, outbox, fakes) | `brain/ahbo/links/*` except device_hub, `sim/*.py` | Claude (fresh agent needed) | ⬜ partial: `links/{__init__,outbox,family}.py` |
 | Browser iPad | `sim/` (web) | Claude (fresh agent needed) | ⬜ partial: `sim/{index.html,channel.js,talk.js,sim.css}` |
 | Ops / speech / trace (fixed clips, doctor, costs, caps, wipe, backup) | `brain/ahbo/{speech,trace}`, `ops/{doctor,render_fixed,wipe,backup,caps}.py` | **GLM** (`docs/handoff/glm/01_*`) | ⬜ partial on disk |
@@ -135,12 +135,16 @@ what to add.
 - [x] S4 + S4ok golden traces pass.
 
 **Agent + models**
-- [ ] Memory tools: recall → `store.recall(db,q,5,clock=)`; remember → `store.remember` (MemoryRejected → ok:false reason); recall_life_story → `pick_life_story` + `mark_story_used` + story card.
-- [ ] Context: `store.profile_block(db,800)`, `store.episodic_block(db,clock,3,500)`, `repetition.repetition_hint(db,clock)`.
-- [ ] `build_agent(kernel)`; `/internal/context|session/claim|pull` hooks matching `api/routes/internal.py` (501 until then); worker `agent_name="ahbo-agent"`; optional `warmup(svc)`.
-- [ ] Eval defect (d): spoken filter must not turn 晒吓搵郁 into 曬嚇揾鬱.
-- [ ] Eval defect (e): FakeFlash routes planning requests to `deep_task` with 「好呀，等阿寶幫你諗下，一陣話你知。」.
-- [ ] LiveKit worker Stage 3: `ahbo.wake.matcher.stage3_check` on `s2_text` when opened by the wake word; `s2_text` is her first utterance.
+- [x] Memory tools: recall → `store.recall(db,q,5,clock=)`; remember → `store.remember` (MemoryRejected → ok:false reason); recall_life_story → `pick_life_story` + `mark_story_used` + story card.
+- [x] Context: `store.profile_block(db,800)`, `store.episodic_block(db,clock,3,500)`, `repetition.repetition_hint(db,clock)`.
+- [x] `build_agent(kernel)`; `/internal/context|session/claim|pull` hooks matching `api/routes/internal.py` (501 until then); worker `agent_name="ahbo-agent"`; optional `warmup(svc)`.
+- [x] Eval defect (d): spoken filter must not turn 晒吓搵郁 into 曬嚇揾鬱.
+- [x] Eval defect (e): FakeFlash routes planning requests to `deep_task` with 「好呀，等阿寶幫你諗下，一陣話你知。」.
+- [x] LiveKit worker Stage 3: `ahbo.wake.matcher.stage3_check` on `s2_text` when opened by the wake word; `s2_text` is her first utterance.
+
+**Kernel follow-up (orchestrator)**
+- [ ] Kernel handles `family.message_request` (payload in `agent/tools/family.py`) → `family.send` INFO + reply `{ok, contact}`; until then `send_message_to_family` returns unavailable.
+- [ ] BUILD_LOG agent deviations: s2t only when Simplified-only chars present + shield list; 打九九九 alone → clarifying question; LiveKit worker has no Haiku fallback (no Anthropic plugin), Sonnet-over-Opper not wired; `models/pricing.py` prices are placeholders (VERIFY).
 
 **Links**
 - [ ] Register `family.send` and `phone.call` dispatchers (Kernel ALERT payload carries `incident_id`, `time`, `address`; `family.button` may be a plain button or `b:<button>:<outbox_id>`). Until then S4 eval fails on empty outbox and 9 invariant tests skip.
@@ -154,10 +158,10 @@ what to add.
 - [ ] `evals/visual/screens.py` for `make screens` (G3).
 
 **Defects found by evals in committed code (orchestrator fixes)**
-- [ ] `tests/invariants/test_inv_09_never_999.py`: whitelist `recall` / `recall_life_story` (false positive on "call").
+- [x] `tests/invariants/test_inv_09_never_999.py`: whitelist `recall` / `recall_life_story` (false positive on "call").
 - [ ] Optionally install models wiring in `tests/conftest.py` so golden S4 uses the real fake vision.
 - [x] (a) Kernel commands carry `correlation_id = ev.correlation_id or ev.id`.
-- [ ] (b) Memory `rep_*` cards emitted via `kernel.emit` with no event → route through an event (`memory.repetition`) or set `event_id` (fails `test_inv_06…repeated_questions`).
+- [x] (b) Memory `rep_*` cards emitted via `kernel.emit` with no event → route through an event (`memory.repetition`) or set `event_id` (fails `test_inv_06…repeated_questions`).
 - [x] (c) Platform `api/demo.py` say/play_fixed fallbacks not linked to their `operator.*` event (fails `test_inv_08…console_overrides`).
 
 **Contracts / BUILD_LOG updates still to write**
@@ -175,6 +179,6 @@ what to add.
 - Tests: `docker run --rm -v /opt/ahbo:/repo ahbo-api python -m pytest -q` (workdir `/repo/brain`).
 - Evals: `docker run --rm -v /opt/ahbo:/repo -w /repo/brain ahbo-api python -m ahbo.evals` → `evals/report.md`.
 - Kit capture: `evals/visual/kit_capture.py` in the browser image → `docs/screens/kit/`, `brain/tests/golden/kit/`.
-- Commits so far: `e8fded3` spine · `7974af7` platform + memory (M0 live) · `dbfd521` evals + iOS + INV-6 fix · `02a9f7d` guide + GLM hand-off · `52779d1` Kernel (M1).
+- Commits so far: `e8fded3` spine · `7974af7` platform + memory (M0 live) · `dbfd521` evals + iOS + INV-6 fix · `02a9f7d` guide + GLM hand-off · `52779d1` Kernel (M1) · agent+models+deep (tests: 408 pass, 9 skip on Links).
 - Usage limits: the owner's Claude credits are limited. Run few agents at a time; don't resume or launch builders
   without the owner's go-ahead.
