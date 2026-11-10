@@ -1,0 +1,29 @@
+# seed/activities.yaml   (curated; the demo centre is fictional and registers through the mock site)
+# venue_short is an addition (BUILD_LOG D-9): the kit's card reads 「長者中心 · 可代報名」.
+- id: act_opera_1500
+  title: 粵曲班
+  venue: 秀茂坪長者中心（示範）
+  venue_short: 長者中心
+  time: "15:00"
+  days: [mon, tue, wed, thu, fri, sat, sun]
+  walk_minutes: 10
+  interests: [粵曲, 音樂, 識朋友]
+  signup: { method: web_form, url: "{PUBLIC_BASE_URL}/mock-centre/" }
+- id: act_taichi_0900
+  title: 太極班
+  venue: 觀塘海濱公園（示範）
+  venue_short: 海濱公園
+  time: "09:00"
+  days: [tue, thu, sat]
+  walk_minutes: 15
+  interests: [運動]
+  signup: { method: in_person }
+- id: act_craft_1430
+  title: 手工班
+  venue: 秀茂坪長者中心（示範）
+  venue_short: 長者中心
+  time: "14:30"
+  days: [wed, fri]
+  walk_minutes: 10
+  interests: [手工, 識朋友]
+  signup: { method: phone, phone: "（示範號碼）" }

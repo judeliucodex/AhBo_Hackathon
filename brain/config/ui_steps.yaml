@@ -1,0 +1,51 @@
+# config/ui_steps.yaml  (labels: Traditional Chinese, Cantonese, ≤ 14 characters after filling)
+# Deviation D-5: play_voice_message has no entry (the kit's S1 storyboard shows no playback step).
+min_active_ms: 600
+clear_after_reply_ms: 4000
+max_steps_per_group: 4
+tools:
+  list_voice_messages:
+    active: "檢查緊訊息…"
+    done:   { has_new: "搵到{from_name}嘅語音訊息", none: "冇新訊息" }
+    failed: "睇唔到訊息"
+  get_med_status:
+    active: "查緊藥物時間表…"
+    done:   { next: "下一次：{next_time_words}，{count_words}隻藥", none: "今日啲藥都食晒喇" }
+    failed: "睇唔到藥單"
+  list_events:
+    active: "睇緊今日日程…"
+    done:   { some: "今日有{count_words}個約會", none: "今日冇約會" }
+  get_day_plan:
+    active: "睇緊今日日程…"
+    done:   { ok: "今日計劃準備好", none: "未有今日計劃" }
+  get_route:
+    active: "查緊去{place_short}嘅巴士路線…"
+    done:   { ok: "路線已查好" }
+    failed: "查唔到路線"
+  get_weather:
+    active: "睇緊天氣…"
+    done:   { ok: "{weather_short}" }
+  find_local_activities:
+    active: "搜尋緊附近長者活動…"
+    done:   { some: "搵到：{top_title}", none: "暫時搵唔到" }
+  check_activity_logistics:
+    active: "檢查緊時間同交通…"
+    done:   { ok: "{free_words}，{travel_words}" }
+  deep_task:
+    active: "幫你諗緊…"
+    done:   { ok: "諗好喇" }
+    failed: "今次搵唔到"
+  add_event:
+    active: "記緊落日曆…"
+    done:   { ok: "已經記低" }
+  confirm_action:
+    active: "幫你報緊名…"
+    done:   { done: "報咗名喇", needs_human: "叫咗阿珍幫手", failed: "報唔到名" }
+  send_message_to_family:
+    active: "傳緊訊息俾{contact}…"
+    done:   { ok: "已經傳俾{contact}" }
+fall:   # the fall group (title 跌倒處理); driven by the fall reducer, not by tools
+  photo: { active: "分析緊相片…", done: "{vision_short_or_default}", default_done: "相片已送出" }
+  ask:   { active: "等婆婆回應", done: "婆婆話冇事", failed: "冇回應" }
+  call:  { active: "致電緊急中心", done: "已致電緊急中心", skipped: "唔使致電" }
+  tell:  { active: "通知阿珍", done: "已通知阿珍" }

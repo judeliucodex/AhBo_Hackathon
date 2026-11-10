@@ -1,0 +1,4 @@
+# config/action_domains.yaml
+allow_submit: ["{PUBLIC_BASE_URL}/mock-centre/"]
+read_only:    ["*.gov.hk", "*.lcsd.gov.hk", "*.swd.gov.hk", "*.hkcss.org.hk"]
+forbidden_fields: ["香港身份證", "身份證號碼", "HKID", "ID number", "信用卡", "card number", "密碼", "password", "銀行"]

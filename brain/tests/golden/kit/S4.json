@@ -1,0 +1,246 @@
+[
+ {
+  "t_ms": 0,
+  "cmd": {
+   "type": "reset"
+  }
+ },
+ {
+  "t_ms": 51,
+  "cmd": {
+   "type": "mood",
+   "mood": "alarm"
+  }
+ },
+ {
+  "t_ms": 56,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "fall",
+    "kind": "incident",
+    "label": "偵測到跌倒",
+    "small": "感應器：急速下跌",
+    "persistent": true
+   }
+  }
+ },
+ {
+  "t_ms": 58,
+  "cmd": {
+   "type": "say_start",
+   "id": "f1",
+   "text": "哎呀！我感應到你好似跌低咗！",
+   "durationSec": 2.692307692307692
+  }
+ },
+ {
+  "t_ms": 2843,
+  "cmd": {
+   "type": "say_end",
+   "id": "f1"
+  }
+ },
+ {
+  "t_ms": 2844,
+  "cmd": {
+   "type": "flash"
+  }
+ },
+ {
+  "t_ms": 2845,
+  "cmd": {
+   "type": "steps",
+   "group": {
+    "id": "fall",
+    "title": "跌倒處理",
+    "steps": [
+     {
+      "id": "photo",
+      "label": "分析緊相片…",
+      "doneLabel": "可能有人跌咗喺地下",
+      "state": "active"
+     },
+     {
+      "id": "ask",
+      "label": "等婆婆回應",
+      "doneLabel": "婆婆話冇事",
+      "state": "pending"
+     },
+     {
+      "id": "call",
+      "label": "致電緊急中心",
+      "doneLabel": "已致電緊急中心",
+      "state": "pending"
+     },
+     {
+      "id": "tell",
+      "label": "通知阿珍",
+      "doneLabel": "已通知阿珍",
+      "state": "pending"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "t_ms": 2846,
+  "cmd": {
+   "type": "say_start",
+   "id": "f2",
+   "text": "我而家影張相睇吓先。",
+   "durationSec": 1.923076923076923
+  }
+ },
+ {
+  "t_ms": 4917,
+  "cmd": {
+   "type": "say_end",
+   "id": "f2"
+  }
+ },
+ {
+  "t_ms": 5718,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "photo",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 5719,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "ask",
+   "state": "active"
+  }
+ },
+ {
+  "t_ms": 5720,
+  "cmd": {
+   "type": "say_start",
+   "id": "f3",
+   "text": "王婆婆，如果你冇跌親，請講「我冇事」。",
+   "durationSec": 3.6538461538461537
+  }
+ },
+ {
+  "t_ms": 9522,
+  "cmd": {
+   "type": "say_end",
+   "id": "f3"
+  }
+ },
+ {
+  "t_ms": 9522,
+  "cmd": {
+   "type": "ok_button",
+   "show": true
+  }
+ },
+ {
+  "t_ms": 9522,
+  "cmd": {
+   "type": "countdown",
+   "id": "fall",
+   "n": 5
+  }
+ },
+ {
+  "t_ms": 14526,
+  "cmd": {
+   "type": "ok_button",
+   "show": false
+  }
+ },
+ {
+  "t_ms": 14528,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "ask",
+   "state": "failed",
+   "label": "冇回應"
+  }
+ },
+ {
+  "t_ms": 14528,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "call",
+   "state": "active"
+  }
+ },
+ {
+  "t_ms": 14530,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "tell",
+   "state": "active"
+  }
+ },
+ {
+  "t_ms": 14530,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "amb",
+    "kind": "action",
+    "label": "緊急中心",
+    "small": "已致電",
+    "when": "救護車"
+   }
+  }
+ },
+ {
+  "t_ms": 14530,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "chun",
+    "kind": "message",
+    "label": "已通知阿珍",
+    "small": "訊息已送出",
+    "when": "阿珍"
+   }
+  }
+ },
+ {
+  "t_ms": 15228,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "tell",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 15729,
+  "cmd": {
+   "type": "step",
+   "group": "fall",
+   "id": "call",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 15729,
+  "cmd": {
+   "type": "say_start",
+   "id": "f4",
+   "text": "我已經幫你叫咗救護車，同埋通知咗阿珍。唔使驚，救護車就嚟到。",
+   "durationSec": 5.769230769230769
+  }
+ },
+ {
+  "t_ms": 21647,
+  "cmd": {
+   "type": "say_end",
+   "id": "f4"
+  }
+ }
+]

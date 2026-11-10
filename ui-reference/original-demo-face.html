@@ -1,0 +1,712 @@
+<title>Ah Bo Face</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<style>
+/* Layout: one black stage, two eyes centred, mouth + caption + medicine chips below; operator controls tucked bottom-right */
+:root{
+  --bg:#000000;
+  --eye:#ECE3E7;
+  --ink:#ECE3E7;
+  --dim:rgba(236,227,231,.32);
+  --faint:rgba(236,227,231,.12);
+  --pill-a:#F7F4EF;
+  --pill-b:#F4C95D;
+  --pill-c:#EFA3BA;
+  --font:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","PingFang HK","Noto Sans HK",system-ui,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+html,body,*{cursor:none !important}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--font);
+  overflow:hidden;margin:0;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.stage{position:relative;height:100%;display:grid;place-items:center;cursor:pointer}
+.face{display:flex;flex-direction:column;align-items:center;gap:3.2vmin;transform:translateY(-3vmin)}
+
+/* Eyes */
+.eyes{display:flex;gap:7.5vmin;transition:transform .7s cubic-bezier(.25,1.3,.5,1)}
+.eye{
+  width:22vmin;height:22vmin;border-radius:50%;background:var(--eye);
+  position:relative;overflow:hidden;
+  transition:transform .09s ease-in, height .3s ease, background .3s, box-shadow .4s;
+}
+.eye.blink{transform:scaleY(.07)}
+.lid{
+  position:absolute;left:-15%;width:130%;height:130%;border-radius:50%;
+  background:var(--bg);top:118%;transition:top .35s cubic-bezier(.3,1.2,.5,1);
+}
+.happy .lid{top:52%}
+.alert .eye{transform:scale(1.12)}
+.alert .eye.blink{transform:scale(1.12,.07)}
+/* Birth scene: eyes start hidden, then pop in one at a time */
+.face.unborn .eye:not(.born){transform:scale(0)}
+.eye.pop{animation:pop .55s ease-out, glow 1.1s ease-out}
+@keyframes pop{0%{transform:scale(0)}55%{transform:scale(1.18)}78%{transform:scale(.94)}100%{transform:scale(1)}}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(236,227,231,0)}30%{box-shadow:0 0 9vmin 2.5vmin rgba(236,227,231,.5)}100%{box-shadow:0 0 0 0 rgba(236,227,231,0)}}
+/* Pop effects: a ring that ripples out and sparks that fly off each eye */
+.burst{
+  position:fixed;pointer-events:none;border-radius:50%;border:.6vmin solid var(--eye);
+  transform:translate(-50%,-50%) scale(.55);opacity:.9;animation:burst .75s ease-out forwards;
+}
+@keyframes burst{to{transform:translate(-50%,-50%) scale(1.9);opacity:0}}
+.spark{
+  position:fixed;width:1.4vmin;height:1.4vmin;border-radius:50%;background:var(--eye);pointer-events:none;
+  transform:translate(-50%,-50%);animation:spark .7s cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes spark{to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.2);opacity:0}}
+
+/* Mouth (only while talking) */
+.mouth-box{height:7vmin;display:flex;align-items:center;justify-content:center;flex:none}
+.mouth{
+  width:8vmin;height:1.2vmin;border-radius:3vmin;background:var(--eye);
+  opacity:0;transform:scale(.6);transition:opacity .25s, transform .25s;
+}
+.talking .mouth{opacity:1;transform:scale(1)}
+
+/* Caption */
+.caption{
+  min-height:calc(2 * 1.35 * clamp(18px,3.3vmin,40px));max-width:min(82vw,1100px);text-align:center;
+  font-size:clamp(18px,3.3vmin,40px);font-weight:700;line-height:1.35;
+  text-wrap:balance;margin-top:2vmin;
+}
+.caption .w{opacity:.18;transition:opacity .18s}
+.caption .w.on{opacity:1}
+/* Subtitles fade out 2 s after Ah Bo stops speaking */
+.caption{transition:opacity .5s}
+.caption.gone{opacity:0}
+
+/* Medicine chips */
+.meds{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:2vmin;min-height:max(10vmin,64px)}
+.chip{
+  display:flex;align-items:center;gap:1.4vmin;padding:1.2vmin 2.4vmin 1.2vmin 1.6vmin;
+  border-radius:99px;border:1.5px solid var(--faint);
+  font-size:clamp(14px,2.2vmin,26px);font-weight:700;
+  opacity:0;transform:translateY(1.5vmin) scale(.96);
+  transition:opacity .4s, transform .5s cubic-bezier(.3,1.4,.5,1), border-color .4s;
+}
+.chip.on{opacity:1;transform:none;border-color:var(--dim)}
+.chip small{font-weight:500;opacity:.6;font-size:.8em}
+.pill{width:4.6vmin;height:2.2vmin;border-radius:2vmin;overflow:hidden;display:flex;transform:rotate(-25deg);flex:none}
+.chip .icon{font-size:1.25em;line-height:1;flex:none}
+/* Demo pages: warm eyes (voice message), alarm eyes + camera flash + countdown (fall), voice-note waveform */
+.face.warm .eye{box-shadow:0 0 7vmin 1.5vmin rgba(255,196,214,.35)}
+.face.warm .lid{top:74%}
+.face.alarm .eyes{transform:scale(1.1)}
+.face.alarm .eye{background:#FFC46B;animation:alarm .8s ease-in-out infinite}
+@keyframes alarm{0%,100%{box-shadow:0 0 0 0 rgba(255,196,107,.65)}50%{box-shadow:0 0 0 3.5vmin rgba(255,196,107,0)}}
+.flash{position:fixed;inset:0;background:#fff;pointer-events:none;animation:flash .5s ease-out forwards}
+@keyframes flash{from{opacity:.92}to{opacity:0}}
+.wave{display:inline-flex;gap:.45vmin;align-items:center;height:2.6vmin;margin-left:1.2vmin;vertical-align:middle}
+.wave i{width:.55vmin;height:30%;background:var(--ink);border-radius:1vmin;opacity:.75}
+.chip.playing .wave i{animation:wave .6s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.12s}.wave i:nth-child(3){animation-delay:.24s}
+.wave i:nth-child(4){animation-delay:.36s}.wave i:nth-child(5){animation-delay:.48s}
+@keyframes wave{50%{height:100%}}
+.chip.count .num{font-size:1.7em;font-weight:800;line-height:1}
+.pill i{flex:1}
+.pill i:last-child{opacity:.75}
+
+/* Operator controls */
+.controls{
+  position:fixed;
+  right:calc(14px + env(safe-area-inset-right,0px));
+  bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  display:flex;gap:8px;align-items:center;opacity:.55;transition:opacity .3s;
+}
+.controls[data-off="1"]{opacity:0;pointer-events:none}
+.controls button{
+  font:700 15px var(--font);color:var(--ink);background:transparent;
+  border:1.5px solid var(--dim);border-radius:99px;padding:10px 16px;cursor:pointer;
+}
+.controls button:focus-visible{outline:2px solid var(--eye);outline-offset:2px}
+.progress{position:fixed;left:0;bottom:0;height:2px;width:0;background:var(--faint)}
+.note{
+  position:fixed;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  max-width:60vw;font:500 13px var(--font);color:var(--dim);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .eyes{transition:none}
+}
+</style>
+
+<div class="stage" id="stage" aria-label="Ah Bo robot face">
+  <div class="face" id="face">
+    <div class="eyes" id="eyes">
+      <div class="eye"><div class="lid"></div></div>
+      <div class="eye"><div class="lid"></div></div>
+    </div>
+    <div class="mouth-box"><div class="mouth" id="mouth"></div></div>
+    <div class="caption" id="caption" aria-live="polite"></div>
+    <div class="meds" id="meds"></div>
+  </div>
+</div>
+
+<div class="controls" id="controls">
+  <button id="go" type="button">開始</button>
+</div>
+<div class="progress" id="progress"></div>
+<div class="note" id="note" hidden></div>
+
+<script>
+// assets/voice.m4a: the medicine reminder (2 s silent lead-in)
+const VOICE_B64 = "<B64>";
+const GOODBYE_B64 = "<B64>"; // assets/goodbye.m4a: 「王婆婆，阿寶喺度。我會一直陪住你㗎。」
+const SCHEDULE_B64 = "<B64>"; // assets/schedule.m4a: appointment, lunch and social-programme line
+const NAME_B64 = "<B64>"; // assets/name.m4a: 「阿寶！」, no lead-in (ahbo-name.html)
+// Demo pages (ahbo-demo1…4): assets/demo_*.m4a
+const DEMO_MSG_INTRO_B64 = "<B64>";
+const DEMO_DAUGHTER_B64 = "<B64>";
+const DEMO_MEDICINE_B64 = "<B64>";
+const DEMO_TODAY_B64 = "<B64>";
+const DEMO_BORED_B64 = "<B64>";
+const DEMO_FALL1_B64 = "<B64>";
+const DEMO_FALL2_B64 = "<B64>";
+const DEMO_FALL3_B64 = "<B64>";
+const DEMO_FALL4_B64 = "<B64>";
+
+const PAUSE_MS = 2000;
+const MEDS = [
+  { en:"Amlodipine", yue:"血壓藥", dose:"5 mg",   colors:["--pill-b","--pill-a"] },
+  { en:"Metformin",  yue:"糖尿藥", dose:"500 mg", colors:["--pill-a","--pill-a"] },
+  { en:"Atorvastatin", yue:"膽固醇藥", dose:"20 mg", colors:["--pill-a","--pill-c"] },
+  { en:"Aspirin",    yue:"薄血丸", dose:"80 mg",  colors:["--pill-c","--pill-a"] },
+];
+const LINES = {
+  en:  { lang:"en-US", label:"EN",
+         text:"Your next medicine is in 2 hours. It includes Metformin, Amlodipine, and Aspirin." },
+  yue: { lang:"zh-HK", label:"粵",
+         text:"王婆婆，你下一次食藥係兩個鐘之後，包括血壓藥、糖尿藥，同埋薄血丸。" },
+};
+
+const mode = "yue";
+let state = "idle"; // idle | waiting | talking
+const $ = id => document.getElementById(id);
+const face = $("face"), eyesEl = $("eyes"), mouth = $("mouth"), caption = $("caption"),
+      medsEl = $("meds"), controls = $("controls"), progress = $("progress");
+const eyeEls = [...document.querySelectorAll(".eye")];
+
+/* ---------- Idle life: blinking + glancing ---------- */
+function blink(){
+  eyeEls.forEach(e => e.classList.add("blink"));
+  setTimeout(() => eyeEls.forEach(e => e.classList.remove("blink")), 110);
+}
+(function blinkLoop(){
+  const next = 2200 + Math.random()*3200;
+  setTimeout(() => { blink(); if (Math.random() < .25) setTimeout(blink, 220); blinkLoop(); }, next);
+})();
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function glanceLoop(){
+  setTimeout(() => {
+    if (state === "idle" && !reduce){
+      const x = (Math.random()*2-1) * 5, y = (Math.random()*2-1) * 2.5;
+      eyesEl.style.transform = Math.random() < .35 ? "" : `translate(${x}vmin, ${y}vmin)`;
+    }
+    glanceLoop();
+  }, 1600 + Math.random()*2400);
+})();
+
+/* ---------- Voices ---------- */
+let voices = [];
+function loadVoices(){ try { voices = speechSynthesis.getVoices(); } catch(e){} }
+if ("speechSynthesis" in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function pickVoice(lang){
+  const base = lang.split("-")[0];
+  const exact = voices.filter(v => v.lang.replace("_","-").toLowerCase() === lang.toLowerCase());
+  const pool = exact.length ? exact
+             : lang === "zh-HK" ? voices.filter(v => /yue|zh-HK|Cantonese|Sinji/i.test(v.lang + v.name))
+             : voices.filter(v => v.lang.toLowerCase().startsWith(base));
+  // Prefer the Mac's built-in (local) voices: they start reliably and respect volume
+  const local = pool.filter(v => v.localService !== false);
+  const pref = /(Sinji|Enhanced|Premium|Samantha|Ava|Natural)/i;
+  return local.find(v => pref.test(v.name)) || local[0] || pool.find(v => pref.test(v.name)) || pool[0] || null;
+}
+
+/* ---------- Caption + chips ---------- */
+let tokens = [], captionTimer = 0;
+function clearCaption(){ clearTimeout(captionTimer); caption.classList.remove("gone"); caption.innerHTML = ""; }
+function buildCaption(){
+  const { text } = clip;
+  clearCaption(); tokens = [];
+  const parts = mode === "en" ? text.split(/(\s+)/) : Array.from(text);
+  let idx = 0, sent = 0;
+  parts.forEach(p => {
+    if (/^\s+$/.test(p)) { caption.append(p); idx += p.length; return; }
+    const s = document.createElement("span"); s.className = "w"; s.textContent = p;
+    // Long clips show one sentence at a time
+    if (clip.paged && sent > 0) s.hidden = true;
+    caption.append(s); tokens.push({ el:s, start:idx, end:idx + p.length, sent }); idx += p.length;
+    if (/[。？！]$/.test(p)) sent++;
+  });
+  if (!clip.keepChips) medsEl.innerHTML = "";
+  // Only the medicines this line names get a chip
+  if (clip.meds) MEDS.filter(m => text.includes(m.yue)).forEach(m => {
+    const c = document.createElement("div"); c.className = "chip";
+    const cs = getComputedStyle(document.documentElement);
+    c.innerHTML = `<span class="pill"><i style="background:${cs.getPropertyValue(m.colors[0])}"></i><i style="background:${cs.getPropertyValue(m.colors[1])}"></i></span>
+      <span>${mode === "en" ? m.en : m.yue} <small>${m.en} ${m.dose}</small></span>`;
+    c.dataset.name = mode === "en" ? m.en : m.yue;
+    medsEl.append(c);
+  });
+  (clip.chips || []).forEach(m => {
+    const c = document.createElement("div"); c.className = "chip";
+    const wave = m.wave ? `<span class="wave"><i></i><i></i><i></i><i></i><i></i></span>` : "";
+    c.innerHTML = `<span class="icon">${m.icon}</span><span>${m.label} <small>${m.small}</small>${wave}</span>`;
+    c.dataset.name = m.when;
+    medsEl.append(c);
+  });
+}
+let revealedTo = 0;
+function revealUntil(charIdx){
+  if (charIdx <= revealedTo) return;
+  revealedTo = charIdx;
+  tokens.forEach(t => { if (t.start < charIdx) t.el.classList.add("on"); });
+  if (clip.paged){
+    const cur = (tokens.filter(t => t.start < charIdx).pop() || tokens[0]).sent;
+    tokens.forEach(t => { t.el.hidden = t.sent !== cur; });
+  }
+  const text = clip.text;
+  [...medsEl.children].forEach(c => {
+    const at = text.indexOf(c.dataset.name);
+    if (at > -1 && at < charIdx) c.classList.add("on");
+  });
+}
+
+/* ---------- Mouth animation ---------- */
+let mouthTimer = null;
+let speakingNow = false;
+function startMouth(){
+  face.classList.add("talking");
+  let up = false;
+  const tick = () => {
+    up = speakingNow ? !up : false;
+    const h = up ? 2.4 + Math.random()*3.2 : 0.9 + Math.random()*0.8;
+    const w = up ? 7 + Math.random()*2.5 : 8.5;
+    mouth.style.height = h + "vmin"; mouth.style.width = w + "vmin";
+    mouth.style.transition = "height .09s ease, width .09s ease, opacity .25s";
+    mouthTimer = setTimeout(tick, 85 + Math.random()*75);
+  };
+  tick();
+}
+function stopMouth(){
+  clearTimeout(mouthTimer);
+  mouth.style.height = "1.2vmin"; mouth.style.width = "8vmin";
+  eyesEl.style.transform = "";
+  face.classList.remove("talking");
+}
+
+/* ---------- Sequence ---------- */
+/* ---------- Voice: your Mac's Sinji recording, built into the page ---------- */
+// Made with tools/make_voice.sh, which prints these rows: [first char, end char, start s, end s]
+// The medicine line has 2 s of silence at the start.
+const SEGMENTS = [
+  [0, 4, 1.90, 2.76],  // 王婆婆，
+  [4, 17, 3.06, 5.72],  // 你下一次食藥係兩個鐘之後，
+  [17, 23, 6.04, 7.14],  // 包括血壓藥、
+  [23, 27, 7.50, 8.20],  // 糖尿藥，
+  [27, 33, 8.54, 9.84],  // 同埋薄血丸。
+];
+const VOICE_END = 9.85;
+// Each clip: caption text, phrase timings, end time, which chips show, and whether captions page by sentence
+const CLIPS = {
+  meds:    { text:LINES.yue.text, segments:SEGMENTS, end:VOICE_END, b64:VOICE_B64, meds:true, buf:null },
+  // Right click: appointment, route, lunch with her daughter, and a social programme (2 s lead-in)
+  schedule: {
+    text:"王婆婆，提提你：星期四朝早十點半，你喺基督教聯合醫院有覆診。我已經幫你查好路線，九點半出門口，喺樓下巴士站搭巴士去就得，詳細路線可以喺個app度睇。仲有，十二點半你約咗阿珍喺觀塘飲茶，使唔使我幫你較個鬧鐘，費事你唔記得呀？另外，星期六下晝你得閒，我喺網上搵到附近長者中心有個粵曲班，可以識多啲朋友。有冇興趣呀？我可以幫你報名㗎。",
+    segments:[
+      [0, 4, 1.90, 2.76],  // 王婆婆，
+      [4, 8, 3.08, 3.86],  // 提提你：
+      [8, 17, 4.16, 6.18],  // 星期四朝早十點半，
+      [17, 30, 6.48, 9.18],  // 你喺基督教聯合醫院有覆診。
+      [30, 40, 9.40, 11.46],  // 我已經幫你查好路線，
+      [40, 47, 11.78, 13.22],  // 九點半出門口，
+      [47, 60, 13.54, 16.08],  // 喺樓下巴士站搭巴士去就得，
+      [60, 74, 16.42, 18.96],  // 詳細路線可以喺個app度睇。
+      [74, 77, 19.16, 19.70],  // 仲有，
+      [77, 92, 20.00, 23.42],  // 十二點半你約咗阿珍喺觀塘飲茶，
+      [92, 103, 23.72, 26.02],  // 使唔使我幫你較個鬧鐘，
+      [103, 111, 26.34, 27.94],  // 費事你唔記得呀？
+      [111, 114, 28.16, 28.74],  // 另外，
+      [114, 123, 29.04, 30.92],  // 星期六下晝你得閒，
+      [123, 141, 31.22, 35.04],  // 我喺網上搵到附近長者中心有個粵曲班，
+      [141, 149, 35.34, 36.94],  // 可以識多啲朋友。
+      [149, 155, 37.16, 38.46],  // 有冇興趣呀？
+      [155, 164, 38.66, 40.52],  // 我可以幫你報名㗎。
+    ],
+    end:40.53, b64:SCHEDULE_B64, meds:false, paged:true, buf:null,
+    // Each chip lights up when its "when" text is spoken
+    chips:[
+      { icon:"🏥", label:"星期四 10:30 覆診", small:"基督教聯合醫院",    when:"覆診" },
+      { icon:"🚌", label:"9:30 出門",        small:"樓下巴士站",        when:"九點半" },
+      { icon:"🍵", label:"12:30 同阿珍飲茶",  small:"觀塘",              when:"飲茶" },
+      { icon:"🎤", label:"星期六 粵曲班",     small:"長者中心 · 可代報名", when:"粵曲班" },
+    ],
+  },
+  // Closing line, no lead-in
+  goodbye: { text:"王婆婆，阿寶喺度。我會一直陪住你㗎。",
+             segments:[[0, 4, 0.00, 0.86], [4, 9, 1.18, 2.18], [9, 18, 2.38, 4.10]],
+             end:4.10, b64:GOODBYE_B64, meds:false, buf:null },
+  // ahbo-name.html: after the eyes pop in, Ah Bo introduces itself
+  // Sinji says "Hello" the Hong Kong way (haa1 lou2), much smoother than 哈囉
+  name:    { text:"Hello，我係阿寶。", segments:[[0, 6, 0.00, 0.66], [6, 11, 0.94, 1.94]], end:1.94,
+             b64:NAME_B64, meds:false, resetMs:3000, buf:null },
+  // ---- Demo pages (ahbo-demo1…4); made with tools/make_voice.sh, no lead-in ----
+  demoMsgIntro: { text:"王婆婆，阿珍留咗段錄音俾你。", segments:[[0, 4, 0.00, 0.86], [4, 14, 1.18, 3.24]], end:3.24,
+    b64:DEMO_MSG_INTRO_B64, buf:null,
+    chips:[{ icon:"🎙", label:"阿珍嘅錄音", small:"7:00pm", when:"錄音", wave:true }] },
+  // Placeholder for Ah Chun: Sinji played slower so it sounds lower than Ah Bo. Replace with a real recording.
+  demoDaughter: { text:"媽，記得食飯呀！星期日我帶阿明嚟探你。", segments:[[0, 2, 0.00, 0.38], [2, 8, 0.70, 1.88], [8, 19, 2.10, 4.42]],
+    end:4.43, rate:0.92, keepChips:true, playback:true, b64:DEMO_DAUGHTER_B64, buf:null },
+  demoMedicine: { text:"兩個鐘之後呀。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。",
+    segments:[[0, 7, 0.00, 1.46], [7, 12, 1.68, 2.58], [12, 16, 2.94, 3.64], [16, 21, 4.00, 4.88], [21, 27, 5.24, 6.52]],
+    end:6.53, meds:true, b64:DEMO_MEDICINE_B64, buf:null },
+  demoToday: { text:"十點半去聯合醫院覆診，十二點半同阿珍飲茶。", segments:[[0, 11, 0.00, 2.36], [11, 21, 2.66, 4.82]], end:4.82,
+    b64:DEMO_TODAY_B64, buf:null,
+    chips:[
+      { icon:"🏥", label:"10:30 覆診", small:"聯合醫院", when:"覆診" },
+      { icon:"🚌", label:"9:30 出門", small:"路線已查好", when:"覆診" },
+      { icon:"🍵", label:"12:30 同阿珍飲茶", small:"已約好", when:"飲茶" },
+    ] },
+  demoBored: { text:"附近長者中心三點有粵曲班，想唔想去？我幫你報名吖。", segments:[[0, 13, 0.02, 2.96], [13, 18, 3.24, 4.36], [18, 25, 4.58, 5.94]],
+    end:5.95, keepChips:true, b64:DEMO_BORED_B64, buf:null,
+    chips:[{ icon:"🎤", label:"3:00 粵曲班", small:"長者中心 · 可代報名", when:"粵曲班" }] },
+  demoFall1: { text:"偵測到急速下跌！", segments:[[0, 8, 0.00, 1.54]], end:1.56, b64:DEMO_FALL1_B64, buf:null,
+    chips:[{ icon:"⚠️", label:"偵測到跌倒", small:"急速下跌 · 突然停止", when:"急速下跌" }] },
+  demoFall2: { text:"影緊相確認……", segments:[[0, 7, 0.00, 1.30]], end:1.32, keepChips:true, b64:DEMO_FALL2_B64, buf:null,
+    chips:[{ icon:"📷", label:"影相確認中", small:"AI 分析", when:"影緊相" }] },
+  demoFall3: { text:"王婆婆，如果你冇跌親，講『我冇事』。", segments:[[0, 4, 0.00, 0.86], [4, 11, 1.16, 2.58], [11, 18, 2.88, 3.90]],
+    end:3.91, keepChips:true, b64:DEMO_FALL3_B64, buf:null },
+  demoFall4: { text:"已經幫你叫咗救護車，同埋通知咗阿珍。", segments:[[0, 10, 0.00, 2.04], [10, 18, 2.34, 3.98]], end:3.99,
+    keepChips:true, b64:DEMO_FALL4_B64, buf:null,
+    chips:[
+      { icon:"📞", label:"999 救護車", small:"已致電", when:"救護車" },
+      { icon:"💬", label:"已通知阿珍", small:"WhatsApp", when:"阿珍" },
+    ] },
+};
+// Which page this is: "face" (ahbo-face.html) or "name" (ahbo-name.html, set by tools/build_standalone.sh)
+const PAGE = window.AHBO_PAGE || "face";
+const MAIN = PAGE === "name" ? CLIPS.name : CLIPS.meds;
+let clip = CLIPS.meds;
+let actx = null;
+function b64ToBuf(b){ const s = atob(b); const a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a.buffer; }
+(function prepAudio(){
+  try {
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    Object.values(CLIPS).forEach(c => {
+      const p = actx.decodeAudioData(b64ToBuf(c.b64), b => { c.buf = b; }, () => {});
+      if (p && p.then) p.then(b => { c.buf = b; }).catch(() => {});
+    });
+  } catch(e){ actx = null; }
+})();
+
+function speak(c = CLIPS.meds, onDone){
+  state = "talking";
+  revealedTo = 0;
+  clip = c;
+  const { segments:SEGMENTS, end:VOICE_END } = clip;
+  const total = clip.text.length;
+  let done = false, visualsOn = false, raf = 0, clock = null;
+
+  const finish = () => {
+    if (done) return; done = true;
+    cancelAnimationFrame(raf);
+    revealUntil(total + 1);
+    speakingNow = false;
+    stopMouth();
+    captionTimer = setTimeout(() => caption.classList.add("gone"), 2000);
+    // Demo pages chain lines themselves
+    if (onDone) { onDone(); return; }
+    face.classList.add("happy");
+    setTimeout(() => face.classList.remove("happy"), 1400);
+    setTimeout(resetToIdle, clip.resetMs || 6000);
+  };
+  const beginVisuals = () => {
+    if (visualsOn) return; visualsOn = true;
+    buildCaption();
+    // A recording (e.g. Ah Chun's voice note) plays without Ah Bo's mouth moving
+    if (clip.playback) return;
+    face.classList.add("alert");
+    setTimeout(() => face.classList.remove("alert"), 350);
+    startMouth();
+  };
+  const loop = () => {
+    const t = clock();
+    if (t >= SEGMENTS[0][2]) beginVisuals();
+    let upto = 0; speakingNow = false;
+    for (const [s, e, a, b] of SEGMENTS){
+      if (t >= b) upto = e;
+      else if (t >= a){ upto = s + (t - a) / (b - a) * (e - s); speakingNow = true; }
+    }
+    if (visualsOn) revealUntil(Math.ceil(upto));
+    if (t >= VOICE_END + 0.1) { finish(); return; }
+    raf = requestAnimationFrame(loop);
+  };
+
+  // Resume audio inside the click: this is what the browser requires for sound
+  try { if (actx && actx.state !== "running") actx.resume(); } catch(e){}
+
+  const playNow = () => {
+    const src = actx.createBufferSource();
+    src.buffer = clip.buf; src.connect(actx.destination);
+    const rate = clip.rate || 1;
+    src.playbackRate.value = rate;
+    const t0 = actx.currentTime + 0.02;
+    src.start(t0);
+    clock = () => (actx.currentTime - t0) * rate;
+    raf = requestAnimationFrame(loop);
+  };
+  const silentFallback = () => {
+    showNote("沒有聲音。No audio: check your Mac's volume and output device, then click again.");
+    const p0 = performance.now();
+    clock = () => (performance.now() - p0) / 1000;
+    raf = requestAnimationFrame(loop);
+  };
+
+  if (actx && clip.buf) { playNow(); return; }
+  // Audio still decoding (only right after the page opens): wait briefly
+  let waited = 0;
+  const wait = setInterval(() => {
+    waited += 50;
+    if (actx && clip.buf){ clearInterval(wait); playNow(); }
+    else if (waited >= 1500){ clearInterval(wait); silentFallback(); }
+  }, 50);
+}
+
+function wake(){
+  face.classList.add("alert");
+  eyesEl.style.transform = "translateY(-2vmin)";
+  setTimeout(() => { eyesEl.style.transform = ""; }, 260);
+  setTimeout(() => { face.classList.remove("alert"); face.classList.add("happy"); }, 500);
+  setTimeout(() => { face.classList.remove("happy"); speak(); }, 1300);
+}
+
+function resetToIdle(){
+  state = "idle";
+  $("note").hidden = true;
+  clearCaption(); medsEl.innerHTML = "";
+  progress.style.transition = "none"; progress.style.width = "0";
+  controls.dataset.off = PAGE === "face" ? "0" : "1";
+}
+
+function unlockAudio(){
+  try {
+    loadVoices();
+    speechSynthesis.resume();
+    const u = new SpeechSynthesisUtterance("嗯");
+    u.lang = "zh-HK"; u.volume = 0.01; u.rate = 2;
+    speechSynthesis.speak(u);
+  } catch(e){}
+}
+function showNote(msg){
+  const n = $("note"); n.textContent = msg; n.hidden = false;
+}
+async function keepAwake(){
+  try { await navigator.wakeLock?.request("screen"); } catch(e){}
+}
+function goFullscreen(){
+  const el = document.documentElement;
+  try {
+    const p = (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el);
+    if (p && p.catch) p.catch(() => {});
+  } catch(e){}
+}
+function toggleFullscreen(){
+  if (document.fullscreenElement || document.webkitFullscreenElement){
+    try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch(e){}
+  } else goFullscreen();
+}
+
+/* ---------- Filming scenes: B = birth, E = ending ---------- */
+function popSound(freq){
+  if (!actx) return;
+  const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+  o.type = "sine";
+  o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(freq * 2.2, t + .09);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.35, t + .012); g.gain.exponentialRampToValueAtTime(.0001, t + .16);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t + .18);
+}
+function burstAt(e){
+  // The eye starts at scale 0, so take its size from the layout box, not the scaled rect
+  const r = e.getBoundingClientRect(), size = e.offsetWidth;
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const ring = document.createElement("div"); ring.className = "burst";
+  ring.style.cssText = `left:${cx}px;top:${cy}px;width:${size}px;height:${size}px`;
+  document.body.append(ring); setTimeout(() => ring.remove(), 850);
+  if (reduce) return;
+  for (let k = 0; k < 10; k++){
+    const a = k / 10 * Math.PI * 2 + Math.random() * .4, d = size * (.75 + Math.random() * .45);
+    const s = document.createElement("i"); s.className = "spark";
+    s.style.cssText = `left:${cx}px;top:${cy}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px`;
+    document.body.append(s); setTimeout(() => s.remove(), 800);
+  }
+}
+function popEye(i, freq){
+  const e = eyeEls[i];
+  e.classList.add("born", "pop"); popSound(freq); burstAt(e);
+  setTimeout(() => e.classList.remove("pop"), 1150);
+}
+function hideEyes(){
+  face.classList.remove("happy", "alert", "talking");
+  clearCaption(); medsEl.innerHTML = "";
+  eyesEl.style.transform = "";
+  eyeEls.forEach(e => e.classList.remove("born", "pop"));
+  face.classList.add("unborn");
+}
+// Runs [delayMs, fn] steps one after another
+function scene(steps){
+  let t = 0;
+  steps.forEach(([d, fn]) => { t += d; setTimeout(fn, t); });
+}
+function beginScene(){
+  if (state !== "idle") return false;
+  state = "scene"; controls.dataset.off = "1";
+  // Resume audio inside the key press so the pops and voice are allowed
+  try { if (actx && actx.state !== "running") actx.resume(); } catch(e){}
+  keepAwake(); goFullscreen();
+  hideEyes();
+  return true;
+}
+// Black screen, left eye pops in, a pause, right eye pops in, then it looks around and smiles
+function birth(){
+  if (!beginScene()) return;
+  scene([
+    [1500, () => popEye(0, 520)],
+    [1300, () => popEye(1, 660)],
+    [700,  blink],
+    [500,  () => { eyesEl.style.transform = "translate(-4vmin,0)"; }],
+    [700,  () => { eyesEl.style.transform = "translate(4vmin,0)"; }],
+    [700,  () => { eyesEl.style.transform = ""; face.classList.add("happy"); }],
+    [1400, () => { face.classList.remove("happy", "unborn"); state = "idle"; }],
+  ]);
+}
+// Eyes pop back in, then Ah Bo says the closing line
+function ending(){
+  if (!beginScene()) return;
+  scene([
+    [1000, () => popEye(0, 520)],
+    [350,  () => popEye(1, 660)],
+    [900,  () => { face.classList.remove("unborn"); speak(CLIPS.goodbye); }],
+  ]);
+}
+
+// Name page: black screen, left eye pops, right eye pops, then 「Hello，我係阿寶。」
+function intro(){
+  if (!beginScene()) return;
+  scene([
+    [500, () => popEye(0, 520)],
+    [900, () => popEye(1, 660)],
+    [700, blink],
+    [450, () => { face.classList.remove("unborn"); speak(CLIPS.name); }],
+  ]);
+}
+
+/* ---------- Demo pages: each left click plays the next step ---------- */
+const DEMOS = {
+  // 1: Ah Bo announces the message, then Ah Chun's recording plays
+  message:  [ done => {
+    face.classList.add("warm");
+    speak(CLIPS.demoMsgIntro, () => setTimeout(() => {
+      const card = medsEl.querySelector(".chip"); if (card) card.classList.add("playing");
+      speak(CLIPS.demoDaughter, () => { if (card) card.classList.remove("playing"); done(); });
+    }, 400));
+  } ],
+  // 2: after 「阿寶，我幾時食藥呀？」
+  medicine: [ done => speak(CLIPS.demoMedicine, done) ],
+  // 3: after 「阿寶，我今日有咩安排呀？」, then after 「咁我下晝好悶喎……」
+  schedule: [ done => speak(CLIPS.demoToday, done), done => speak(CLIPS.demoBored, done) ],
+  // 4: the fall runs by itself after one click
+  fall:     [ fallScene ],
+};
+let demoStep = 0;
+function demoClick(){
+  if (state !== "idle") return;
+  try { if (actx && actx.state !== "running") actx.resume(); } catch(e){}
+  keepAwake(); goFullscreen();
+  const steps = DEMOS[PAGE];
+  if (demoStep === 0){ face.classList.remove("warm", "alarm", "happy"); clearCaption(); medsEl.innerHTML = ""; }
+  const last = demoStep === steps.length - 1;
+  state = "demo";
+  steps[demoStep](() => {
+    if (last && PAGE !== "fall"){ face.classList.add("happy"); setTimeout(() => face.classList.remove("happy"), 1400); }
+    demoStep = last ? 0 : demoStep + 1;
+    state = "idle";
+  });
+}
+function tone(freq, at, len, vol = .25, type = "sine"){
+  if (!actx) return;
+  const t = actx.currentTime + at, o = actx.createOscillator(), g = actx.createGain();
+  o.type = type; o.frequency.setValueAtTime(freq, t);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + len);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t + len + .02);
+}
+function cameraFlash(){
+  const f = document.createElement("div"); f.className = "flash";
+  document.body.append(f); setTimeout(() => f.remove(), 550);
+  if (!actx) return;
+  // Shutter click: a short burst of noise
+  const b = actx.createBuffer(1, actx.sampleRate * .08, actx.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+  const s = actx.createBufferSource(), g = actx.createGain(); g.gain.value = .5;
+  s.buffer = b; s.connect(g).connect(actx.destination); s.start();
+}
+function countdown(n, then){
+  const c = document.createElement("div"); c.className = "chip count on";
+  medsEl.append(c);
+  const tick = k => {
+    if (k === 0){ c.remove(); then(); return; }
+    c.innerHTML = `<span class="icon">⏳</span><span class="num">${k}</span>`;
+    tone(1046, 0, .12, .2);
+    setTimeout(() => tick(k - 1), 1000);
+  };
+  tick(n);
+}
+// Sudden drop → photo check → "say I'm OK" countdown → ambulance + Ah Chun told
+function fallScene(done){
+  face.classList.add("alarm");
+  tone(880, 0, .18, .3, "square"); tone(660, .22, .18, .3, "square");
+  speak(CLIPS.demoFall1, () => setTimeout(() => {
+    cameraFlash();
+    speak(CLIPS.demoFall2, () => setTimeout(() => {
+      speak(CLIPS.demoFall3, () => countdown(3, () => {
+        speak(CLIPS.demoFall4, () => { face.classList.remove("alarm"); done(); });
+      }));
+    }, 300));
+  }, 450));
+}
+
+function start(c = MAIN){
+  if (DEMOS[PAGE]) { demoClick(); return; }
+  if (c === CLIPS.name) { intro(); return; }
+  if (state !== "idle") return;
+  state = "waiting";
+  controls.dataset.off = "1";
+  // speak() must run inside the tap itself: iPad Safari blocks speech started from a timer
+  speak(c);
+  keepAwake(); goFullscreen();
+}
+
+// Left click = medicine reminder (name page: says 阿寶), right click = schedule (appointment, lunch, social programme)
+$("go").addEventListener("click", e => { e.stopPropagation(); start(); });
+$("stage").addEventListener("click", () => start());
+document.addEventListener("contextmenu", e => { e.preventDefault(); if (!DEMOS[PAGE]) start(CLIPS.schedule); });
+document.addEventListener("keydown", e => {
+  // Name page: Space toggles full screen (browsers only allow it after a key press or click)
+  if (PAGE !== "face" && e.key === " ") { e.preventDefault(); toggleFullscreen(); }
+  else if (e.key === " " || e.key === "Enter") { e.preventDefault(); start(); }
+  else if (e.key === "s" || e.key === "S") start(CLIPS.schedule);
+  else if (e.key === "b" || e.key === "B") birth();
+  else if (e.key === "e" || e.key === "E") ending();
+});
+document.addEventListener("visibilitychange", () => { if (!document.hidden) keepAwake(); });
+// Name page: no on-screen button; try full screen straight away (most browsers wait for the first click or key)
+// It starts on a black screen, so the first click shows the eyes being born
+if (PAGE === "name"){ controls.dataset.off = "1"; hideEyes(); goFullscreen(); }
+// Demo pages: no button; open on the idle eyes
+if (DEMOS[PAGE]){ controls.dataset.off = "1"; goFullscreen(); }
+</script>

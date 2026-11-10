@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Ah Bo Face</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="face.css">
+</head>
+<body>
+<div class="stage" id="stage" aria-label="Ah Bo robot face">
+  <div class="face" id="face">
+    <div class="eyes" id="eyes">
+      <div class="eye"><div class="lid"></div></div>
+      <div class="eye"><div class="lid"></div></div>
+    </div>
+    <div class="mouth-box"><div class="mouth" id="mouth"></div><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div></div>
+    <div class="heard" id="heard" aria-live="polite"></div>
+    <div class="caption" id="caption" aria-live="polite"></div>
+    <div class="cards" id="cards"></div>
+  </div>
+</div>
+<aside class="side"><div class="steps" id="steps" aria-live="polite"></div></aside>
+<button class="okbtn" id="okbtn" type="button">我冇事</button>
+<div class="offline" id="offline" aria-hidden="true"></div>
+<script src="bridge.js"></script>
+<script src="face.js"></script>
+</body>
+</html>

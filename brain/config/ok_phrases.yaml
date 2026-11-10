@@ -1,0 +1,4 @@
+# config/ok_phrases.yaml   (normalised: punctuation/space removed, simplified→traditional)
+ok:   ["我冇事", "冇事", "無事", "我無事", "冇跌親", "我好好", "OK", "ok", "冇問題"]
+help: ["救命", "好痛", "起唔到身", "跌親", "痛", "幫我", "唔得", "頭暈", "叫白車"]
+rule: "help wins over ok in the same utterance; 冇事 inside 有冇事 does not count as ok"

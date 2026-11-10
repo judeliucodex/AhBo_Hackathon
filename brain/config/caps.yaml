@@ -1,0 +1,9 @@
+# config/caps.yaml   (per HKT day; exceeding disables the feature with a console warning)
+llm_usd: 3.0
+deep_tasks: 15
+deep_task_usd: 0.30
+deep_task_seconds: 90
+twilio_calls: 5          # safety calls exempt up to 3 per incident
+playwright_actions: 10
+session_minutes: 10
+sessions_per_day: 120

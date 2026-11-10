@@ -1,0 +1,8 @@
+# config/wake_match.yaml
+require_wai: true
+require_two_updates: true
+utterance_start_silence_ms: 300
+cooldown_after_reject_s: 5
+allow_missing_aa: true
+plain_abou_wakes: false
+stage3_timeout_s: 1.5

@@ -1,0 +1,7 @@
+# Playwright browser container: runs the Playwright server for the Action Runner (§8.3)
+# and the headless visual checks. No public port; reachable only on the compose network.
+FROM mcr.microsoft.com/playwright/python:v1.64.1-noble
+RUN pip install --no-cache-dir --break-system-packages playwright==1.64.1 pyyaml==6.0.3 pillow
+WORKDIR /repo
+# Playwright server for remote browser control (api connects with chromium.connect(ws://browser:3000/))
+CMD ["playwright", "run-server", "--port", "3000", "--host", "0.0.0.0"]

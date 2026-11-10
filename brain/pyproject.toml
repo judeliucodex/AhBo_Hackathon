@@ -1,0 +1,57 @@
+[project]
+name = "ahbo"
+version = "0.1.0"
+description = "Ah Bo (阿寶): Care Kernel harness for a Cantonese robot-pet companion"
+requires-python = ">=3.12,<3.13"
+# Exact pins, verified on PyPI on 10 Nov 2026 (docs/BUILD_LOG.md §4)
+dependencies = [
+  "fastapi==0.162.2",
+  "uvicorn[standard]==0.54.0",
+  "pydantic==2.14.3",
+  "pyyaml==6.0.3",
+  "httpx==0.28.1",
+  "itsdangerous==2.2.0",
+  "bcrypt==5.0.0",
+  "python-ulid==4.1.0",
+  "python-multipart==0.0.33",
+  "jsonschema==4.26.0",
+  "opencc-python-reimplemented==0.1.7",
+  "pillow==13.0.0",
+  "openai==3.48.0",
+  "anthropic==2.7.0",
+  "twilio==9.13.0",
+  "livekit-api==1.2.2",
+  "azure-cognitiveservices-speech==1.53.0",
+  "playwright==1.64.1",
+  "pycantonese==5.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0", "pytest-asyncio==1.4.1.post1", "hypothesis==6.170.15", "ruff==0.17.4"]
+voice = [
+  "livekit-agents==1.8.11",
+  "livekit-plugins-azure==1.8.11",
+  "livekit-plugins-openai==1.8.11",
+  "livekit-plugins-silero==1.8.11",
+  "livekit-plugins-elevenlabs==1.8.11",
+]
+
+[project.scripts]
+ahbo = "ahbo.ops.cli:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["ahbo*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+markers = ["slow: long-running", "browser: needs the browser container"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"

@@ -1,0 +1,326 @@
+[
+ {
+  "t_ms": 0,
+  "cmd": {
+   "type": "reset"
+  }
+ },
+ {
+  "t_ms": 2,
+  "cmd": {
+   "type": "mood",
+   "mood": "listening"
+  }
+ },
+ {
+  "t_ms": 2,
+  "cmd": {
+   "type": "heard",
+   "text": "阿"
+  }
+ },
+ {
+  "t_ms": 181,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，我"
+  }
+ },
+ {
+  "t_ms": 362,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，我今日有"
+  }
+ },
+ {
+  "t_ms": 542,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，我今日有咩安排"
+  }
+ },
+ {
+  "t_ms": 724,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，我今日有咩安排呀？",
+   "final": true
+  }
+ },
+ {
+  "t_ms": 1124,
+  "cmd": {
+   "type": "mood",
+   "mood": "thinking"
+  }
+ },
+ {
+  "t_ms": 1125,
+  "cmd": {
+   "type": "steps",
+   "group": {
+    "id": "s3a",
+    "steps": [
+     {
+      "id": "cal",
+      "label": "睇緊今日日程…",
+      "doneLabel": "今日有兩個約會",
+      "state": "active"
+     },
+     {
+      "id": "route",
+      "label": "查緊去聯合醫院嘅巴士路線…",
+      "doneLabel": "路線已查好",
+      "state": "pending"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "t_ms": 2025,
+  "cmd": {
+   "type": "step",
+   "group": "s3a",
+   "id": "cal",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 2026,
+  "cmd": {
+   "type": "step",
+   "group": "s3a",
+   "id": "route",
+   "state": "active"
+  }
+ },
+ {
+  "t_ms": 3326,
+  "cmd": {
+   "type": "step",
+   "group": "s3a",
+   "id": "route",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 3326,
+  "cmd": {
+   "type": "mood",
+   "mood": "idle"
+  }
+ },
+ {
+  "t_ms": 3326,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "e1",
+    "kind": "event",
+    "label": "10:30 覆診",
+    "small": "聯合醫院",
+    "when": "覆診"
+   }
+  }
+ },
+ {
+  "t_ms": 3334,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "e2",
+    "kind": "plan",
+    "label": "9:30 出門",
+    "small": "樓下巴士站",
+    "when": "九點半"
+   }
+  }
+ },
+ {
+  "t_ms": 3335,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "e3",
+    "kind": "event",
+    "icon": "🍵",
+    "label": "12:30 同阿珍飲茶",
+    "small": "觀塘",
+    "when": "飲茶"
+   }
+  }
+ },
+ {
+  "t_ms": 3336,
+  "cmd": {
+   "type": "say_start",
+   "id": "s3a",
+   "text": "十點半你要去聯合醫院覆診，我已經查好路線，九點半喺樓下搭巴士就得。十二點半同阿珍飲茶。",
+   "durationSec": 8.269230769230768
+  }
+ },
+ {
+  "t_ms": 11744,
+  "cmd": {
+   "type": "say_end",
+   "id": "s3a"
+  }
+ },
+ {
+  "t_ms": 12545,
+  "cmd": {
+   "type": "mood",
+   "mood": "listening"
+  }
+ },
+ {
+  "t_ms": 12545,
+  "cmd": {
+   "type": "heard",
+   "text": "咁"
+  }
+ },
+ {
+  "t_ms": 12726,
+  "cmd": {
+   "type": "heard",
+   "text": "咁我下晝"
+  }
+ },
+ {
+  "t_ms": 12906,
+  "cmd": {
+   "type": "heard",
+   "text": "咁我下晝好悶喎"
+  }
+ },
+ {
+  "t_ms": 13086,
+  "cmd": {
+   "type": "heard",
+   "text": "咁我下晝好悶喎……",
+   "final": true
+  }
+ },
+ {
+  "t_ms": 13487,
+  "cmd": {
+   "type": "steps_clear",
+   "group": "s3a"
+  }
+ },
+ {
+  "t_ms": 13487,
+  "cmd": {
+   "type": "card_clear"
+  }
+ },
+ {
+  "t_ms": 13487,
+  "cmd": {
+   "type": "mood",
+   "mood": "thinking"
+  }
+ },
+ {
+  "t_ms": 13488,
+  "cmd": {
+   "type": "steps",
+   "group": {
+    "id": "s3b",
+    "steps": [
+     {
+      "id": "search",
+      "label": "搜尋緊附近長者活動…",
+      "doneLabel": "搵到：三點粵曲班",
+      "state": "active"
+     },
+     {
+      "id": "check",
+      "label": "檢查緊時間同交通…",
+      "doneLabel": "下晝得閒，行路十分鐘",
+      "state": "pending"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "t_ms": 14888,
+  "cmd": {
+   "type": "step",
+   "group": "s3b",
+   "id": "search",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 14889,
+  "cmd": {
+   "type": "step",
+   "group": "s3b",
+   "id": "check",
+   "state": "active"
+  }
+ },
+ {
+  "t_ms": 15892,
+  "cmd": {
+   "type": "step",
+   "group": "s3b",
+   "id": "check",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 15892,
+  "cmd": {
+   "type": "mood",
+   "mood": "curious"
+  }
+ },
+ {
+  "t_ms": 15892,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "a1",
+    "kind": "activity",
+    "label": "3:00 粵曲班",
+    "small": "長者中心 · 可代報名",
+    "when": "粵曲班"
+   }
+  }
+ },
+ {
+  "t_ms": 15897,
+  "cmd": {
+   "type": "say_start",
+   "id": "s3b",
+   "text": "附近長者中心下晝三點有粵曲班，可以識多啲朋友。想唔想去？我幫你報名吖。",
+   "durationSec": 6.730769230769231
+  }
+ },
+ {
+  "t_ms": 22772,
+  "cmd": {
+   "type": "say_end",
+   "id": "s3b"
+  }
+ },
+ {
+  "t_ms": 22772,
+  "cmd": {
+   "type": "mood",
+   "mood": "idle"
+  }
+ },
+ {
+  "t_ms": 24273,
+  "cmd": {
+   "type": "steps_clear"
+  }
+ }
+]

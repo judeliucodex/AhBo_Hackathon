@@ -1,0 +1,60 @@
+# seed/demo.yaml — loaded by Reset demo; every person and place in it is fictional demo data (§26.6)
+resident:
+  name_zh: 王婆婆
+  name_en: Wong Po-po
+  age: 78
+  district: 觀塘
+  address: "九龍觀塘秀茂坪示範邨 12 樓 1203 室（示範地址）"
+  quiet_hours: { start: "22:30", end: "07:00" }
+  shareable: { name_zh: 王婆婆, name_en: Wong Po-po, age_group: "75-79", contact_phone_from: FAMILY_PHONE, district: 觀塘, language: 廣東話 }
+contacts:
+  - { id: c_chun, name: 阿珍, role: family, relation: 女, telegram_from_env: 阿珍, phone_env: FAMILY_PHONE, priority: 1, verified: true }
+  - { id: c_ecs,  name: 緊急中心（模擬）, role: emergency_centre_sim, phone_env: EMERGENCY_SIM_PHONE, priority: 0, verified: true }
+meds:                              # carer-entered; Po-po can't change by voice
+  catalogue:
+    - { id: bp,   yue: 血壓藥,   en: Amlodipine,   dose: "5 mg",   pill: ["--pill-b","--pill-a"] }
+    - { id: dm,   yue: 糖尿藥,   en: Metformin,    dose: "500 mg", pill: ["--pill-a","--pill-a"] }
+    - { id: chol, yue: 膽固醇藥, en: Atorvastatin, dose: "20 mg",  pill: ["--pill-a","--pill-c"] }
+    - { id: asp,  yue: 薄血丸,   en: Aspirin,      dose: "80 mg",  pill: ["--pill-c","--pill-a"] }
+  slots:
+    - { id: s_0800, time: "08:00", meds: [dm] }
+    - { id: s_1200, time: "12:00", meds: [bp, dm, chol, asp] }
+    - { id: s_2000, time: "20:00", meds: [dm] }
+  seeded_today: [{ slot: s_0800, state: taken_self_reported, at: "08:05" }]
+calendar:                          # times are "today" in the virtual clock
+  - { time: "09:30", title: 出門, place: 樓下巴士站, kind: plan, route: "樓下巴士站搭巴士去聯合醫院，大約二十五分鐘" }
+  - { time: "10:30", title: 覆診, place: 聯合醫院, place_full: 基督教聯合醫院, kind: medical }
+  - { time: "12:30", title: 同阿珍飲茶, place: 觀塘, kind: meal }
+activities_ref: seed/activities.yaml
+facts:
+  - { fact: "女兒叫阿珍，住喺將軍澳，星期日會嚟探", category: family, importance: 5 }
+  - { fact: "孫仔叫阿明，讀小學三年級", category: family, importance: 4 }
+  - { fact: "以前係小學中文老師，教咗三十年書", category: life, importance: 4 }
+  - { fact: "鍾意聽粵曲，最鍾意任劍輝", category: preference, importance: 4 }
+  - { fact: "鍾意飲茶，最愛蝦餃", category: preference, importance: 3 }
+  - { fact: "膝頭唔好，行得慢，唔好安排太遠嘅地方", category: routine, importance: 5 }
+life_stories:
+  - { title: 教書嘅日子, era: 1970s-2000s, text: "王婆婆喺觀塘一間小學教咗三十年中文，好多學生大個咗仲返嚟探佢。", ok_to_reminisce: true }
+  - { title: 阿明第一日返學, era: 2023, text: "阿明第一日返小學，喊到唔肯入課室，婆婆陪佢喺門口講故仔。", ok_to_reminisce: true }
+  - { title: 睇大戲, era: 1960s, text: "後生時同家姐喺利舞臺睇任白嘅《帝女花》，排咗成朝隊買飛。", ok_to_reminisce: true }
+sessions:                          # episodic: makes 「我琴日同你講咗咩？」 work
+  - { days_ago: 1, summary: ["佢話琴日膝頭有啲痛，所以冇落街。", "傾咗阿明下個月生日想送咩。", "佢話想學用電話同阿珍視像。"], mood: calm }
+  - { days_ago: 2, summary: ["佢講起以前教書嘅學生。", "聽咗一段《帝女花》，好開心。"], mood: happy }
+voice_messages:
+  - { id: vm_demo, from: 阿珍, received: "07:42", file: seed/voice/demo_daughter.m4a,
+      transcript: "媽，記得食飯呀！星期日我帶阿明嚟探你。" }   # generated with zh-HK-HiuGaaiNeural, or silent in fake mode
+scenario_anchors:                  # profile demo: console "Prepare Sx" sets the virtual clock here
+  S1: "09:00"
+  S2: "10:00"                      # next slot 12:00 → 「兩個鐘之後，十二點正」
+  S3: "08:30"                      # leave 09:30, follow-up 10:30, dim sum 12:30
+  S4: "15:00"
+fake_deep_results:
+  afternoon_activity:
+    status: done
+    spoken_summary: "附近長者中心下晝三點有粵曲班，可以識多啲朋友。想唔想去？我幫你報名吖。"
+    card: { title: 下晝活動, items: [ { time: "15:00", activity: 粵曲班, place: 秀茂坪長者中心（示範）, why: 佢鍾意粵曲，行路十分鐘 } ] }
+    sources: []
+    signup_methods: [ { method: web_form, url: "{PUBLIC_BASE_URL}/mock-centre/", notes: 示範報名表, confidence: 0.9 } ]
+    needs_confirmation: [ { action: signup, args: { activity_id: act_opera_1500 }, question: "想唔想我幫你報名？" } ]
+day_plan:
+  summary: "朝早九點半出門去聯合醫院覆診，十二點半同阿珍飲茶，下晝三點可以去長者中心粵曲班。"

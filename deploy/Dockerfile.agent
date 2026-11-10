@@ -1,0 +1,5 @@
+# agent image: the LiveKit Agents worker (Flash voice loop). Same code, plus the voice extras.
+FROM ahbo-api:latest
+COPY pyproject.toml /build/pyproject.toml
+RUN cd /build && uv pip install --system --no-cache ".[voice]" && uv pip uninstall --system ahbo
+CMD ["python", "-m", "ahbo.agent.worker", "start"]

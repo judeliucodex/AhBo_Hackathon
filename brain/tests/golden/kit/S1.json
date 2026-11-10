@@ -1,0 +1,178 @@
+[
+ {
+  "t_ms": 0,
+  "cmd": {
+   "type": "reset"
+  }
+ },
+ {
+  "t_ms": 1,
+  "cmd": {
+   "type": "mood",
+   "mood": "listening"
+  }
+ },
+ {
+  "t_ms": 1,
+  "cmd": {
+   "type": "heard",
+   "text": "阿"
+  }
+ },
+ {
+  "t_ms": 180,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，今"
+  }
+ },
+ {
+  "t_ms": 360,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，今日有冇"
+  }
+ },
+ {
+  "t_ms": 540,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，今日有冇人搵過"
+  }
+ },
+ {
+  "t_ms": 721,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，今日有冇人搵過我呀？"
+  }
+ },
+ {
+  "t_ms": 901,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，今日有冇人搵過我呀？",
+   "final": true
+  }
+ },
+ {
+  "t_ms": 1301,
+  "cmd": {
+   "type": "mood",
+   "mood": "thinking"
+  }
+ },
+ {
+  "t_ms": 1305,
+  "cmd": {
+   "type": "steps",
+   "group": {
+    "id": "s1",
+    "steps": [
+     {
+      "id": "msg",
+      "label": "檢查緊訊息…",
+      "doneLabel": "搵到阿珍嘅語音訊息",
+      "state": "active"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "t_ms": 2505,
+  "cmd": {
+   "type": "step",
+   "group": "s1",
+   "id": "msg",
+   "state": "done"
+  }
+ },
+ {
+  "t_ms": 2505,
+  "cmd": {
+   "type": "mood",
+   "mood": "warm"
+  }
+ },
+ {
+  "t_ms": 2506,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "vn1",
+    "kind": "voice_note",
+    "label": "阿珍嘅錄音",
+    "small": "今朝 7:42",
+    "when": "錄音"
+   }
+  }
+ },
+ {
+  "t_ms": 2508,
+  "cmd": {
+   "type": "say_start",
+   "id": "s1a",
+   "text": "有呀！阿珍今朝留咗段錄音俾你，我而家播俾你聽。",
+   "durationSec": 4.423076923076923
+  }
+ },
+ {
+  "t_ms": 7076,
+  "cmd": {
+   "type": "say_end",
+   "id": "s1a"
+  }
+ },
+ {
+  "t_ms": 7077,
+  "cmd": {
+   "type": "card_update",
+   "id": "vn1",
+   "patch": {
+    "playing": true
+   }
+  }
+ },
+ {
+  "t_ms": 7077,
+  "cmd": {
+   "type": "say_start",
+   "id": "s1b",
+   "text": "媽，記得食飯呀！星期日我帶阿明嚟探你。",
+   "durationSec": 3.6538461538461537,
+   "from": "family",
+   "fromName": "阿珍"
+  }
+ },
+ {
+  "t_ms": 10881,
+  "cmd": {
+   "type": "say_end",
+   "id": "s1b"
+  }
+ },
+ {
+  "t_ms": 10881,
+  "cmd": {
+   "type": "card_update",
+   "id": "vn1",
+   "patch": {
+    "playing": false
+   }
+  }
+ },
+ {
+  "t_ms": 12381,
+  "cmd": {
+   "type": "mood",
+   "mood": "idle"
+  }
+ },
+ {
+  "t_ms": 12382,
+  "cmd": {
+   "type": "steps_clear"
+  }
+ }
+]
