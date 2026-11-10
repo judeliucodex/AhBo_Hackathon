@@ -1,5 +1,7 @@
 """Quick read-only tools (§5.5, §26.6): time, weather, calendar, day plan, route, activities, voice notes.
-Each ≤ 300 ms, read-only (except play_voice_message, which asks the Kernel to play)."""
+Each ≤ 300 ms, read-only (except play_voice_message, which asks the Kernel to play, and add_event, which writes one
+calendar row after she agreed). get_weather reads the HK Observatory open data (cached 10 min; a deterministic fake
+when models are faked or the network fails)."""
 from __future__ import annotations
 
 from datetime import datetime, timedelta
@@ -13,7 +15,8 @@ from ahbo.core.config import load_seed
 from ahbo.core.events import Event
 from ahbo.core.jsonutil import loads
 
-from . import ToolCtx, tool
+from . import REASSURE_OK, ToolCtx, tool
+from . import weather as _weather
 
 WEEKDAYS = "一二三四五六日"
 DAY_KEYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
@@ -25,12 +28,19 @@ def _hm(dt_iso: str) -> tuple[int, int]:
     return dt.hour, dt.minute
 
 
-@tool("get_time", "現在的日期、星期同時間（香港時間）。")
+@tool("get_time", "現在的日期、星期同時間（香港時間）。", modes=REASSURE_OK)
 async def get_time(ctx: ToolCtx, _args) -> dict[str, Any]:
     now = ctx.clock.now()
     return {"ok": True, "date": now.date().isoformat(), "weekday_words": "星期" + WEEKDAYS[now.weekday()],
             "time": now.strftime("%H:%M"), "time_words": nw.time_words(now.hour, now.minute, period=True),
             "period": nw.period_words(now.hour)}
+
+
+# ---------------------------------------------------------------- weather (HKO open data, §24.8.5)
+@tool("get_weather", "而家嘅天氣同今日天氣預報（香港天文台）。")
+async def get_weather(ctx: ToolCtx, _args) -> dict[str, Any]:
+    w = await _weather.current(ctx.settings)
+    return {"ok": True, **w, "_step": {"outcome": "ok", "vars": {"weather_short": w["weather_short"]}}}
 
 
 # ---------------------------------------------------------------- calendar
@@ -70,6 +80,48 @@ async def list_events(ctx: ToolCtx, args: ListEventsArgs) -> dict[str, Any]:
     return {"ok": True, "date": day, "events": out, "count": n, "count_words": nw.int_words(n, counting=True),
             "_cards": [event_card(e) for e in evs],
             "_step": {"outcome": "some" if n else "none", "vars": {"count_words": nw.int_words(n, counting=True)}}}
+
+
+class AddEventArgs(BaseModel):
+    model_config = {"extra": "ignore"}
+    datetime: str
+    title: str
+    place: str | None = None
+    status: Literal["tentative", "confirmed"] = "confirmed"
+
+
+@tool("add_event", "幫佢記低一個約會落日曆（佢要求或者答應咗先好記）。datetime 用 ISO 格式（香港時間）。", AddEventArgs)
+async def add_event(ctx: ToolCtx, args: AddEventArgs) -> dict[str, Any]:
+    try:
+        dt = datetime.fromisoformat(args.datetime.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return {"ok": False, "reason": "bad_datetime", "_step": {"outcome": "failed", "vars": {}}}
+    dt = dt.replace(tzinfo=HKT) if dt.tzinfo is None else dt.astimezone(HKT)
+    title = args.title.strip()[:40]
+    if not title:
+        return {"ok": False, "reason": "bad_args", "_step": {"outcome": "failed", "vars": {}}}
+    if dt < ctx.clock.now() - timedelta(hours=1):
+        return {"ok": False, "reason": "in_the_past", "_step": {"outcome": "failed", "vars": {}}}
+    from ahbo.core.ids import new_id
+    eid = new_id("cal")
+    place = (args.place or "").strip()[:40] or None
+    ctx.db.execute("INSERT INTO calendar_events(id, datetime, title, place, kind, status, source) VALUES (?,?,?,?,?,?,?)",
+                   (eid, dt.isoformat(), title, place, "other", args.status, "agent"))
+    row = {"id": eid, "datetime": dt.isoformat(), "title": title, "place": place, "kind": "other"}
+    card = event_card(row)
+    if dt.date() != ctx.clock.today():
+        card["small"] = " · ".join(x for x in (_day_words(dt, ctx.clock.now()), place) if x)
+    return {"ok": True, "id": eid, "date": dt.date().isoformat(), "time_words": nw.time_words(dt.hour, dt.minute, period=True),
+            "_cards": [card], "_step": {"outcome": "ok", "vars": {}}}
+
+
+def _day_words(dt: datetime, now: datetime) -> str:
+    days = (dt.date() - now.date()).days
+    if days == 1:
+        return "聽日"
+    if days == 2:
+        return "後日"
+    return f"{nw.int_words(dt.month)}月{nw.int_words(dt.day)}號"
 
 
 @tool("get_day_plan", "攞今日朝早七點準備好嘅計劃。")

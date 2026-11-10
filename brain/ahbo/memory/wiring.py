@@ -113,7 +113,8 @@ class MemoryService:
         if intent != "other" and n >= repetition.THRESHOLD:
             card = repetition.answer_card(self.db, self.clock, intent)
             if card:
-                await self.kernel.emit(ui({"type": "card", "card": _clean(card)}, P2))
+                await self._emit_traced("memory.repetition", {"intent": intent, "count": n},
+                                        [ui({"type": "card", "card": _clean(card)}, P2)])
         return {"intent": intent, "count": n, "card": card}
 
     async def on_tick(self) -> None:
@@ -144,7 +145,16 @@ class MemoryService:
             elif (card.get("label"), card.get("small")) != (shown.get("label"), shown.get("small")):
                 cmds.append(ui({"type": "card", "card": _clean(card)}, P2))
         if cmds:
-            await self.kernel.emit(*cmds)
+            await self._emit_traced("memory.repetition_refresh", {"cards": len(cmds)}, cmds)
+
+    async def _emit_traced(self, type_: str, payload: dict[str, Any], cmds: list) -> None:
+        """INV-6: record the cause as an event, then link every command to it."""
+        from ahbo.core.events import Event
+        ev = Event(type=type_, source="system", payload=payload)
+        self.kernel.note(ev)
+        for c in cmds:
+            c.event_id, c.correlation_id = ev.id, ev.correlation_id
+        await self.kernel.emit(*cmds)
 
 
 def install(svc: Any) -> MemoryService:

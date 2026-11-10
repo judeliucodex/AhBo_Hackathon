@@ -2,6 +2,8 @@
 emergency numbers in any formatting and unverified contacts, whoever emits the phone.call command."""
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from ahbo.agent.tools import TOOLS, schemas
@@ -16,7 +18,8 @@ def _twilio_rows(s):
 
 async def test_no_tool_can_place_a_call(system):
     for name in TOOLS:
-        assert not any(w in name for w in ("call", "phone", "dial")) or name in ("confirm_action",), name
+        # whole name parts only: `recall` / `recall_life_story` are memory tools, not calls
+        assert not re.search(r"(^|_)(call|phone|dial)($|_)", name) or name in ("confirm_action",), name
     for mode in ("companion", "reminder", "reassure", "kernel_listen", "paused"):
         for sch in schemas(mode):
             props = sch["function"]["parameters"].get("properties", {})

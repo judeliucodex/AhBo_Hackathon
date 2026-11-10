@@ -32,20 +32,32 @@ class TurnAgent:
         except Exception:
             return "你係「阿寶」，一隻陪住王婆婆嘅機械寵物。只可以講廣東話。"
 
+    def _silent(self) -> bool:
+        s = self.bridge.kernel.state.session
+        return s is not None and s.mode in ("kernel_listen", "paused")
+
     async def run_turn(self, session_id: str, turn_id: str, text: str) -> None:
         hist = self.history.setdefault(session_id, [])
         msgs: list[dict[str, Any]] = [{"role": "system", "content": self._system(session_id)}] + hist + \
             [{"role": "user", "content": text}]
         start = len(msgs) - 1
-        mode = self.bridge.kernel.state.session.mode if self.bridge.kernel.state.session else "companion"
         planned, replied = False, False
         try:
             for _ in range(MAX_ROUNDS):
-                resp = await self.llm.chat(msgs, schemas(mode), purpose="voice_turn", correlation_id=session_id)
-                spoken = spoken_filter(resp.text).text if resp.text else ""
+                s = self.bridge.kernel.state.session
+                resp = await self.llm.chat(msgs, schemas(s.mode if s else "companion"), purpose="voice_turn",
+                                           correlation_id=session_id)
+                spoken = ""
+                if resp.text:
+                    fr = spoken_filter(resp.text)
+                    spoken = fr.text
+                    for q in fr.quality:
+                        await self.bridge.quality(q, session_id, turn_id=turn_id, text=resp.text[:300])
                 if resp.tool_calls and not planned and not spoken:
                     await self.bridge.steps_plan(session_id, turn_id, resp.plan or [tc.name for tc in resp.tool_calls])
                     planned = True
+                if spoken and self._silent():
+                    break                     # the Kernel took the floor (kernel_listen/paused): never talk over it
                 if spoken:
                     say_id = await self.bridge.reply_start(session_id, turn_id, spoken)
                     replied = True
@@ -69,7 +81,7 @@ class TurnAgent:
                     msgs.append({"role": "tool", "tool_call_id": tc.id, "content": json.dumps(res, ensure_ascii=False)})
         except Exception:
             log.exception("turn failed")
-            if not replied:
+            if not replied and not self._silent():
                 say_id = await self.bridge.reply_start(session_id, turn_id, "阿寶而家諗唔到嘢，等陣再試吓好嗎？")
                 replied = True
                 if say_id:

@@ -1,16 +1,16 @@
 """Medicine tools (§4.3.2, INV-4). Facts come only from the Kernel's dose state (`med_schedule`,
-`dose_events`), never from the model. get_med_status is read-only. confirm_taken / snooze_dose are added by
-the Kernel's dose flow (they go through Kernel.request so the Kernel validates them)."""
+`dose_events`), never from the model. get_med_status is read-only. confirm_taken / snooze_dose only *ask*: they go
+through Kernel.request (`dose.confirm_request` / `dose.snooze_request`) and the dose reducer decides (INV-1)."""
 from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ahbo.core import numwords as nw
 from ahbo.core.jsonutil import loads
 
-from . import ToolCtx, tool
+from . import UNAVAILABLE, ToolCtx, kernel_request, tool
 
 TAKEN = "taken_self_reported"
 
@@ -72,3 +72,30 @@ async def get_med_status(ctx: ToolCtx, args: MedStatusArgs) -> dict[str, Any]:
     return {"ok": True, "next": nxt_out, "today": today, "taken_today": taken, "_cards": cards,
             "_step": {"outcome": "next", "vars": {"next_time_words": tw,
                                                   "count_words": nw.int_words(count, counting=True)}}}
+
+
+# ---------------------------------------------------------------- Kernel-validated writes (dose flow, §4.3.2)
+class ConfirmArgs(BaseModel):
+    model_config = {"extra": "ignore"}
+    slot_id: str | None = None
+    utterance: str = ""
+
+
+@tool("confirm_taken", "佢話已經食咗藥嗰陣用（由系統核實；冇到期嘅藥會答 no_dose_pending，唔好講已經記低）。",
+      ConfirmArgs)
+async def confirm_taken(ctx: ToolCtx, args: ConfirmArgs) -> dict[str, Any]:
+    src = ctx.extra.get("source", "voice")
+    res = await kernel_request(ctx, "dose.confirm_request", slot_id=args.slot_id, utterance=args.utterance[:200],
+                               source=src if src in ("voice", "touch", "operator") else "voice")
+    return res or dict(UNAVAILABLE)
+
+
+class SnoozeArgs(BaseModel):
+    model_config = {"extra": "ignore"}
+    minutes: int = Field(10, ge=1, le=15)
+
+
+@tool("snooze_dose", "佢想遲啲先食藥：延遲提醒（最多十五分鐘，每次藥最多兩次）。", SnoozeArgs)
+async def snooze_dose(ctx: ToolCtx, args: SnoozeArgs) -> dict[str, Any]:
+    res = await kernel_request(ctx, "dose.snooze_request", minutes=args.minutes)
+    return res or dict(UNAVAILABLE)

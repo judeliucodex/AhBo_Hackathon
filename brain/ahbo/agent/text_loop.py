@@ -3,13 +3,18 @@ run through the same bridge, tools, filter, modes and steps as the LiveKit worke
 from __future__ import annotations
 
 import asyncio
+import logging
 from typing import Any
 
 from ahbo.core.events import Command, Event
 from ahbo.core.ids import new_id
 
+from . import prompts
 from .bridge import AgentBridge
 from .runner import TurnAgent
+
+log = logging.getLogger("ahbo.agent.text_loop")
+SILENT_MODES = ("kernel_listen", "paused")
 
 
 class TextLoop:
@@ -18,6 +23,9 @@ class TextLoop:
         self.task: asyncio.Task | None = None
         self.kernel.on("session.close", self._on_close)
         self.kernel.on("agent.inject", self._on_inject)
+        self.kernel.on("agent.pause", self._on_pause)
+        self.kernel.on("agent.resume", self._on_resume)
+        self.paused = False
 
     async def utterance(self, text: str, *, stt_confidence: float = 1.0) -> dict[str, Any]:
         st = self.kernel.state
@@ -43,12 +51,41 @@ class TextLoop:
         if self.task and not self.task.done():
             self.task.cancel()
 
+    def _on_pause(self, c: Command) -> None:
+        """agent.pause (the Kernel plays fixed audio / the operator muted): stop the current turn now (§5.1)."""
+        self.paused = True
+        if self.task and not self.task.done():
+            self.task.cancel()
+
+    def _on_resume(self, c: Command) -> None:
+        """agent.resume {mode}: the Kernel has already set the session mode; new turns may run again."""
+        self.paused = False
+
     def _on_inject(self, c: Command) -> None:
-        """agent.inject → speak a system line as a turn (§5.3); the arbiter decides when this is sent."""
+        """agent.inject → speak a system line as its own turn (§5.3); the arbiter decides when this is sent.
+        The line is `[阿寶系統｜<TYPE>｜唔係王婆婆講嘅] <content>。<instruction>。` (prompts.system_line). It waits for a
+        running turn to finish (never talks over it) and is dropped while the agent must stay silent."""
         st = self.kernel.state
-        if st.session is None:
+        if st.session is None or st.session.mode in SILENT_MODES:
             return
         p = c.payload
-        line = f"[阿寶系統｜{p.get('kind', '提醒')}｜唔係王婆婆講嘅] {p.get('content', '')}。{p.get('instruction', '')}"
+        sid = st.session.id
+        if p.get("session_id") not in (None, sid):
+            return
+        line = prompts.system_line(p.get("kind", "提醒"), p.get("content", ""), p.get("instruction", ""))
         turn_id = new_id("turn")
-        self.task = asyncio.create_task(self.agent.run_turn(st.session.id, turn_id, line))
+        prev = self.task
+
+        async def run() -> None:
+            if prev is not None and not prev.done():
+                try:
+                    await asyncio.wait_for(asyncio.shield(prev), 60)
+                except (asyncio.TimeoutError, asyncio.CancelledError, Exception):
+                    pass
+            s = self.kernel.state.session
+            if s is None or s.id != sid or s.mode in SILENT_MODES:
+                return
+            # the turn reducer adopts a turn the agent starts itself (its first steps_plan/tool_call/reply_start)
+            await self.agent.run_turn(sid, turn_id, line)
+
+        self.task = asyncio.create_task(run())

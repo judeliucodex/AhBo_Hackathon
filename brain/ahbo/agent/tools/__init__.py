@@ -24,6 +24,9 @@ if TYPE_CHECKING:
 log = logging.getLogger("ahbo.tools")
 
 ALL_MODES = ("companion", "reminder")
+# Mode filter (CONTRACTS §6): kernel_listen and paused allow nothing; reassure allows get_time and
+# get_incident_status only. A tool lists the modes it may run in.
+REASSURE_OK = ALL_MODES + ("reassure",)
 PRIVATE_KEYS = ("_cards", "_step", "_tone")
 
 
@@ -61,8 +64,14 @@ class ToolCtx:
 
     @property
     def mode(self) -> str:
-        s = self.kernel.state.session
-        return s.mode if s else "companion"
+        st = self.kernel.state
+        if st.session is not None:
+            return st.session.mode
+        if st.incident_active:      # no session during an incident: silent before escalation, calm after it
+            inc = st.incident
+            state = inc.get("state") if isinstance(inc, dict) else getattr(inc, "state", None)
+            return "reassure" if state in ("ESCALATING", "REASSURING") else "kernel_listen"
+        return "companion"
 
 
 ToolFn = Callable[[ToolCtx, Any], Awaitable[dict[str, Any]]]
@@ -137,6 +146,19 @@ async def run_tool(ctx: ToolCtx, name: str, raw_args: dict[str, Any] | None) -> 
     if not isinstance(res, dict) or "ok" not in res:
         return {"ok": False, "reason": "tool_error"}
     return res
+
+
+UNAVAILABLE: dict[str, Any] = {"ok": False, "reason": "unavailable"}
+
+
+async def kernel_request(ctx: ToolCtx, type_: str, **payload: Any) -> dict[str, Any] | None:
+    """Ask the Kernel (a reducer answers with ctx.reply, AGENT_BRIEF request table). Returns None when no reducer
+    answered (that flow is not installed); callers then return UNAVAILABLE."""
+    from ahbo.core.events import Event
+    res = await ctx.kernel.request(Event(type=type_, source="agent", correlation_id=ctx.session_id,
+                                         payload={"session_id": ctx.session_id, "turn_id": ctx.turn_id,
+                                                  "call_id": ctx.call_id, **payload}))
+    return dict(res) if isinstance(res, dict) else None
 
 
 def public(result: dict[str, Any]) -> dict[str, Any]:

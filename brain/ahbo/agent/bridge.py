@@ -11,6 +11,8 @@ from ahbo.kernel.core import Kernel
 
 from .tools import ToolCtx, public, run_tool
 
+STT_LOW = 0.6     # below this an utterance is flagged `quality.stt_low_confidence` (the transcript is not logged)
+
 
 class AgentBridge:
     def __init__(self, kernel: Kernel):
@@ -62,9 +64,11 @@ class AgentBridge:
                                (new_id("t"), session_id, self.kernel.clock.iso(), "user", text, stt_confidence))
         await self.kernel.process(self._ev("user.utterance", session_id, turn_id=turn_id, text=text,
                                            stt_confidence=stt_confidence, final=final))
+        if stt_confidence is not None and stt_confidence < STT_LOW:
+            await self.quality("stt_low_confidence", session_id, turn_id=turn_id, stt_confidence=stt_confidence)
         st = self.kernel.state
         mode = st.session.mode if st.session else "companion"
-        consumed = st.session is None or mode in ("kernel_listen", "paused") or st.incident_active
+        consumed = st.session is None or mode in ("kernel_listen", "paused") or (st.incident_active and mode != "reassure")
         return {"ok": True, "consumed": consumed, "mode": mode, "text": text}
 
     async def steps_plan(self, session_id: str, turn_id: str, tools: list[Any]) -> dict[str, Any]:
@@ -81,7 +85,14 @@ class AgentBridge:
         await self.kernel.process(self._ev("agent.tool_result", session_id, turn_id=turn_id, call_id=call_id, name=name,
                                            ok=bool(res.get("ok")), result=public(res), cards=res.get("_cards") or [],
                                            step=res.get("_step") or {}, tone=res.get("_tone")))
+        if res.get("reason") == "tool_error":
+            await self.quality("tool_error", session_id, name=name, call_id=call_id, detail=res.get("_detail"))
         return public(res)
+
+    async def quality(self, kind: str, session_id: str | None, **payload: Any) -> None:
+        """Record a `quality.*` Kernel event (CONTRACTS §4.1): mandarin_drift, too_long, digits_spoken, tool_error,
+        stt_low_confidence. Traced like any other event; never changes the face."""
+        await self.kernel.process(self._ev(f"quality.{kind}", session_id, **payload))
 
     async def reply_start(self, session_id: str, turn_id: str, text: str, tone: str | None = None) -> str | None:
         self.kernel.db.execute("INSERT INTO turns(id, session_id, ts, role, text) VALUES (?,?,?,?,?)",
