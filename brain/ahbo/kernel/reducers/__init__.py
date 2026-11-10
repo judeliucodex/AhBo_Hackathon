@@ -1,5 +1,6 @@
 """Reducers, one module per flow (§4.3). `register_all` wires them into a Kernel in a fixed order:
-safety first (fall, concern), then care (dose, checkin), then the conversational and UI flows.
+safety first (fall, concern), then care (dose, checkin), then the conversational and UI flows; the arbiter runs
+after session/turn so it sees the session and turn state the event produced; `misc` (console/device bookkeeping) last.
 
 Flow modules that are not built yet are skipped (ImportError), so the Kernel always starts.
 """
@@ -10,7 +11,7 @@ import logging
 
 log = logging.getLogger("ahbo.kernel")
 
-ORDER = ("fall", "concern", "dose", "checkin", "action", "arbiter", "session", "turn", "voice", "misc")
+ORDER = ("fall", "concern", "dose", "checkin", "action", "session", "turn", "voice", "arbiter", "misc")
 
 
 def register_all(kernel) -> list[str]:

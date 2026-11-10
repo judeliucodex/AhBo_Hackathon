@@ -82,7 +82,8 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
 
     if t == "user.utterance" and p.get("final", True):
         sess = state.session
-        if sess is None or sess.mode in ("kernel_listen", "paused") or state.incident_active:
+        if sess is None or sess.mode in ("kernel_listen", "paused") or \
+                (state.incident_active and sess.mode != "reassure"):
             return None
         out: list[Command] = []
         # Barge-in: the previous reply is cut (§24.6)
@@ -107,6 +108,8 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         out.append(_mood(state, ctx, thinking=True))
         return out
 
+    if _adopt(state, t, p):          # a turn the agent started itself (an arbiter inject): show it like any turn
+        turn = state.turn
     if turn is None or p.get("turn_id") not in (None, turn.turn_id):
         if t == "timer.fired":
             return _timer(state, p, ctx)
@@ -221,6 +224,18 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
     if t == "timer.fired":
         return _timer(state, p, ctx)
     return None
+
+
+def _adopt(state: KernelState, t: str, p: dict[str, Any]) -> bool:
+    sess, turn = state.session, state.turn
+    if t not in ("agent.steps_plan", "agent.tool_call", "agent.reply_start") or not p.get("turn_id") or sess is None:
+        return False
+    if sess.mode in ("kernel_listen", "paused") or (state.incident_active and sess.mode != "reassure"):
+        return False
+    if turn is not None and (turn.turn_id == p["turn_id"] or not turn.done):
+        return False
+    state.turn = TurnState(turn_id=p["turn_id"], session_id=sess.id, text="")
+    return True
 
 
 def _timer(state: KernelState, p: dict[str, Any], ctx: Any) -> list[Command] | None:

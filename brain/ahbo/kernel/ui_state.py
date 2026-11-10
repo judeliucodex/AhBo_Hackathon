@@ -141,7 +141,9 @@ class UIState:
 def turn_mood(state: Any, *, tone: str | None, thinking: bool, listening: bool, quiet: bool) -> str:
     """§23.3 priority table for the conversational part (incident moods are set by the fall reducer)."""
     if state.incident_active:
-        return "alarm"
+        inc = state.incident
+        st = inc.get("state") if isinstance(inc, dict) else getattr(inc, "state", None)
+        return "warm" if st in ("REASSURING", "ACKNOWLEDGED", "RESOLVED_OK") else "alarm"
     if state.family_active or tone == "family":
         return "warm"
     if thinking:

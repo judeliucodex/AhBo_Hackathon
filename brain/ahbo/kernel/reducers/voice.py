@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..state import KernelState
-
 from ahbo.core.events import P2, Command, Event, cmd, ui
+
+from ..state import KernelState
 
 
 def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:

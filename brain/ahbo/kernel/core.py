@@ -160,6 +160,14 @@ class Kernel:
         self._persist()
         return out
 
+    def note(self, ev: Event) -> None:
+        """Record an informational event (e.g. `arbiter.decision`) without running reducers (INV-6). Call it from
+        inside event processing (a reducer) so it is ordered with the event that caused it."""
+        if ev.correlation_id is None:
+            ev.correlation_id = ev.id
+        self._record_event(ev)
+        self._notify("kernel_event", ev.model_dump())
+
     async def request(self, ev: Event) -> dict[str, Any] | None:
         """Process an event and return the result a reducer gave with ctx.reply(ev, …) (tools use this)."""
         async with self._lock:
