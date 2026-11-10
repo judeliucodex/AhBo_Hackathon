@@ -51,3 +51,10 @@ Nothing on the host's security configuration (sshd, ufw, fail2ban, users) is tou
 ## 5. Open flags
 
 - (none yet)
+
+## 6. Build organisation (owner decision, 10 Nov)
+
+Because of credit limits, the remaining component work is split. Claude Code builds the safety-critical and tightly coupled
+components (Kernel flows, Agent + models + deep, Links (Telegram/Twilio/INV-9), Browser iPad). GLM 5.3 Flash in Zcode builds
+three self-contained ones from hand-off prompts in `docs/handoff/glm/`: Ops/speech/trace, Actions + mock centre, Operator
+console. Every GLM deliverable is reviewed, tested and committed by Claude before it counts toward a gate.
