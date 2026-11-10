@@ -1,0 +1,92 @@
+# Ah Bo stack (§26.1). Project `ahbo`. Only Caddy is public (80/443); every other port binds to 127.0.0.1
+# or is not published at all (§24.13 Docker rule). The repo is bind-mounted at /repo (BUILD_LOG D-2).
+name: ahbo
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  api:
+    image: ahbo-api:latest
+    build:
+      context: ../brain
+      dockerfile: ../deploy/Dockerfile.api
+    command: ["uvicorn", "ahbo.api.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000",
+              "--no-access-log", "--ws-ping-interval", "20", "--timeout-graceful-shutdown", "5"]
+    env_file: ../.env
+    environment:
+      AHBO_REPO: /repo
+      AHBO_DATA_DIR: /repo/data
+      AHBO_API_INTERNAL_URL: http://api:8000
+      AHBO_BROWSER_WS: ws://browser:3000/
+    volumes:
+      - ..:/repo
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+    stop_grace_period: 10s
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging: *logging
+
+  # LiveKit Agents worker (Flash voice loop). Only with real voice: `docker compose --profile voice up -d`.
+  agent:
+    image: ahbo-agent:latest
+    build:
+      context: ../brain
+      dockerfile: ../deploy/Dockerfile.agent
+    profiles: ["voice"]
+    env_file: ../.env
+    environment:
+      AHBO_REPO: /repo
+      AHBO_DATA_DIR: /repo/data
+      AHBO_API_INTERNAL_URL: http://api:8000
+    volumes:
+      - ..:/repo
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *logging
+
+  # Playwright server for the Action Runner and headless checks. No published ports.
+  browser:
+    image: ahbo-browser:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.browser
+    volumes:
+      - ..:/repo
+    ipc: host
+    init: true
+    restart: unless-stopped
+    logging: *logging
+
+  caddy:
+    image: caddy:2.11.9
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:-srv2135273.hstgr.cloud}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  caddy_data:
+  caddy_config:

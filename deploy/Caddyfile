@@ -1,0 +1,41 @@
+# Caddy: the only public entry point (§24.13, §26.4). Automatic Let's Encrypt TLS for PUBLIC_HOST.
+# It is a pure TLS proxy (BUILD_LOG D-3): all auth rules live in `api`. It NEVER proxies /internal/*.
+{
+	log default {
+		output stdout
+		format json
+		level WARN
+	}
+}
+
+{$PUBLIC_HOST} {
+	@internal path /internal /internal/*
+	respond @internal 404
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "same-origin"
+		Permissions-Policy "geolocation=(), payment=(), usb=()"
+		-Server
+	}
+
+	request_body {
+		max_size 20MB
+	}
+
+	# WebSocket upgrades (/ws/device) are proxied automatically; flush immediately for SSE (/operator/stream).
+	reverse_proxy api:8000 {
+		flush_interval -1
+		stream_close_delay 5s
+	}
+
+	log {
+		output file /data/logs/access.log {
+			roll_size 10MiB
+			roll_keep 7
+			roll_keep_for 168h
+		}
+		format json
+	}
+}

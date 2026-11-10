@@ -8,5 +8,7 @@ COPY pyproject.toml /build/pyproject.toml
 RUN mkdir -p /build/ahbo && touch /build/ahbo/__init__.py \
     && cd /build && uv pip install --system --no-cache ".[dev]" && uv pip uninstall --system ahbo
 ENV PYTHONPATH=/repo/brain
+# `ahbo` CLI entry point (the package itself is bind-mounted, not installed)
+RUN printf '#!/bin/sh\nexec python -m ahbo.ops.cli "$@"\n' > /usr/local/bin/ahbo && chmod 755 /usr/local/bin/ahbo
 WORKDIR /repo/brain
 CMD ["uvicorn", "ahbo.api.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
