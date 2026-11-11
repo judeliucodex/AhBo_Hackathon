@@ -272,11 +272,23 @@ def build_components(settings: Any, vad: Any) -> dict[str, Any]:
     cfg = model_cfg(None, "flash", "voice_turn")
     opper = cfg.get("provider") == "opper"
     from ahbo.models.opper import OPPER_URL
+    import httpx
+    from livekit.agents import llm
+    # 12 Nov live test: the plugin's default read timeout (5 s) cut off Opper mid-turn → silence. Give each attempt
+    # room, and let FallbackAdapter apply the PRD's rule instead: first token > 5 s → retry on Haiku (§20.1, §24.4).
+    timeout = httpx.Timeout(connect=10.0, read=float(cfg.get("read_timeout_s", 20)), write=10.0, pool=10.0)
     flash = openai.LLM(model=cfg.get("model", "deepseek-flash"),
                        api_key=settings.opper_api_key if opper else settings.deepseek_api_key,
-                       base_url=OPPER_URL if opper else settings.deepseek_base_url,
+                       base_url=OPPER_URL if opper else settings.deepseek_base_url, timeout=timeout,
                        **({"extra_body": thinking_fields("off")["extra_body"]} if cfg.get("send_thinking", True) else {}))
-    return {"stt": build_stt(settings, sp.stt), "llm": flash, "tts": build_tts(settings, sp.tts), "vad": vad}
+    llms = [flash]
+    fb = cfg.get("fallback") or {}
+    if fb.get("provider") == "opper" and settings.opper_api_key:
+        llms.append(openai.LLM(model=fb.get("model", "claude-haiku-5-5"), api_key=settings.opper_api_key,
+                               base_url=OPPER_URL, timeout=timeout))
+    brain: Any = flash if len(llms) == 1 else llm.FallbackAdapter(
+        llms, attempt_timeout=float(cfg.get("first_token_timeout_s", 5)), max_retry_per_llm=1, retry_interval=0.2)
+    return {"stt": build_stt(settings, sp.stt), "llm": brain, "tts": build_tts(settings, sp.tts), "vad": vad}
 
 
 def make_agent_class():
@@ -324,22 +336,31 @@ def make_agent_class():
             r = self.run
             filt = ReplyFilter()
             started = False
-            async for chunk in Agent.default.llm_node(self, chat_ctx, tools, model_settings):
-                text = chunk if isinstance(chunk, str) else (getattr(getattr(chunk, "delta", None), "content", None)
-                                                            or "")
-                if not isinstance(chunk, str) and getattr(getattr(chunk, "delta", None), "tool_calls", None):
-                    yield llm.ChatChunk(id=chunk.id, delta=llm.ChoiceDelta(role="assistant",
-                                                                           tool_calls=chunk.delta.tool_calls))
-                if not text:
-                    continue
-                r.mark("llm_ttft")
-                for s in filt.push(text):
-                    if not started:
-                        started = True
-                        await r.reply_start(s)
-                    yield s
-                if filt.stopped:
-                    break                                  # §5.6 step 4: cut the generation after two sentences
+            try:
+                async for chunk in Agent.default.llm_node(self, chat_ctx, tools, model_settings):
+                    text = chunk if isinstance(chunk, str) else (getattr(getattr(chunk, "delta", None), "content", None)
+                                                                or "")
+                    if not isinstance(chunk, str) and getattr(getattr(chunk, "delta", None), "tool_calls", None):
+                        yield llm.ChatChunk(id=chunk.id, delta=llm.ChoiceDelta(role="assistant",
+                                                                               tool_calls=chunk.delta.tool_calls))
+                    if not text:
+                        continue
+                    r.mark("llm_ttft")
+                    for s in filt.push(text):
+                        if not started:
+                            started = True
+                            await r.reply_start(s)
+                        yield s
+                    if filt.stopped:
+                        break                              # §5.6 step 4: cut the generation after two sentences
+            except Exception:                              # every model attempt failed (§10.4): never stay silent
+                log.exception("LLM failed after fallbacks; speaking the generic fallback line G1")
+                await r.api.event("quality.llm_failed", {"session_id": r.sid, "turn_id": r.turn_id})
+                if not started:
+                    started = True
+                    g1 = g1_text()
+                    await r.reply_start(g1)
+                    yield g1
             rest = filt.flush()
             if rest:
                 if not started:
@@ -352,6 +373,15 @@ def make_agent_class():
                 await r.api.turn(op="reply_end", session_id=r.sid, turn_id=r.turn_id)
 
     return AhBoAgent
+
+
+def g1_text() -> str:
+    """The generic fallback line (fixed_lines.yaml G1): 「阿寶而家諗唔到嘢，等陣再試吓好嗎？」"""
+    try:
+        from ahbo.core.config import load_config
+        return load_config().fixed_lines["G1"]
+    except Exception:
+        return "阿寶而家諗唔到嘢，等陣再試吓好嗎？"
 
 
 def stt_confidence_of(message: Any) -> float | None:

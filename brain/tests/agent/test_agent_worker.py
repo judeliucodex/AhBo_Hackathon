@@ -114,3 +114,8 @@ def test_components_build_in_the_agent_image(monkeypatch):
     assert set(comps) == {"stt", "llm", "tts", "vad"}
     with_azure = worker.build_tts(dataclasses.replace(s, azure_speech_key="az"), sp.tts)
     assert type(with_azure).__name__ == "FallbackAdapter"
+
+
+def test_g1_fallback_line_is_the_fixed_text():
+    from ahbo.agent.worker import g1_text
+    assert g1_text() == "阿寶而家諗唔到嘢，等陣再試吓好嗎？"
