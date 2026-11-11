@@ -36,7 +36,7 @@ EMOJI_RE = re.compile("[\U0001F000-\U0001FAFF\U0001F1E6-\U0001F1FF☀-➿⬀-⯿
                       "⌀-⏿️‍⃣]")
 SYS_PREFIX_RE = re.compile(r"\[阿寶系統｜[^\]]*\]\s*")
 LATIN_WORD_RE = re.compile(r"[A-Za-z][A-Za-z'\-]*")
-SENT_END = "。！？"
+SENT_END = "。！？；"   # ； counts as a sentence end for the 2-sentence guard (live test 12 Nov: a ；-joined reply ran ~95 chars)
 SHORT_TAG_CHARS = 8   # a sentence this short is a tag, not a sentence, for the 2-sentence guard (D-10)
 SPLIT_RE = re.compile(r"(?<=[。！？；，])")
 ASCII_PUNCT = str.maketrans({"?": "？", "!": "！", ",": "，", ";": "；", ":": "：", "(": "（", ")": "）"})

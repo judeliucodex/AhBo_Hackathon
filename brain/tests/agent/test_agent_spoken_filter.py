@@ -60,3 +60,18 @@ def test_stream_filter_cuts_after_two_sentences():
 
 def test_chunks_split_on_chinese_punctuation():
     assert chunks("王婆婆，你好呀。我係阿寶！") == ["王婆婆，", "你好呀。", "我係阿寶！"]
+
+
+def test_semicolon_joined_long_reply_is_cut_after_two_sentences():
+    """Live test 12 Nov: the model joined two long sentences with ；, so a third one got spoken."""
+    from ahbo.agent.filters.spoken import spoken_filter
+    r = spoken_filter("王婆婆，下一次係朝早八點正食糖尿藥，大約七個鐘之後；跟住中午十二點就有血壓藥、糖尿藥、膽固醇藥同薄血丸。今晚八點再食一次糖尿藥，而家未使食住呀。")
+    assert "今晚" not in r.text and "too_long" in r.flags
+
+
+def test_unknown_stt_confidence_is_none():
+    from types import SimpleNamespace
+    from ahbo.agent.worker import stt_confidence_of
+    assert stt_confidence_of(SimpleNamespace(transcript_confidence=0.0)) is None
+    assert stt_confidence_of(SimpleNamespace()) is None
+    assert stt_confidence_of(SimpleNamespace(transcript_confidence=0.82)) == 0.82

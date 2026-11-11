@@ -312,7 +312,7 @@ def make_agent_class():
                 new_message.content = [text]
             r.turn_id = f"turn_{r.next_turn()}"
             res = await r.api.turn(op="user", session_id=r.sid, turn_id=r.turn_id, text=text,
-                                   stt_confidence=getattr(new_message, "transcript_confidence", None), final=True)
+                                   stt_confidence=stt_confidence_of(new_message), final=True)
             r.mode = res.get("mode", r.mode)
             if res.get("consumed") or r.mode in SILENT_MODES:
                 raise StopResponse()                      # kernel_listen: transcripts go to the Kernel only
@@ -349,6 +349,13 @@ def make_agent_class():
                 await r.api.turn(op="reply_end", session_id=r.sid, turn_id=r.turn_id)
 
     return AhBoAgent
+
+
+def stt_confidence_of(message: Any) -> float | None:
+    """ElevenLabs Scribe gives no confidence; LiveKit then reports 0.0. Send None ("unknown") rather than a fake 0.0,
+    so the sign-up check (action reducer, < 0.6 → ask again) only fires on a real low score (live test 12 Nov)."""
+    c = getattr(message, "transcript_confidence", None)
+    return float(c) if isinstance(c, (int, float)) and c > 0 else None
 
 
 class SessionRun:
