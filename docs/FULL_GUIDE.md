@@ -177,6 +177,7 @@ what to add.
 - Models: **Opper for everything** (BUILD_LOG §7) → needs only `OPPER_API_KEY` (replaces DEEPSEEK + ANTHROPIC keys). - LiveKit: ✅ keys in `.env` (11 Nov), verified with a free list-rooms call + local token mint; still faked (`AHBO_FAKE` keeps `livekit`) until Azure + Opper keys exist, because the voice worker needs both. Owner may rotate the secret (it was shown in a screenshot).
 - Opper: ✅ `OPPER_API_KEY` in `.env` (11 Nov); key accepted and all three model ids confirmed by a free model-list call. Models still faked until the owner OKs the first (tiny, paid) test calls. Key was pasted in chat → owner may rotate.
 - Telegram: ✅ `TELEGRAM_BOT_TOKEN` in `.env` (11 Nov), bot `@ahbo_silverlining_bot`, getMe ok, no webhook yet. `FAMILY_TELEGRAM_CHAT_IDS=阿珍:8925008896` set (11 Nov, from getUpdates; the account's first name is Jude — owner's phone stands in for 阿珍). Webhook + un-faking only after the GLM Links review. Token was pasted in chat → owner may rotate (/revoke in BotFather).
+- Twilio: ✅ SID + auth token in `.env` (11 Nov), account active, **Trial**, balance $0.00, **no Twilio number yet, no verified caller IDs yet** (free read-only checks). Needs: a number (`TWILIO_FROM`), both destination phones verified, top-up approval. Token pasted in chat → owner may rotate.
 Still to come: Azure Speech (owner creating subscription), Telegram, Twilio (+ top-up approval), ElevenLabs IDs (optional).
 - Note: my Opper edits to `ops/doctor.py` + `tests/ops/test_doctor.py` sit in GLM's uncommitted ops files — commit them with the GLM 01 review.
 
