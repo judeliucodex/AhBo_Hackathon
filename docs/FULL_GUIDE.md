@@ -208,6 +208,16 @@ Still to do:
 
 - [ ] GLM QA round 21–26 (read-only testers, hand-offs committed `37188e2`); run ≤3 at a time.
 
+## 5e. First real spoken conversation (12 Nov 01:07, owner-approved go-live)
+- Test participant joined a LiveKit room like the browser iPad and spoke 「阿寶，我幾時食藥呀？」 (ElevenLabs audio):
+  worker joined in < 3 s; Scribe v3 live heard 「阿寶，我幾時食藥啊？」 (Traditional); Kernel trace: `user.utterance` →
+  `get_med_status` → reply ~2 s after she stopped (INV-4 ✓); agent audio spoken back. Script:
+  scratchpad `e2e_voice.py` (copy into evals/visual/ if kept).
+- Fixed from it (`git log`): ； counts as a sentence end in the 2-sentence guard; unknown STT confidence → None.
+- [ ] Prompt tuning: DeepSeek lists the whole day (`scope: today`) instead of the next dose only; S2 script wants next only.
+- [ ] Real-model evals not run: blocked pending owner OK (spends Opper credit, est. < $1).
+- [ ] Per-turn latency spans (eos→stt→llm→tts) aren't recorded in the live path (`doctor --latency` empty).
+
 ## 5c. Speech = ElevenLabs (owner decision 11 Nov)
 - Azure dropped (sign-up blocked). ElevenLabs Starter: listening = Scribe Live (`scribe_v3_live`, alt `scribe_v2_realtime`, `yue` forced; auto-detect says Mandarin), voice = CY – Calm & Friendly (`SPRXwABrRtJGzRFBpO1H`). Owner's real-voice live test: 「阿寶，我幾時食藥呀？」 correct (Simplified). Synthetic CY test audio unreliable. Keyterms help but once gave 我冇事→我冇食.
 - [ ] Claude agent doing the switch (worker STT/TTS, fixed-clip renderer with timestamps, Telegram voice-note STT, matcher variants, doctor, TTS latency pick). Then orchestrator: review → AHBO_FAKE remove models,speech,livekit → render clips → start agent (profile voice) → doctor → owner test at /sim/.
