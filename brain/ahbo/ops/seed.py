@@ -70,3 +70,24 @@ def load_demo(db: Database, clock: Clock, settings: Settings, seed: dict[str, An
             db.execute("INSERT INTO day_plans(date,json,summary,generated_at) VALUES (?,?,?,?)",
                        (today.isoformat(), dumps(dp), dp.get("summary"), clock.iso()))
     return seed
+
+
+def sync_contacts_from_env(db: Database, settings: Settings, seed: dict[str, Any] | None = None) -> list[str]:
+    """Startup: copy Telegram chat ids and phone numbers from .env onto the seeded contacts WITHOUT a reset, so keys
+    added after the first start take effect (found 11 Nov: 阿珍 had no chat id → the bot treated her as a stranger).
+    Only fills values that are empty in the DB; never overwrites what the caregiver edited in Telegram."""
+    seed = seed or load_seed("demo.yaml", settings.public_base_url)
+    changed: list[str] = []
+    for c in seed.get("contacts", []):
+        row = db.one("SELECT * FROM contacts WHERE id=?", (c["id"],))
+        if row is None:
+            continue
+        chat = settings.family_telegram_chat_ids.get(c.get("telegram_from_env") or "", None)
+        phone = getattr(settings, (c.get("phone_env") or "").lower(), "") if c.get("phone_env") else ""
+        if chat and not row.get("telegram_chat_id"):
+            db.execute("UPDATE contacts SET telegram_chat_id=? WHERE id=?", (chat, c["id"]))
+            changed.append(f"{c['id']}.telegram_chat_id")
+        if phone and not row.get("phone"):
+            db.execute("UPDATE contacts SET phone=? WHERE id=?", (phone, c["id"]))
+            changed.append(f"{c['id']}.phone")
+    return changed

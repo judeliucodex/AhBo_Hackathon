@@ -198,6 +198,11 @@ def build_services(settings: Settings | None = None, *, db: Database | None = No
         from ahbo.ops.seed import load_demo
         load_demo(db, clock, settings)
         log.info("seeded the demo (empty database)")
+    if seed_if_empty:
+        from ahbo.ops.seed import sync_contacts_from_env
+        changed = sync_contacts_from_env(db, settings)
+        if changed:
+            log.info("contacts updated from .env: %s", ", ".join(changed))
     ensure_fixed_manifest(svc)
     return svc
 
