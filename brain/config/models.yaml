@@ -1,18 +1,22 @@
 # config/models.yaml  (values here are the defaults; §20. No model id or thinking level is hard-coded elsewhere.)
+# Route (owner decision, 11 Nov): both models go through Opper (https://api.opper.ai/v3/compat, OPPER_API_KEY).
+# Direct routes stay available: flash.provider deepseek (DEEPSEEK_API_KEY) · sonnet/vision provider anthropic.
 flash:
-  provider: deepseek            # deepseek | opper   (route set in §20.3)
-  model: deepseek-flash         # VERIFY: the ID that resolves to V4.1 Flash on the owner's account
+  provider: opper               # deepseek | opper   (route set in §20.3)
+  model: deepseek-v4.1-flash    # Opper model id (owner's Opper catalogue, 11 Nov); direct DeepSeek id: deepseek-flash
   thinking: "off"               # off | low | high | max     ← the on/off + level knob
+  send_thinking: true           # send DeepSeek's `thinking` field; set false if the route rejects it (make doctor says)
   max_tokens: 400
   first_token_timeout_s: 5      # then retry once on the fallback
-  fallback: { provider: anthropic, model: claude-haiku-5-5, effort: low }
+  fallback: { provider: opper, model: claude-haiku-5-5 }      # VERIFY the Haiku id in Opper's catalogue
   per_purpose:                  # each purpose can override the knob
     voice_turn:     { thinking: "off" }
     extractor:      { thinking: "off" }
     intent_tag:     { thinking: "off" }
     digest:         { thinking: "low" }
 sonnet:
-  provider: anthropic           # anthropic | opper   (§20.3)
+  provider: opper               # anthropic | opper   (§20.3). Opper = OpenAI-compatible loop: no server-side
+                                # web search/fetch, no adaptive-thinking field; seeded + read-only tools only
   model: claude-sonnet-5-5
   thinking: "medium"            # off | low | medium | high | xhigh | max   ← the level knob
   display: omitted              # omitted | summarized (summaries shown in operator trace)
@@ -26,7 +30,7 @@ sonnet:
     signup_fieldmap:  { thinking: "low" }
     eval_judge:       { thinking: "low" }
 vision:
-  provider: anthropic
+  provider: opper               # anthropic | opper (image sent as an OpenAI image_url data URL)
   model: claude-haiku-5-5
   fallback_model: claude-sonnet-5-5
   timeout_s: 8

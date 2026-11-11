@@ -83,6 +83,6 @@ def server_tools(cfg: dict[str, Any]) -> list[dict[str, Any]]:
 
 def make_client(settings: Any) -> Any:
     if (runtime.model_cfg(None, "sonnet").get("provider") or "anthropic") != "anthropic":
-        raise NotImplementedError("Sonnet over Opper is not wired (native §20.2 fields need the Anthropic API)")
+        raise NotImplementedError("Sonnet over Opper uses ahbo.deep.compat_loop.CompatDeepLoop (native §20.2 fields need the Anthropic API)")
     from anthropic import AsyncAnthropic
     return AsyncAnthropic(api_key=settings.anthropic_api_key, max_retries=1, timeout=60.0)

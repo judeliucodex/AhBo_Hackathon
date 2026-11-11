@@ -98,3 +98,20 @@ async def harness(tmp_path):
     finally:
         await k.stop()
         db.close()
+
+
+@pytest.fixture
+def direct_routes(monkeypatch):
+    """Pin the direct provider routes (DeepSeek API, Anthropic API) for tests of that code path. The shipped
+    models.yaml routes everything through Opper (owner decision, 11 Nov); the direct routes stay supported."""
+    from ahbo.models import runtime
+    real = runtime.model_cfg
+    direct = {"flash": {"provider": "deepseek", "model": "deepseek-flash",
+                        "fallback": {"provider": "anthropic", "model": "claude-haiku-5-5", "effort": "low"}},
+              "sonnet": {"provider": "anthropic"}, "vision": {"provider": "anthropic"}}
+
+    def pinned(config, section, purpose=None):
+        return {**real(config, section, purpose), **direct.get(section, {})}
+
+    monkeypatch.setattr(runtime, "model_cfg", pinned)
+    yield

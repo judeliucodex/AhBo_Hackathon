@@ -173,6 +173,10 @@ what to add.
 
 ---
 
+## 5b. Owner keys status
+- Models: **Opper for everything** (BUILD_LOG §7) → needs only `OPPER_API_KEY` (replaces DEEPSEEK + ANTHROPIC keys). Still to come: Azure Speech (owner creating subscription), LiveKit, Telegram, Twilio (+ top-up approval), ElevenLabs IDs (optional).
+- Note: my Opper edits to `ops/doctor.py` + `tests/ops/test_doctor.py` sit in GLM's uncommitted ops files — commit them with the GLM 01 review.
+
 ## 6. Live facts
 - URL: `https://srv2135273.hstgr.cloud` (login at `/login`). Initial password: `cat /opt/ahbo/data/secrets/operator_password.initial` (root only); change with `deploy/make.sh set-password`.
 - Images: `ahbo-api`, `ahbo-agent` (voice extras), `ahbo-browser` (Playwright 1.64.1), `ahbo-make`; Caddy `caddy:2.11.9`.

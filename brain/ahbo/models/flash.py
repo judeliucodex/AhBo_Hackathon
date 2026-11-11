@@ -30,7 +30,7 @@ from . import pricing, runtime
 log = logging.getLogger("ahbo.models.flash")
 
 DEEPSEEK_URL = "https://api.deepseek.com"
-OPPER_URL = "https://api.opper.ai/v3/compat"
+from .opper import OPPER_URL  # noqa: E402,F401  (re-exported; one source)
 THINKING_LEVELS = ("off", "low", "high", "max")
 
 
@@ -143,14 +143,16 @@ class RealFlash:
             if not fb:
                 raise
             resp = await self._fallback_call(messages, tools, cfg, fb)
-            self._record("anthropic", resp, purpose, correlation_id, t0, level, fallback=True)
+            self._record(fb.get("provider", "anthropic"), resp, purpose, correlation_id, t0, level, fallback=True)
             return resp
 
     async def _primary(self, messages, tools, cfg, level, timeout) -> LLMResponse:
         provider = cfg.get("provider", "deepseek")
         kwargs: dict[str, Any] = {"model": cfg.get("model", "deepseek-flash"), "messages": clean_messages(messages),
                                   "max_tokens": int(cfg.get("max_tokens", 400)), "stream": True,
-                                  "stream_options": {"include_usage": True}, **thinking_fields(level)}
+                                  "stream_options": {"include_usage": True}}
+        if cfg.get("send_thinking", True):
+            kwargs.update(thinking_fields(level))
         if tools:
             kwargs["tools"] = tools
             kwargs["tool_choice"] = "auto"
@@ -205,6 +207,8 @@ class RealFlash:
                            reasoning_content="".join(reasoning) or None)
 
     async def _fallback_call(self, messages, tools, cfg, fb) -> LLMResponse:
+        if fb.get("provider") == "opper":
+            return await self._fallback_opper(messages, tools, cfg, fb)
         system, amsgs, atools = to_anthropic(messages, tools)
         kwargs: dict[str, Any] = {"model": fb.get("model", "claude-haiku-5-5"),
                                   "max_tokens": int(cfg.get("max_tokens", 400)), "messages": amsgs}
@@ -224,6 +228,31 @@ class RealFlash:
         usage = {"input_tokens": u.input_tokens or 0, "output_tokens": u.output_tokens or 0,
                  "cache_read": getattr(u, "cache_read_input_tokens", 0) or 0}
         return LLMResponse(text=text, tool_calls=calls, usage=usage, model=kwargs["model"])
+
+    async def _fallback_opper(self, messages, tools, cfg, fb) -> LLMResponse:
+        """Haiku through Opper's OpenAI-compatible route (non-streaming; no DeepSeek thinking field)."""
+        if self._fallback is None:
+            from .opper import async_client
+            self._fallback = async_client(self.settings)
+        kwargs: dict[str, Any] = {"model": fb.get("model", "claude-haiku-5-5"), "messages": [
+            {k: v for k, v in m.items() if k != "reasoning_content"} for m in clean_messages(messages)],
+            "max_tokens": int(cfg.get("max_tokens", 400))}
+        if tools:
+            kwargs["tools"] = tools
+            kwargs["tool_choice"] = "auto"
+        r = await asyncio.wait_for(self._fallback.chat.completions.create(**kwargs),
+                                   float(cfg.get("fallback_timeout_s", 15)))
+        msg = r.choices[0].message
+        calls = []
+        for tc in msg.tool_calls or []:
+            try:
+                args = json.loads(tc.function.arguments or "{}")
+            except ValueError:
+                args = {"_raw": tc.function.arguments}
+            calls.append(ToolCall(id=tc.id or new_id("call"), name=tc.function.name, args=args))
+        u = r.usage
+        usage = {"input_tokens": getattr(u, "prompt_tokens", 0) or 0, "output_tokens": getattr(u, "completion_tokens", 0) or 0}
+        return LLMResponse(text=msg.content or "", tool_calls=calls, usage=usage, model=kwargs["model"])
 
     def _record(self, provider: str, resp: LLMResponse, purpose: str, corr: str | None, t0: float, level: str,
                 fallback: bool = False) -> None:

@@ -206,8 +206,12 @@ def build_components(settings: Any, vad: Any) -> dict[str, Any]:
     cfg = model_cfg(None, "flash", "voice_turn")
     stt = azure.STT(speech_key=settings.azure_speech_key, speech_region=settings.azure_speech_region,
                     language="zh-HK", phrase_list=load_phrases() or None)
-    flash = openai.LLM(model=cfg.get("model", "deepseek-flash"), api_key=settings.deepseek_api_key,
-                       base_url=settings.deepseek_base_url, extra_body=thinking_fields("off")["extra_body"])
+    opper = cfg.get("provider") == "opper"
+    from ahbo.models.opper import OPPER_URL
+    flash = openai.LLM(model=cfg.get("model", "deepseek-flash"),
+                       api_key=settings.opper_api_key if opper else settings.deepseek_api_key,
+                       base_url=OPPER_URL if opper else settings.deepseek_base_url,
+                       **({"extra_body": thinking_fields("off")["extra_body"]} if cfg.get("send_thinking", True) else {}))
     azure_tts = azure.TTS(voice=settings.azure_tts_voice, language="zh-HK", prosody=ProsodyConfig(rate=0.9),
                           speech_key=settings.azure_speech_key, speech_region=settings.azure_speech_region)
     voice: Any = tts.StreamAdapter(tts=azure_tts, sentence_tokenizer=ZhSentenceTokenizer())

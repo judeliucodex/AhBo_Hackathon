@@ -63,6 +63,7 @@ def test_thinking_table(level, body):
     assert flash.thinking_fields(level) == body
 
 
+@pytest.mark.usefixtures("direct_routes")
 async def test_flash_streams_text_and_tools_and_always_sends_thinking():
     seen = []
 
@@ -158,6 +159,7 @@ def test_sonnet_thinking_table(level, thinking, effort):
     assert sonnet.thinking_param("high", "summarized") == {"type": "adaptive", "display": "summarized"}
 
 
+@pytest.mark.usefixtures("direct_routes")
 def test_sonnet_request_kwargs_never_send_forbidden_fields():
     cfg = sonnet.sonnet_cfg(None, "deep_task", "off")
     kw = sonnet.request_kwargs(cfg, system="S", tools=sonnet.server_tools(cfg), messages=[], schema={"type": "object"})
@@ -172,6 +174,7 @@ def test_sonnet_request_kwargs_never_send_forbidden_fields():
 
 
 # ---------------------------------------------------------------- vision
+@pytest.mark.usefixtures("direct_routes")
 async def test_vision_mocked(tmp_path):
     photo = tmp_path / "p.jpg"
     photo.write_bytes(b"\xff\xd8\xff\xe0fakejpeg")

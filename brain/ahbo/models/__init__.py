@@ -22,6 +22,10 @@ def get_deep(*, ctx=None, time_scale: float = 1.0) -> DeepRunner:
     if s.is_fake("models"):
         from .fakes import FakeDeep
         return FakeDeep(delay_s=2.5 * time_scale)
+    from . import runtime
+    if (runtime.model_cfg(None, "sonnet").get("provider") or "anthropic") == "opper":
+        from ahbo.deep.compat_loop import CompatDeepLoop
+        return CompatDeepLoop(s, ctx=ctx)
     from ahbo.deep.loop import DeepLoop
     return DeepLoop(s, ctx=ctx)
 

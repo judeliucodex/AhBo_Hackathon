@@ -51,6 +51,8 @@ class RealVision:
             return None
         t0 = time.perf_counter()
         model = cfg.get("model", "claude-haiku-5-5")
+        if cfg.get("provider") == "opper":
+            return await self._describe_opper(model, media, data, timeout, correlation_id, t0)
         try:
             msg = await asyncio.wait_for(self.client().messages.create(
                 model=model, max_tokens=100,
@@ -68,3 +70,23 @@ class RealVision:
         runtime.record("anthropic", model, "vision", units, pricing.usd(model, **units), correlation_id=correlation_id,
                        span="vision.describe", duration_ms=(time.perf_counter() - t0) * 1000)
         return clean_note(text)
+
+    async def _describe_opper(self, model: str, media: str, data: str, timeout: float, corr: str | None,
+                              t0: float) -> str | None:
+        """Same prompt through Opper's OpenAI-compatible route (image as a data URL). Advisory; failure → None."""
+        try:
+            if self._client is None:
+                from .opper import async_client
+                self._client = async_client(self.settings, timeout=timeout)
+            r = await asyncio.wait_for(self._client.chat.completions.create(
+                model=model, max_tokens=100, messages=[{"role": "user", "content": [
+                    {"type": "image_url", "image_url": {"url": f"data:{media};base64,{data}"}},
+                    {"type": "text", "text": PROMPT}]}]), timeout)
+        except Exception as e:
+            log.warning("vision (opper) failed: %s", type(e).__name__)
+            return None
+        u = r.usage
+        units = {"input_tokens": getattr(u, "prompt_tokens", 0) or 0, "output_tokens": getattr(u, "completion_tokens", 0) or 0}
+        runtime.record("opper", model, "vision", units, pricing.usd(model, **units), correlation_id=corr,
+                       span="vision", duration_ms=(time.perf_counter() - t0) * 1000)
+        return clean_note(r.choices[0].message.content or "")

@@ -193,6 +193,7 @@ def sse_anthropic(text: str) -> bytes:
     return "".join(f"event: {e}\ndata: {json.dumps(d, ensure_ascii=False)}\n\n" for e, d in ev).encode()
 
 
+@pytest.mark.usefixtures("direct_routes")
 async def test_real_sdk_stream_shape(ctx):
     from anthropic import AsyncAnthropic
     seen = []
