@@ -174,7 +174,8 @@ what to add.
 ---
 
 ## 5b. Owner keys status
-- Models: **Opper for everything** (BUILD_LOG §7) → needs only `OPPER_API_KEY` (replaces DEEPSEEK + ANTHROPIC keys). Still to come: Azure Speech (owner creating subscription), LiveKit, Telegram, Twilio (+ top-up approval), ElevenLabs IDs (optional).
+- Models: **Opper for everything** (BUILD_LOG §7) → needs only `OPPER_API_KEY` (replaces DEEPSEEK + ANTHROPIC keys). - LiveKit: ✅ keys in `.env` (11 Nov), verified with a free list-rooms call + local token mint; still faked (`AHBO_FAKE` keeps `livekit`) until Azure + Opper keys exist, because the voice worker needs both. Owner may rotate the secret (it was shown in a screenshot).
+Still to come: Azure Speech (owner creating subscription), Telegram, Twilio (+ top-up approval), ElevenLabs IDs (optional).
 - Note: my Opper edits to `ops/doctor.py` + `tests/ops/test_doctor.py` sit in GLM's uncommitted ops files — commit them with the GLM 01 review.
 
 ## 6. Live facts
