@@ -188,13 +188,13 @@ def settings_view(svc: Any) -> Reply:
     knobs = db.kv_get("knobs", {}) or {}
     lines = ["⚙️ 設定：",
              f"• 靜音時段：{q['start']} 至 {q['end']}{mark('quiet_start') or mark('quiet_end')}"]
-    for k in ("morning", "afternoon", "evening", "digest"):
+    for k in ("morning", "afternoon", "evening"):
         lines.append(f"• {CHECKIN_NAMES[k]}：{ck.get(k, '—')}{mark(k)}")
     lines += [f"• 阿寶靜音：{'係' if knobs.get('muted') else '唔係'}",
               f"• Flash 思考：{knobs.get('flash_thinking') or '預設'} · Sonnet 思考：{knobs.get('sonnet_thinking') or '預設'}"]
     kb = [[("🌙 靜音時段", cb("f", "quiet"))],
           [("☀️ 朝早問候", cb("f", "ck_morning")), ("🌤 下晝問候", cb("f", "ck_afternoon"))],
-          [("🌆 夜晚問候", cb("f", "ck_evening")), ("📋 摘要時間", cb("f", "ck_digest"))],
+          [("🌆 夜晚問候", cb("f", "ck_evening"))],
           [("🧠 思考程度", cb("v", "knobs"))], back_row()]
     return Reply("\n".join(lines), kb)
 
@@ -303,7 +303,7 @@ def demo_view(svc: Any) -> Reply:
           [("🔈 取消靜音" if knobs.get("muted") else "🔇 靜音阿寶", cb("a", "unmute" if knobs.get("muted") else "mute")),
            ("🗣 講一句", cb("f", "say"))],
           [("💊 即刻食藥提醒", cb("v", "dose_pick")), ("👋 即刻問候", cb("v", "ck_pick"))],
-          [("📝 即刻做 07:00 計劃", cb("a", "plan")), ("🧠 思考程度", cb("v", "knobs"))], back_row()]
+          [("🧠 思考程度", cb("v", "knobs"))], back_row()]
     return Reply(text, kb)
 
 

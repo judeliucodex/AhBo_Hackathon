@@ -194,8 +194,7 @@ Fixed during the audit:
 Still to do:
 - [ ] Voice go-live after the ElevenLabs switch agent: review → AHBO_FAKE drop models,speech,livekit → recreate api →
   render CY clips → `docker compose --profile voice up -d agent` → doctor → owner test /sim/ "Talk".
-- [ ] **Not built: 20:00 daily digest** (`digest.due` has no consumer) and **07:00 day-plan precompute** (`plan.due` has
-  no consumer; `day_plans` only from the seed; Telegram /plan does nothing visible).
+- [x] ~~20:00 digest / 07:00 day plan~~ — removed by the owner (BUILD_LOG §9).
 - [ ] Silent failures: `phone.call_refused`, `device.error`, failed `family.send_result` are only traced — should notify
   阿珍 / show in Telegram /health.
 - [ ] Twilio: owner buys a number (TWILIO_FROM), verifies 2 phones, enters numbers (Telegram 聯絡人 or .env), approves

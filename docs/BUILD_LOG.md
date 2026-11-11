@@ -183,3 +183,8 @@ console. Every GLM deliverable is reviewed, tested and committed by Claude befor
 admin chat: alerts, voice notes, viewing and editing the medicine schedule, calendar, quiet hours, check-in times and
 contacts/phone numbers, plus demo controls (reset, panic, simulate fall, S1–S4, clock, mute, status, health).
 `operator-ui/` is dropped. The operator HTTP API stays (used by the scenario runner, /sim/ and tests).
+
+## 9. Removed (owner decision, 12 Nov 2026)
+- **No 07:00 day-plan precompute and no 20:00 family digest.** The scheduler no longer emits `plan.due`/`digest.due`;
+  Telegram loses `/plan`, the "即刻做 07:00 計劃" button and the digest time setting; `checkins.yaml` drops `digest`.
+  `get_day_plan` still answers from the seeded plan (S3 is unaffected). Morning/afternoon/evening check-ins stay.

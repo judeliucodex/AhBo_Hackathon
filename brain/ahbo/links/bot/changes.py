@@ -445,7 +445,7 @@ ADMIN_DESC = {
     "reset": "重設示範（藥物、日程、聯絡人會返去示範資料；設定時間保留）",
     "panic": "全部停止（停聲、收線、表情返待機）",
     "fall": "模擬跌倒（操作員觸發）", "sos": "模擬求助（操作員觸發）",
-    "plan": "即刻做 07:00 計劃", "mute": "靜音阿寶", "unmute": "取消靜音",
+    "mute": "靜音阿寶", "unmute": "取消靜音",
     "clock_now": "時間返去真實時間",
 }
 
@@ -489,10 +489,9 @@ async def apply_admin(svc: Any, contact: dict[str, Any], op: str, a: dict[str, A
     if op == "panic":
         await demo.panic(svc)
         return "已全部停止。"
-    if op in ("fall", "sos", "plan"):
-        await demo.trigger(svc, {"kind": {"plan": "plan_now"}.get(op, op)})
-        return {"fall": "已模擬跌倒（操作員觸發）。你會收到通知。", "sos": "已模擬求助（操作員觸發）。",
-                "plan": "已開始做今日計劃。"}[op]
+    if op in ("fall", "sos"):
+        await demo.trigger(svc, {"kind": op})
+        return {"fall": "已模擬跌倒（操作員觸發）。你會收到通知。", "sos": "已模擬求助（操作員觸發）。"}[op]
     if op == "dose":
         await demo.trigger(svc, {"kind": "dose_now", "slot_id": a["slot_id"]})
         return "已即刻提醒食藥。"
@@ -543,7 +542,7 @@ DATA_OPS: dict[str, tuple[Describe, Apply]] = {
     "contact_delete": (describe_contact_delete, apply_contact_delete),
     "verify": (lambda s, a, me: describe_verify(s, a), apply_verify),
 }
-ADMIN_OPS = ("reset", "panic", "fall", "sos", "plan", "dose", "ck", "scen", "clock", "clock_now", "mute", "unmute",
+ADMIN_OPS = ("reset", "panic", "fall", "sos", "dose", "ck", "scen", "clock", "clock_now", "mute", "unmute",
              "say", "flash", "sonnet")
 
 

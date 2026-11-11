@@ -2,7 +2,7 @@
 morning:   "08:30"
 afternoon: "15:00"
 evening:   "20:30"
-digest:    "20:00"
+# digest removed (owner decision 12 Nov)
 quiet_hours: { start: "22:30", end: "07:00" }
 skip_if_session_within_min: 20
 defer_if_session_open_max_min: 30

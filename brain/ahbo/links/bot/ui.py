@@ -69,7 +69,7 @@ HELP = """阿寶指令（全部都可以直接打）：
 /demo 示範控制
 /fall 模擬跌倒 · /sos 模擬求助 · /panic 全部停止 · /reset 重設示範
 /scenario S1|S2|S3|S4|S4ok · /clock 07:58|+30|now · /mute · /unmute
-/dose [時段] · /checkin morning|afternoon|evening · /plan · /say 一句說話
+/dose [時段] · /checkin morning|afternoon|evening · /say 一句說話
 /thinking flash|sonnet 程度
 /fact 記低一樣嘢 · /story 講個故事 · /whoami · /cancel 取消
 每樣改動都會問你「確認／取消」先至做。"""

@@ -45,9 +45,7 @@ def daily_items(db: Any, config: Any, day: date, tz: Any) -> list[tuple[str, dat
     for kind in ("morning", "afternoon", "evening"):
         if ck.get(kind):
             out.append((f"checkin:{kind}", _at(day, str(ck[kind]), tz), "checkin.due", {"kind": kind, "date": d}))
-    if ck.get("digest"):
-        out.append(("digest", _at(day, str(ck["digest"]), tz), "digest.due", {"date": d}))
-    out.append(("plan", _at(day, PLAN_AT, tz), "plan.due", {"date": d}))
+    # Owner decision 12 Nov: no 07:00 day-plan precompute and no 20:00 family digest (digest.due / plan.due removed).
     for r in db.query("SELECT id, datetime FROM calendar_events WHERE kind='plan' AND substr(datetime,1,10)=? "
                       "AND status != 'cancelled'", (d,)):
         try:

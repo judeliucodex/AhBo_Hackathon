@@ -45,7 +45,7 @@ async def test_admin_sos_is_an_operator_sos(svc):
 
 
 @pytest.mark.parametrize("cmd,event", [
-    ("/mute", "operator.mute"), ("/unmute", "operator.unmute"), ("/plan", "operator.plan_now"),
+    ("/mute", "operator.mute"), ("/unmute", "operator.unmute"),
     ("/panic", "operator.panic"), ("/reset", "operator.reset"), ("/dose s_1200", "operator.dose_now"),
     ("/dose 12:00", "operator.dose_now"), ("/checkin morning", "operator.checkin_now"),
     ("/say 王婆婆，飲啖水先", "operator.say"), ("/thinking flash high", "operator.model_config"),

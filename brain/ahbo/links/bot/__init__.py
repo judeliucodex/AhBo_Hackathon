@@ -24,7 +24,7 @@ log = logging.getLogger("ahbo.links.bot")
 VIEW_CMDS = {"/today": "today", "/status": "today", "/meds": "meds", "/cal": "cal", "/calendar": "cal",
              "/settings": "set", "/contacts": "contacts", "/alerts": "alerts", "/health": "health", "/demo": "demo",
              "/knobs": "knobs"}
-ADMIN_CMDS = {"/reset": "reset", "/panic": "panic", "/fall": "fall", "/sos": "sos", "/plan": "plan",
+ADMIN_CMDS = {"/reset": "reset", "/panic": "panic", "/fall": "fall", "/sos": "sos",
               "/mute": "mute", "/unmute": "unmute"}
 SCENARIOS = ("S1", "S2", "S3", "S4", "S4ok")
 CANCEL_WORDS = ("取消", "/cancel", "cancel")
@@ -178,8 +178,8 @@ async def command(svc: Any, contact: dict[str, Any], chat_id: str, text: str) ->
         return propose(svc, contact, chat_id, st, "settings", {"patch": patch})
     if cmd_ == "/checkintime":
         parts = rest.split()
-        if len(parts) != 2 or parts[0] not in ("morning", "afternoon", "evening", "digest"):
-            return [Reply("用法：/checkintime morning|afternoon|evening|digest 08:30", [back_row()])]
+        if len(parts) != 2 or parts[0] not in ("morning", "afternoon", "evening"):
+            return [Reply("用法：/checkintime morning|afternoon|evening 08:30", [back_row()])]
         try:
             hhmm = forms.parse_time(parts[1])
         except BotError as e:

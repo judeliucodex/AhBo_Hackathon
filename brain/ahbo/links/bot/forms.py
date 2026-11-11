@@ -229,7 +229,7 @@ FORMS: dict[str, FormDef] = {
     **{f"ck_{k}": FormDef(CHECKIN_NAMES[k], [Field(k, f"{CHECKIN_NAMES[k]}時間，例如 08:30：", "time")],
                           _settings_current((k,)),
                           lambda s, i, d, k=k: ("settings", {"patch": {k: d[k]}}))
-       for k in ("morning", "afternoon", "evening", "digest")},
+       for k in ("morning", "afternoon", "evening")},
     "contact_add": FormDef("加聯絡人", CONTACT_FIELDS, lambda s, i: None,
                            lambda s, i, d: ("contact_upsert", {"id": None, **{f.key: d.get(f.key)
                                                                                for f in CONTACT_FIELDS}})),
