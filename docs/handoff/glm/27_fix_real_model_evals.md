@@ -1,3 +1,8 @@
+> **UPDATE 12 Nov (Claude): the root cause is FIXED** — the harness ran timers 20× faster, so the 30 s session-idle
+> timer closed the session (cancelling the turn) before the real AI answered; real models now run at real speed
+> (`evals/harness.py time_scale()`). Claude is running the full real-model evals → `docs/qa/real_model_evals.md`.
+> If that report exists, **skip steps 1–2**: only do step 3's analysis (list failing cases + what the AI said) and step 4.
+
 # GLM task 27: Why do the evals get NO reply from the real AI? (fix allowed in `brain/ahbo/evals/` only)
 
 Read `20_QA_COMMON.md` (rules) but note: this task MAY edit `brain/ahbo/evals/**` and `brain/tests/evals/**`, and may make
