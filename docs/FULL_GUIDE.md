@@ -180,6 +180,10 @@ what to add.
 - [x] Drop `operator-ui/` (GLM 03) — deleted — don't commit it; G3 visual check uses /sim/ + the scenario API instead.
 - Note: my edits to GLM tests `tests/links/test_fakes.py` and `tests/ops/test_render_fixed.py` (c_chun, new P1 wording) go in with those reviews.
 
+## 5c. Speech = ElevenLabs (owner decision 11 Nov)
+- Azure dropped (sign-up blocked). ElevenLabs Starter: listening = Scribe Live (`scribe_v3_live`, alt `scribe_v2_realtime`, `yue` forced; auto-detect says Mandarin), voice = CY – Calm & Friendly (`SPRXwABrRtJGzRFBpO1H`). Owner's real-voice live test: 「阿寶，我幾時食藥呀？」 correct (Simplified). Synthetic CY test audio unreliable. Keyterms help but once gave 我冇事→我冇食.
+- [ ] Claude agent doing the switch (worker STT/TTS, fixed-clip renderer with timestamps, Telegram voice-note STT, matcher variants, doctor, TTS latency pick). Then orchestrator: review → AHBO_FAKE remove models,speech,livekit → render clips → start agent (profile voice) → doctor → owner test at /sim/.
+
 ## 5b. Owner keys status
 - Models: **Opper for everything** (BUILD_LOG §7) → needs only `OPPER_API_KEY` (replaces DEEPSEEK + ANTHROPIC keys). - LiveKit: ✅ keys in `.env` (11 Nov), verified with a free list-rooms call + local token mint; still faked (`AHBO_FAKE` keeps `livekit`) until Azure + Opper keys exist, because the voice worker needs both. Owner may rotate the secret (it was shown in a screenshot).
 - Opper: ✅ `OPPER_API_KEY` in `.env` (11 Nov); key accepted and all three model ids confirmed by a free model-list call. Models still faked until the owner OKs the first (tiny, paid) test calls. Key was pasted in chat → owner may rotate.
