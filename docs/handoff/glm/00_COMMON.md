@@ -36,7 +36,7 @@ at the same time. Correctness beats speed; tests beat claims.
   (`docker run --rm ahbo-api python -c "import x, inspect; print(inspect.signature(x.f))"`). Never guess.
 - Before finishing, run the **whole** suite once to be sure you broke nothing:
   `docker run --rm -v /opt/ahbo:/repo ahbo-api python -m pytest -q`
-  (Known failures that are not yours: `test_golden_ui.py::test_fall_storyboards[S4|S4ok]`,
+  (Known failures that are not yours — as of 11 Nov only `tests/actions/test_runner_browser_unavailable.py::test_domain_checks_still_run_before_the_browser` (task 06 fixes it); older names below are fixed:
   `test_inv_06_traced.py::test_repeated_questions_are_fully_traced`,
   `test_inv_08_operator_visible.py::test_console_overrides_go_through_operator_events`. Don't fix those.)
 
