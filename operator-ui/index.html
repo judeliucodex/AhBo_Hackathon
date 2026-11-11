@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阿寶 Operator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="console.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span>阿寶 <span class="dim">Operator console</span></div>
+  <div class="clockchip" id="top-clock" title="Virtual clock (HKT)">--:--</div>
+  <div class="badges" id="top-badges"></div>
+  <div class="conn" id="conn" data-state="connecting">stream: connecting…</div>
+  <div class="spacer"></div>
+  <div class="panic-hint"><kbd>Esc</kbd> = Panic</div>
+  <button class="btn panic" id="panic-btn" type="button" title="Stop all audio, close the session, face to idle">PANIC</button>
+</header>
+<div class="banner" id="banner" hidden></div>
+
+<main class="grid">
+  <div class="col col-a">
+    <section class="panel" id="p-mirror">
+      <header><h2>Live face mirror</h2><span class="sub">what Po-po sees · view only</span><span class="pstatus" id="mirror-status"></span>
+        <button class="btn mini" id="mirror-resync" type="button" title="rebuild the face from the state snapshot">resync</button></header>
+      <div class="mirror-wrap" id="mirror-wrap">
+        <iframe id="mirror" title="Face mirror" src="/face/index.html" tabindex="-1" width="1180" height="820"></iframe>
+      </div>
+    </section>
+    <section class="panel" id="p-scenarios">
+      <header><h2>Scenarios</h2><span class="sub">reset · anchor · drive real paths</span></header>
+      <div class="body" id="scenarios-body"></div>
+    </section>
+    <section class="panel" id="p-triggers">
+      <header><h2>Triggers</h2></header>
+      <div class="body" id="triggers-body"></div>
+    </section>
+    <section class="panel" id="p-clock">
+      <header><h2>Virtual clock</h2><span class="sub">HKT, scheduler + tools</span></header>
+      <div class="body" id="clock-body"></div>
+    </section>
+  </div>
+
+  <div class="col col-b">
+    <section class="panel" id="p-state">
+      <header><h2>Live state</h2><span class="pstatus" id="state-status"></span></header>
+      <div class="body" id="state-body"><p class="empty">loading…</p></div>
+    </section>
+    <section class="panel tall" id="p-transcript">
+      <header><h2>Live transcript</h2><span class="sub">her lines · 阿寶 · tools · latency</span>
+        <button class="btn mini" id="transcript-clear" type="button">clear view</button></header>
+      <div class="body transcript" id="transcript-body"><p class="empty">No turns yet.</p></div>
+    </section>
+  </div>
+
+  <div class="col col-c">
+    <section class="panel" id="p-overrides">
+      <header><h2>Overrides</h2><span class="sub">each one is an operator.* event</span></header>
+      <div class="body" id="overrides-body"></div>
+    </section>
+    <section class="panel" id="p-outbox">
+      <header><h2>Outbox</h2><span class="badge fake" id="outbox-fake" hidden>fake mode</span><span class="pstatus" id="outbox-status"></span>
+        <button class="btn mini" id="outbox-refresh" type="button">refresh</button></header>
+      <div class="body" id="outbox-body"><p class="empty">loading…</p></div>
+    </section>
+    <section class="panel" id="p-knobs">
+      <header><h2>Model knobs</h2><span class="sub">apply to the next turn / deep task</span></header>
+      <div class="body" id="knobs-body"></div>
+    </section>
+    <section class="panel" id="p-wake">
+      <header><h2>Wake word</h2><span class="badge" id="wake-badge">no stats yet</span></header>
+      <div class="body" id="wake-body"></div>
+    </section>
+    <section class="panel" id="p-health">
+      <header><h2>Health</h2><span class="pstatus" id="health-status"></span>
+        <button class="btn mini" id="health-refresh" type="button">refresh</button></header>
+      <div class="body" id="health-body"><p class="empty">loading…</p></div>
+    </section>
+    <section class="panel" id="p-trace">
+      <header><h2>Trace</h2><span class="sub">per correlation id</span></header>
+      <div class="body" id="trace-body"></div>
+    </section>
+    <section class="panel" id="p-log">
+      <header><h2>Action results</h2><span class="sub">every console action and its answer</span></header>
+      <div class="body actlog" id="actlog-body"><p class="empty">Nothing sent yet.</p></div>
+    </section>
+  </div>
+</main>
+<div class="toast" id="toast" hidden></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

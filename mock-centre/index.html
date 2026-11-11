@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>活動報名｜秀茂坪長者中心（示範）</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="demo-ribbon" role="note">示範用 Demo · 此網站只供示範，並非真實機構</div>
+
+  <header class="site-header">
+    <div class="wrap header-row">
+      <div class="logo" aria-hidden="true">秀</div>
+      <div>
+        <p class="org">秀茂坪長者中心（示範）</p>
+        <p class="org-en">Sau Mau Ping Elderly Centre (Demo)</p>
+      </div>
+    </div>
+    <nav class="wrap nav" aria-label="主選單">
+      <span>主頁</span><span>中心簡介</span><span class="active" aria-current="page">活動報名</span><span>聯絡我們</span>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <h1>中心活動網上報名</h1>
+    <p class="lead">請填寫以下資料。報名成功後會顯示報名編號，當日請帶同編號到中心接待處登記。</p>
+
+    <!-- Variant blocks (shown by app.js for ?variant=…) -->
+    <section id="login-panel" class="panel" hidden aria-labelledby="login-title">
+      <h2 id="login-title">會員登入</h2>
+      <p>報名前請先登入會員帳戶。</p>
+      <div class="field">
+        <label for="member_id">會員編號</label>
+        <input id="member_id" name="member_id" type="text" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="member_password">密碼</label>
+        <input id="member_password" name="member_password" type="password" autocomplete="current-password">
+      </div>
+      <button type="button" class="btn secondary">登入</button>
+    </section>
+
+    <form id="signup-form" class="panel" novalidate aria-labelledby="form-title">
+      <h2 id="form-title">報名表格</h2>
+      <p class="hint"><span class="req" aria-hidden="true">*</span> 為必填項目</p>
+
+      <div class="field">
+        <label for="name_zh">姓名（中文）<span class="req" aria-hidden="true">*</span></label>
+        <input id="name_zh" name="name_zh" type="text" required maxlength="40" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="name_en">英文姓名</label>
+        <input id="name_en" name="name_en" type="text" maxlength="60" lang="en">
+      </div>
+      <div class="field">
+        <label for="age_group">年齡組別<span class="req" aria-hidden="true">*</span></label>
+        <select id="age_group" name="age_group" required>
+          <option value="">請選擇</option>
+          <option value="60-64">60–64歲</option>
+          <option value="65-69">65–69歲</option>
+          <option value="70-74">70–74歲</option>
+          <option value="75-79">75–79歲</option>
+          <option value="80-84">80–84歲</option>
+          <option value="85+">85歲或以上</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="phone">聯絡電話<span class="req" aria-hidden="true">*</span></label>
+        <input id="phone" name="phone" type="tel" required maxlength="32" autocomplete="tel"
+               aria-describedby="phone-hint">
+        <p id="phone-hint" class="hint">可填家人電話（8位數字）</p>
+      </div>
+
+      <div id="hkid-field" class="field" hidden>
+        <label for="hkid">身份證號碼<span class="req" aria-hidden="true">*</span></label>
+        <input id="hkid" name="hkid" type="text" maxlength="12">
+      </div>
+
+      <div class="field">
+        <label for="activity">活動<span class="req" aria-hidden="true">*</span></label>
+        <select id="activity" name="activity" required>
+          <option value="">請選擇</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="session">時段<span class="req" aria-hidden="true">*</span></label>
+        <select id="session" name="session" required>
+          <option value="">請先選擇活動</option>
+        </select>
+      </div>
+
+      <section id="payment-panel" class="sub" hidden aria-labelledby="pay-title">
+        <h3 id="pay-title">付款</h3>
+        <p>活動費用：港幣 $20（網上付款）</p>
+        <div class="field">
+          <label for="card_number">信用卡號碼</label>
+          <input id="card_number" name="card_number" type="text" inputmode="numeric" autocomplete="cc-number">
+        </div>
+        <div class="field">
+          <label for="card_expiry">到期日（月/年）</label>
+          <input id="card_expiry" name="card_expiry" type="text" autocomplete="cc-exp">
+        </div>
+      </section>
+
+      <section id="captcha-panel" class="sub" hidden aria-labelledby="captcha-title">
+        <h3 id="captcha-title">驗證碼 CAPTCHA</h3>
+        <div class="captcha-box" aria-hidden="true">7&nbsp;K&nbsp;4&nbsp;Q</div>
+        <div class="field">
+          <label for="captcha">請輸入上面的驗證碼</label>
+          <input id="captcha" name="captcha" type="text" class="g-recaptcha">
+        </div>
+        <label class="check"><input type="checkbox" name="not_robot"> 我不是機械人</label>
+      </section>
+
+      <div id="form-error" class="error" role="alert" hidden></div>
+      <button type="submit" id="submit-btn" class="btn">遞交報名</button>
+    </form>
+
+    <section id="confirmation" class="panel confirm" hidden aria-labelledby="ok-title">
+      <h2 id="ok-title">報名成功</h2>
+      <p role="status" id="confirm-text">報名編號：<strong id="booking-ref" data-booking-ref></strong></p>
+      <dl id="confirm-details" class="details"></dl>
+      <p class="hint">請記下報名編號。如需更改，請致電中心（示範號碼）。</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>示範用 Demo</strong> · 「秀茂坪長者中心（示範）」是虛構機構，本頁只用於阿寶示範，不會收集真實個人資料。</p>
+      <p>This is a mock site for demonstration only.</p>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

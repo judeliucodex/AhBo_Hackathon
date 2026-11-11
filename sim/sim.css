@@ -1,0 +1,54 @@
+/* Browser iPad shell: a dark tester panel beside an exact 1180 × 820 face frame. The face itself is untouched. */
+:root {
+  --bg: #111; --panel: #1b1b1b; --ink: #ECE3E7; --dim: rgba(236,227,231,.55); --line: rgba(236,227,231,.15);
+  --green: #5bd08a; --amber: #FFC46B; --red: #ff6b6b;
+  color-scheme: dark;
+}
+html, body { height: 100%; margin: 0; background: var(--bg); color: var(--ink); font: 13px/1.4 system-ui, -apple-system, sans-serif; }
+body { display: grid; grid-template-columns: minmax(0, 1fr) 360px; overflow: hidden; }
+
+/* The iframe is laid out at the real iPad size (points) and scaled to fit, so vmin inside the face is exact. */
+.screen { position: relative; min-width: 0; overflow: hidden; }
+.bezel {
+  position: absolute; left: 50%; top: 50%; width: 1180px; height: 820px;
+  transform: translate(-50%, -50%) scale(var(--k, .5)); transform-origin: 50% 50%;
+  border: 14px solid #2a2a2a; border-radius: 30px; overflow: hidden; background: #000;
+}
+.bezel.portrait { width: 820px; height: 1180px; }
+.bezel iframe { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+
+.panel { background: var(--panel); border-left: 1px solid var(--line); overflow: auto; padding: 14px 16px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+h1 { font-size: 14px; margin: 0; }
+h2 { font-size: 12px; margin: 16px 0 6px; color: var(--dim); letter-spacing: .04em; display: flex; align-items: center; gap: 8px; }
+.pill { font: 600 11px system-ui; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--line); color: var(--dim); }
+.pill[data-state="online"] { color: #000; background: var(--green); border-color: var(--green); }
+.pill[data-state="offline"], .pill[data-state="closed"] { color: #000; background: var(--amber); border-color: var(--amber); }
+.pill[data-state="auth_failed"] { color: #000; background: var(--red); border-color: var(--red); }
+
+.facts { display: grid; grid-template-columns: 70px 1fr; gap: 3px 8px; margin: 12px 0; font-size: 12px; }
+.facts dt { color: var(--dim); }
+.facts dd { margin: 0; overflow-wrap: anywhere; }
+.facts dd.on { color: var(--green); }
+
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+button { font: 600 12px system-ui; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 99px; padding: 6px 11px; cursor: pointer; }
+button:hover { border-color: var(--dim); }
+button.primary { background: var(--ink); color: #000; border-color: var(--ink); }
+button.ok { font-size: 15px; padding: 8px 18px; border-color: var(--amber); color: var(--amber); }
+button.mini { padding: 1px 8px; font-size: 10px; }
+.check { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; cursor: pointer; }
+
+.say { display: flex; gap: 6px; }
+.say input { flex: 1; min-width: 0; background: #000; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: 15px system-ui, "PingFang HK", "Noto Sans HK", sans-serif; }
+.say.session input { border-color: var(--green); }
+.hint { margin: 5px 0 0; font-size: 11px; color: var(--dim); }
+.talk { margin-top: 12px; }
+
+#log { font: 11px/1.45 ui-monospace, Menlo, monospace; color: var(--dim); white-space: pre-wrap; word-break: break-all; max-height: 46vh; overflow: auto; background: #000; border-radius: 8px; padding: 8px; }
+#log .in { color: #9ecbff; } #log .out { color: #b5e8b0; } #log .face { color: #e0c8f0; } #log .err { color: var(--red); } #log .note { color: var(--amber); }
+
+@media (max-width: 900px) {
+  body { grid-template-columns: 1fr; grid-template-rows: 60vh auto; overflow: auto; }
+  .panel { border-left: 0; border-top: 1px solid var(--line); }
+}

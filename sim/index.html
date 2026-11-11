@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ah Bo Browser iPad</title>
+<link rel="stylesheet" href="sim.css">
+</head>
+<body>
+<!-- Browser iPad (PRD §26.3; the PRD calls it sim/ipad.html, served as /sim/ → this file).
+     The face is /face/index.html in an iframe, untouched. Everything on the right is for the tester only. -->
+<main class="screen" id="screen">
+  <div class="bezel" id="bezel"><iframe id="face" title="Ah Bo face" allow="autoplay"></iframe></div>
+</main>
+<aside class="panel">
+  <header>
+    <h1>Ah Bo · browser iPad</h1>
+    <span class="pill" id="conn" data-state="connecting">connecting</span>
+  </header>
+
+  <dl class="facts">
+    <dt>device</dt><dd id="devId">–</dd>
+    <dt>clips</dt><dd id="clipVer">–</dd>
+    <dt>session</dt><dd id="sess">none</dd>
+    <dt>wake</dt><dd id="wake">on (touch only: wake_engine none)</dd>
+    <dt>audio</dt><dd id="audioState">locked until you click</dd>
+  </dl>
+
+  <div class="row">
+    <button id="rot" type="button">Rotate</button>
+    <button id="reloadFace" type="button">Reload face</button>
+    <button id="sound" type="button">Enable sound</button>
+    <label class="check"><input id="camera" type="checkbox"> Camera</label>
+  </div>
+
+  <h2>王婆婆講：</h2>
+  <form id="sayForm" class="say" autocomplete="off">
+    <input id="sayText" type="text" lang="zh-HK" placeholder="阿寶，我幾時食藥呀？" aria-label="王婆婆講">
+    <button id="sayBtn" class="primary" type="submit">Send</button>
+  </form>
+  <p class="hint" id="sayHint">Text is off until a text session opens: tap the face to wake Ah Bo.</p>
+
+  <div class="row">
+    <button id="okBtn" class="ok" type="button">我冇事</button>
+    <button id="tapBtn" type="button">Tap face</button>
+  </div>
+  <p class="hint">Tapping the face itself also works: while idle it wakes Ah Bo.</p>
+
+  <div class="talk" id="talkBox" hidden>
+    <label class="check"><input id="talk" type="checkbox"> Talk (browser mic)</label>
+    <p class="hint">Joins the LiveKit room for voice sessions (needs real LiveKit keys on the server).</p>
+  </div>
+
+  <h2>Log <button id="clearLog" class="mini" type="button">clear</button></h2>
+  <div id="log" aria-live="off"></div>
+</aside>
+<script type="module" src="sim.js"></script>
+</body>
+</html>

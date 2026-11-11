@@ -1,0 +1,104 @@
+/* 秀茂坪長者中心（示範）: a plain, high-contrast community-centre look. No external assets. */
+:root {
+  --ink: #1f2a2e;
+  --muted: #56636a;
+  --brand: #1d6b5a;
+  --brand-ink: #ffffff;
+  --accent: #f2b33d;
+  --paper: #ffffff;
+  --page: #f3f1ea;
+  --line: #cfd6d3;
+  --error: #b3261e;
+  --ok: #1e7b34;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 18px; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--page);
+  font-family: "Noto Sans TC", "Noto Sans CJK TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
+  line-height: 1.6;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+.demo-ribbon {
+  background: var(--accent);
+  color: #2b2100;
+  text-align: center;
+  font-weight: 700;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+.site-header { background: var(--brand); color: var(--brand-ink); }
+.header-row { display: flex; align-items: center; gap: 14px; padding-top: 14px; padding-bottom: 10px; }
+.logo {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--brand-ink); color: var(--brand);
+  display: grid; place-items: center; font-size: 1.6rem; font-weight: 800;
+}
+.org { margin: 0; font-size: 1.35rem; font-weight: 700; }
+.org-en { margin: 0; font-size: 0.8rem; opacity: 0.85; }
+.nav { display: flex; gap: 18px; padding-bottom: 10px; font-size: 0.9rem; flex-wrap: wrap; }
+.nav span { opacity: 0.85; }
+.nav .active { opacity: 1; font-weight: 700; border-bottom: 3px solid var(--accent); }
+
+h1 { font-size: 1.6rem; margin: 26px 0 6px; }
+.lead { margin-top: 0; color: var(--muted); }
+
+.panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin: 18px 0;
+}
+.panel h2 { margin: 0 0 8px; font-size: 1.25rem; }
+.sub { border-top: 1px dashed var(--line); margin-top: 14px; padding-top: 10px; }
+.sub h3 { margin: 0 0 6px; font-size: 1.05rem; }
+
+.field { margin: 14px 0; }
+.field label { display: block; font-weight: 700; margin-bottom: 4px; }
+input[type=text], input[type=tel], input[type=password], select {
+  width: 100%;
+  font: inherit;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+}
+input:focus, select:focus { outline: 3px solid var(--accent); border-color: var(--brand); }
+.req { color: var(--error); margin-left: 2px; }
+.hint { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
+.check { display: flex; gap: 8px; align-items: center; font-weight: 400; }
+
+.btn {
+  font: inherit; font-weight: 700;
+  background: var(--brand); color: var(--brand-ink);
+  border: 0; border-radius: 10px;
+  padding: 12px 28px; margin-top: 8px; cursor: pointer;
+}
+.btn.secondary { background: #e7ece9; color: var(--ink); }
+.btn[disabled] { opacity: 0.6; cursor: wait; }
+
+.error { color: var(--error); font-weight: 700; margin: 10px 0; }
+
+.confirm { border: 2px solid var(--ok); }
+.confirm h2 { color: var(--ok); }
+#booking-ref { font-size: 1.4rem; letter-spacing: 1px; }
+.details { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 12px 0; }
+.details dt { color: var(--muted); }
+.details dd { margin: 0; font-weight: 700; }
+
+.captcha-box {
+  display: inline-block; padding: 8px 18px; margin: 4px 0;
+  font: italic 700 1.4rem monospace; letter-spacing: 4px;
+  background: repeating-linear-gradient(45deg, #ddd 0 6px, #f5f5f5 6px 12px);
+  border-radius: 6px;
+}
+
+.site-footer { border-top: 1px solid var(--line); margin-top: 30px; padding: 14px 0 24px; font-size: 0.85rem; color: var(--muted); }
+.site-footer p { margin: 4px 0; }
