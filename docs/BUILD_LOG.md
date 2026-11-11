@@ -158,3 +158,6 @@ console. Every GLM deliverable is reviewed, tested and committed by Claude befor
   rejects it (`make doctor` reports it).
 - VERIFY when the key arrives: the Haiku id `claude-haiku-5-5` in Opper's catalogue (`GET /v3/models`), thinking
   field accepted, image input accepted, tool calling on all three models.
+- VERIFY (11 Nov, free model-list call `GET /v3/compat/models`, 1,540 models): exact ids `deepseek-v4.1-flash`,
+  `claude-sonnet-5-5` and `claude-haiku-5-5` are all present on the owner's Opper account; the key is a project key
+  (accepted). Not yet verified (needs a paid call, owner go-ahead): thinking field, tool calling, image input.
