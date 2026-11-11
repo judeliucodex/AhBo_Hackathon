@@ -46,7 +46,7 @@ async def test_fake_call_sequence_and_twiml(system):
     rows = twilio_rows(s)
     assert len(rows) == 1
     r = rows[0]
-    assert r["fake"] and r["to_contact"] == "c_ecs"
+    assert r["fake"] and r["to_contact"] == "c_chun"      # owner rule 11 Nov: the caregiver is called
     twiml = r["payload"]["twiml"]
     assert '<Play loop="2">' in twiml and "<Gather" in twiml and "/twilio/gather" in twiml
     statuses = [e["payload"]["status"] for e in s.events("phone.call_status")]
