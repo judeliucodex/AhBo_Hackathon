@@ -175,7 +175,8 @@ what to add.
 
 ## 5a. Owner decisions 11 Nov (BUILD_LOG §8)
 - [x] Fall: OK + camera not showing a problem → Telegram INFO only; real problem → call 阿珍 (not the centre). Done + tested (`tests/kernel/test_fall_owner_rules.py`).
-- [ ] Telegram bot = whole caregiver/admin interface (settings: meds, calendar, quiet hours, check-ins, contacts; demo controls). Needs: review GLM Links (04) first, then build (GLM hand-off 06 or Claude).
+- [x] GLM Links (04) safety-reviewed + committed `c1a400c` (dial guard, allowlist, webhook secret, Twilio signatures OK; note: 8-digit numbers ending 999 without +852 are refused — fail-safe).
+- [ ] Telegram bot = whole caregiver/admin interface — **Claude agent building** (owner chose Claude): menus, view/edit meds, calendar, quiet hours, check-ins, contacts (E.164, INV-9, verified only after confirm + Twilio caller-ID check), demo controls, settings overlay `settings_store.py`, 「打俾媽媽」 → 「錄段聲俾媽媽」, deletes `operator-ui/`, `/` → `/sim/`. After it lands: review, then (owner OK) set webhook + un-fake telegram.
 - [ ] Drop `operator-ui/` (GLM 03) — don't commit it; G3 visual check uses /sim/ + the scenario API instead.
 - Note: my edits to GLM tests `tests/links/test_fakes.py` and `tests/ops/test_render_fixed.py` (c_chun, new P1 wording) go in with those reviews.
 
