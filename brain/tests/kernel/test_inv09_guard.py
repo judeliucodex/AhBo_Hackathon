@@ -34,7 +34,7 @@ async def test_fall_never_calls_bad_contacts(kh):
                "('c_999','x','emergency_centre_sim','999',1,0), ('c_unv','y','family','+85291234567',0,0), "
                "('c_ctr','z','centre','+85291234568',1,0), ('c_fw','w','family','＋８５２ ９９９',1,0)")
     allowed = {c["id"] for c in call_order(h.kernel.ctx())}
-    assert allowed == {"c_ecs", "c_chun"}
+    assert allowed == {"c_chun"}                  # owner rule 11 Nov: only the caregiver is called
     await h.kernel.process(__import__("ahbo.core.events", fromlist=["Event"]).Event(
         type="sensor.fall_suspected", source="beacon", payload={}))
     assert await until(lambda: inc(h)["state"] in ("ESCALATING", "REASSURING"), 8)
@@ -42,4 +42,4 @@ async def test_fall_never_calls_bad_contacts(kh):
     for _ in range(4):
         await timer(h, f"fall:tack:{iid}", incident_id=iid)
     called = [c["payload"]["contact_id"] for c in of(h, "phone.call")]
-    assert called == ["c_ecs", "c_chun", "c_ecs"] and set(called) <= {"c_ecs", "c_chun"}
+    assert called == ["c_chun", "c_chun", "c_chun"] and set(called) <= {"c_chun"}

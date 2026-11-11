@@ -618,4 +618,17 @@ class FakeVision:
 
     async def describe(self, photo_path: Path, *, correlation_id: str | None = None) -> str | None:
         await asyncio.sleep(self.delay_s)
-        return self.NOTE
+        from . import runtime
+        return fake_vision_note(runtime._db) or self.NOTE
+
+
+FAKE_VISION_KEY = "fake_vision_note"   # kv: scenario-chosen fake camera result (S4-OK: she is up and fine)
+FAKE_VISION_FINE = "見到婆婆坐喺度，睇落冇事"
+
+
+def fake_vision_note(db) -> str | None:
+    """Fake mode only: the camera note the current demo scenario wants (None = the PRD default, a fall)."""
+    try:
+        return (db.kv_get(FAKE_VISION_KEY) or None) if db is not None else None
+    except Exception:
+        return None

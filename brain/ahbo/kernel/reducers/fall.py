@@ -63,6 +63,25 @@ def vision_short(note: str | None) -> str | None:
     return None
 
 
+FINE_WORDS = ("冇事", "坐喺", "坐住", "企喺", "企住", "企起", "行緊", "正常", "見唔到有人", "冇人")
+
+
+def vision_verdict(note: str | None) -> str:
+    """Owner rule (11 Nov): the camera can only ADD a call (INV-2). `problem` = the note shows a fall/injury
+    (same fixed template as `vision_short`); `fine` = it shows her up and well or nobody; anything else `unclear`."""
+    if not note:
+        return "unclear"
+    if vision_short(note):
+        return "problem"
+    low = note.lower()
+    if any(w in note for w in FINE_WORDS) or any(w in low for w in ("standing", "sitting", "no one", "nobody")):
+        return "fine"
+    return "unclear"
+
+
+DECIDE_WAIT_S = 6.0      # after her 「我冇事」, how long to wait for a pending photo check before notifying
+
+
 def _steps_cfg(ctx: Any) -> dict[str, Any]:
     return ctx.config.ui_steps.get("fall") or {}
 
@@ -133,7 +152,7 @@ def _group_cmd(ctx: Any, inc: dict[str, Any]) -> Command:
     cfg = _steps_cfg(ctx)
     labels = {"photo": (cfg.get("photo", {}).get("active", "分析緊相片…"), cfg.get("photo", {}).get("default_done", "相片已送出")),
               "ask": (cfg.get("ask", {}).get("active", "等婆婆回應"), cfg.get("ask", {}).get("done", "婆婆話冇事")),
-              "call": (cfg.get("call", {}).get("active", "致電緊急中心"), cfg.get("call", {}).get("done", "已致電緊急中心")),
+              "call": (cfg.get("call", {}).get("active", "致電阿珍"), cfg.get("call", {}).get("done", "已致電阿珍")),
               "tell": (cfg.get("tell", {}).get("active", "通知阿珍"), cfg.get("tell", {}).get("done", "已通知阿珍"))}
     steps = [{"id": sid, "label": labels[sid][0], "doneLabel": labels[sid][1], "state": st}
              for sid, st in inc["steps"].items()]
@@ -286,6 +305,9 @@ def _with_corr(c: Command, inc: dict[str, Any]) -> Command:
 def resolve(state: KernelState, ctx: Any, inc: dict[str, Any], how: str) -> list[Command]:
     if inc["state"] not in PRE:
         return []
+    if vision_verdict(inc.get("vision_note")) == "problem":
+        inc["ok_how"] = how                 # she said she's fine but the photo shows a fall → still call 阿珍
+        return escalate(state, ctx, inc, "camera")
     inc["acked_by"] = how
     _to(ctx, inc, "RESOLVED_OK", how)
     cfg = _steps_cfg(ctx)
@@ -299,25 +321,44 @@ def resolve(state: KernelState, ctx: Any, inc: dict[str, Any], how: str) -> list
             out.append(c)
     out.append(_ui(inc, {"type": "mood", "mood": "warm"}))
     out += _play(ctx, inc, "F5", "F5")
-    what = {"fall": "可能跌咗一跤", "sos": "撳咗求救掣", "concern": "話身體唔舒服"}[inc["kind"]]
-    out.append(cmd("family.send", P1, inc["id"], kind="INFO", contact_ids=family_contact_ids(ctx),
-                   text=f"王婆婆{what}，之後佢話冇事（{_how_words(how)}）。阿寶會繼續陪住佢。",
-                   incident_id=inc["id"]))
+    inc["ok_how"] = how
+    if inc.get("vision_requested") and not inc.get("vision_note"):
+        inc["decide_pending"] = True        # the photo check is still running: decide when it lands (≤ 6 s)
+        out.append(_timer(inc, "decide", DECIDE_WAIT_S))
+    else:
+        out.append(_ok_info(ctx, inc))
     return out
 
 
+def _ok_info(ctx: Any, inc: dict[str, Any]) -> Command:
+    """She's OK and the camera shows no problem → Telegram notification only, no call (owner rule 11 Nov)."""
+    inc["decide_pending"] = False
+    what = {"fall": "可能跌咗一跤", "sos": "撳咗求救掣", "concern": "話身體唔舒服"}[inc["kind"]]
+    verdict = vision_verdict(inc.get("vision_note"))
+    cam = {"fine": "相片睇落冇問題", "unclear": "相片未能確認"}.get(verdict, "")
+    text = f"王婆婆{what}，之後佢話冇事（{_how_words(inc.get('ok_how') or '')}）"
+    text += f"，{cam}。" if cam else "。"
+    text += "阿寶會繼續陪住佢。如有需要可以撳「打俾媽媽」。"
+    payload: dict[str, Any] = {"kind": "INFO", "contact_ids": family_contact_ids(ctx), "text": text,
+                               "incident_id": inc["id"], "buttons": ["call_mum"], "time": ctx.now.strftime("%H:%M")}
+    # D15 (CONFIRMED): the photo goes to 阿珍 only on escalation, so this notice never carries it.
+    return cmd("family.send", P1, inc["id"], **payload)
+
+
 def _how_words(how: str) -> str:
-    return {"voice": "親口講", "touch": "撳咗「我冇事」掣", "operator": "操作員確認"}.get(how, how)
+    return {"voice": "親口講", "touch": "撳咗「我冇事」掣", "operator": "操作員確認"}.get(how, how or "")
 
 
 def escalate(state: KernelState, ctx: Any, inc: dict[str, Any], why: str) -> list[Command]:
-    if inc["state"] not in PRE:
+    late = why == "camera" and inc["state"] == "RESOLVED_OK"
+    if inc["state"] not in PRE and not late:
         return []
     inc["why"] = why
+    inc["decide_pending"] = False
     _to(ctx, inc, "ESCALATING", why)
     cfg = _steps_cfg(ctx)
     pr = params(ctx)
-    out = _cancel(inc, "countdown", "f3again", "photo_wait")
+    out = _cancel(inc, "countdown", "f3again", "photo_wait", "decide", "clear")
     if not inc["group"]:
         if "photo" in inc["steps"] and inc["steps"]["photo"] == "pending":
             inc["steps"]["photo"] = "active"
@@ -326,12 +367,12 @@ def escalate(state: KernelState, ctx: Any, inc: dict[str, Any], why: str) -> lis
     if inc["steps"].get("photo") == "active":
         out.append(_step(inc, "photo", "done", inc.get("vision_short") or cfg.get("photo", {}).get("default_done", "相片已送出")))
     ask_label = {"timeout": cfg.get("ask", {}).get("failed", "冇回應"), "help": "婆婆話要幫手",
-                 "operator": "操作員升級"}.get(why, cfg.get("ask", {}).get("failed", "冇回應"))
-    out += [c for c in (_step(inc, "ask", "failed", ask_label), _step(inc, "call", "active"),
+                 "operator": "操作員升級", "camera": "相片見到可能跌親"}.get(why, cfg.get("ask", {}).get("failed", "冇回應"))
+    call_label = cfg.get("call", {}).get("active", "致電阿珍")
+    out += [c for c in (_step(inc, "ask", "failed", ask_label), _step(inc, "call", "active", call_label),
                         _step(inc, "tell", "active")) if c]
-    demo = pr["f4"] == "F4"
-    out.append(_ui(inc, {"type": "card", "card": {"id": "esc_call", "kind": "action", "label": "緊急中心",
-                                                  "small": "已致電", "when": "救護車" if demo else "緊急中心"}}))
+    out.append(_ui(inc, {"type": "card", "card": {"id": "esc_call", "kind": "action", "label": "致電阿珍",
+                                                  "small": "已致電", "when": "打電話"}}))
     out.append(_ui(inc, {"type": "card", "card": {"id": "esc_tell", "kind": "message", "label": "已通知阿珍",
                                                   "small": "訊息已送出", "when": "阿珍"}}))
     calls = _call_next(ctx, inc)
@@ -346,9 +387,10 @@ def escalate(state: KernelState, ctx: Any, inc: dict[str, Any], why: str) -> lis
 
 def _alert(ctx: Any, inc: dict[str, Any]) -> Command:
     what = {"fall": "懷疑跌倒", "sos": "撳咗求救掣", "concern": "話身體唔舒服（緊急）"}[inc["kind"]]
-    why = {"timeout": "冇回應", "help": "佢話要幫手", "operator": "操作員升級"}.get(inc.get("why") or "", "需要跟進")
+    why = {"timeout": "冇回應", "help": "佢話要幫手", "operator": "操作員升級",
+           "camera": "佢話冇事，但相片見到可能跌咗喺地下"}.get(inc.get("why") or "", "需要跟進")
     src = "（操作員觸發）" if inc["source"] == "operator" else ""
-    text = f"王婆婆喺屋企{what}{src}，{why}。已致電緊急中心（模擬）。地址：{address(ctx)}"
+    text = f"王婆婆喺屋企{what}{src}，{why}。阿寶而家打電話俾你。地址：{address(ctx)}"
     payload: dict[str, Any] = {"kind": "ALERT", "contact_ids": family_contact_ids(ctx), "text": text,
                                "buttons": ["handled", "call_mum", "resolved"], "incident_id": inc["id"],
                                "time": ctx.now.strftime("%H:%M"), "address": address(ctx)}
@@ -433,7 +475,7 @@ def status_words(inc: dict[str, Any] | None) -> tuple[str, str]:
     if st in PRE:
         return st, "阿寶等緊你回應，如果冇事就講「我冇事」。"
     if st in ("ESCALATING", "REASSURING"):
-        called = "已經打咗電話俾緊急中心，" if inc["calls_placed"] else ""
+        called = "已經打咗電話俾阿珍，" if inc["calls_placed"] else ""
         return st, f"{called}已經通知咗阿珍，佢哋會盡快跟進。"
     if st == "ACKNOWLEDGED":
         return st, "阿珍收到消息，跟進緊喇。"
@@ -504,7 +546,18 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
             return escalate(state, ctx, inc, "timeout")
         if name == "f3again" and st == "AWAITING_OK":
             return _play(ctx, inc, "F3", "F3r")
+        if name == "decide" and st == "RESOLVED_OK" and inc.get("decide_pending"):
+            out = [_ok_info(ctx, inc)]          # photo check never arrived: trust her words (no photo, D15)
+            if inc.get("f5_done"):
+                out += [_ui(inc, {"type": "steps_clear", "group": GROUP}, P1)] + \
+                    close(state, ctx, inc, "resolved_ok", steps_cleared=True)
+            _save(ctx, inc)
+            return out
         if name == "clear" and st == "RESOLVED_OK":
+            inc["f5_done"] = True
+            if inc.get("decide_pending"):
+                _save(ctx, inc)
+                return []                       # close after the photo decision
             return [_ui(inc, {"type": "steps_clear", "group": GROUP}, P1)] + \
                 close(state, ctx, inc, "resolved_ok", steps_cleared=True)
         if name == "tack" and st in ("ESCALATING", "REASSURING"):
@@ -531,6 +584,15 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         _save(ctx, inc)
         if st == "PHOTO_CHECK" and inc["photo_wait"]:
             return _awaiting(state, ctx, inc)
+        if st == "RESOLVED_OK" and inc.get("decide_pending"):
+            if vision_verdict(inc["vision_note"]) == "problem":
+                return escalate(state, ctx, inc, "camera")      # raise only (INV-2)
+            out = [cmd("timer.cancel", P1, inc["id"], key=_key(inc, "decide")), _ok_info(ctx, inc)]
+            if inc.get("f5_done"):
+                out += [_ui(inc, {"type": "steps_clear", "group": GROUP}, P1)] + \
+                    close(state, ctx, inc, "resolved_ok", steps_cleared=True)
+            _save(ctx, inc)
+            return out
         return None
 
     # ---- de-escalation: deterministic signals only (INV-2)
@@ -600,6 +662,11 @@ def _loaded(kernel: Any) -> None:
         kernel._set_timer(f"fall:clear:{inc['id']}", 0.1, {"incident_id": inc["id"]}, inc["id"])
 
 
+def _fake_note(db: Any) -> str | None:
+    from ahbo.models.fakes import fake_vision_note
+    return fake_vision_note(db)
+
+
 def _fallback_vision(kernel: Any):
     """Dev/test stand-in for the models component's Vision adapter (fake mode only; any real registration replaces
     it): answers like the PRD's fake (§26.3) 1.5 s later. Registered on the target key `vision`, so a component that
@@ -609,7 +676,8 @@ def _fallback_vision(kernel: Any):
             await asyncio.sleep(1.5 * kernel.time_scale)
             iid = c.payload.get("incident_id")
             await kernel.submit(Event(type="vision.result", source="system", correlation_id=iid,
-                                      payload={"incident_id": iid, "note": FALLBACK_VISION_NOTE, "fake": True}))
+                                      payload={"incident_id": iid, "fake": True, "note":
+                                               _fake_note(kernel.db) or FALLBACK_VISION_NOTE}))
         kernel.spawn(run(), name="fallback_vision")
     return dispatch
 

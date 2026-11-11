@@ -11,7 +11,7 @@ import logging
 
 log = logging.getLogger("ahbo.kernel")
 
-ORDER = ("fall", "concern", "dose", "checkin", "action", "session", "turn", "voice", "arbiter", "misc")
+ORDER = ("fall", "concern", "dose", "checkin", "action", "family", "session", "turn", "voice", "arbiter", "misc")
 
 
 def register_all(kernel) -> list[str]:

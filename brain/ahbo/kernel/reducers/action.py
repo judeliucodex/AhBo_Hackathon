@@ -22,7 +22,7 @@ from ahbo.core.ids import new_id
 from ahbo.core.jsonutil import dumps, loads
 
 from .. import arbiter
-from ..common import family_contact_ids
+from ..common import family_contact_ids, note
 from ..state import KernelState
 
 LOW_CONFIDENCE = 0.6
@@ -130,8 +130,10 @@ def _finish(state: KernelState, ctx: Any, a: dict[str, Any], status: str, detail
     ref = _ref(detail)
     fam = family_contact_ids(ctx)
     out: list[Command] = [cmd("timer.cancel", P2, a["id"], key=f"action:timeout:{a['id']}")]
+    msg = a["kind"] == "message"
     if status == "done":
-        text = f"已幫王婆婆報名{title}（{hhmm or ''} {venue}）。" + (f"參考編號：{ref}。" if ref else "")
+        text = (f"已幫王婆婆傳咗訊息俾{title}。" if msg else
+                f"已幫王婆婆報名{title}（{hhmm or ''} {venue}）。" + (f"參考編號：{ref}。" if ref else ""))
         out.append(cmd("family.send", P2, a["id"], kind="NOTIFY", contact_ids=fam, text=text,
                        screenshots=a.get("screenshots") or [], action_id=a["id"]))
         if a["kind"] == "signup" and hhmm:
@@ -144,27 +146,73 @@ def _finish(state: KernelState, ctx: Any, a: dict[str, Any], status: str, detail
                 ctx.db.execute("INSERT INTO calendar_events(id,datetime,title,place,place_full,kind,status,source,action_id)"
                                " VALUES (?,?,?,?,?,?,?,?,?)", (new_id("cal"), dt, title, d.get("venue_short") or venue,
                                                               venue, "activity", "booked", "action", a["id"]))
-        card = {"id": f"action_{a['id']}", "kind": "action", "label": "已報名",
-                "small": f"編號 {ref}" if ref else title}
-        w = _when_words(hhmm)
-        line = LINES["done"].format(when=w, title=title) if w else f"報咗名喇，{title}到時我會提你㗎。"
+        if msg:
+            card = {"id": f"action_{a['id']}", "kind": "message", "label": "已傳訊息", "small": title[:14]}
+            line = f"已經幫你傳咗訊息俾{title}。"
+        else:
+            card = {"id": f"action_{a['id']}", "kind": "action", "label": "已報名",
+                    "small": f"編號 {ref}" if ref else title}
+            w = _when_words(hhmm)
+            line = LINES["done"].format(when=w, title=title) if w else f"報咗名喇，{title}到時我會提你㗎。"
     elif status == "needs_human":
         url = d.get("url") or ""
-        text = (f"王婆婆想報名{title}（{hhmm or ''} {venue}），阿寶未能自動完成，請你幫手：{url}\n"
+        text = (f"王婆婆想傳訊息俾{title}，阿寶未能自動完成，請你幫手聯絡。" if msg else
+                f"王婆婆想報名{title}（{hhmm or ''} {venue}），阿寶未能自動完成，請你幫手：{url}\n"
                 f"已準備資料：{dumps(d.get('prefill') or {})}")
         out.append(cmd("family.send", P2, a["id"], kind="HANDOFF", contact_ids=fam, text=text,
                        screenshots=a.get("screenshots") or [], action_id=a["id"]))
-        card = {"id": f"action_{a['id']}", "kind": "message", "label": "已通知阿珍", "small": "幫手報名"}
-        line = LINES["needs_human"]
+        card = {"id": f"action_{a['id']}", "kind": "message", "label": "已通知阿珍",
+                "small": "幫手傳訊息" if msg else "幫手報名"}
+        line = "我已經叫阿珍幫手傳個訊息。" if msg else LINES["needs_human"]
     else:
+        what = f"傳訊息俾{title}" if msg else f"報名{title}"
         out.append(cmd("family.send", P2, a["id"], kind="INFO", contact_ids=fam,
-                       text=f"王婆婆想報名{title}，但係報唔到（{str(detail or '')[:80]}）。請你幫手睇下。",
+                       text=f"王婆婆想{what}，但係做唔到（{str(detail or '')[:80]}）。請你幫手睇下。",
                        action_id=a["id"]))
-        card = {"id": f"action_{a['id']}", "kind": "message", "label": "已通知阿珍", "small": "報唔到名"}
-        line = LINES["failed"]
+        card = {"id": f"action_{a['id']}", "kind": "message", "label": "已通知阿珍",
+                "small": "傳唔到訊息" if msg else "報唔到名"}
+        line = "傳唔到訊息，我叫阿珍幫你睇下。" if msg else LINES["failed"]
     item = arbiter.make_item("行動結果", P2, line, "話俾佢知結果，一句就夠。", cards=[card], corr=a["id"])
     _, cmds = arbiter.request(state, ctx, item)
     return out + cmds
+
+
+# ---------------------------------------------------------------- telegram-message actions
+MESSAGE_ROLES = ("family", "centre")      # who a templated action message may go to (never a phone-only line)
+
+
+def _message_send(state: KernelState, ctx: Any, ev: Event) -> list[Command] | None:
+    """`action.message_send` (source `action`, from `ahbo.actions.telegram_msg`): the runner built the template
+    text for an action she approved; the Kernel re-checks the action and the recipient against the `contacts`
+    allowlist before the one `family.send` that actually goes out (INV-1, INV-9/§11)."""
+    p = ev.payload
+    a = state.actions.get(str(p.get("action_id") or ""))
+    cid = str(p.get("contact_id") or "").strip()
+    reason = None
+    row = ctx.db.one("SELECT id, name, role, verified FROM contacts WHERE id=?", (cid,)) if cid else None
+    text = str(p.get("text") or "").strip()
+    if ev.source != "action":
+        reason = "bad_source"
+    elif a is None or a["state"] != "running" or not a.get("approval"):
+        reason = "not_running"
+    elif a.get("method") != "telegram_message":
+        reason = "wrong_method"
+    elif row is None or int(row.get("verified") or 0) != 1 or row.get("role") not in MESSAGE_ROLES:
+        reason = "contact_not_allowlisted"
+    elif not text or p.get("template") is not True:
+        reason = "not_templated"
+    elif a.get("message_sent"):
+        reason = "already_sent"
+    if reason:
+        note(ctx, "action.message_refused", {"action_id": p.get("action_id"), "contact_id": cid, "reason": reason},
+             ev.correlation_id or p.get("action_id"))
+        if a is not None and a["state"] not in TERMINAL and not a.get("message_sent") and reason != "bad_source":
+            a["message_refused"] = reason      # nothing went out: a later `done` from the runner → needs_human
+        return None
+    a["message_sent"] = row["id"]
+    a.pop("message_refused", None)
+    return [cmd("family.send", P2, a["id"], kind="NOTIFY", contact_ids=[row["id"]], text=text[:1000],
+                action_id=a["id"])]
 
 
 # ---------------------------------------------------------------- deep tasks
@@ -298,6 +346,8 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         if a is None or a["state"] in TERMINAL:
             return None
         status = str(p.get("status") or "")
+        if status == "done" and a.get("message_refused"):     # the runner thinks it sent; the Kernel refused
+            status, p = "needs_human", {**p, "detail": {"reason": a["message_refused"]}}
         if status in TERMINAL:
             return _finish(state, ctx, a, status, p.get("detail"), list(p.get("screenshots") or []))
         if status in ("planned", "filling", "submitted"):
@@ -322,6 +372,8 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
                     state.session.deep_running = False
                 return _deep_step_done(ctx, tid, False) or None
         return None
+    if t == "action.message_send":
+        return _message_send(state, ctx, ev)
     if t == "deep.start_request":
         res, out = _deep_start(state, ctx, ev)
         ctx.reply(ev, res)

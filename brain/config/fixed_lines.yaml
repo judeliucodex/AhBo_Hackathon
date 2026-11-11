@@ -2,11 +2,12 @@
 F1:  "哎呀！我感應到你好似跌低咗！"
 F2:  "我而家影張相睇吓先。"
 F3:  "王婆婆，如果你冇跌親，請講「我冇事」。"
-F4:  "我已經幫你叫咗救護車，同埋通知咗阿珍。唔使驚，救護車就嚟到。"      # profile: demo
-F4p: "我已經通知咗緊急中心同埋阿珍。唔使驚，好快有人嚟幫你。"            # profile: production
+# Owner decision 11 Nov: the fall call goes to 阿珍 (the caregiver), not an ambulance/centre, so F4 says that.
+F4:  "我已經打電話俾阿珍，佢就嚟幫你。唔使驚，阿寶喺度陪住你。"          # profile: demo
+F4p: "我已經打電話俾阿珍，佢好快會嚟幫你。唔使驚，阿寶喺度陪住你。"      # profile: production
 F5:  "好啦，冇事就好。阿寶喺度陪住你。"
 A1:  "王婆婆，阿珍留咗段錄音俾你。"                                    # S1 proactive announcement
 G1:  "阿寶而家諗唔到嘢，等陣再試吓好嗎？"                              # generic fallback (LLM down)
 G2:  "網絡有啲問題，不過提醒照樣會有㗎。"                              # offline
 R_TEMPLATE: "王婆婆，夠鐘食藥喇：{med_names}。"                        # rendered per dose slot
-P1_TEMPLATE: "你好，呢度係阿寶。王婆婆喺屋企懷疑跌倒，冇回應。地址：{address}。請即刻跟進。"   # phone clip
+P1_TEMPLATE: "阿珍你好，呢度係阿寶。王婆婆喺屋企懷疑跌倒，需要你即刻跟進。地址：{address}。"   # phone clip to the caregiver

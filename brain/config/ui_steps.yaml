@@ -47,5 +47,5 @@ tools:
 fall:   # the fall group (title 跌倒處理); driven by the fall reducer, not by tools
   photo: { active: "分析緊相片…", done: "{vision_short_or_default}", default_done: "相片已送出" }
   ask:   { active: "等婆婆回應", done: "婆婆話冇事", failed: "冇回應" }
-  call:  { active: "致電緊急中心", done: "已致電緊急中心", skipped: "唔使致電" }
+  call:  { active: "致電阿珍", done: "已致電阿珍", skipped: "唔使致電" }   # owner decision 11 Nov: calls go to the caregiver
   tell:  { active: "通知阿珍", done: "已通知阿珍" }

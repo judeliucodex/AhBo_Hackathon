@@ -80,10 +80,10 @@ def callable_contact(c: dict[str, Any] | None) -> bool:
 
 
 def call_order(ctx: Any) -> list[dict[str, Any]]:
-    """Contacts the fall flow may call, in order: the simulated emergency centre first, then family by priority."""
-    rows = ctx.db.query("SELECT * FROM contacts WHERE verified=1 ORDER BY priority, id")
-    ok = [r for r in rows if callable_contact(r)]
-    return sorted(ok, key=lambda r: (0 if r["role"] == "emergency_centre_sim" else 1, r.get("priority") or 9))
+    """Who the fall flow phones (owner decision 11 Nov): the caregivers only (role family), by priority. The simulated
+    emergency centre is no longer called automatically."""
+    rows = ctx.db.query("SELECT * FROM contacts WHERE verified=1 AND role='family' ORDER BY priority, id")
+    return [r for r in rows if callable_contact(r)]
 
 
 def family_contact_ids(ctx: Any) -> list[str]:

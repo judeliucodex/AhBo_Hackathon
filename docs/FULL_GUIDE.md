@@ -173,6 +173,12 @@ what to add.
 
 ---
 
+## 5a. Owner decisions 11 Nov (BUILD_LOG §8)
+- [x] Fall: OK + camera not showing a problem → Telegram INFO only; real problem → call 阿珍 (not the centre). Done + tested (`tests/kernel/test_fall_owner_rules.py`).
+- [ ] Telegram bot = whole caregiver/admin interface (settings: meds, calendar, quiet hours, check-ins, contacts; demo controls). Needs: review GLM Links (04) first, then build (GLM hand-off 06 or Claude).
+- [ ] Drop `operator-ui/` (GLM 03) — don't commit it; G3 visual check uses /sim/ + the scenario API instead.
+- Note: my edits to GLM tests `tests/links/test_fakes.py` and `tests/ops/test_render_fixed.py` (c_chun, new P1 wording) go in with those reviews.
+
 ## 5b. Owner keys status
 - Models: **Opper for everything** (BUILD_LOG §7) → needs only `OPPER_API_KEY` (replaces DEEPSEEK + ANTHROPIC keys). - LiveKit: ✅ keys in `.env` (11 Nov), verified with a free list-rooms call + local token mint; still faked (`AHBO_FAKE` keeps `livekit`) until Azure + Opper keys exist, because the voice worker needs both. Owner may rotate the secret (it was shown in a screenshot).
 - Opper: ✅ `OPPER_API_KEY` in `.env` (11 Nov); key accepted and all three model ids confirmed by a free model-list call. Models still faked until the owner OKs the first (tiny, paid) test calls. Key was pasted in chat → owner may rotate.

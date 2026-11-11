@@ -141,6 +141,8 @@ async def run_scenario(svc: Services, name: str, *, scale: float = 1.0) -> None:
             if i < len(lines) - 1:
                 await asyncio.sleep(S3_GAP_S * scale)
         return
+    from ahbo.models.fakes import FAKE_VISION_FINE, FAKE_VISION_KEY
+    svc.db.kv_set(FAKE_VISION_KEY, FAKE_VISION_FINE if name == "S4ok" else "")   # fake camera: S4-OK she's fine
     countdown = asyncio.ensure_future(_wait_ui(svc, lambda u: u.get("type") == "countdown", 60.0)) \
         if name == "S4ok" else None
     await svc.kernel.process(Event(type="sensor.fall_suspected", source="beacon", payload=dict(FALL_PAYLOAD)))
@@ -160,6 +162,15 @@ def start_scenario(svc: Services, name: str) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------- triggers (§12.1 panel 3)
+def _links():
+    """The links component's console fake controls (`ahbo.links.wiring`): `inject_voice_note(svc, file=None)`,
+    `inject_text(svc, text)`, `press(svc, outbox_id, button)`; the outbox panel uses `ahbo.links.outbox.outbox_list(db)`
+    (both wired in `routes/operator.py`). None when links is not installed (the direct-event fallback is used)."""
+    from .services import _import_optional
+    mod = _import_optional("ahbo.links.wiring")
+    return mod if mod is not None and hasattr(mod, "inject_voice_note") and hasattr(mod, "inject_text") else None
+
+
 async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
     k = svc.kernel
     kind = body.get("kind")
@@ -174,6 +185,9 @@ async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
     elif kind == "plan_now":
         await k.process(op_event("operator.plan_now"))
     elif kind == "voice_note":
+        links = _links()
+        if links is not None:               # fake inbound note from 阿珍, same path as the Telegram webhook
+            return await links.inject_voice_note(svc)
         vid = body.get("voice_id") or "vm_demo"
         await k.process(Event(type="family.voice_note", source="operator",
                               payload={"contact_id": body.get("contact_id") or "c_chun", "voice_id": vid}))
@@ -181,6 +195,9 @@ async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
         text = str(body.get("text") or "").strip()
         if not text:
             return {"ok": False, "reason": "bad_args"}
+        links = _links()
+        if links is not None:
+            return await links.inject_text(svc, text)
         await k.process(Event(type="family.text", source="operator",
                               payload={"contact_id": body.get("contact_id") or "c_chun", "text": text}))
     elif kind == "reset":

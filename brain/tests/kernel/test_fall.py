@@ -18,6 +18,13 @@ async def awaiting(h):
     assert await until(lambda: any(u.get("type") == "countdown" for u in faces(h)))
 
 
+
+def camera_fine(h) -> None:
+    """Owner rule 11 Nov: 「我冇事」 resolves only if the camera doesn't show a fall."""
+    from ahbo.models.fakes import FAKE_VISION_FINE, FAKE_VISION_KEY
+    h.kernel.db.kv_set(FAKE_VISION_KEY, FAKE_VISION_FINE)
+
+
 async def test_no_answer_path(kh):
     h = kh
     await fall(h)
@@ -34,7 +41,7 @@ async def test_no_answer_path(kh):
     assert cd == [{"type": "countdown", "id": "fall_cd", "n": 5}]
     assert of(h, "vision.analyze")
     calls = of(h, "phone.call")
-    assert [c["payload"]["contact_id"] for c in calls] == ["c_ecs"]
+    assert [c["payload"]["contact_id"] for c in calls] == ["c_chun"]      # owner rule: the caregiver only
     alert = of(h, "family.send", kind="ALERT")[0]["payload"]
     assert alert["photo_id"] == "ph_test" and alert["vision_note"] and "handled" in alert["buttons"]
     assert "地址" in alert["text"] and alert["contact_ids"] == ["c_chun"]
@@ -49,6 +56,7 @@ async def test_no_answer_path(kh):
 
 async def test_ok_by_voice_resolves(kh):
     h = kh
+    camera_fine(h)
     await fall(h)
     await awaiting(h)
     assert h.kernel.state.session.mode == "kernel_listen"
@@ -90,6 +98,7 @@ async def test_spoofed_ok_signals_do_not_resolve(kh):
 
 async def test_touch_and_operator_ok(kh):
     h = kh
+    camera_fine(h)
     await fall(h)
     await awaiting(h)
     await ev(h, "device.touch_ok", "device", device_id="ipad")
@@ -129,7 +138,7 @@ async def test_acknowledge_tack_and_close(kh):
     assert await until(lambda: inc(h)["state"] == "REASSURING", 8)
     iid = inc(h)["id"]
     await timer(h, f"fall:tack:{iid}", incident_id=iid)        # no ack within T_ack → next contact
-    assert [c["payload"]["contact_id"] for c in of(h, "phone.call")] == ["c_ecs", "c_chun"]
+    assert [c["payload"]["contact_id"] for c in of(h, "phone.call")] == ["c_chun", "c_chun"]
     await timer(h, f"fall:tack:{iid}", incident_id=iid)
     await timer(h, f"fall:tack:{iid}", incident_id=iid)        # never more than 3 calls
     assert len(of(h, "phone.call")) == 3

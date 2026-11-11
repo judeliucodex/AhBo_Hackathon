@@ -11,8 +11,21 @@ DEFAULT_ICON = {"med": "", "event": "🏥", "plan": "🚌", "voice_note": "🎙"
                 "message": "💬", "story": "📖", "today": "☀️", "photo": "📷", "activity": "🎤", "info": "ℹ️"}
 
 
+# Owner decisions that change kit labels (behaviour wins over the kit's text; kinds and order still compared).
+# 11 Nov: fall calls go to the caregiver 阿珍, not an emergency centre; in S4-OK the camera shows her fine, so the
+# photo step shows the default 「相片已送出」 (a concern-raising note would now trigger a call).
+OWNER_LABELS: dict[str, list[tuple[str, str]]] = {
+    "S4": [('"已致電緊急中心"', '"已致電阿珍"'), ('"致電緊急中心"', '"致電阿珍"'), ('"緊急中心"', '"致電阿珍"')],
+    "S4ok": [('"已致電緊急中心"', '"已致電阿珍"'), ('"致電緊急中心"', '"致電阿珍"'),
+             ('"doneLabel": "可能有人跌咗喺地下"', '"doneLabel": "相片已送出"')],
+}
+
+
 def kit_trace(name: str) -> list[dict[str, Any]]:
-    return [r["cmd"] for r in json.loads((KIT / f"{name}.json").read_text())]
+    raw = json.dumps([r["cmd"] for r in json.loads((KIT / f"{name}.json").read_text())], ensure_ascii=False)
+    for a, b in OWNER_LABELS.get(name, []):
+        raw = raw.replace(a, b)
+    return json.loads(raw)
 
 
 def from_device(sent: list[dict[str, Any]]) -> list[dict[str, Any]]:

@@ -32,6 +32,8 @@ async def test_conversation_storyboards(harness, name, anchor, lines):
 async def test_fall_storyboards(harness, name):
     h = harness
     h.kernel.clock.set_time("15:00")
+    from ahbo.models.fakes import FAKE_VISION_FINE, FAKE_VISION_KEY
+    h.kernel.db.kv_set(FAKE_VISION_KEY, FAKE_VISION_FINE if name == "S4ok" else "")
     await h.event("sensor.fall_suspected", source="beacon", beacon_id="beacon1", peak_g=3.1)
     if name == "S4ok":
         for _ in range(200):

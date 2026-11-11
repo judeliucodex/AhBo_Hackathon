@@ -22,7 +22,7 @@ async def test_fall_completes_with_models_and_livekit_down(make_system):
     for c in ("F1", "F2", "F3"):
         assert c in clips, f"{c} not played: {clips}"
     assert "F4" in clips or "F4p" in clips, clips
-    assert [c for c in s.commands("phone.call") if c["payload"].get("contact_id") == "c_ecs"], "no call to the centre"
+    assert [c for c in s.commands("phone.call") if c["payload"].get("contact_id") == "c_chun"], "no call to the caregiver"
     assert [c for c in s.commands("family.send") if c["payload"].get("kind") == "ALERT"], "no ALERT to the family"
     for c in s.commands("device.play_fixed"):
         assert c["payload"].get("clip_id"), "safety audio must be a cached clip id, never synthesised text"

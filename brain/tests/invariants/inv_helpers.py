@@ -18,7 +18,10 @@ def need(sys_: EvalSystem, *needs: str) -> None:
         pytest.skip(f"component not built yet: {', '.join(missing)}")
 
 
-async def fall(sys_: EvalSystem, source: str = "beacon") -> None:
+async def fall(sys_: EvalSystem, source: str = "beacon", camera: str = "fine") -> None:
+    """camera: what the fake camera reports (owner rule 11 Nov: a camera showing a fall turns 「我冇事」 into a call)."""
+    from ahbo.models.fakes import FAKE_VISION_FINE, FAKE_VISION_KEY
+    sys_.kernel.db.kv_set(FAKE_VISION_KEY, FAKE_VISION_FINE if camera == "fine" else "")
     if source == "operator":
         await sys_.event("operator.fall", "operator")
     else:

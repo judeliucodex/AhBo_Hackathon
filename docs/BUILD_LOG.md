@@ -161,3 +161,25 @@ console. Every GLM deliverable is reviewed, tested and committed by Claude befor
 - VERIFY (11 Nov, free model-list call `GET /v3/compat/models`, 1,540 models): exact ids `deepseek-v4.1-flash`,
   `claude-sonnet-5-5` and `claude-haiku-5-5` are all present on the owner's Opper account; the key is a project key
   (accepted). Not yet verified (needs a paid call, owner go-ahead): thinking field, tool calling, image input.
+
+## 8. Caregiver model changes (owner decisions, 11 Nov 2026)
+
+**Fall escalation (supersedes PRD §4.3.1 escalation targets and the F4 text):**
+- 「我冇事」/button **and** the camera shows no problem (`fine` or `unclear`) → RESOLVED_OK → **Telegram INFO to
+  阿珍 only** (with a 「打俾媽媽」 button; no photo, D15 kept).
+- 「我冇事」 **but** the camera shows a fall (`problem`, same fixed template as the photo step label) → escalate
+  (`why: camera`): ALERT + **Twilio call to 阿珍**. If the photo check is still running when she says OK, the face
+  resolves at once and the family message waits ≤ 6 s for it (`decide` timer); a late `problem` still escalates.
+  The camera can only add a call, never remove one (INV-2 unchanged).
+- No answer / help word → ALERT + **call 阿珍**, up to 3 calls. **The simulated emergency centre is no longer called**
+  (`kernel/common.call_order` = role family only; INV-9 guard unchanged).
+- Wording: F4/F4p now 「我已經打電話俾阿珍…」 (no ambulance claim); P1 phone clip addressed to 阿珍; escalation card
+  `esc_call` 「致電阿珍 · 已致電」; fall step `call` 「致電阿珍 / 已致電阿珍」. Golden S4/S4ok compare against the
+  kit with a documented label map (`tests/golden.py OWNER_LABELS`); kinds and order unchanged.
+- Fake camera: kv `fake_vision_note` lets the S4-OK scenario show her fine (「見到婆婆坐喺度，睇落冇事」); default
+  stays the PRD's fall note.
+
+**Telegram replaces the web operator console (decided; to build):** 阿珍's chat (8925008896) is the caregiver and
+admin chat: alerts, voice notes, viewing and editing the medicine schedule, calendar, quiet hours, check-in times and
+contacts/phone numbers, plus demo controls (reset, panic, simulate fall, S1–S4, clock, mute, status, health).
+`operator-ui/` is dropped. The operator HTTP API stays (used by the scenario runner, /sim/ and tests).
