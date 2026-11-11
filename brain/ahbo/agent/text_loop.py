@@ -45,7 +45,12 @@ class TextLoop:
 
     async def wait_idle(self, timeout: float = 60.0) -> None:
         if self.task:
-            await asyncio.wait_for(asyncio.shield(self.task), timeout)
+            try:
+                await asyncio.wait_for(asyncio.shield(self.task), timeout)
+            except asyncio.CancelledError:
+                if not self.task.cancelled():      # we were cancelled ourselves: propagate
+                    raise
+                # the turn was cancelled (barge-in / a newer turn): that turn is over, not an error
 
     def _on_close(self, c: Command) -> None:
         if self.task and not self.task.done():
