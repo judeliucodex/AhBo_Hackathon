@@ -13,9 +13,9 @@ log = logging.getLogger("ahbo.speech")
 
 def install(svc: Any) -> None:
     try:
-        from .azure_tts import get_fixed_tts
+        from .fixed_tts import get_fixed_tts
 
-        svc.extra["fixed_tts"] = get_fixed_tts(svc.settings)
+        svc.extra["fixed_tts"] = get_fixed_tts(svc.settings, getattr(svc, "config", None))
         log.info("speech: fixed-clip TTS adapter: %s", type(svc.extra["fixed_tts"]).__name__)
     except Exception:
         # no adapter is not fatal: render_fixed falls back to FakeTTS, safety audio never needs TTS (INV-3)

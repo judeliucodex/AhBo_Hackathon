@@ -223,3 +223,37 @@ def test_set_webhook_builds_the_request_but_never_runs_it(client):
     assert req["json"]["url"] == "https://test.invalid/telegram/webhook"
     assert req["json"]["secret_token"] == svc.settings.telegram_webhook_secret
     assert "setWebhook" in req["url"]
+
+
+# ---------------------------------------------------------------- voice-note transcript (ElevenLabs batch, real speech)
+async def test_voice_note_transcript_is_traditional_when_speech_is_real(tmp_path):
+    import dataclasses
+    from types import SimpleNamespace
+
+    import httpx
+
+    from ahbo.core.config import load_config
+
+    seen = []
+
+    def handler(req):
+        seen.append(req)
+        return httpx.Response(200, json={"language_code": "yue", "language_probability": 1.0,
+                                         "text": "妈，记得食饭呀！"})
+
+    settings = dataclasses.replace(make_settings(tmp_path), fake=frozenset(), elevenlabs_api_key="sk_test")
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        svc = SimpleNamespace(settings=settings, config=load_config(), extra={"elevenlabs_http": http})
+        assert await telegram.transcribe_voice_note(svc, b"OggS", "vm.ogg") == "媽，記得食飯呀！"
+        body = seen[0].content.decode("utf-8", "replace")
+        assert 'name="model_id"\r\n\r\nscribe_v2' in body and 'name="language_code"\r\n\r\nyue' in body
+
+    def failing(req):
+        return httpx.Response(500, text="boom")
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(failing)) as http:
+        svc = SimpleNamespace(settings=settings, config=load_config(), extra={"elevenlabs_http": http})
+        assert await telegram.transcribe_voice_note(svc, b"OggS", "vm.ogg") is None      # failure → no transcript
+    fake = SimpleNamespace(settings=dataclasses.replace(settings, fake=frozenset({"speech"})), config=load_config(),
+                           extra={})
+    assert await telegram.transcribe_voice_note(fake, b"OggS", "vm.ogg") is None          # fake mode: never called

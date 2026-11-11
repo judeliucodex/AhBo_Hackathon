@@ -62,7 +62,7 @@ def test_plan_texts_renders_slots_and_phone_clip(tmp_path: Path) -> None:
     assert texts["R_s_0800"] == "王婆婆，夠鐘食藥喇：糖尿藥。"
     # P1 carries the resident address from the resident table
     assert "九龍觀塘秀茂坪示範邨 12 樓 1203 室（示範地址）" in texts[PUBLIC_CLIP_ID]
-    assert texts[PUBLIC_CLIP_ID].startswith("你好，呢度係阿寶。")
+    assert texts[PUBLIC_CLIP_ID].startswith("阿珍你好，呢度係阿寶。")       # phone clip to the caregiver (11 Nov)
 
 
 def test_version_changes_with_texts_voice_mode() -> None:

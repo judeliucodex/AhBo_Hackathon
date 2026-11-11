@@ -69,3 +69,48 @@ async def test_session_run_handles_pull_items():
     await run.handle({"kind": "close"})
     assert run.session.calls == [("reply", {"instructions": "[阿寶系統｜提醒｜唔係王婆婆講嘅] x。"}), ("interrupt", True)]
     assert run.mode == "paused" and run.closed.is_set()
+
+
+# ---------------------------------------------------------------- ElevenLabs switch (BUILD_LOG §8)
+class _Alt:
+    def __init__(self, text: str):
+        self.text = text
+
+
+class _Ev:
+    def __init__(self, *texts: str):
+        self.alternatives = [_Alt(t) for t in texts]
+
+
+def test_hk_event_converts_every_transcript_to_traditional():
+    ev = worker.hk_event(_Ev("阿宝，我几时食药啊？", "我没事"))
+    assert [a.text for a in ev.alternatives] == ["阿寶，我幾時食藥啊？", "我沒事"]
+    assert worker.hk_event("喂阿宝") == "喂阿寶"
+    empty = _Ev()
+    assert worker.hk_event(empty) is empty
+
+
+def test_stage3_accepts_a_converted_simplified_wake():
+    v, rem = worker.stage3_decision("wakeword", None, worker.hk_event("喂阿宝，今日几号呀"))
+    assert v == "accept" and rem.lstrip("，") == "今日幾號呀"
+
+
+def test_components_build_in_the_agent_image(monkeypatch):
+    """Runs only where livekit-agents is installed (ahbo-agent): STT/TTS construct with ElevenLabs only."""
+    pytest.importorskip("livekit.plugins.elevenlabs")
+    import dataclasses
+
+    from ahbo.core.settings import load_settings
+    from ahbo.speech.config import speech_cfg
+
+    s = dataclasses.replace(load_settings(), elevenlabs_api_key="sk_test", elevenlabs_voice_id="VOICE",
+                            azure_speech_key="", opper_api_key="op")
+    sp = speech_cfg()
+    stt = worker.build_stt(s, sp.stt)
+    assert stt.capabilities.streaming and stt.model == sp.stt.live_model
+    tts = worker.build_tts(s, sp.tts)
+    assert type(tts).__module__.startswith("livekit.plugins.elevenlabs") and tts.model == sp.tts.live_model
+    comps = worker.build_components(s, None)
+    assert set(comps) == {"stt", "llm", "tts", "vad"}
+    with_azure = worker.build_tts(dataclasses.replace(s, azure_speech_key="az"), sp.tts)
+    assert type(with_azure).__name__ == "FallbackAdapter"

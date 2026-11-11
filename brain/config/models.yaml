@@ -34,3 +34,26 @@ vision:
   model: claude-haiku-5-5
   fallback_model: claude-sonnet-5-5
   timeout_s: 8
+# Speech (owner decision 11 Nov 2026: Azure sign-up blocked → ElevenLabs Starter). Read by ahbo.speech.config.
+# Model ids live only here. Azure stays available: set stt/tts provider to `azure` (needs AZURE_SPEECH_KEY).
+speech:
+  stt:
+    provider: elevenlabs        # elevenlabs | azure
+    live_model: scribe_v3_live  # LiveKit worker (realtime websocket); alt: scribe_v2_realtime
+    file_model: scribe_v2       # Telegram voice notes + doctor check (batch POST /v1/speech-to-text)
+    language: yue               # forced: auto-detect calls her Cantonese "Mandarin" (BUILD_LOG §8)
+    use_keyterms: true          # false = send no keyterms (A/B switch)
+    # Bias list. Never put OK phrases (我冇事…) or 食-words here: a keyterm once turned 我冇事 into 我冇食.
+    # Each term ≤ 50 chars and ≤ 4 spaces; realtime accepts ≤ 50 terms.
+    keyterms: [阿寶, 王婆婆, 阿珍, 阿明, 血壓藥, 糖尿藥, 膽固醇藥, 薄血丸, 聯合醫院, 覆診, 觀塘, 秀茂坪,
+               粵曲班, 長者中心, 救命, 起唔到身]
+  tts:
+    provider: elevenlabs        # elevenlabs | azure (Azure keeps AZURE_TTS_VOICE, rate -10 %)
+    voice_id_env: ELEVENLABS_VOICE_ID   # "CY – Calm & Friendly" (Cantonese)
+    language: yue               # sent as language_code (accepted by eleven_v4_turbo, verified 11 Nov)
+    # Measured 11 Nov from this VPS (streaming endpoint, TTFB): v4_turbo 0.11–0.34 s, turbo_v2_5 0.15 s,
+    # flash_v2_5 0.11 s (2.0 s cold), v3 0.71–1.0 s, v4 0.80 s. flash/turbo_v2_5 mangled the medicine names
+    # in an STT round-trip (Mandarin-like reading); v4_turbo read them right (同埋…㗎).
+    live_model: eleven_v4_turbo # LiveKit worker (streaming)
+    fixed_model: eleven_v4      # fixed safety clips (POST /with-timestamps, rendered once)
+    azure_fallback: true        # live only: Azure TTS as FallbackAdapter when AZURE_SPEECH_KEY is set

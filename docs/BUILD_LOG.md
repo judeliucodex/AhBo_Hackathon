@@ -188,3 +188,15 @@ contacts/phone numbers, plus demo controls (reset, panic, simulate fall, S1–S4
 - **No 07:00 day-plan precompute and no 20:00 family digest.** The scheduler no longer emits `plan.due`/`digest.due`;
   Telegram loses `/plan`, the "即刻做 07:00 計劃" button and the digest time setting; `checkins.yaml` drops `digest`.
   `get_day_plan` still answers from the seeded plan (S3 is unaffected). Morning/afternoon/evening check-ins stay.
+
+## 10. Speech on ElevenLabs (owner decision 11 Nov; built + reviewed 12 Nov)
+- `models.yaml speech:` STT ElevenLabs `scribe_v3_live` (live, `yue` forced, via `livekit-plugins-elevenlabs` 1.8.11 with
+  `model_id` overridden; every partial/final converted s2hk before captions/Kernel/LLM), `scribe_v2` for Telegram voice
+  notes; TTS voice CY (`SPRXwABrRtJGzRFBpO1H`), `live_model: eleven_v4_turbo` (TTFB ≈ 0.11 s warm, 0.20 s through the
+  plugin; only fast model that read the medicine names right), `fixed_model: eleven_v4` (with-timestamps → caption
+  segments). Azure kept as an optional provider/fallback; no Azure key needed.
+- Keyterms exclude every OK phrase and anything with 食 (a biased "OK" is the dangerous direction); test-enforced.
+- Matchers accept formal/Simplified OK forms (沒事, 我沒事, 沒問題) and more help forms (起唔到, 跌倒, 摔倒, 救護車…).
+- Telegram voice notes now get a Traditional transcript (supersedes the earlier "transcript None" note).
+- Not yet verified: a full LiveKit session end to end; Cantonese by ear (owner to compare evals/audio/tts_eleven_v4.mp3
+  with tts_eleven_v3.mp3); ElevenLabs request logging left at the plugin default.

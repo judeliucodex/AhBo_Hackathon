@@ -62,3 +62,20 @@ def test_raise_level_never_lowers():
     assert raise_level("urgent", "info") == "urgent"
     assert raise_level("info", "emergency") == "emergency"
     assert raise_level(None, None) == "info"
+
+
+# ---------------------------------------------------------------- STT spellings (ElevenLabs writes Simplified/formal)
+def test_simplified_and_formal_ok_forms():
+    for t in ("我没事", "我沒事", "沒事", "没事", "我无事", "我没有事", "没问题"):
+        assert match_ok(t, CFG) == "ok", t
+
+
+def test_simplified_and_formal_help_forms():
+    for t in ("救命", "好痛", "起唔到身", "起不了身", "我起不来", "跌倒了", "帮我", "幫我", "我摔倒了",
+              "叫救护车", "我没事，不过起不了身"):
+        assert match_ok(t, CFG) == "help", t
+
+
+def test_stt_traps_are_not_ok():
+    for t in ("冇食", "我冇食", "有冇事", "你有没有事呀", "有沒有事", "不是没事", "点会没事"):
+        assert match_ok(t, CFG) is None, t

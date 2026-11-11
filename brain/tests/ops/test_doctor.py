@@ -40,7 +40,7 @@ def test_fake_mode_rows_no_network(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     def explode(*_a, **_k):                     # any real call attempt fails the test
         raise AssertionError("doctor tried a live call in fake mode")
 
-    for name in ("_tiny_openai", "_tiny_anthropic", "_azure_tts_tiny", "_azure_stt_tiny"):
+    for name in ("_tiny_openai", "_tiny_anthropic", "_azure_tts_tiny", "_azure_stt_tiny", "_el_check"):
         monkeypatch.setattr(doctor, name, explode)
     import httpx
     monkeypatch.setattr(httpx.AsyncClient, "get", explode, raising=False)
@@ -57,10 +57,13 @@ def test_fake_mode_rows_no_network(tmp_path: Path, monkeypatch: pytest.MonkeyPat
         raise AssertionError(f"no row starting with {prefix!r}")
 
     for prefix in ("model flash (", "model flash fallback (", "model sonnet (", "model vision (",
-                   "Azure TTS", "Azure STT", "LiveKit", "Telegram webhook", "Twilio"):
+                   "ElevenLabs voice", "ElevenLabs TTS models", "ElevenLabs STT", "LiveKit", "Telegram webhook",
+                   "Twilio"):
         r = find(prefix)
         assert r["status"] == "fake", r
         assert r["detail"] == "fake (needs owner)", r
+    for item in ("Azure TTS", "Azure STT"):                       # speech provider is ElevenLabs (11 Nov)
+        assert by_item[item]["status"] == "green" and by_item[item]["detail"].startswith("optional"), by_item[item]
     # structural rows
     assert by_item["Database"]["status"] == "green"
     assert by_item["Fixed cache"]["status"] == "green"
@@ -106,17 +109,19 @@ def test_key_rows_mask_and_hint() -> None:
 
 def test_real_mode_missing_key_is_red_with_hint(tmp_path: Path) -> None:
     svc = make_svc(tmp_path)
-    settings = dataclasses.replace(svc.settings, fake=svc.settings.fake - {"models"}, deepseek_api_key="")
+    settings = dataclasses.replace(svc.settings, fake=svc.settings.fake - {"models"}, deepseek_api_key="",
+                                   opper_api_key="")
     table = asyncio.run(model_route_rows(settings, svc.config))
-    for r in table:
-        if "(deepseek/" in r["item"]:
-            assert r["status"] == "red" and "DEEPSEEK_API_KEY" in r["detail"] and HINT + "1" in r["detail"], r
+    opper_rows = [r for r in table if "(opper/" in r["item"]]
+    assert opper_rows                                    # shipped config routes every model through Opper
+    for r in opper_rows:
+        assert r["status"] == "red" and "OPPER_API_KEY" in r["detail"], r
 
 
 def test_real_mode_tiny_call_gives_model_id_and_ttft(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     svc = make_svc(tmp_path)
     settings = dataclasses.replace(svc.settings, fake=svc.settings.fake - {"models"},
-                                   deepseek_api_key="key", anthropic_api_key="key")
+                                   deepseek_api_key="key", anthropic_api_key="key", opper_api_key="key")
     monkeypatch.setattr(doctor, "_tiny_openai", lambda *a, **k: {"model_id": "deepseek-flash", "ms": 42,
                                                                  "thinking_ok": True})
     monkeypatch.setattr(doctor, "_tiny_anthropic", lambda *a, **k: {"model_id": "claude-sonnet-5-5", "ms": 30})
@@ -184,3 +189,70 @@ def test_doctor_cli_prints_table_and_latency(tmp_path: Path, monkeypatch: pytest
     assert rc == 1                        # fresh container: iPad/beacon rows are red
     settings_mod.get_settings.cache_clear()
     db.close()
+
+
+# ---------------------------------------------------------------- ElevenLabs rows (MockTransport; nothing real)
+def _el_transport(seen: list, *, voice: int = 200, stt: int = 200, models: tuple[str, ...] | None = None):
+    import httpx
+
+    from ahbo.speech.config import speech_cfg
+    tts = speech_cfg(load_config(fresh=True)).tts
+    models = models if models is not None else (tts.live_model, tts.fixed_model, "eleven_flash_v2_5")
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        seen.append(req)
+        if req.url.path.startswith("/v1/voices/"):
+            return httpx.Response(voice, json={"voice_id": "VOICEpO1H", "name": "CY - Calm & Friendly",
+                                               "labels": {"language": "yue"}})
+        if req.url.path == "/v1/models":
+            return httpx.Response(200, json=[{"model_id": m} for m in models])
+        if req.url.path == "/v1/speech-to-text":
+            return httpx.Response(stt, json={"language_code": "yue", "text": ""} if stt == 200 else {"detail": "no"})
+        return httpx.Response(404)
+    return httpx.MockTransport(handler)
+
+
+def _el_settings(tmp_path: Path, **kw):
+    svc = make_svc(tmp_path)
+    return svc, dataclasses.replace(svc.settings, fake=svc.settings.fake - {"speech"},
+                                    elevenlabs_api_key="sk_test_0123456789wxyz", elevenlabs_voice_id="VOICEpO1H", **kw)
+
+
+def test_elevenlabs_rows_real_mode_green_and_masked(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: list = []
+    monkeypatch.setattr(doctor, "EL_TRANSPORT", _el_transport(seen))
+    doctor._el_cache.clear()
+    svc, settings = _el_settings(tmp_path)
+    table = asyncio.run(doctor.elevenlabs_rows(settings, svc.config))
+    assert [r["status"] for r in table] == ["green"] * 3, table
+    assert "CY - Calm & Friendly (yue)" in table[0]["detail"]
+    assert all("sk_test" not in r["detail"] for r in table)
+    stt_req = [r for r in seen if r.url.path == "/v1/speech-to-text"][0]
+    body = stt_req.content.decode("utf-8", "replace")
+    assert 'name="language_code"\r\n\r\nyue' in body and 'name="keyterms"' not in body
+    assert all(r.headers["xi-api-key"] == "sk_test_0123456789wxyz" for r in seen)
+    n = len(seen)
+    asyncio.run(doctor.elevenlabs_rows(settings, svc.config))                 # cached: no second billable call
+    assert len(seen) == n
+    keys = {r["item"]: r for r in key_rows(settings)}
+    assert keys["ELEVENLABS_API_KEY"]["detail"] == "set (…wxyz)"
+
+
+def test_elevenlabs_rows_red_with_hints(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(doctor, "EL_TRANSPORT", _el_transport([], voice=404, stt=401, models=("eleven_flash_v2_5",)))
+    doctor._el_cache.clear()
+    svc, settings = _el_settings(tmp_path)
+    table = asyncio.run(doctor.elevenlabs_rows(settings, svc.config))
+    assert [r["status"] for r in table] == ["red"] * 3
+    assert all("→" in r["detail"] for r in table)
+    nokey = dataclasses.replace(settings, elevenlabs_api_key="")
+    assert {r["status"] for r in asyncio.run(doctor.elevenlabs_rows(nokey, svc.config))} == {"red"}
+
+
+def test_azure_rows_used_only_when_configured(tmp_path: Path) -> None:
+    svc, settings = _el_settings(tmp_path)
+    rows_ = asyncio.run(doctor.azure_rows(settings, svc.config))
+    assert {r["status"] for r in rows_} == {"green"} and all("not used" in r["detail"] for r in rows_)
+    az = {"speech": {"stt": {"provider": "azure"}, "tts": {"provider": "azure"}}}
+    rows_ = asyncio.run(doctor.azure_rows(dataclasses.replace(settings, azure_speech_key=""), az))
+    assert {r["status"] for r in rows_} == {"red"}

@@ -3,11 +3,17 @@
 agent_name `ahbo-agent` (explicit dispatch: the platform's room config dispatches it, `api/routes/device.py`).
 Per job: claim the session (`POST /internal/session/claim`), load the context (`GET /internal/context/{id}`), then
 run one AgentSession:
-  STT  Azure zh-HK (`eastasia`) + the phrase list (`config/phrases.yaml`)
-  LLM  DeepSeek Flash through the OpenAI-compatible plugin, thinking OFF (`extra_body.thinking.disabled`)
-  TTS  Azure `AZURE_TTS_VOICE` (HiuMaan) at rate 0.9 (= -10 %), wrapped in a StreamAdapter with a Chinese-punctuation
-       sentence tokenizer (Azure TTS is not streaming in this plugin), behind a FallbackAdapter to ElevenLabs only
-       when its key, voice id and model id are all set
+  STT  `models.yaml → speech.stt` (owner decision 11 Nov 2026): ElevenLabs Scribe live (`scribe_v3_live`, `yue`,
+       keyterms) through livekit-plugins-elevenlabs (`ahbo.speech.elevenlabs_stt.live_stt`; manual commits, so
+       Silero VAD + the patient endpointing below decide the end of her turn). Provider `azure` keeps the old
+       Azure zh-HK STT + phrase list. Every transcript (partial and final) is converted Simplified → Traditional
+       (`ahbo.speech.transcript.to_hk`, OpenCC s2hk + the spoken filter's shield list) in `stt_node`, so captions,
+       the Kernel, Stage 3 and the LLM never see Simplified text (INV-10).
+  LLM  Flash through the OpenAI-compatible plugin (Opper route), thinking OFF (`extra_body.thinking.disabled`)
+  TTS  `speech.tts`: ElevenLabs streaming, the CY voice (`ELEVENLABS_VOICE_ID`), `live_model`, `language_code=yue`,
+       with the Chinese-punctuation sentence tokenizer (auto_mode: one sentence per flush, §24.5). Azure TTS
+       (HiuMaan, rate 0.9, StreamAdapter) only as the FallbackAdapter's second voice when AZURE_SPEECH_KEY is set;
+       no Azure key is required any more.
   VAD  Silero; patient endpointing (0.8–3.0 s); interruption on/off from the console knob
   Transcription synced to audio (`TextOutputOptions(sync_transcription=True)`).
 Tools are proxied to `POST /internal/tool/{name}` (they execute in `api`, the single writer); her final transcripts
@@ -18,8 +24,8 @@ the length guard cuts the stream after two sentences. Stage 3 wake check (§20.4
 `ahbo.wake.matcher.stage3_check` runs on `s2_text` (her first utterance; the first final transcript if the iPad sent
 none, within `stage3_timeout_s`); a reject closes the session silently.
 
-UNRUN: no LiveKit/Azure/DeepSeek keys exist on this host. The pure helpers are unit-tested in the api image and the
-module imports cleanly in `ahbo-agent`; nothing here has carried real audio.
+Not yet run as a whole session: the pure helpers are unit-tested in the api image, the module imports and builds its
+components in `ahbo-agent`, and the ElevenLabs STT/TTS objects were exercised against the real API on 11 Nov 2026.
 """
 from __future__ import annotations
 
@@ -188,13 +194,20 @@ class InternalClient:
 
 
 # ====================================================================== LiveKit parts (ahbo-agent image only)
-def build_components(settings: Any, vad: Any) -> dict[str, Any]:
-    from livekit.agents import tokenize, tts
-    from livekit.plugins import azure, elevenlabs, openai
-    from livekit.plugins.azure.tts import ProsodyConfig
+def hk_event(ev: Any) -> Any:
+    """Convert every alternative's text of an STT SpeechEvent to Traditional (s2hk) in place; strings too."""
+    from ahbo.speech.transcript import to_hk
 
-    from ahbo.models.runtime import model_cfg
-    from ahbo.models.flash import thinking_fields
+    if isinstance(ev, str):
+        return to_hk(ev)
+    for alt in getattr(ev, "alternatives", None) or []:
+        if getattr(alt, "text", None):
+            alt.text = to_hk(alt.text)
+    return ev
+
+
+def zh_sentence_tokenizer() -> Any:
+    from livekit.agents import tokenize
 
     class ZhSentenceTokenizer(tokenize.SentenceTokenizer):
         def tokenize(self, text: str, *, language: str | None = None) -> list[str]:
@@ -203,23 +216,66 @@ def build_components(settings: Any, vad: Any) -> dict[str, Any]:
         def stream(self, *, language: str | None = None) -> Any:
             return tokenize.BufferedSentenceStream(tokenizer=split_zh_spans, min_token_len=MIN_CHUNK, min_ctx_len=4)
 
+    return ZhSentenceTokenizer()
+
+
+def build_stt(settings: Any, cfg: Any) -> Any:
+    """`speech.stt` → the LiveKit STT. ElevenLabs needs ELEVENLABS_API_KEY only."""
+    if cfg.provider == "azure":
+        from livekit.plugins import azure
+        return azure.STT(speech_key=settings.azure_speech_key, speech_region=settings.azure_speech_region,
+                         language="zh-HK", phrase_list=load_phrases() or None)
+    from ahbo.speech.elevenlabs_stt import live_stt
+    return live_stt(cfg, settings.elevenlabs_api_key)
+
+
+def _azure_tts(settings: Any) -> Any:
+    from livekit.agents import tts
+    from livekit.plugins import azure
+    from livekit.plugins.azure.tts import ProsodyConfig
+
+    a = azure.TTS(voice=settings.azure_tts_voice, language="zh-HK", prosody=ProsodyConfig(rate=0.9),
+                  speech_key=settings.azure_speech_key, speech_region=settings.azure_speech_region)
+    return tts.StreamAdapter(tts=a, sentence_tokenizer=zh_sentence_tokenizer())
+
+
+def build_tts(settings: Any, cfg: Any) -> Any:
+    """`speech.tts` → the LiveKit TTS: ElevenLabs streaming (CY voice, live model, yue), Azure only as fallback."""
+    if cfg.provider == "azure":
+        return _azure_tts(settings)
+    from livekit.agents import tts
+    from livekit.plugins import elevenlabs
+
+    voice_id = cfg.voice_id(settings)
+    if not settings.elevenlabs_api_key or not voice_id:
+        raise RuntimeError("speech.tts.provider=elevenlabs needs ELEVENLABS_API_KEY and the voice id")
+    kw: dict[str, Any] = {"voice_id": voice_id, "model": cfg.live_model, "api_key": settings.elevenlabs_api_key,
+                          "word_tokenizer": zh_sentence_tokenizer(), "auto_mode": True,
+                          "preferred_alignment": "original"}      # CJK: align captions on the original text
+    if cfg.language:
+        kw["language"] = cfg.language
+    voice: Any = elevenlabs.TTS(**kw)
+    if cfg.azure_fallback and settings.azure_speech_key:
+        voice = tts.FallbackAdapter([voice, _azure_tts(settings)])
+    return voice
+
+
+def build_components(settings: Any, vad: Any) -> dict[str, Any]:
+    from livekit.plugins import openai
+
+    from ahbo.models.flash import thinking_fields
+    from ahbo.models.runtime import model_cfg
+    from ahbo.speech.config import speech_cfg
+
+    sp = speech_cfg()
     cfg = model_cfg(None, "flash", "voice_turn")
-    stt = azure.STT(speech_key=settings.azure_speech_key, speech_region=settings.azure_speech_region,
-                    language="zh-HK", phrase_list=load_phrases() or None)
     opper = cfg.get("provider") == "opper"
     from ahbo.models.opper import OPPER_URL
     flash = openai.LLM(model=cfg.get("model", "deepseek-flash"),
                        api_key=settings.opper_api_key if opper else settings.deepseek_api_key,
                        base_url=OPPER_URL if opper else settings.deepseek_base_url,
                        **({"extra_body": thinking_fields("off")["extra_body"]} if cfg.get("send_thinking", True) else {}))
-    azure_tts = azure.TTS(voice=settings.azure_tts_voice, language="zh-HK", prosody=ProsodyConfig(rate=0.9),
-                          speech_key=settings.azure_speech_key, speech_region=settings.azure_speech_region)
-    voice: Any = tts.StreamAdapter(tts=azure_tts, sentence_tokenizer=ZhSentenceTokenizer())
-    if settings.elevenlabs_api_key and settings.elevenlabs_voice_id and settings.elevenlabs_model_id:
-        el = elevenlabs.TTS(voice_id=settings.elevenlabs_voice_id, model=settings.elevenlabs_model_id,
-                            api_key=settings.elevenlabs_api_key)
-        voice = tts.FallbackAdapter([voice, el])
-    return {"stt": stt, "llm": flash, "tts": voice, "vad": vad}
+    return {"stt": build_stt(settings, sp.stt), "llm": flash, "tts": build_tts(settings, sp.tts), "vad": vad}
 
 
 def make_agent_class():
@@ -231,11 +287,21 @@ def make_agent_class():
             super().__init__(instructions=instructions, tools=tools)
             self.run = run
 
+        async def stt_node(self, audio: Any, model_settings: Any):
+            """Her words in Traditional before anything sees them (captions, Kernel, Stage 3, LLM; INV-10)."""
+            async for ev in Agent.default.stt_node(self, audio, model_settings):
+                yield hk_event(ev)
+
         async def on_user_turn_completed(self, turn_ctx: Any, new_message: Any) -> None:
-            text = (new_message.text_content or "").strip()
+            from ahbo.speech.transcript import to_hk
+
+            raw = (new_message.text_content or "").strip()
+            text = to_hk(raw)                             # idempotent; stt_node already converted it
             r = self.run
             if not text:
                 raise StopResponse()
+            if text != raw:
+                new_message.content = [text]
             if r.stage3_pending:
                 verdict, rem = stage3_decision(r.reason, None, text)
                 r.stage3_pending = False

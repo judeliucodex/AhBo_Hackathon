@@ -18,7 +18,9 @@ from typing import Any
 from opencc import OpenCC
 
 # Question / negated forms that contain an OK phrase but are not an OK (ok_phrases.yaml `rule`).
-NOT_OK_CONTEXTS = ("有冇事", "有無事", "有沒有事", "有冇問題", "有無問題", "唔係冇事", "唔係無事", "點會冇事")
+# Simplified/formal STT spellings are covered because the text is converted (s2t) first: 有没有事 → 有沒有事.
+NOT_OK_CONTEXTS = ("有冇事", "有無事", "有沒有事", "有沒事", "有冇問題", "有無問題", "有沒有問題", "唔係冇事", "唔係無事",
+                   "唔係沒事", "不是沒事", "不是沒有事", "點會冇事", "點會沒事")
 LEVELS = ("info", "urgent", "emergency")
 
 

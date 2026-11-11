@@ -38,7 +38,8 @@ KEYS: tuple[tuple[str, str, bool, str], ...] = (
     ("deepseek_api_key", "DEEPSEEK_API_KEY", False, HINT + "1"),
     ("anthropic_api_key", "ANTHROPIC_API_KEY", False, HINT + "2"),
     ("opper_api_key", "OPPER_API_KEY", False, "SETUP.md §24.16 (optional route)"),
-    ("elevenlabs_api_key", "ELEVENLABS_API_KEY", False, HINT + "5 (optional TTS fallback)"),
+    ("elevenlabs_api_key", "ELEVENLABS_API_KEY", False, HINT + "5 (speech: TTS + STT)"),
+    ("elevenlabs_voice_id", "ELEVENLABS_VOICE_ID", False, HINT + "5 (the CY voice)"),
     ("livekit_url", "LIVEKIT_URL", False, HINT + "4"),
     ("livekit_api_key", "LIVEKIT_API_KEY", False, HINT + "4"),
     ("livekit_api_secret", "LIVEKIT_API_SECRET", False, HINT + "4"),
@@ -99,13 +100,16 @@ def _model_routes(config: Any) -> list[tuple[str, str, str]]:
 
 
 # tiny live calls — ONLY called when the provider is not faked and its key exists. Sync + blocking.
-def _tiny_openai(key: str, base_url: str, model: str, thinking: bool) -> dict[str, Any]:
+def _tiny_openai(key: str, base_url: str, model: str, thinking: bool, with_image: bool = False) -> dict[str, Any]:
     from openai import OpenAI
 
     from ahbo.models.flash import OPPER_URL, thinking_fields
     client = OpenAI(api_key=key, base_url=base_url or OPPER_URL, max_retries=0, timeout=20.0)
-    kwargs: dict[str, Any] = {"model": model, "max_tokens": 1,
-                              "messages": [{"role": "user", "content": "你好"}]}
+    content: Any = "你好"
+    if with_image:                                     # vision over Opper: the image must be accepted
+        content = [{"type": "image_url", "image_url": {"url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB"
+                    "CAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="}}, {"type": "text", "text": "你好"}]
+    kwargs: dict[str, Any] = {"model": model, "max_tokens": 1, "messages": [{"role": "user", "content": content}]}
     if thinking:
         kwargs.update(thinking_fields("off"))          # §20.3: doctor reports the thinking field accepted
     t0 = time.perf_counter()
@@ -148,7 +152,10 @@ async def model_route_rows(settings: Settings, config: Any) -> list[dict[str, st
         try:
             if provider in ("deepseek", "opper"):
                 base = settings.deepseek_base_url if provider == "deepseek" else ""
-                r = await asyncio.to_thread(_tiny_openai, key, base, model, provider == "deepseek")
+                is_flash = label == "model flash"
+                send = bool(((config.models or {}).get("flash") or {}).get("send_thinking", True))
+                r = await asyncio.to_thread(_tiny_openai, key, base, model, is_flash and send,
+                                            label.startswith("model vision"))
             elif provider == "anthropic":
                 with_image = label.startswith("model vision")
                 r = await asyncio.to_thread(_tiny_anthropic, key, model, with_image=with_image)
@@ -164,7 +171,7 @@ async def model_route_rows(settings: Settings, config: Any) -> list[dict[str, st
     return out
 
 
-# ---------------------------------------------------------------- Azure STT + TTS (§27.1 #3)
+# ---------------------------------------------------------------- Azure STT + TTS (§27.1 #3; optional since 11 Nov)
 def _azure_tts_tiny(key: str, region: str, voice: str) -> dict[str, Any]:
     from ahbo.speech.azure_tts import AzureTTS
 
@@ -193,7 +200,15 @@ def _azure_stt_tiny(key: str, region: str) -> dict[str, Any]:
             or getattr(r, "text", "") or ""}
 
 
-async def azure_rows(settings: Settings) -> list[dict[str, str]]:
+async def azure_rows(settings: Settings, config: Any = None) -> list[dict[str, str]]:
+    from ahbo.speech.config import speech_cfg
+
+    sp = speech_cfg(config)
+    if "azure" not in (sp.stt.provider, sp.tts.provider):
+        why = f"optional (not used; speech provider is {sp.tts.provider})"
+        if settings.azure_speech_key and sp.tts.azure_fallback:
+            why = "optional: live TTS fallback only (key set, not checked)"
+        return [_row("Azure TTS", GREEN, why), _row("Azure STT", GREEN, why)]
     if settings.is_fake("speech"):
         return [_row("Azure TTS", FAKE, "fake (needs owner)"), _row("Azure STT", FAKE, "fake (needs owner)")]
     key, region, voice = settings.azure_speech_key, settings.azure_speech_region, settings.azure_tts_voice
@@ -213,6 +228,101 @@ async def azure_rows(settings: Settings) -> list[dict[str, str]]:
                         f"transcribed a silent wav: {r['reason']}" + (f" {r['detail'][:80]}" if canceled else "")))
     except Exception as e:
         out.append(_row("Azure STT", RED, f"{repr(e)[:140]} → check key/region in .env ({HINT}3)"))
+    return out
+
+
+# ---------------------------------------------------------------- ElevenLabs speech (BUILD_LOG §8)
+EL_TRANSPORT: Any = None          # tests put an httpx.MockTransport here; None = the real network
+EL_CACHE_S = 3600.0               # the console refreshes health often: one STT check per hour at most
+_el_cache: dict[str, tuple[float, Any]] = {}
+
+
+def _el_client(key: str) -> Any:
+    import httpx
+
+    from ahbo.speech.config import API_BASE
+    return httpx.Client(base_url=API_BASE, timeout=15.0, headers={"xi-api-key": key}, transport=EL_TRANSPORT)
+
+
+def _silent_wav(seconds: float = 0.5, rate: int = 16000) -> bytes:
+    import io
+    import wave
+
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        w.writeframes(b"\0\0" * int(seconds * rate))
+    return buf.getvalue()
+
+
+def _el_check(key: str, voice_id: str, cfg: Any) -> dict[str, Any]:
+    """Voice lookup + model list (free reads) and a 0.5 s silent batch transcription (STT permission)."""
+    from ahbo.speech.elevenlabs_stt import batch_form
+
+    out: dict[str, Any] = {}
+    with _el_client(key) as c:
+        r = c.get(f"/voices/{voice_id}")
+        out["voice_status"] = r.status_code
+        if r.status_code == 200:
+            j = r.json()
+            out["voice_name"] = str(j.get("name") or "")
+            out["voice_lang"] = str((j.get("labels") or {}).get("language") or "")
+        r = c.get("/models")
+        out["models_status"] = r.status_code
+        if r.status_code == 200:
+            out["models"] = [str(m.get("model_id")) for m in r.json() if isinstance(m, dict)]
+        r = c.post("/speech-to-text", data=batch_form(cfg.stt, keyterms=False),
+                   files={"file": ("silence.wav", _silent_wav(), "audio/wav")})
+        out["stt_status"] = r.status_code
+        out["stt_detail"] = "" if r.status_code == 200 else r.text[:120]
+    return out
+
+
+async def elevenlabs_rows(settings: Settings, config: Any = None) -> list[dict[str, str]]:
+    from ahbo.speech.config import speech_cfg
+
+    sp = speech_cfg(config)
+    if "elevenlabs" not in (sp.stt.provider, sp.tts.provider):
+        return [_row("ElevenLabs", GREEN, "optional (not used)")]
+    names = ("ElevenLabs voice", "ElevenLabs TTS models", "ElevenLabs STT")
+    if settings.is_fake("speech"):
+        return [_row(n, FAKE, "fake (needs owner)") for n in names]
+    key, voice_id = settings.elevenlabs_api_key, sp.tts.voice_id(settings)
+    if not key or not voice_id:
+        hint = (f"ELEVENLABS_API_KEY / {sp.tts.voice_id_env} unset → .env, or put 'speech' back in AHBO_FAKE "
+                f"({HINT}5)")
+        return [_row(n, RED, hint) for n in names]
+    ck = f"{mask(key)}|{voice_id}|{sp}"
+    hit = _el_cache.get(ck)
+    try:
+        if hit and time.monotonic() - hit[0] < EL_CACHE_S:
+            r = hit[1]
+        else:
+            r = await asyncio.to_thread(_el_check, key, voice_id, sp)
+            _el_cache[ck] = (time.monotonic(), r)
+    except Exception as e:
+        return [_row(n, RED, f"{type(e).__name__} → check the network / ELEVENLABS_API_KEY ({HINT}5)") for n in names]
+    out = []
+    if r.get("voice_status") == 200:
+        out.append(_row(names[0], GREEN, f"{voice_id[-4:]}: {r.get('voice_name')} ({r.get('voice_lang') or '?'})"))
+    else:
+        out.append(_row(names[0], RED, f"HTTP {r.get('voice_status')} for voice …{voice_id[-4:]} → check "
+                                       f"{sp.tts.voice_id_env} and the key's Voices-read permission ({HINT}5)"))
+    want = [sp.tts.live_model, sp.tts.fixed_model]
+    have = set(r.get("models") or [])
+    missing = [m for m in want if m not in have]
+    if r.get("models_status") == 200 and not missing:
+        out.append(_row(names[1], GREEN, f"live {want[0]}, fixed {want[1]} present"))
+    else:
+        out.append(_row(names[1], RED, f"HTTP {r.get('models_status')}, missing {missing} → fix speech.tts in "
+                                       f"config/models.yaml or the key's Models permission ({HINT}5)"))
+    if r.get("stt_status") == 200:
+        out.append(_row(names[2], GREEN, f"{sp.stt.file_model}/{sp.stt.language} batch ok; live {sp.stt.live_model}"))
+    else:
+        out.append(_row(names[2], RED, f"HTTP {r.get('stt_status')} {r.get('stt_detail', '')[:80]} → check the "
+                                       f"key's Speech-to-Text permission / IP allowlist ({HINT}5)"))
     return out
 
 
@@ -445,7 +555,8 @@ def db_row(svc: Any) -> dict[str, str]:
 async def rows(svc: Any) -> list[dict[str, str]]:
     out = key_rows(svc.settings)
     out += await model_route_rows(svc.settings, svc.config)
-    out += await azure_rows(svc.settings)
+    out += await elevenlabs_rows(svc.settings, svc.config)
+    out += await azure_rows(svc.settings, svc.config)
     out.append(await livekit_row(svc.settings))
     out.append(await telegram_row(svc.settings))
     out += await twilio_rows(svc.settings)

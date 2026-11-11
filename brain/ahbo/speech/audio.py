@@ -54,6 +54,15 @@ def wav_to_m4a(wav: bytes, out_path: Path) -> None:
     tmp.replace(out_path)
 
 
+def pcm_to_m4a(pcm: bytes, out_path: Path, sample_rate: int = SAMPLE_RATE) -> None:
+    """Encode raw PCM s16le mono bytes (ElevenLabs `pcm_24000`) to AAC .m4a, 24 kHz mono."""
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = _tmp_for(out_path)
+    _run([_ffmpeg(), "-hide_banner", "-loglevel", "error", "-y", "-f", "s16le", "-ar", str(sample_rate), "-ac", "1",
+          "-i", "pipe:0", *AAC_ARGS, str(tmp)], stdin=pcm)
+    tmp.replace(out_path)
+
+
 def probe(path: Path) -> dict:
     """{duration, sample_rate, channels, codec} of an audio file (ffprobe)."""
     exe = shutil.which("ffprobe")

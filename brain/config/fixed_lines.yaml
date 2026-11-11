@@ -1,4 +1,4 @@
-# config/fixed_lines.yaml   (voice: AZURE_TTS_VOICE, rate -10%; ids are stable; text is spoken exactly)
+# config/fixed_lines.yaml   (voice + model: models.yaml → speech.tts (ElevenLabs CY, fixed_model); ids are stable; text is spoken exactly)
 F1:  "哎呀！我感應到你好似跌低咗！"
 F2:  "我而家影張相睇吓先。"
 F3:  "王婆婆，如果你冇跌親，請講「我冇事」。"

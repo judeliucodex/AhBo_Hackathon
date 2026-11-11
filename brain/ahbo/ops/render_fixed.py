@@ -9,7 +9,9 @@
   `public_clip_path` = `/media/public/<rand>/P1.m4a` (CONTRACTS §8).
 - The countdown ticks are NOT rendered: the face beeps itself (§4.3.1; the kit plays its own tick sound).
 - Fake mode (`settings.is_fake("speech")`) renders silent clips of 0.19 s per character with estimated caption
-  segments; real mode uses Azure TTS with word-boundary events (`ahbo.speech.azure_tts`).
+  segments; real mode uses the provider in `models.yaml → speech.tts` (`ahbo.speech.fixed_tts`): ElevenLabs
+  `fixed_model` with character timestamps (`ahbo.speech.elevenlabs_tts`, default since 11 Nov 2026) or Azure TTS
+  with word-boundary events (`ahbo.speech.azure_tts`).
 - `ensure_manifest(svc)` runs at every api start-up (called by `ahbo.api.services`) and re-renders only when the
   manifest is missing, marked `"fallback": true`, or its version (sha1 of texts+voice+mode) differs — so a text-only
   fallback manifest from the platform is replaced on the next start.
@@ -93,9 +95,9 @@ def _tts_for(svc: Any):
     tts = svc.extra.get("fixed_tts") if hasattr(svc, "extra") else None
     if tts is not None:
         return tts
-    from ahbo.speech.azure_tts import get_fixed_tts
+    from ahbo.speech.fixed_tts import get_fixed_tts
 
-    return get_fixed_tts(svc.settings)
+    return get_fixed_tts(svc.settings, getattr(svc, "config", None))
 
 
 def render_all(svc: Any, *, force: bool = False) -> dict[str, Any]:

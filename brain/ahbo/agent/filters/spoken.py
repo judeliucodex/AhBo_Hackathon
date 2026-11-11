@@ -113,13 +113,17 @@ def fix_drift(s: str) -> str:
     return _restore(p, keep)
 
 
-@lru_cache(maxsize=1)
-def _s2t():
+@lru_cache(maxsize=4)
+def _cc(variant: str):
     try:
         import opencc
-        return opencc.OpenCC("s2t")
+        return opencc.OpenCC(variant)
     except Exception:  # the package is pinned in pyproject; never fail the reply over it
         return None
+
+
+def _s2t():
+    return _cc("s2t")
 
 
 # HK colloquial characters that OpenCC would "convert" although they are correct Traditional Cantonese here
@@ -133,10 +137,11 @@ def _is_simplified_char(c: str) -> bool:
     return bool(conv) and c not in KEEP_CHARS and conv.convert(c) != c
 
 
-def to_traditional(text: str) -> str:
-    """Simplified → Traditional (OpenCC s2t, phrase-aware), only when the text has a Simplified-only character;
-    Traditional text is left exactly as written (no HK-variant rewriting such as 溫 → 温)."""
-    conv = _s2t()
+def to_traditional(text: str, variant: str = "s2t") -> str:
+    """Simplified → Traditional (OpenCC `variant`, phrase-aware), only when the text has a Simplified-only
+    character; Traditional text is left exactly as written (no HK-variant rewriting such as 溫 → 温).
+    Replies use `s2t`; live STT transcripts use `s2hk` (`ahbo.speech.transcript`). KEEP_CHARS are shielded in both."""
+    conv = _cc(variant)
     if not conv or not text or not any(_is_simplified_char(c) for c in text if "\u4e00" <= c <= "\u9fff"):
         return text
     shielded = "".join(chr(0xF000 + KEEP_CHARS.index(c)) if c in KEEP_CHARS else c for c in text)

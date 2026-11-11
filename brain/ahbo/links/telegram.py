@@ -9,7 +9,8 @@ Inbound (`POST /telegram/webhook`, this module's router):
   「呢個係私人家庭機械人。」 and is dropped — never forwarded to the Kernel/agent (INV-7), except `/whoami`
   (anyone; the reply carries their chat id only);
 - text → `family.text` (the Kernel quotes it, never an instruction) unless it answers an open bot form/confirm;
-  voice notes → OGG download → ffmpeg AAC → `voice_messages` row → `family.voice_note`; alert buttons (`b:…`) →
+  voice notes → OGG download → ElevenLabs batch STT (real speech only; stored in Traditional) → ffmpeg AAC →
+  `voice_messages` row → `family.voice_note`; alert buttons (`b:…`) →
   `family.button` (+ `answerCallbackQuery`; `confirm` confirms pending facts; `voice_mum` tells her to send a voice
   note); `/whoami /fact /story` here, every other command and every `m:` button → the caregiver/admin bot
   (`ahbo.links.bot`: menus, views, edits with 確認／取消, demo controls).
@@ -310,6 +311,36 @@ def ensure_seed_voice() -> Path:
     return SEED_VOICE
 
 
+VOICE_STT_TIMEOUT_S = 25.0
+
+
+async def transcribe_voice_note(svc: Any, audio: bytes, filename: str) -> str | None:
+    """ElevenLabs batch STT (`speech.stt.file_model`, `yue`) of a family voice note, stored in Traditional
+    (`speech.transcript.to_hk`). Only when `speech` is real and the provider is elevenlabs; any failure → None
+    (no transcript is better than a wrong one: the face then shows just the waveform card, §23.5)."""
+    settings = svc.settings
+    if settings.is_fake("speech") or not settings.elevenlabs_api_key or not audio:
+        return None
+    import asyncio
+
+    from ahbo.speech.config import speech_cfg
+    from ahbo.speech.elevenlabs_stt import transcribe_file
+    from ahbo.speech.transcript import to_hk
+
+    cfg = speech_cfg(getattr(svc, "config", None)).stt
+    if cfg.provider != "elevenlabs":
+        return None
+    try:
+        j = await asyncio.wait_for(
+            transcribe_file(audio, filename, api_key=settings.elevenlabs_api_key, cfg=cfg, content_type="audio/ogg",
+                            client=svc.extra.get("elevenlabs_http")), VOICE_STT_TIMEOUT_S)
+    except Exception as e:                   # SttError, timeout: never block the voice note itself
+        log.warning("voice-note transcription failed (%s)", type(e).__name__)
+        return None
+    text = to_hk(str(j.get("text") or "").strip())
+    return text or None
+
+
 async def _on_voice(svc: Any, contact: dict[str, Any], msg: dict[str, Any], voice: dict[str, Any]) -> str | None:
     channel = svc.extra.get("telegram_channel")
     file_id = str(voice.get("file_id") or "")
@@ -319,7 +350,9 @@ async def _on_voice(svc: Any, contact: dict[str, Any], msg: dict[str, Any], voic
     d = svc.settings.media_dir / "voice_in"
     d.mkdir(parents=True, exist_ok=True)
     raw = d / f"{vm_id}_raw.ogg"
-    raw.write_bytes(await channel.download(file_id))
+    audio = await channel.download(file_id)
+    raw.write_bytes(audio)
+    transcript = await transcribe_voice_note(svc, audio, raw.name)
     final = d / f"{vm_id}.m4a"
     duration = ffmpeg_to_aac(raw, final)
     if duration is None:                       # ffmpeg missing/unusable: keep the original OGG
@@ -330,7 +363,7 @@ async def _on_voice(svc: Any, contact: dict[str, Any], msg: dict[str, Any], voic
         "INSERT INTO voice_messages(id, direction, from_name, to_name, contact_id, file_path, mime, duration_s, "
         "transcript, received_at, telegram_file_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
         (vm_id, "in", contact["name"], "王婆婆", contact["id"], str(final), "audio/mp4" if final.suffix == ".m4a"
-         else "audio/ogg", duration, None, svc.clock.iso(), file_id))
+         else "audio/ogg", duration, transcript, svc.clock.iso(), file_id))
     await svc.kernel.submit(_ev(svc, "family.voice_note", None,
                                 {"contact_id": contact["id"], "voice_id": vm_id, "via": "telegram"}))
     return "收到你嘅語音訊息，會話俾王婆婆聽。"
