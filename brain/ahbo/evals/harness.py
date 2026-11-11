@@ -42,7 +42,12 @@ SKIP_WIRING = {"api", "evals", "core", "ops", "trace"}   # the platform (device 
 
 
 def time_scale() -> float:
-    return float(os.environ.get("AHBO_TEST_TIME_SCALE", "0.05"))
+    """Timers run 20× faster with the instant fake AI. With real models the scaled 30 s session-idle timer would close
+    the session (and cancel the turn) before the AI answers, so real models run at real speed (12 Nov fix)."""
+    if "AHBO_TEST_TIME_SCALE" in os.environ:
+        return float(os.environ["AHBO_TEST_TIME_SCALE"])
+    from ahbo.core.settings import load_settings
+    return 0.05 if load_settings().is_fake("models") else 1.0
 
 
 class RecordingDevice:
@@ -207,6 +212,7 @@ class EvalSystem:
         rows = self.db.query("SELECT * FROM outbox ORDER BY rowid")
         for r in rows:
             r["payload"] = loads(r["payload"], {})
+            r["buttons"] = loads(r.get("buttons"), []) or []
         return rows
 
     def tool_calls(self) -> list[dict[str, Any]]:
