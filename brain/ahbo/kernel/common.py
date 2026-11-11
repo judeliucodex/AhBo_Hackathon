@@ -14,8 +14,10 @@ CALLABLE_ROLES = ("emergency_centre_sim", "family")   # INV-9: the Kernel only e
 
 
 def quiet_hours(ctx: Any, at: datetime | None = None) -> bool:
-    q = ctx.config.checkins.get("quiet_hours") or {}
-    start, end = q.get("start", "22:30"), q.get("end", "07:00")
+    """Quiet hours from the caregiver's settings overlay (Telegram), defaulting to `checkins.yaml`."""
+    from ahbo.settings_store import quiet_hours as effective_quiet
+    q = effective_quiet(getattr(ctx, "db", None), ctx.config)
+    start, end = q["start"], q["end"]
     hm = (at or ctx.now).strftime("%H:%M")
     return (hm >= start or hm < end) if start > end else (start <= hm < end)
 

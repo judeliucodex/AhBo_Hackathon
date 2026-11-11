@@ -179,7 +179,7 @@ console. Every GLM deliverable is reviewed, tested and committed by Claude befor
 - Fake camera: kv `fake_vision_note` lets the S4-OK scenario show her fine (「見到婆婆坐喺度，睇落冇事」); default
   stays the PRD's fall note.
 
-**Telegram replaces the web operator console (decided; to build):** 阿珍's chat (8925008896) is the caregiver and
+**Telegram replaces the web operator console (built 11 Nov, Claude agent; reviewed):** 阿珍's chat (8925008896) is the caregiver and
 admin chat: alerts, voice notes, viewing and editing the medicine schedule, calendar, quiet hours, check-in times and
 contacts/phone numbers, plus demo controls (reset, panic, simulate fall, S1–S4, clock, mute, status, health).
 `operator-ui/` is dropped. The operator HTTP API stays (used by the scenario runner, /sim/ and tests).

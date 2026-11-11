@@ -2,7 +2,7 @@
 
 Every tick submits `schedule.tick {now}` (dose re-prompts/missed, deferred check-ins and the arbiter queue run on it),
 then the once-per-day events whose time the virtual clock has just crossed:
-`dose.due` (med_schedule), `checkin.due` (checkins.yaml), `digest.due`, `plan.due` (07:00) and `event.leave_soon`
+`dose.due` (med_schedule), `checkin.due` (checkins.yaml + the caregiver overlay, `ahbo.settings_store`), `digest.due`, `plan.due` (07:00) and `event.leave_soon`
 (10 min before a calendar `plan` item, e.g. 「9:30 出門」). It also raises `sensor.lost` once per beacon after 90 s
 without a heartbeat (console warning only, §9.1).
 
@@ -40,7 +40,8 @@ def daily_items(db: Any, config: Any, day: date, tz: Any) -> list[tuple[str, dat
     out: list[tuple[str, datetime, str, dict[str, Any]]] = []
     for r in db.query("SELECT slot_id, time FROM med_schedule WHERE active=1"):
         out.append((f"dose:{r['slot_id']}", _at(day, r["time"], tz), "dose.due", {"slot_id": r["slot_id"], "date": d}))
-    ck = config.checkins or {}
+    from ahbo.settings_store import checkin_times
+    ck = checkin_times(db, config)          # caregiver overlay (Telegram) on top of checkins.yaml
     for kind in ("morning", "afternoon", "evening"):
         if ck.get(kind):
             out.append((f"checkin:{kind}", _at(day, str(ck[kind]), tz), "checkin.due", {"kind": kind, "date": d}))

@@ -338,9 +338,9 @@ def _ok_info(ctx: Any, inc: dict[str, Any]) -> Command:
     cam = {"fine": "相片睇落冇問題", "unclear": "相片未能確認"}.get(verdict, "")
     text = f"王婆婆{what}，之後佢話冇事（{_how_words(inc.get('ok_how') or '')}）"
     text += f"，{cam}。" if cam else "。"
-    text += "阿寶會繼續陪住佢。如有需要可以撳「打俾媽媽」。"
+    text += "阿寶會繼續陪住佢。如有需要可以撳「錄段聲俾媽媽」，錄段聲俾佢。"
     payload: dict[str, Any] = {"kind": "INFO", "contact_ids": family_contact_ids(ctx), "text": text,
-                               "incident_id": inc["id"], "buttons": ["call_mum"], "time": ctx.now.strftime("%H:%M")}
+                               "incident_id": inc["id"], "buttons": ["voice_mum"], "time": ctx.now.strftime("%H:%M")}
     # D15 (CONFIRMED): the photo goes to 阿珍 only on escalation, so this notice never carries it.
     return cmd("family.send", P1, inc["id"], **payload)
 
@@ -392,7 +392,7 @@ def _alert(ctx: Any, inc: dict[str, Any]) -> Command:
     src = "（操作員觸發）" if inc["source"] == "operator" else ""
     text = f"王婆婆喺屋企{what}{src}，{why}。阿寶而家打電話俾你。地址：{address(ctx)}"
     payload: dict[str, Any] = {"kind": "ALERT", "contact_ids": family_contact_ids(ctx), "text": text,
-                               "buttons": ["handled", "call_mum", "resolved"], "incident_id": inc["id"],
+                               "buttons": ["handled", "voice_mum", "resolved"], "incident_id": inc["id"],
                                "time": ctx.now.strftime("%H:%M"), "address": address(ctx)}
     if inc.get("photo_id"):
         payload["photo_id"] = inc["photo_id"]

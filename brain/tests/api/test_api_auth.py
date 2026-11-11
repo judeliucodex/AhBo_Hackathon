@@ -111,4 +111,4 @@ def test_internal_needs_token(client):
 def test_operator_pages_after_login(client):
     login(client)
     assert client.get("/operator/", follow_redirects=False).status_code in (200, 404)
-    assert client.get("/", follow_redirects=False).headers["location"] == "/operator/"
+    assert client.get("/", follow_redirects=False).headers["location"] == "/sim/"   # owner decision 11 Nov: no web console; / goes to the browser iPad

@@ -4,7 +4,7 @@ dispatchers (real or fake channels chosen by `settings.is_fake("telegram"|"twili
 
 The console's fake controls (§26.3) call the helpers here — names/signatures matched to `ahbo.api.demo`:
 - `outbox_list(db)` → the Outbox panel (`ahbo.links.outbox.outbox_list`, re-exported);
-- `press(svc, outbox_id, button)` → press an outbox row's button: `handled/resolved/call_mum/confirm` submit
+- `press(svc, outbox_id, button)` → press an outbox row's button: `handled/resolved/voice_mum/confirm` submit
   `family.button` (source `telegram`) with `via:"operator_fake"`, so the trace stays honest about who pressed
   (INV-8); `confirm` also activates the row's pending facts; `press1` on a call row submits
   `phone.call_status {status:"acknowledged"}`;
@@ -55,6 +55,12 @@ def install(svc: Any) -> None:
     svc.extra["twilio_channel"] = tfl
     _registry["svc"] = svc               # route handlers work even without app.state.svc (tests, evals)
 
+    def _reset(_svc: Any) -> None:     # Reset demo reloads `resident`; keep the caregiver's quiet hours there
+        from .bot.changes import sync_resident_quiet
+        sync_resident_quiet(_svc)
+    if hasattr(svc, "on_reset") and _reset not in svc.on_reset:
+        svc.on_reset.append(_reset)
+
     async def _stop(_svc: Any) -> None:
         ch = _svc.extra.get("telegram_channel")
         if ch is not None and hasattr(ch, "aclose"):
@@ -84,6 +90,7 @@ async def press(svc: Any, outbox_id: str, button: str) -> dict[str, Any]:
         return {"ok": True, "button": button, "via": "operator_fake"}
     if button not in family.BUTTONS:
         return {"ok": False, "reason": "bad_button"}
+    button = family.LEGACY.get(button, button)
     payload: dict[str, Any] = {"contact_id": row.get("to_contact"), "button": button,
                                "callback_data": family.callback_data(button, outbox_id),
                                "outbox_id": outbox_id, "via": "operator_fake"}
@@ -96,8 +103,8 @@ async def press(svc: Any, outbox_id: str, button: str) -> dict[str, Any]:
     outbox.update(svc.db, outbox_id, ts=now, payload_patch={"pressed": button, "via": "operator_fake"},
                   kernel=svc.kernel)
     res = {"ok": True, "button": button, "via": "operator_fake", "confirmed": confirmed}
-    if button == "call_mum":
-        res["note"] = "call_mum 冇橋接到 iPad（v1），已如實記錄，冇撥號。"
+    if button == "voice_mum":
+        res["note"] = telegram.VOICE_MUM_REPLY + "（冇撥號）"
     return res
 
 

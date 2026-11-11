@@ -10,7 +10,7 @@ PRD references: §10 (device), §23.4 + `face/README.md` (face), §26.4 (endpoin
 
 Contents: 1 Conventions · 2 Device channel · 3 Face commands · 4 Events and commands (Kernel) · 5 Internal
 agent→api API · 6 Tools · 7 Deep result schema · 8 HTTP endpoints · 9 Operator API · 10 SQLite schema ·
-11 Config and seed formats · 12 Adapter interfaces · 13 Golden UI trace comparison
+11 Config and seed formats · 12 Adapter interfaces · 13 Golden UI trace comparison · 14 Additions after the freeze
 
 ---
 
@@ -93,6 +93,12 @@ Frame: `{"id":"<ulid>","type":"<type>", ...fields}`. (Events need no ack.)
 | `face_event` | `event`: the face event object (§3.2) | every other face event (`say_done`, `countdown_done`, `tap` on a card, `error`, `ready`) |
 | `utterance` | `text`, `final` (bool), `session_id?` | **text sessions only** (fake LiveKit, §26.3): what she "said" in the browser iPad's text box |
 | `error` | `code`, `detail` | native failure (`mic_denied`, `livekit_join_failed`, `camera_failed`, …) |
+| `settings` | `interruption_enabled` (bool) | the owner flipped the interruption toggle in the iPad's hidden settings (added 11 Nov 2026, see BUILD_LOG D-29) |
+
+`face_event` with a host-made event (added 11 Nov 2026, see BUILD_LOG D-30): `{"type":"face_event","event":
+{"type":"reminder_confirmed","slot_id":"s_1200","at":"<ISO time she tapped>","source":"touch_offline"}}` — a
+reminder she confirmed by touch while the iPad was offline (§10.4 local mirror), sent after reconnecting. The dose
+reducer marks the slot `taken_self_reported` if `at` lies within the confirm window of the slot's due time.
 
 ### 2.4 Delivery and replay
 - Every command needs an `ack` within 2 s. **P0** commands without an ack are resent (same `id`) up to 3 times
@@ -184,6 +190,25 @@ Event types (payload highlights). Bold = must exist for M1.
 | `quality.*` | agent/system | `quality.mandarin_drift`, `quality.too_long`, `quality.digits_spoken`, `quality.tool_error`, `quality.stt_low_confidence` |
 | `arbiter.decision` | system | `request`, `priority`, `outcome` (`now queued dropped`), `reason` |
 
+Additions (added 11 Nov 2026, see BUILD_LOG). "Note" = recorded with `Kernel.note(ev)`: written to the trace and the
+console stream (INV-6/INV-8) without running reducers.
+
+| type | source | payload | how |
+|---|---|---|---|
+| `arbiter.decision` | system | as above | note (never submitted; reducers don't see it) |
+| `checkin.skipped` | system | `kind` (`morning afternoon evening`), `reason` (`quiet_hours incident session_open_30min session_recent`) | note |
+| `session.closed` (field) | system/agent/operator | adds `why`: `agent` (default), `wake_rejected` (LiveKit worker's Stage 3 rejected the wake), `panic` (operator Esc) | submitted |
+| `memory.extracted` | system | `session_id`, `ok`, `reason?`, `facts_active`, `facts_pending` | submitted after `memory.session_closed` |
+| `memory.write_result` | system | `op`, `command_id`, `ok`, `id?`, `reason?` (`bad_op bad_args not_found` or a `MemoryRejected` reason) | submitted, correlated with the `memory.write` command |
+| `memory.repetition` | system | `intent`, `count` | note; the persistent `rep_<intent>` card (P2, from the 3rd same question today) links to it (INV-6) |
+| `memory.repetition_refresh` | system | `cards` (count) | note; refreshed/cleared `rep_*` cards on `schedule.tick` link to it |
+| `family.message_request` | agent | `contact_id`, `contact_name`, `kind` (`text\|voice_reply`), `text` (templated 「媽媽（王婆婆）託阿寶話你知：「…」」), `her_words`, `session_id`, `turn_id` | Kernel request from `send_message_to_family`; reply `{ok:true, contact}` / `{ok:false, reason}`. The Kernel decides and emits `family.send` (INFO) |
+| `action.message_send` | action | `action_id`, `contact_id`, `contact_name`, `text`, `template: true` | submitted by the Action Runner's `telegram_message` method; the Kernel re-checks the allowlist and emits `family.send` (a component never sends to a third party itself, INV-1) |
+| `family.send_result` | telegram | `command_id`, `ok`, `kind`, `status` (`sent failed`), `outbox_id?`, `contact_id?`, `attempts?`, `provider_id?`, `reason?`, `fake` | submitted by the Family Link, correlated with the `family.send` command |
+| `phone.call_refused` | twilio | `reason` (INV-9 guard reason), `command_id`, `incident_id?` | note; a refused call writes **no** outbox row |
+| `system.cap_exceeded` | system | `name` (cap name), `used`, `cap`, `date` | note (caps notifier, `trace/wiring.py`) |
+| `device.error` | device | `device_id`, `code`, `detail` (≤ 500 chars) | submitted by the Device Hub for the iPad `error` frame |
+
 ### 4.2 Command
 ```json
 {"id":"cmd_01J…","event_id":"evt_01J…","type":"device.play_fixed","target":"device","priority":0,
@@ -209,6 +234,7 @@ Event types (payload highlights). Bold = must exist for M1.
 | `action.run` | action | `action_id` | Action Runner |
 | `deep.start` | deep | `task_id`, `goal`, `constraints`, `session_id?` | Deep Worker |
 | `memory.write` | memory | `op`, … | Memory service |
+| `memory.write` ops (added 11 Nov 2026, see BUILD_LOG) | memory | `op` ∈ `add_fact`/`remember` {`fact`, `category?`, `source?`} · `supersede_fact` {`old_id`, `fact`, `category?`, `source?`} · `confirm_fact` {`fact_id`, `accept?`} · `add_story` {`text`, `title?`, `photo_id?`, `era?`, `topic?`, `ok_to_reminisce?`} · `mark_story_used` {`story_id`} | Memory service → `memory.write_result` |
 | `timer.set` / `timer.cancel` | kernel | `key`, `delay_s`, `data` | Kernel timers (fire `timer.fired`) |
 
 ## 5. Internal agent → api API (§26.4), `Authorization: Bearer <INTERNAL_TOKEN>`, Docker network only
@@ -249,10 +275,10 @@ Caddy never proxies `/internal/*`. In fake mode (text sessions) the same functio
 | `recall_life_story` | `topic?` | `{ok, story:{id,title,text,era,photo_url?}\|null}` | `story` card |
 | `list_voice_messages` | — | `{ok, messages:[{id,from_name,received_words,duration_s,played}], has_new, from_name}` | step + `vn_*` card |
 | `play_voice_message` | `id` | `{ok, id, started:true}` (playback is a device command; reply waits for `playback_done`) | card_update playing |
-| `send_message_to_family` | `contact` (`阿珍`), `kind: text\|voice_reply`, `text?` | `{ok, contact}` | step |
-| `deep_task` | `goal`, `constraints?` | `{ok:true, status:"started", task_id}` / `{ok:false, status:"busy"}` | step (active until result) |
+| `send_message_to_family` | `contact` (`阿珍`), `kind: text\|voice_reply`, `text?` | `{ok, contact}` — asks the Kernel via `family.message_request` (added 11 Nov 2026, see BUILD_LOG) | step |
+| `deep_task` | `goal`, `constraints?` | `{ok:true, status:"started", task_id}` / `{ok:false, status:"busy"}` / `{ok:false, status:"busy", reason:"daily_cap"}` (added 11 Nov 2026, see BUILD_LOG): `caps.yaml deep_tasks` reached today | step (active until result) |
 | `request_action` | `kind: signup\|message`, `target`, `details?` | `{ok, action_id, question}` | none |
-| `confirm_action` | `action_id`, `utterance`, `stt_confidence?` | `{ok, status:"running"}` / `{ok:false, reason:"low_confidence"\|"not_proposed"}` | step |
+| `confirm_action` | `action_id`, `utterance`, `stt_confidence?` | `{ok, status:"running"}` / `{ok:false, reason:"low_confidence"\|"not_proposed"\|"not_affirmative"}` — `not_affirmative` (added 11 Nov 2026, see BUILD_LOG): empty utterance or a negative word in it | step |
 | `raise_concern` | `level`, `category`, `reason` | `{ok, level}` (level may be raised by the red-flag matcher, never lowered) | none |
 | `get_incident_status` | — | `{ok, state, words}` (reassure mode only; otherwise `{ok:false, reason:"mode"}`) | none |
 | `show_card` | `card` (kit card object) | `{ok}` | card |
@@ -308,6 +334,8 @@ sentences); URLs only in `sources` / `signup_methods`.
 | `POST /twilio/twiml/{call_id}`, `POST /twilio/status`, `POST /twilio/gather` | Twilio signature (`X-Twilio-Signature`) | `GET /twilio/twiml/test` is a dry run (cookie) |
 | `GET /mock-centre/`, `POST /mock-centre/api/register` | none | demo registration site, labelled 示範用 Demo |
 | `/internal/*` | `INTERNAL_TOKEN` | §5; never proxied by Caddy |
+| `POST /internal/reset` (added 11 Nov 2026, see BUILD_LOG) | `INTERNAL_TOKEN` | Reset demo (same as the console button); used by `make demo-fake` → `{ok, now, ms}` |
+| `POST /internal/clock` (added 11 Nov 2026, see BUILD_LOG) | `INTERNAL_TOKEN` | body as `POST /operator/api/clock`; used by `ahbo clock` inside the api container → `{ok, now}` / 400 `bad_args` |
 
 ## 9. Operator API (cookie auth; JSON) — consumed by `operator-ui/`
 
@@ -324,6 +352,8 @@ sentences); URLs only in `sources` / `signup_methods`.
 | `GET /operator/api/trace?correlation_id=…&limit=…` | → `{events:[…], commands:[…], spans:[…]}` |
 | `GET /operator/api/health` | → doctor table `{rows:[{item, status:"green"\|"red"\|"fake", detail}]}` |
 | `GET /operator/api/fixed` | → `{clips:{id:{text,duration}}}` |
+| `POST /operator/api/reset` (added 11 Nov 2026, see BUILD_LOG) | → `{ok, now, ms}`: Reset demo — reload the seed, re-anchor relative times, clear incidents/sessions/cards/queues/timers, face `reset` + mood `idle` + `wake.enable on` (≤ 5 s) |
+| `POST /operator/api/panic` (added 11 Nov 2026, see BUILD_LOG) | → `{ok}`: Esc — `operator.panic` event, `device.stop_all` (P0), session closed with `why:"panic"`, face `reset` + mood `idle` |
 
 ## 10. SQLite schema (§14) — source: `brain/ahbo/core/db.py` (`SCHEMA_SQL`)
 
@@ -372,3 +402,63 @@ Normalisation (both sides), in order:
 6. `say_start` → `("say", from)`; text is not compared (the PRD's F5 wording wins over the kit's).
 Pass: the Kernel sequence, truncated to the kit sequence's length, equals the kit sequence. Extra commands
 after the kit's last command are allowed (e.g. REASSURING's `mood warm` after F4) and listed in the report.
+
+## 14. Additions after the freeze (added 11 Nov 2026, see BUILD_LOG)
+
+Everything here was added after components were built; each item is also marked in the section it extends.
+Source code named in brackets is authoritative.
+
+### 14.1 Incident cards and step groups (`kernel/reducers/fall.py`)
+- The persistent `incident` card's `label` / `small` per incident kind:
+  `fall` 「偵測到跌倒」/「感應器：急速下跌」 · `sos` **「求救掣」/「婆婆撳咗求救掣」** · `concern` (emergency-level
+  `agent.concern`) **「緊急關注」/「婆婆話身體唔舒服」**. Incidents triggered from the console (`source: operator`)
+  use `small` 「操作員觸發」.
+- The incident step group keeps `id:"fall"` and steps `photo, ask, call, tell` for every kind (`photo` is dropped
+  when the incident starts directly at AWAITING_OK); its `title` is
+  「跌倒處理」 for `fall` and `sos`, and **「緊急處理」** for `concern`.
+
+### 14.2 Scheduler jump rule (`kernel/scheduler.py`)
+A scheduled item (dose, check-in, leave-soon, digest, 07:00 plan) fires only when a `schedule.tick` crosses its
+due time naturally: previous tick < due ≤ now **and** the virtual clock moved ≤ 120 s since the previous tick.
+Items inside a larger jump (the operator setting the clock) are skipped, never fired in a burst; nothing fires on
+the first tick after start. Use the console's `dose_now` / `checkin_now` / `plan_now` instead.
+
+### 14.3 kv keys for the public phone clip (`ops/render_fixed.py`, `links/twilio.py`)
+- `public_clip_rand`: the random directory name under `data/media/public/` (a lowercase ULID).
+- `public_clip_path`: the URL path `/media/public/<rand>/P1.m4a` that TwiML plays (prefixed with `PUBLIC_BASE_URL`).
+Both components read and write the same format; the renderer reuses `public_clip_rand` while its directory exists.
+
+### 14.4 Fixed-clip manifest extras (`ops/render_fixed.py`)
+The manifest (§11) also lists **`clips.P1`** (the phone clip; rendered into `media/fixed/P1.m4a`, served at
+`/media/fixed/P1.m4a` and copied to the public dir) and a top-level **`"public"`** object (random dir, duration,
+segments) for the console. No Kernel code sends `play_fixed {clip_id:"P1"}`. While nothing is rendered yet the
+platform writes a text-only manifest with `"fallback": true` (doctor shows it red).
+
+### 14.5 `mock_registrations` table (`actions/mock_centre.py`)
+```sql
+CREATE TABLE IF NOT EXISTS mock_registrations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, reference TEXT UNIQUE, ts TEXT NOT NULL,
+  name_zh TEXT NOT NULL, name_en TEXT, age_group TEXT NOT NULL, phone TEXT NOT NULL,
+  activity_id TEXT NOT NULL, session TEXT NOT NULL);
+```
+Created at install time by `actions/wiring.py`, **not** in `core/db.py` and **not** in the Reset-demo tables (demo
+site data, not care data). References are `DEMO-%04d`. `GET /mock-centre/api/activities` (no auth) serves the
+centre's activities from `seed/activities.yaml`; `POST /mock-centre/api/register` refuses the `hkid`, `captcha`,
+`login` and `payment` variants with 400.
+
+### 14.6 Action status screenshots
+`action.status.screenshots` carries absolute paths `data/media/actions/<action_id>/{pre_submit,post_submit}.png`;
+the Family Link accepts them as they are.
+
+## 14. Additions after the freeze (owner decisions 11 Nov; BUILD_LOG §7–8)
+
+- **Telegram is the caregiver + admin interface**; the web operator console (`operator-ui/`) is removed. `GET /`
+  redirects to `/sim/`. The operator HTTP API (§9) remains for the scenario runner, `/sim/` and tests.
+- Events: `settings.changed {what, before, after, by}` (source `telegram`; phone numbers masked) and the note-only
+  `operator.telegram {op, args, by}` for every Telegram demo control. Telegram fall/SOS keep `source:"operator"`.
+- Alert buttons: `handled` · `voice_mum` (「錄段聲俾媽媽」, replaces `call_mum`; old `call_mum` data maps to it) ·
+  `resolved`. `press` (§9) accepts `voice_mum`.
+- kv keys: `settings_overlay` (quiet_start, quiet_end, morning, afternoon, evening, digest; defaults from
+  `checkins.yaml`, read by `kernel/common.quiet_hours` and `kernel/scheduler.daily_items`), `bot_convo:<chat_id>`
+  (multi-step edit state, 10 min), `fake_vision_note` (fake-mode camera result per scenario).
+- Fall escalation calls the caregiver (role `family`) only; see BUILD_LOG §8 for the camera rule.

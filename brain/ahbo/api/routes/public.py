@@ -76,14 +76,14 @@ def login_page(next_path: str, error: str = "", status: int = 200) -> HTMLRespon
 
 
 @router.get("/login")
-async def login_get(request: Request, next: str = "/operator/") -> Response:
+async def login_get(request: Request, next: str = "/sim/") -> Response:
     if check_session(request.app.state.svc.settings, request.cookies.get(COOKIE)):
         return RedirectResponse(safe_next(next), status_code=303)
     return login_page(next)
 
 
 @router.post("/login")
-async def login_post(request: Request, password: str = Form(""), next: str = Form("/operator/")) -> Response:
+async def login_post(request: Request, password: str = Form(""), next: str = Form("/sim/")) -> Response:
     settings = request.app.state.svc.settings
     if not request.app.state.login_limiter.allow(client_ip(request)):
         return login_page(next, "嘗試太多次，請一分鐘後再試。Too many attempts — wait a minute.", 429)
@@ -103,7 +103,7 @@ async def logout() -> Response:
 
 @router.get("/", dependencies=[Depends(require_operator_page)])
 async def root() -> Response:
-    return RedirectResponse("/operator/", status_code=302)
+    return RedirectResponse("/sim/", status_code=302)   # the web console is dropped (owner, 11 Nov): Telegram is it
 
 
 # ---------------------------------------------------------------- static folders

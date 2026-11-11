@@ -101,14 +101,15 @@ async def test_press_handled_then_resolved(system):
     assert s.incident_state() == "CLOSED"
 
 
-async def test_press_call_mum_is_recorded_but_never_dials(system):
+async def test_press_voice_mum_asks_for_a_voice_note_and_never_dials(system):
     s = system
     assert await fall_to_escalating(s)
     await s.wait(1)
     alert = [r for r in telegram_rows(s) if r["kind"] == "ALERT"][0]
+    assert "voice_mum" in [b["id"] for b in alert["buttons"]]
     before = len(twilio_rows(s))
-    res = await press(s, alert["id"], "call_mum")
-    assert res["ok"] and "冇撥號" in res.get("note", "")
+    res = await press(s, alert["id"], "call_mum")          # a stale old button is handled the same way
+    assert res["ok"] and res["button"] == "voice_mum" and "語音訊息" in res.get("note", "")
     await s.wait(1)
     assert len(twilio_rows(s)) == before            # no call was placed by the button
 
@@ -161,7 +162,8 @@ async def test_alert_row_carries_buttons_and_incident_link(system):
     await s.wait(1)
     r = [x for x in telegram_rows(s) if x["kind"] == "ALERT"][0]
     assert r["correlation_id"] == "inc_bt"
-    assert {b["id"] for b in r["buttons"]} == {"handled", "resolved"}       # call_mum is dropped in v1
+    assert [b["id"] for b in r["buttons"]] == ["handled", "voice_mum", "resolved"]   # call_mum → 錄段聲俾媽媽
+    assert [b["text"] for b in r["buttons"]] == ["我處理緊", "錄段聲俾媽媽", "已解決"]
     assert all(b["callback_data"].startswith("b:") for b in r["buttons"])
 
 

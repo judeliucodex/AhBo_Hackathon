@@ -39,10 +39,8 @@ def step_spec(cfg: Any, tool: str) -> dict[str, Any] | None:
 
 
 def _quiet(ctx: Any) -> bool:
-    q = ctx.config.checkins.get("quiet_hours") or {}
-    start, end = q.get("start", "22:30"), q.get("end", "07:00")
-    hm = ctx.now.strftime("%H:%M")
-    return hm >= start or hm < end if start > end else start <= hm < end
+    from ..common import quiet_hours
+    return quiet_hours(ctx)
 
 
 def _mood(state: KernelState, ctx: Any, *, thinking: bool = False, listening: bool = False) -> Command:

@@ -8,9 +8,12 @@ Inbound (`POST /telegram/webhook`, this module's router):
 - **allowlist by chat id** (`contacts.telegram_chat_id`): anyone else gets exactly one fixed reply
   「呢個係私人家庭機械人。」 and is dropped — never forwarded to the Kernel/agent (INV-7), except `/whoami`
   (anyone; the reply carries their chat id only);
-- text → `family.text` (the Kernel quotes it, never an instruction); voice notes → OGG download → ffmpeg AAC
-  → `voice_messages` row → `family.voice_note`; callback buttons → `family.button` (+ `answerCallbackQuery`;
-  `confirm` confirms pending facts); commands `/start /status /meds /fact /story`.
+- text → `family.text` (the Kernel quotes it, never an instruction) unless it answers an open bot form/confirm;
+  voice notes → OGG download → ffmpeg AAC → `voice_messages` row → `family.voice_note`; alert buttons (`b:…`) →
+  `family.button` (+ `answerCallbackQuery`; `confirm` confirms pending facts; `voice_mum` tells her to send a voice
+  note); `/whoami /fact /story` here, every other command and every `m:` button → the caregiver/admin bot
+  (`ahbo.links.bot`: menus, views, edits with 確認／取消, demo controls).
+- every reply goes out through the channel (`channel.reply(chat_id, text, buttons)`); the fake channel records it.
 `set_webhook()` builds the setWebhook call for the owner's setup — **nothing here ever calls it automatically**.
 """
 from __future__ import annotations
@@ -29,7 +32,8 @@ from ahbo.core.ids import new_id
 from ahbo.core.jsonutil import dumps, loads
 from ahbo.core.settings import SEED_DIR, Settings
 
-from . import current_svc, outbox
+from . import bot, current_svc, outbox
+from .bot.ui import Reply
 from .family import parse_callback
 
 log = logging.getLogger("ahbo.links.telegram")
@@ -47,6 +51,7 @@ class FakeTelegram:
     def __init__(self, svc: Any):
         self.svc = svc
         self.sent_count = 0
+        self.replies: list[dict[str, Any]] = []
 
     async def send(self, *, kind: str, contact_id: str, chat_id: str | None, text: str,
                    photo_path: Path | None = None, buttons: list[dict[str, str]] | None = None,
@@ -61,8 +66,11 @@ class FakeTelegram:
     async def answer_callback(self, callback_query_id: str, text: str | None = None) -> None:
         return None
 
-    async def reply(self, chat_id: str, text: str) -> None:
-        log.info("fake telegram reply to %s: %s", chat_id, text)
+    async def reply(self, chat_id: str, text: str, buttons: list[list[dict[str, str]]] | None = None) -> None:
+        """Fake delivery of a bot reply: recorded in memory (tests read `replies`), never sent."""
+        self.replies.append({"chat_id": str(chat_id), "text": text, "buttons": buttons or []})
+        del self.replies[:-200]
+        log.info("fake telegram reply to %s: %s", chat_id, text[:80])
 
 
 class TelegramError(RuntimeError):
@@ -151,11 +159,14 @@ class TelegramReal:
         except TelegramError as e:
             log.warning("answerCallbackQuery failed: %s", e.reason)
 
-    async def reply(self, chat_id: str, text: str) -> None:
+    async def reply(self, chat_id: str, text: str, buttons: list[list[dict[str, str]]] | None = None) -> None:
         if not chat_id:
             return
+        data: dict[str, Any] = {"chat_id": chat_id, "text": text[:4000]}
+        if buttons:
+            data["reply_markup"] = dumps({"inline_keyboard": buttons})
         try:
-            await self._api("sendMessage", data={"chat_id": chat_id, "text": text})
+            await self._api("sendMessage", data=data)
         except TelegramError as e:
             log.warning("telegram reply to %s failed: %s", chat_id, e.reason)
 
@@ -172,44 +183,75 @@ def _clip(v: Any, limit: int) -> str:
 
 
 async def handle_update(svc: Any, update: dict[str, Any]) -> str | None:
-    """One Telegram update → Kernel events / DB rows. Returns the reply text (also sent when the channel is real).
+    """One Telegram update → Kernel events / DB rows / bot replies. Returns the (first) reply text; every reply is
+    also delivered through the channel (`channel.reply`; the fake channel records it, the real one sends it).
 
-    Returns None for updates that are dropped (strangers, unknown payloads). Safe: never raises to the caller.
+    Returns None for updates that are dropped (unknown payloads). Safe: never raises to the caller.
     """
     try:
-        return await _handle(svc, update)
+        chat_id, replies = await _handle(svc, update)
     except Exception:
         log.exception("telegram update handling failed")
         return None
-
-
-async def _handle(svc: Any, update: dict[str, Any]) -> str | None:
-    if not isinstance(update, dict):
+    if not replies:
         return None
+    if isinstance(replies, Delivered):
+        return str(replies)
+    if isinstance(replies, str):
+        replies = [Reply(replies)]
+    channel = (getattr(svc, "extra", None) or {}).get("telegram_channel")
+    if channel is not None and chat_id:
+        for r in replies:
+            try:
+                await channel.reply(chat_id, r.text, r.markup() or None)
+            except Exception:
+                log.exception("telegram reply failed")
+    return replies[0].text
+
+
+class Delivered(str):
+    """A reply text already delivered another way (e.g. as the callback answer): returned, not sent again."""
+
+
+def _chat_of_update(update: dict[str, Any]) -> str:
     cb = update.get("callback_query")
     if isinstance(cb, dict):
-        return await _on_callback(svc, cb)
+        return str(((cb.get("message") or {}).get("chat") or {}).get("id") or (cb.get("from") or {}).get("id") or "")
+    msg = update.get("message") or update.get("edited_message") or {}
+    return str(((msg.get("chat") or {}) if isinstance(msg, dict) else {}).get("id") or "")
+
+
+async def _handle(svc: Any, update: dict[str, Any]) -> tuple[str, list[Reply] | str | None]:
+    if not isinstance(update, dict):
+        return "", None
+    chat_id = _chat_of_update(update)
+    cb = update.get("callback_query")
+    if isinstance(cb, dict):
+        return chat_id, await _on_callback(svc, cb)
     msg = update.get("message") or update.get("edited_message")
     if not isinstance(msg, dict):
-        return None
-    chat = msg.get("chat") or {}
-    chat_id = str(chat.get("id") or "")
+        return chat_id, None
     contact = allowlisted_contact(svc.db, chat_id)
     if contact is None:
         if str(msg.get("text") or "").strip().startswith("/whoami"):
-            return f"你嘅 chat id 係：{chat_id}"        # anyone; reveals nothing else (§9.2)
-        return STOCK_REPLY                              # one fixed reply, then drop (INV-7)
+            return chat_id, f"你嘅 chat id 係：{chat_id}"        # anyone; reveals nothing else (§9.2)
+        return chat_id, STOCK_REPLY                              # one fixed reply, then drop (INV-7)
     if isinstance(msg.get("voice"), dict):
-        return await _on_voice(svc, contact, msg, msg["voice"])
+        return chat_id, await _on_voice(svc, contact, msg, msg["voice"])
     text = msg.get("text")
     if not isinstance(text, str) or not text.strip():
-        return None
+        text = msg.get("caption") if isinstance(msg.get("caption"), str) else None
+        if not text or not text.startswith("/"):
+            return chat_id, None
     if text.startswith("/"):
-        return await _on_command(svc, contact, chat_id, text, msg)
+        return chat_id, await _on_command(svc, contact, chat_id, text, msg)
+    answered = await bot.text(svc, contact, chat_id, text)        # an open edit form / pending confirm
+    if answered is not None:
+        return chat_id, answered
     await svc.kernel.submit(_ev(svc, "family.text", contact["id"],
                                 {"contact_id": contact["id"], "text": _clip(text, 600),
                                  "message_id": msg.get("message_id"), "via": "telegram"}))
-    return None
+    return chat_id, None
 
 
 def _ev(svc: Any, type_: str, corr: str | None, payload: dict[str, Any]) -> Any:
@@ -327,19 +369,15 @@ def _status_text(svc: Any) -> str:
     return "\n".join(lines)
 
 
-async def _on_command(svc: Any, contact: dict[str, Any], chat_id: str, text: str, msg: dict[str, Any]) -> str:
+async def _on_command(svc: Any, contact: dict[str, Any], chat_id: str, text: str,
+                      msg: dict[str, Any]) -> list[Reply] | str:
+    """/whoami /fact /story here; everything else (menus, views, edits, demo controls) is the bot (`links.bot`)."""
     db, clock = svc.db, svc.clock
     cmd, _, rest = text.strip().partition(" ")
+    cmd = cmd.split("@", 1)[0].lower()
     rest = rest.strip()
-    name = contact["name"]
-    if cmd == "/start":
-        return f"你好，{name}！呢度係阿寶嘅家庭頻道。/status 睇今日情況，/meds 睇食藥時間。"
     if cmd == "/whoami":
         return f"你嘅 chat id 係：{chat_id}"
-    if cmd == "/meds":
-        return "食藥時間表：\n" + ("\n".join(_med_lines(db)) or "（未有資料）")
-    if cmd == "/status":
-        return _status_text(svc)
     if cmd == "/fact":
         if not rest:
             return "請喺 /fact 後面寫低要記嘅嘢。"
@@ -360,7 +398,7 @@ async def _on_command(svc: Any, contact: dict[str, Any], chat_id: str, text: str
             return "記低咗你嘅故事，多謝分享。"
         except MemoryRejected as e:
             return polite_reject(e.reason)
-    return "唔知呢個指令。可以用：/status /meds /fact /story /whoami"
+    return await bot.command(svc, contact, chat_id, text)
 
 
 def polite_reject(reason: str) -> str:
@@ -388,35 +426,25 @@ async def _save_story_photo(svc: Any, msg: dict[str, Any]) -> str | None:
     return ph_id
 
 
-async def _save_story_photo_async(svc: Any, msg: dict[str, Any]) -> str | None:
-    photos = [p for p in msg.get("photo") or [] if isinstance(p, dict) and p.get("file_id")]
-    if not photos:
-        return None
-    best = max(photos, key=lambda p: int(p.get("width") or 0) * int(p.get("height") or 0))
-    channel = svc.extra.get("telegram_channel")
-    if channel is None:
-        return None
-    data = await channel.download(str(best["file_id"]))
-    ph_id = new_id("ph")
-    d = svc.settings.media_dir / "stories"
-    d.mkdir(parents=True, exist_ok=True)
-    path = d / f"{ph_id}.jpg"
-    path.write_bytes(data)
-    svc.db.execute("INSERT INTO media(id, kind, path, created_at) VALUES (?,?,?,?)",
-                   (ph_id, "photo", str(path), svc.clock.iso()))
-    return ph_id
+# ---------- callback buttons: alert buttons `b:` (handled/resolved/voice_mum/confirm) and bot buttons `m:`
+VOICE_MUM_REPLY = ("而家可以直接錄一段語音訊息俾媽媽（撳住咪高峰講），阿寶會即刻播俾佢聽。"
+                   "（電話打唔到 iPad，所以用錄音代替。）")
 
 
-# ---------- callback buttons (§9.2: handled/resolved/call_mum/confirm)
-async def _on_callback(svc: Any, cb: dict[str, Any]) -> str | None:
+async def _on_callback(svc: Any, cb: dict[str, Any]) -> list[Reply] | str | None:
     frm = cb.get("from") or {}
     chat_id = str(((cb.get("message") or {}).get("chat") or {}).get("id") or frm.get("id") or "")
     contact = allowlisted_contact(svc.db, chat_id)
     if contact is None:
         await _answer(svc, cb, STOCK_REPLY)
-        return STOCK_REPLY
+        return Delivered(STOCK_REPLY)             # the callback answer *is* the one fixed reply (INV-7)
     data = str(cb.get("data") or "")
+    if data.startswith("m:"):
+        await _answer(svc, cb, "收到")
+        return await bot.callback(svc, contact, chat_id, data)
     button, oid = parse_callback(data)
+    if button == "call_mum":                      # stale pre-11-Nov alert buttons
+        button = "voice_mum"
     payload: dict[str, Any] = {"contact_id": contact["id"], "button": button or data or None,
                                "callback_data": data or None, "via": "telegram"}
     if oid:
@@ -429,6 +457,8 @@ async def _on_callback(svc: Any, cb: dict[str, Any]) -> str | None:
         payload["confirmed_fact_ids"] = confirmed
     await svc.kernel.submit(_ev(svc, "family.button", corr, payload))
     await _answer(svc, cb, "已確認" if button == "confirm" else "收到")
+    if button == "voice_mum":
+        return [Reply(VOICE_MUM_REPLY)]
     return None
 
 

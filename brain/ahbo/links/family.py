@@ -11,10 +11,10 @@ Rules:
 - A failed send is retried with exponential backoff for up to 10 min (§10.4 "Telegram down").
 - The result comes back as a `family.send_result` event (source `telegram`), correlated with the command.
 
-`[打俾媽媽]` (call_mum) is dropped in v1: the PRD's version bridges Ah Chun to a call "the iPad answers on
-speaker", but the iPad has no telephony endpoint (device channel + LiveKit only, §25.2), so the bridge would need
-LiveKit SIP or the Twilio Voice SDK in the app, both out of scope. A button that rang Ah Chun's own phone would
-not reach her mother, so the button is not rendered (CALL_MUM_ENABLED); a stale press is logged and answered.
+`[打俾媽媽]` (call_mum) is replaced by `[錄段聲俾媽媽]` (voice_mum; owner decision 11 Nov 2026): Twilio cannot ring
+the iPad (no telephony endpoint, §25.2), so the button tells 阿珍 to send a voice note, which Ah Bo plays to 媽媽
+(voice notes already work). The Kernel still asks for `call_mum`; `button_ids` maps it to `voice_mum`, and a stale
+`call_mum` press from an old message is answered the same way.
 """
 from __future__ import annotations
 
@@ -32,9 +32,10 @@ from . import outbox
 log = logging.getLogger("ahbo.links.family")
 
 KINDS = ("ALERT", "NOTIFY", "INFO", "DIGEST", "HANDOFF")
-BUTTONS = {"handled": "我處理緊", "call_mum": "打俾媽媽", "resolved": "已解決", "confirm": "確認資料"}
-CALL_MUM_ENABLED = False
-DEFAULT_BUTTONS = {"ALERT": ["handled", "call_mum", "resolved"]}
+BUTTONS = {"handled": "我處理緊", "voice_mum": "錄段聲俾媽媽", "resolved": "已解決", "confirm": "確認資料",
+           "call_mum": "錄段聲俾媽媽"}          # call_mum: legacy id (Kernel + old messages) → shown/handled as voice_mum
+LEGACY = {"call_mum": "voice_mum"}
+DEFAULT_BUTTONS = {"ALERT": ["handled", "voice_mum", "resolved"]}
 HEADERS = {"ALERT": "🚨【緊急】", "NOTIFY": "✅【完成】", "INFO": "ℹ️【通知】", "DIGEST": "📋【今日摘要】",
            "HANDOFF": "🤝【交接】"}
 
@@ -60,11 +61,9 @@ def button_ids(kind: str, raw: list[Any] | None) -> list[str]:
     ids: list[str] = []
     for b in (raw if raw is not None else DEFAULT_BUTTONS.get(kind, [])):
         bid = b if isinstance(b, str) else (b.get("id") or b.get("button") or "")
+        bid = LEGACY.get(bid, bid)
         if bid not in BUTTONS:
             log.warning("unknown family button %r ignored", bid)
-            continue
-        if bid == "call_mum" and not CALL_MUM_ENABLED:
-            log.info("button call_mum dropped (v1: no telephony bridge to the iPad)")
             continue
         if bid not in ids:
             ids.append(bid)
