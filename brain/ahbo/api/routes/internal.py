@@ -64,8 +64,13 @@ async def event(request: Request, body: dict[str, Any] = Body(...)) -> Any:
     if t not in ALLOWED_EVENTS and not t.startswith("quality."):
         return JSONResponse({"ok": False, "reason": "type_not_allowed"}, status_code=400)
     p = body.get("payload") or {}
-    await request.app.state.svc.kernel.process(Event(type=t, source="agent", correlation_id=p.get("session_id"),
-                                                     payload=p))
+    svc = request.app.state.svc
+    if t == "quality.turn_latency":                   # per-turn voice latency (§15) → the span doctor --latency reads
+        from ahbo.trace.spans import record_span
+        lat = {k: v for k, v in p.items() if k.endswith("_ms") and isinstance(v, (int, float))}
+        record_span(svc.db, "turn.latency", correlation_id=p.get("session_id"), duration_ms=lat.get("total_ms"),
+                    attrs={"turn_id": p.get("turn_id"), **lat})
+    await svc.kernel.process(Event(type=t, source="agent", correlation_id=p.get("session_id"), payload=p))
     return {"ok": True}
 
 

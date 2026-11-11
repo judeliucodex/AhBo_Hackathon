@@ -30,6 +30,7 @@ components in `ahbo-agent`, and the ElevenLabs STT/TTS objects were exercised ag
 from __future__ import annotations
 
 import asyncio
+import time
 import logging
 import re
 from typing import Any
@@ -297,6 +298,7 @@ def make_agent_class():
 
             raw = (new_message.text_content or "").strip()
             text = to_hk(raw)                             # idempotent; stt_node already converted it
+            self.run.start_timing()
             r = self.run
             if not text:
                 raise StopResponse()
@@ -330,6 +332,7 @@ def make_agent_class():
                                                                            tool_calls=chunk.delta.tool_calls))
                 if not text:
                     continue
+                r.mark("llm_ttft")
                 for s in filt.push(text):
                     if not started:
                         started = True
@@ -375,6 +378,28 @@ class SessionRun:
         self.instructions = ""
         self.all_tools: list[Any] = []
         self.closed = asyncio.Event()
+        self.timer: Any = None                           # per-turn latency (§15): eos → stt_final → llm_ttft → tts
+        self.last_eou_delay = 0.0
+
+    def start_timing(self) -> None:
+        from ahbo.trace.spans import TurnTimer
+        now = time.monotonic()
+        self.timer = TurnTimer(self.turn_id or "turn", self.sid)
+        self.timer.mark("eos", now - max(0.0, float(self.last_eou_delay or 0.0)))
+        self.timer.mark("stt_final", now)
+
+    def mark(self, stage: str) -> None:
+        if self.timer is not None:
+            self.timer.mark(stage)
+
+    async def finish_timing(self) -> None:
+        """First audio of the reply: send the turn's latency to the api (recorded as a `turn.latency` span)."""
+        t, self.timer = self.timer, None
+        if t is None or "llm_ttft" not in t.marks:
+            return
+        t.mark("tts_first_audio")
+        await self.api.event("quality.turn_latency", {"session_id": self.sid, "turn_id": self.turn_id,
+                                                      **t.latency()})
 
     def next_turn(self) -> int:
         self._n += 1
@@ -492,6 +517,14 @@ async def entrypoint(ctx: Any) -> None:
     @session.on("agent_state_changed")
     def _on_agent_state(ev: Any) -> None:
         asyncio.ensure_future(api.ui_state(run.sid, LK_STATES.get(str(ev.new_state), "idle")))
+        if str(ev.new_state) == "speaking":
+            asyncio.ensure_future(run.finish_timing())
+
+    @session.on("metrics_collected")
+    def _on_metrics(ev: Any) -> None:
+        m = getattr(ev, "metrics", None)
+        if getattr(m, "type", "") == "eou_metrics":       # verified: EOUMetrics.end_of_utterance_delay (s), 1.8.11
+            run.last_eou_delay = float(getattr(m, "end_of_utterance_delay", 0.0) or 0.0)
 
     @session.on("user_state_changed")
     def _on_user_state(ev: Any) -> None:

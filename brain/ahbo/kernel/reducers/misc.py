@@ -45,6 +45,18 @@ def _reset(state: KernelState, ctx: Any) -> list[Command]:
     return out
 
 
+REFUSAL_WORDS = {"unverified": "電話號碼未核實", "short_or_missing_number": "未設定電話號碼",
+                 "unknown_contact": "搵唔到聯絡人", "role_not_allowed": "呢個聯絡人唔可以打",
+                 "emergency_number": "唔可以打緊急號碼", "no_raw_numbers": "唔可以直接打號碼",
+                 "cap": "今日打電話次數已經用晒"}
+DEVICE_ERRORS = {"mic_denied": "冇咪高峰權限", "camera_failed": "相機用唔到", "livekit_join_failed": "連唔到對話",
+                 "playback_failed": "播唔到聲"}
+
+
+def family_ids(ctx: Any) -> list[str]:
+    return [r["id"] for r in ctx.db.query("SELECT id FROM contacts WHERE role='family' ORDER BY priority, id")]
+
+
 def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
     t, p, src = ev.type, ev.payload, ev.source
     ex = state.extra
@@ -100,6 +112,13 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         b = ex.setdefault("beacons", {}).setdefault(str(p.get("beacon_id") or "beacon1"), {})
         b["lost"] = True
         return None
+    if t == "phone.call_refused":                   # 12 Nov: never silent — tell 阿珍 why the call didn't go out
+        why = REFUSAL_WORDS.get(str(p.get("reason") or ""), "設定有問題")
+        return [cmd("family.send", P1, ev.correlation_id, kind="INFO", contact_ids=family_ids(ctx),
+                    text=f"⚠️ 阿寶想打電話但打唔出：{why}。請喺 /contacts 檢查電話號碼，同埋 Twilio 設定。")]
+    if t == "device.error" and str(p.get("code") or "") in DEVICE_ERRORS:
+        return [cmd("family.send", P1, ev.correlation_id, kind="INFO", contact_ids=family_ids(ctx),
+                    text=f"⚠️ 阿寶部 iPad 出咗問題：{DEVICE_ERRORS[str(p.get('code'))]}。")]
     if t == "event.leave_soon":
         row = ctx.db.one("SELECT * FROM calendar_events WHERE id=?", (p.get("event_id"),)) if p.get("event_id") else None
         when = nw.hhmm_words(row["datetime"][11:16], period=True) if row else ""

@@ -43,7 +43,8 @@ class MedStatusArgs(BaseModel):
     scope: Literal["next", "today"] = "next"
 
 
-@tool("get_med_status", "查藥物時間表同今日食咗邊啲（只可以用呢個答藥嘅問題）。", MedStatusArgs)
+@tool("get_med_status", "查藥物時間表同今日食咗邊啲（只可以用呢個答藥嘅問題）。佢問「幾時食藥」：用 scope=next，"
+      "只答下一次（時間同邊幾隻藥），一兩句講完，唔好讀晒成日。佢問「食咗未／今日食咗邊啲」先用 scope=today。", MedStatusArgs)
 async def get_med_status(ctx: ToolCtx, args: MedStatusArgs) -> dict[str, Any]:
     now = ctx.clock.now()
     hm = now.strftime("%H:%M")
