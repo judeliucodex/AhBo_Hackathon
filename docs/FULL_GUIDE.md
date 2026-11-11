@@ -180,6 +180,33 @@ what to add.
 - [x] Drop `operator-ui/` (GLM 03) — deleted — don't commit it; G3 visual check uses /sim/ + the scenario API instead.
 - Note: my edits to GLM tests `tests/links/test_fakes.py` and `tests/ops/test_render_fixed.py` (c_chun, new P1 wording) go in with those reviews.
 
+## 5d. "What's left" audit (12 Nov 00:45 HKT)
+
+Verified OK: every Kernel command has a dispatcher; every tool request has an answering reducer (incl.
+`family.message_request`); /internal context+pull answer; face, mock centre, healthz serve; Playwright connected;
+nightly backup ran; fixed clip cache 13 clips; Telegram webhook set, no delivery errors.
+
+Fixed during the audit:
+- [x] **Bot treated 阿珍 as a stranger**: contact `c_chun` had no `telegram_chat_id` (seeded before the key existed);
+  real INFO at 13:00 failed `no_chat_id`. Set it (one field) + new startup `sync_contacts_from_env` (`0743e49`).
+- [x] Virtual clock was 4.6 h behind (leftover scenario) → reset to now.
+
+Still to do:
+- [ ] Voice go-live after the ElevenLabs switch agent: review → AHBO_FAKE drop models,speech,livekit → recreate api →
+  render CY clips → `docker compose --profile voice up -d agent` → doctor → owner test /sim/ "Talk".
+- [ ] **Not built: 20:00 daily digest** (`digest.due` has no consumer) and **07:00 day-plan precompute** (`plan.due` has
+  no consumer; `day_plans` only from the seed; Telegram /plan does nothing visible).
+- [ ] Silent failures: `phone.call_refused`, `device.error`, failed `family.send_result` are only traced — should notify
+  阿珍 / show in Telegram /health.
+- [ ] Twilio: owner buys a number (TWILIO_FROM), verifies 2 phones, enters numbers (Telegram 聯絡人 or .env), approves
+  top-up → drop `twilio` from AHBO_FAKE.
+- [ ] GLM tasks 06–10 (set up by the fork session): no reports yet; uncommitted edits in Makefile, actions/runner.py,
+  api/backup.py, api/routes/media.py, evals/harness.py, ops/cli.py, deploy/make.sh; SETUP.md not written; G3 partial.
+  Conflict risk: GLM 07 was told to add a CONTRACTS §14 — one already exists (Telegram/owner decisions).
+- [ ] Gates not yet run formally: G3 (in progress, GLM 10), G4 drills, G6 sign-off, Phase 3 audit, evals with real
+  models, audio eval with real recordings, final report.
+- [ ] Owner: build the iPad app (ios/BUILD_ON_MAC.md + ios/MAC_BRIDGE.md), change the operator password, beacon (optional).
+
 ## 5c. Speech = ElevenLabs (owner decision 11 Nov)
 - Azure dropped (sign-up blocked). ElevenLabs Starter: listening = Scribe Live (`scribe_v3_live`, alt `scribe_v2_realtime`, `yue` forced; auto-detect says Mandarin), voice = CY – Calm & Friendly (`SPRXwABrRtJGzRFBpO1H`). Owner's real-voice live test: 「阿寶，我幾時食藥呀？」 correct (Simplified). Synthetic CY test audio unreliable. Keyterms help but once gave 我冇事→我冇食.
 - [ ] Claude agent doing the switch (worker STT/TTS, fixed-clip renderer with timestamps, Telegram voice-note STT, matcher variants, doctor, TTS latency pick). Then orchestrator: review → AHBO_FAKE remove models,speech,livekit → render clips → start agent (profile voice) → doctor → owner test at /sim/.
