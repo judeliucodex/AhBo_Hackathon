@@ -214,9 +214,12 @@ Still to do:
   `get_med_status` → reply ~2 s after she stopped (INV-4 ✓); agent audio spoken back. Script:
   scratchpad `e2e_voice.py` (copy into evals/visual/ if kept).
 - Fixed from it (`git log`): ； counts as a sentence end in the 2-sentence guard; unknown STT confidence → None.
-- [ ] Prompt tuning: DeepSeek lists the whole day (`scope: today`) instead of the next dose only; S2 script wants next only.
+- [x] Prompt tuning: get_med_status description → next dose only (live: `scope: next`, short answer).
 - [ ] Real-model evals not run: blocked pending owner OK (spends Opper credit, est. < $1).
-- [ ] Per-turn latency spans (eos→stt→llm→tts) aren't recorded in the live path (`doctor --latency` empty).
+- [x] Per-turn latency recorded live: total p50 3.37 s / p95 4.06 s (n=2; PRD p50 ≤ 3.0, p95 ≤ 4.5); LLM TTFT incl. the tool round ≈ 3.1 s; LLM→first audio ≈ 0.3 s. `eos` uses LiveKit EOU delay when available.
+- [x] Live-voice reliability: plugin read timeout was 5 s (cut Opper off → silence); now FallbackAdapter DeepSeek → Haiku (5 s first-token), 20 s read timeout, G1 line if all fail. Two clean live runs after the fix.
+- [x] Refused calls / iPad errors now notify 阿珍 (misc reducer); `phone.call_refused` is a processed event.
+- [ ] Noted, not fixed: in a bare-prompt probe DeepSeek wrote an English word ("check") and markdown — the filter strips markdown but not English words; watch in QA 22.
 
 ## 5c. Speech = ElevenLabs (owner decision 11 Nov)
 - Azure dropped (sign-up blocked). ElevenLabs Starter: listening = Scribe Live (`scribe_v3_live`, alt `scribe_v2_realtime`, `yue` forced; auto-detect says Mandarin), voice = CY – Calm & Friendly (`SPRXwABrRtJGzRFBpO1H`). Owner's real-voice live test: 「阿寶，我幾時食藥呀？」 correct (Simplified). Synthetic CY test audio unreliable. Keyterms help but once gave 我冇事→我冇食.
