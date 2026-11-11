@@ -47,3 +47,5 @@ Paste prompt for each Zcode session (replace NN with 21…26 and the file name):
 > Read `/opt/ahbo/docs/handoff/glm/20_QA_COMMON.md` fully, then `/opt/ahbo/docs/handoff/glm/<NN_file>.md`, and do that QA
 > task. You are a tester: do not edit any repo file except your report `docs/handoff/glm/NN_REPORT.md` and evidence under
 > `docs/qa/NN/`. Never touch the live stack, never call real external services, never read `.env`. Clean up your containers.
+
+## Task 27 (fix): real-model evals get no replies — `27_fix_real_model_evals.md` (may edit `brain/ahbo/evals/` only).
