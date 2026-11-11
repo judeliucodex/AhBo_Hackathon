@@ -264,7 +264,7 @@ def _refuse(k: Any, c: Command, reason: str, detail: str | None) -> None:
     """Refusals are traced (INV-6) and reported to 阿珍 by the Kernel (misc reducer), never dialled, never in the outbox."""
     log.warning("INV-9: phone.call refused (%s%s)", reason, f"; {detail}" if detail else "")
     k.submit_nowait(Event(type="phone.call_refused", source="twilio", correlation_id=c.correlation_id,
-                 payload={"reason": reason, "command_id": c.id,
+                 payload={"reason": reason, "command_id": c.id, "contact_id": c.payload.get("contact_id"),
                           "incident_id": c.payload.get("incident_id")}))
 
 

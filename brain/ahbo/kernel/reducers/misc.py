@@ -53,8 +53,10 @@ DEVICE_ERRORS = {"mic_denied": "冇咪高峰權限", "camera_failed": "相機用
                  "playback_failed": "播唔到聲"}
 
 
-def family_ids(ctx: Any) -> list[str]:
-    return [r["id"] for r in ctx.db.query("SELECT id FROM contacts WHERE role='family' ORDER BY priority, id")]
+def family_ids(ctx: Any, exclude: str | None = None) -> list[str]:
+    """Verified caregivers only, never the contact whose call was just refused (eval rt25/rt27, 12 Nov)."""
+    return [r["id"] for r in ctx.db.query("SELECT id FROM contacts WHERE role='family' AND verified=1 ORDER BY priority, id")
+            if r["id"] != exclude]
 
 
 def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
@@ -114,7 +116,10 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         return None
     if t == "phone.call_refused":                   # 12 Nov: never silent — tell 阿珍 why the call didn't go out
         why = REFUSAL_WORDS.get(str(p.get("reason") or ""), "設定有問題")
-        return [cmd("family.send", P1, ev.correlation_id, kind="INFO", contact_ids=family_ids(ctx),
+        ids = family_ids(ctx, exclude=p.get("contact_id"))
+        if not ids:
+            return None
+        return [cmd("family.send", P1, ev.correlation_id, kind="INFO", contact_ids=ids,
                     text=f"⚠️ 阿寶想打電話但打唔出：{why}。請喺 /contacts 檢查電話號碼，同埋 Twilio 設定。")]
     if t == "device.error" and str(p.get("code") or "") in DEVICE_ERRORS:
         return [cmd("family.send", P1, ev.correlation_id, kind="INFO", contact_ids=family_ids(ctx),

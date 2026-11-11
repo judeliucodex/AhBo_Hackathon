@@ -189,7 +189,12 @@ class CaseRun:
         await self.sys.settle()
 
     async def step_fall(self, arg: Any) -> None:
-        src = arg if isinstance(arg, str) and arg else "beacon"
+        """`fall: beacon|operator` or `fall: {source, camera: fine|fall}`. Owner rule 11 Nov: a camera that shows a
+        fall turns 「我冇事」 into a call, so the fake camera defaults to "she's fine" (BUILD_LOG §8)."""
+        from ahbo.models.fakes import FAKE_VISION_FINE, FAKE_VISION_KEY
+        src = (arg.get("source") if isinstance(arg, dict) else arg) or "beacon"
+        camera = arg.get("camera", "fine") if isinstance(arg, dict) else "fine"
+        self.sys.kernel.db.kv_set(FAKE_VISION_KEY, FAKE_VISION_FINE if camera == "fine" else "")
         typ = "sensor.fall_suspected" if src != "operator" else "operator.fall"
         await self.sys.event(typ, src, beacon_id="beacon1", peak_g=3.1, freefall_ms=180, stillness_s=2.4)
 

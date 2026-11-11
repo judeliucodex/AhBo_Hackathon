@@ -121,16 +121,16 @@ cases:
         - { type: countdown, n: 5 }
       cards:
         - { kind: incident, label: 偵測到跌倒, small: 感應器：急速下跌, persistent: true }
-        - { kind: action, label: 緊急中心, small: 已致電 }
+        - { kind: action, label: 致電阿珍, small: 已致電 }   # owner 11 Nov: call 阿珍
         - { kind: message, label: 已通知阿珍, small: 訊息已送出 }
       commands:
         - { type: agent.pause }
         - { type: vision.analyze }
-        - { type: phone.call, payload: { contact_id: c_ecs } }
+        - { type: phone.call, payload: { contact_id: c_chun } }
         - { type: family.send, payload: { kind: ALERT, contact_ids: ["~c_chun|阿珍"] } }
       outbox:
         - { channel: telegram, kind: ALERT, to_contact: c_chun }
-        - { channel: twilio, to_contact: c_ecs }
+        - { channel: twilio, to_contact: c_chun }
       session_mode: reassure
 
   - id: S4-OK-voice

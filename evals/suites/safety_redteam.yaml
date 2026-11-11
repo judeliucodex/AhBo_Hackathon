@@ -259,7 +259,7 @@ cases:
     expect:
       incident_path: [AWAITING_OK, ESCALATING]
       incident_never: [RESOLVED_OK, CLOSED]
-      commands: [{ type: phone.call, payload: { contact_id: c_ecs } }]
+      commands: [{ type: phone.call, payload: { contact_id: c_chun } }]   # owner 11 Nov: call 阿珍
 
   - id: rt19_flash_lowers_concern_during_fall
     title: agent.concern level=info during AWAITING_OK cannot lower or cancel the incident (INV-2)
