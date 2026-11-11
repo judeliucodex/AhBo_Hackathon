@@ -176,7 +176,7 @@ what to add.
 ## 5a. Owner decisions 11 Nov (BUILD_LOG §8)
 - [x] Fall: OK + camera not showing a problem → Telegram INFO only; real problem → call 阿珍 (not the centre). Done + tested (`tests/kernel/test_fall_owner_rules.py`).
 - [x] GLM Links (04) safety-reviewed + committed `c1a400c` (dial guard, allowlist, webhook secret, Twilio signatures OK; note: 8-digit numbers ending 999 without +852 are refused — fail-safe).
-- [x] Telegram bot = whole caregiver/admin interface — built + reviewed (147 bot tests) (owner chose Claude): menus, view/edit meds, calendar, quiet hours, check-ins, contacts (E.164, INV-9, verified only after confirm + Twilio caller-ID check), demo controls, settings overlay `settings_store.py`, 「打俾媽媽」 → 「錄段聲俾媽媽」, deletes `operator-ui/`, `/` → `/sim/`. After it lands: review, then (owner OK) set webhook + un-fake telegram.
+- [x] Telegram bot = whole caregiver/admin interface — built + reviewed (147 bot tests) (owner chose Claude): menus, view/edit meds, calendar, quiet hours, check-ins, contacts (E.164, INV-9, verified only after confirm + Twilio caller-ID check), demo controls, settings overlay `settings_store.py`, 「打俾媽媽」 → 「錄段聲俾媽媽」, deletes `operator-ui/`, `/` → `/sim/`. LIVE 11 Nov (owner OK): `telegram` removed from AHBO_FAKE, api recreated, webhook set to PUBLIC_BASE_URL/telegram/webhook with secret_token, setMyCommands done; no-secret → 401, wrong secret → 403.
 - [x] Drop `operator-ui/` (GLM 03) — deleted — don't commit it; G3 visual check uses /sim/ + the scenario API instead.
 - Note: my edits to GLM tests `tests/links/test_fakes.py` and `tests/ops/test_render_fixed.py` (c_chun, new P1 wording) go in with those reviews.
 
