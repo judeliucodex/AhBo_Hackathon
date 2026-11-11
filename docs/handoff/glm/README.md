@@ -19,6 +19,7 @@ How to start each one in Zcode (same SSH host, folder `/opt/ahbo`), **one task p
 | `08_review_links_safety.md` | read-only adversarial safety review of Links | `08_REPORT.md` |
 | `09_review_components.md` | read-only adversarial review of ops/actions/console/sim | `09_REPORT.md` |
 | `10_g3_visual.md` | gate G3: sim screenshots vs kit | `10_REPORT.md` + `docs/screens/g3/REPORT.md` |
+| `11_mcp_setup.md` | Zcode MCP connectors: Playwright, Context7, XcodeBuildMCP bridge to the Mac | `11_REPORT.md` |
 
 Second wave (06–10): run **at most 3 at a time** on this 2-CPU server. Suggested order: first 06 + 07 + 08 together
 (code fixes, docs, read-only review: no file overlap); then 09 + 10 once 06 is done (they test the finished code).
