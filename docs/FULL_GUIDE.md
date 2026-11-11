@@ -192,7 +192,7 @@ Fixed during the audit:
 - [x] Virtual clock was 4.6 h behind (leftover scenario) → reset to now.
 
 Still to do:
-- [ ] Voice go-live after the ElevenLabs switch agent: review → AHBO_FAKE drop models,speech,livekit → recreate api →
+- [x] **Voice LIVE 12 Nov 01:05**: AHBO_FAKE=twilio; 13 clips re-rendered in CY (eleven_v4); voice worker `ahbo-agent` registered with LiveKit Cloud; doctor 38 green (Opper flash 1.6 s thinking-field accepted, haiku, sonnet, vision; ElevenLabs voice/models/STT; LiveKit token). Red only: no iPad online, no beacon. Was: review → AHBO_FAKE drop models,speech,livekit → recreate api →
   render CY clips → `docker compose --profile voice up -d agent` → doctor → owner test /sim/ "Talk".
 - [x] ~~20:00 digest / 07:00 day plan~~ — removed by the owner (BUILD_LOG §9).
 - [ ] Silent failures: `phone.call_refused`, `device.error`, failed `family.send_result` are only traced — should notify
@@ -205,6 +205,8 @@ Still to do:
 - [ ] Gates not yet run formally: G3 (in progress, GLM 10), G4 drills, G6 sign-off, Phase 3 audit, evals with real
   models, audio eval with real recordings, final report.
 - [ ] Owner: build the iPad app (ios/BUILD_ON_MAC.md + ios/MAC_BRIDGE.md), change the operator password, beacon (optional).
+
+- [ ] GLM QA round 21–26 (read-only testers, hand-offs committed `37188e2`); run ≤3 at a time.
 
 ## 5c. Speech = ElevenLabs (owner decision 11 Nov)
 - Azure dropped (sign-up blocked). ElevenLabs Starter: listening = Scribe Live (`scribe_v3_live`, alt `scribe_v2_realtime`, `yue` forced; auto-detect says Mandarin), voice = CY – Calm & Friendly (`SPRXwABrRtJGzRFBpO1H`). Owner's real-voice live test: 「阿寶，我幾時食藥呀？」 correct (Simplified). Synthetic CY test audio unreliable. Keyterms help but once gave 我冇事→我冇食.
