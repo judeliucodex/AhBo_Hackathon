@@ -1,0 +1,11 @@
+QA21 check 8 — existing suites (docker run --rm -v /opt/ahbo:/repo[:ro] ahbo-api python -m pytest -q -p no:cacheprovider <dir>)
+- tests/kernel            → 81 passed                        (22 s, :ro)
+- tests/invariants        → 71 passed, 1 failed with the :ro recipe:
+      FAILED tests/invariants/test_inv_09_never_999.py::test_fall_calls_only_verified_contacts
+      cause: OSError(30, 'Read-only file system') — the fake Twilio dispatcher must write
+      data/media/public/<rand>/P1.m4a (brain/ahbo/links/twilio.py `_ensure_clip_file`) before it records the
+      outbox row, so with the QA-common-doc's read-only repo mount the call never lands.
+      With a WRITABLE mount the same suite is 72/72 PASSED (verified 2026-11-11).
+      Note: a writable test run also creates orphaned data/media/public/<rand>/P1.m4a dirs in the repo's
+      live data dir (one per EvalSystem). My own run's dirs were removed again.
+- tests/test_golden_ui.py → 5 passed                         (11 s, :ro)

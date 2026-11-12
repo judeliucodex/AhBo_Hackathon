@@ -1,0 +1,764 @@
+[
+ {
+  "route": "POST /login",
+  "auth": "wrong password",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "POST /login",
+  "auth": "correct password",
+  "code": 303,
+  "note": "set-cookie flags=['httponly', 'max-age', 'path', 'samesite'] maxage=True"
+ },
+ {
+  "route": "/healthz",
+  "auth": "no auth",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/healthz",
+  "auth": "wrong cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/healthz",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/healthz",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/login",
+  "auth": "no auth",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/login",
+  "auth": "wrong cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/login",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect None"
+ },
+ {
+  "route": "/login",
+  "auth": "operator cookie",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/face/index.html",
+  "auth": "no auth",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/face/index.html",
+  "auth": "wrong cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/face/index.html",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/face/index.html",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/",
+  "auth": "no auth",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/",
+  "auth": "wrong cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/api/activities",
+  "auth": "no auth",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/api/activities",
+  "auth": "wrong cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/api/activities",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/mock-centre/api/activities",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "POST /mock-centre/api/register",
+  "auth": "no auth, empty body",
+  "code": 400,
+  "note": "public; 4xx-validation ok"
+ },
+ {
+  "route": "/",
+  "auth": "no auth",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/",
+  "auth": "wrong cookie",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/",
+  "auth": "device token",
+  "code": 303,
+  "note": "expect None"
+ },
+ {
+  "route": "/",
+  "auth": "operator cookie",
+  "code": 302,
+  "note": "expect None"
+ },
+ {
+  "route": "/sim/",
+  "auth": "no auth",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/sim/",
+  "auth": "wrong cookie",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/sim/",
+  "auth": "device token",
+  "code": 303,
+  "note": "expect None"
+ },
+ {
+  "route": "/sim/",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect None"
+ },
+ {
+  "route": "/sim/index.html",
+  "auth": "no auth",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/sim/index.html",
+  "auth": "wrong cookie",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/sim/index.html",
+  "auth": "device token",
+  "code": 303,
+  "note": "expect None"
+ },
+ {
+  "route": "/sim/index.html",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect None"
+ },
+ {
+  "route": "/operator/",
+  "auth": "no auth",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/operator/",
+  "auth": "wrong cookie",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/operator/",
+  "auth": "device token",
+  "code": 303,
+  "note": "expect None"
+ },
+ {
+  "route": "/operator/",
+  "auth": "operator cookie",
+  "code": 404,
+  "note": "expect None"
+ },
+ {
+  "route": "/operator/index.html",
+  "auth": "no auth",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/operator/index.html",
+  "auth": "wrong cookie",
+  "code": 303,
+  "note": "expect 303"
+ },
+ {
+  "route": "/operator/index.html",
+  "auth": "device token",
+  "code": 303,
+  "note": "expect None"
+ },
+ {
+  "route": "/operator/index.html",
+  "auth": "operator cookie",
+  "code": 404,
+  "note": "expect None"
+ },
+ {
+  "route": "GET / (with cookie)",
+  "auth": "operator cookie",
+  "code": 302,
+  "note": "\u2192 /sim/"
+ },
+ {
+  "route": "GET /sim/ (with cookie)",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": ""
+ },
+ {
+  "route": "GET /operator/ (with cookie)",
+  "auth": "operator cookie",
+  "code": 404,
+  "note": "operator-ui deleted \u2192 404 acceptable"
+ },
+ {
+  "route": "POST /logout",
+  "auth": "no auth",
+  "code": 303,
+  "note": "public \u2192 303 + clears cookie"
+ },
+ {
+  "route": "POST /logout",
+  "auth": "set-cookie",
+  "code": "ahbo_session=\"\"; expires=Wed, 11 Nov 2026 17:54:41 GMT; Max-",
+  "note": ""
+ },
+ {
+  "route": "/operator/api/state",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/state",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/state",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/state",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/health",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/health",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/health",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/health",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/outbox",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/outbox",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/outbox",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/outbox",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/trace",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/trace",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/trace",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/trace",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/fixed",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/fixed",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/fixed",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/fixed",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/trigger",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/trigger",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/trigger",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/trigger",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/clock",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/clock",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/clock",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/clock",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/operator/api/outbox/x/press",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/outbox/x/press",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/outbox/x/press",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/operator/api/outbox/x/press",
+  "auth": "operator cookie",
+  "code": 400,
+  "note": "expect None"
+ },
+ {
+  "route": "GET /operator/stream",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "GET /operator/stream",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "SSE open"
+ },
+ {
+  "route": "/session",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/session",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/session",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/session",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "POST /session",
+  "auth": "Bearer APP_SECRET",
+  "code": 401,
+  "note": "expect 401 (APP_SECRET is not a device token)"
+ },
+ {
+  "route": "POST /session",
+  "auth": "Bearer forged dt token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "POST /media/photo",
+  "auth": "device token",
+  "code": 200,
+  "note": "photo_id=ph_01M75VYV50SBVMFBNS10XKXZ2R"
+ },
+ {
+  "route": "/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R",
+  "auth": "device token",
+  "code": 403,
+  "note": "expect 403"
+ },
+ {
+  "route": "/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "GET /media/fixed/manifest.json",
+  "auth": "device token",
+  "code": 200,
+  "note": ""
+ },
+ {
+  "route": "/media/fixed/F1.m4a",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/fixed/F1.m4a",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/fixed/F1.m4a",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/fixed/F1.m4a",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/fixed/manifest.json",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/fixed/manifest.json",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/fixed/manifest.json",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect None"
+ },
+ {
+  "route": "/media/fixed/manifest.json",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect None"
+ },
+ {
+  "route": "/media/voice/vm_demo",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/voice/vm_demo",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/voice/vm_demo",
+  "auth": "device token",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/voice/vm_demo",
+  "auth": "operator cookie",
+  "code": 200,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/screens/whatever.png",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/screens/whatever.png",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/screens/whatever.png",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/media/screens/whatever.png",
+  "auth": "operator cookie",
+  "code": 404,
+  "note": "expect 404"
+ },
+ {
+  "route": "/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a",
+  "auth": "no auth",
+  "code": 404,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a",
+  "auth": "wrong cookie",
+  "code": 404,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a",
+  "auth": "device token",
+  "code": 404,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a",
+  "auth": "operator cookie",
+  "code": 404,
+  "note": "expect 200"
+ },
+ {
+  "route": "/media/public/short/P1.m4a",
+  "auth": "no auth",
+  "code": 404,
+  "note": "expect 404"
+ },
+ {
+  "route": "/media/public/short/P1.m4a",
+  "auth": "wrong cookie",
+  "code": 404,
+  "note": "expect 404"
+ },
+ {
+  "route": "/media/public/short/P1.m4a",
+  "auth": "device token",
+  "code": 404,
+  "note": "expect 404"
+ },
+ {
+  "route": "/media/public/short/P1.m4a",
+  "auth": "operator cookie",
+  "code": 404,
+  "note": "expect 404"
+ },
+ {
+  "route": "/internal/context/sess_x",
+  "auth": "no auth",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/internal/context/sess_x",
+  "auth": "wrong cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/internal/context/sess_x",
+  "auth": "device token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "/internal/context/sess_x",
+  "auth": "operator cookie",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "GET /internal/context/sess_x",
+  "auth": "wrong internal token",
+  "code": 401,
+  "note": "expect 401"
+ },
+ {
+  "route": "GET /internal/context/sess_x",
+  "auth": "internal token",
+  "code": 200,
+  "note": "200/501 = auth ok"
+ },
+ {
+  "route": "POST /internal/turn",
+  "auth": "internal token",
+  "code": 200,
+  "note": ""
+ },
+ {
+  "route": "POST /internal/event",
+  "auth": "internal token",
+  "code": 200,
+  "note": ""
+ },
+ {
+  "route": "POST /internal/clock",
+  "auth": "internal token",
+  "code": 200,
+  "note": ""
+ }
+]

@@ -1,0 +1,35 @@
+..QH-DECISIONS: [('錄音', 2, 'queued', 'quiet_hours_next_session'), ('錄音', 2, 'dropped', 'replaced'), ('家人', 2, 'queued', 'quiet_hours_next_session')]
+QH-DECISIONS: [('錄音', 2, 'queued', 'quiet_hours_next_session'), ('錄音', 2, 'dropped', 'replaced'), ('家人', 2, 'queued', 'quiet_hours_next_session'), ('提醒', 1, 'dropped', 'quiet_hours')]
+...QUIET-HOLE inject delivered: True | decisions: [('家人', 'queued', 'turn_boundary'), ('家人', 'now', 'max_wait')]
+F.
+=================================== FAILURES ===================================
+_____________________ test_p1_maxwait_timer_vs_quiet_hours _____________________
+
+harness = <conftest.Harness object at 0x70dd1f621a30>
+
+    async def test_p1_maxwait_timer_vs_quiet_hours(harness):
+        h = harness; watch(h)
+        await busy_session(h)                                                     # busy → P1 queues
+        item = arbiter.make_item("家人", 1, "阿珍有嘢話你知", "轉述家人訊息。", after_turn=True)
+        outcome, cmds = arbiter.request(h.kernel.state, h.kernel.ctx(), item)
+        assert outcome == "queued"
+        await h.kernel.emit(*cmds)                                                # the timer.set must actually be armed
+        h.kernel.clock.set_time("23:30")                                          # quiet hours start
+        q = arbiter.slice_(h.kernel.state)["queue"]
+        assert "1" in q
+        await asyncio.sleep(2.0)                                                  # arb:p1 max-wait (30 s × 0.05)
+        inj = of(h, "agent.inject")
+        ds = decisions(h)
+        print("QUIET-HOLE inject delivered:", bool(inj), "| decisions:",
+              [(d["request"]["kind"], d["outcome"], d["reason"]) for d in ds if d["request"]["kind"] == "家人"])
+>       assert inj == [], "quiet hours must stop a queued non-dose P1 from being delivered"
+E       AssertionError: quiet hours must stop a queued non-dose P1 from being delivered
+E       assert [{'id': 'cmd_...'agent', ...}] == []
+E         
+E         Left contains one more item: {'id': 'cmd_01M75WRVS1DWXZFF22JC6B03GE', 'event_id': 'evt_01M75WRVS0ZY6H89HH326GVWBF', 'type': 'agent.inject', 'target': 'agent', ...}
+E         Use -v to get more diff
+
+/scratch/test_qa21_arbiter.py:118: AssertionError
+=========================== short test summary info ============================
+FAILED ::test_p1_maxwait_timer_vs_quiet_hours - AssertionError: quiet hours m...
+1 failed, 6 passed in 4.84s

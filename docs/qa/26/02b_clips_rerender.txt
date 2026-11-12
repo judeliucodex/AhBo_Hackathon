@@ -1,0 +1,21 @@
+--- before
+version: f-dcfc2e6081a0
+R_s_2000: 王婆婆，夠鐘食藥喇：糖尿藥。
+slot s_2000 meds -> bp+dm
+--- re-render
+could not update the iOS fixed bundle at /repo/ios/AhBo/Resources/fixed
+Traceback (most recent call last):
+  File "/repo/brain/ahbo/ops/render_fixed.py", line 158, in _copy_ios_bundle
+    shutil.copy2(out_dir / "manifest.json", IOS_RESOURCE_DIR / "manifest.json")
+  File "/usr/local/lib/python3.12/shutil.py", line 475, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/usr/local/lib/python3.12/shutil.py", line 262, in copyfile
+    with open(dst, 'wb') as fdst:
+         ^^^^^^^^^^^^^^^
+OSError: [Errno 30] Read-only file system: '/repo/ios/AhBo/Resources/fixed/manifest.json'
+manifest: /tmp/qa/media/fixed/manifest.json
+version: f-8b039266378c  clips: A1, F1, F2, F3, F4, F4p, F5, G1, G2, P1, R_s_0800, R_s_1200, R_s_2000  public: 01m75vr00hbbftm6qkmr00x8gr/P1.m4a
+--- after
+version: f-8b039266378c
+R_s_2000: 王婆婆，夠鐘食藥喇：血壓藥，同埋糖尿藥。
+R_s_2000.m4a mtime: 1794419614.3527827

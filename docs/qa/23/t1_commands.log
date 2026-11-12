@@ -1,0 +1,53 @@
+.MENU 今日狀況: '📅 今日狀況（15:00，11月20日（五）今日）\n\n💊 食藥：\n• 08:00 糖尿藥：已食 ✅\n• 12:00 血壓藥、糖尿藥、膽固醇藥、薄血丸：未到\n• ' buttons=['🔔 最近通知', '🔄 更新', '⬅️ 主選單']
+MENU 藥物: '💊 食藥時間表：\n• 08:00 糖尿藥\n• 12:00 血壓藥、糖尿藥、膽固醇藥、薄血丸\n• 20:00 糖尿藥\n\n📦 藥物資料：\n• 薄血丸（Aspirin' buttons=['⏰ 08:00', '⏰ 12:00', '⏰ 20:00', '💊 薄血丸', '💊 血壓藥', '💊 膽固醇藥', '💊 糖尿藥', '➕ 加食藥時間']
+MENU 日程: '🗓 日程（今日同之後七日）：\n\n11月20日（五）今日\n• 09:30 出門＠樓下巴士站（出門）\n• 10:30 覆診＠聯合醫院（醫療）\n• 12:30 同阿珍' buttons=['11-20 09:30 出門', '11-20 10:30 覆診', '11-20 12:30 同阿珍飲茶', '➕ 加約會', '⬅️ 主選單']
+MENU 設定: '⚙️ 設定：\n• 靜音時段：22:30 至 07:00\n• 朝早問候：08:30\n• 下晝問候：15:00\n• 夜晚問候：20:30\n• 阿寶靜音：唔係\n• F' buttons=['🌙 靜音時段', '☀️ 朝早問候', '🌤 下晝問候', '🌆 夜晚問候', '🧠 思考程度', '⬅️ 主選單']
+MENU 聯絡人: '👥 聯絡人（跌倒時按次序致電家人；阿寶永遠唔會打 999）：\n1. 阿珍（家人）電話 ••••0000 已核實 ✅，次序 1，有 Telegram\n• 緊急中心' buttons=['✏️ 阿珍', '➕ 加聯絡人', '⬅️ 主選單']
+MENU 示範控制: '🎬 示範控制（虛擬時間 15:00）\n撳掣之後會問你確認先做。跌倒／求助會標明「操作員觸發」。' buttons=['🔄 重設示範', '🛑 全部停止', '🤕 模擬跌倒', '🆘 模擬求助', 'S1', 'S2', 'S3', 'S4']
+MENU 系統健康: '🩺 系統健康：\n🟢 APP_SECRET：set (…cdef)\n🟢 INTERNAL_TOKEN：set (…6789)\n🟢 SESSION_SECRET：s' buttons=['🔄 再檢查', '⬅️ 主選單']
+.walked 39 second-level buttons, all answered
+.CMD /menu: '你好，阿珍！阿寶主選單：揀一樣嘢睇或者改。\n亦可以打指令：/today /meds /cal /settings /contacts /de'
+CMD /today: '📅 今日狀況（15:00，11月20日（五）今日）\n\n💊 食藥：\n• 08:00 糖尿藥：已食 ✅\n• 12:00 血壓藥、糖尿藥、膽固醇藥'
+CMD /meds: '💊 食藥時間表：\n• 08:00 糖尿藥\n• 12:00 血壓藥、糖尿藥、膽固醇藥、薄血丸\n• 20:00 糖尿藥\n\n📦 藥物資料：\n• 薄'
+CMD /cal: '🗓 日程（今日同之後七日）：\n\n11月20日（五）今日\n• 09:30 出門＠樓下巴士站（出門）\n• 10:30 覆診＠聯合醫院（醫療）\n•'
+CMD /settings: '⚙️ 設定：\n• 靜音時段：22:30 至 07:00\n• 朝早問候：08:30\n• 下晝問候：15:00\n• 夜晚問候：20:30\n• 阿'
+CMD /contacts: '👥 聯絡人（跌倒時按次序致電家人；阿寶永遠唔會打 999）：\n1. 阿珍（家人）電話 ••••0000 已核實 ✅，次序 1，有 Teleg'
+CMD /alerts: '🔔 最近十個通知／致電：\n（未有）'
+CMD /health: '🩺 系統健康：\n🟢 APP_SECRET：set (…cdef)\n🟢 INTERNAL_TOKEN：set (…6789)\n🟢 SESSIO'
+CMD /demo: '🎬 示範控制（虛擬時間 15:00）\n撳掣之後會問你確認先做。跌倒／求助會標明「操作員觸發」。'
+CMD /fall: '模擬跌倒（操作員觸發）\n\n確認？'
+CMD /sos: '模擬求助（操作員觸發）\n\n確認？'
+CMD /panic: '全部停止（停聲、收線、表情返待機）\n\n確認？'
+CMD /reset: '重設示範（藥物、日程、聯絡人會返去示範資料；設定時間保留）\n\n確認？'
+CMD /scenario: '用法：/scenario S1|S2|S3|S4|S4ok'
+CMD /clock: '【較時間】第 1/1 步\n虛擬時間：打 07:58、+30（分鐘）、now，或者揀場景開始時間：'
+CMD /mute: '靜音阿寶\n\n確認？'
+CMD /unmute: '取消靜音\n\n確認？'
+CMD /dose: '揀邊個時段即刻提醒食藥：'
+CMD /checkin: '揀邊個問候即刻做：'
+CMD /say: '【阿寶講一句】第 1/1 步\n打低要阿寶講嘅說話（會標明操作員）：'
+CMD /thinking: '🧠 思考程度（下一句／下一個任務起生效）\nFlash：預設\nSonnet：預設'
+CMD /fact: '請喺 /fact 後面寫低要記嘅嘢。'
+CMD /story: '請喺 /story 後面講低個故事。'
+CMD /whoami: '你嘅 chat id 係：8925008896'
+CMD /cancel: '已取消。'
+...HELP TEXT:
+阿寶指令（全部都可以直接打）：
+/menu 主選單
+/today 今日狀況（藥、約會、事故、iPad）
+/meds 藥物時間表同藥物資料
+/cal 日程（今日同之後七日）
+/settings 設定（靜音時段、問候時間、摘要）
+/contacts 聯絡人同致電次序
+/alerts 最近十個通知
+/health 系統健康
+/demo 示範控制
+/fall 模擬跌倒 · /sos 模擬求助 · /panic 全部停止 · /reset 重設示範
+/scenario S1|S2|S3|S4|S4ok · /clock 07:58|+30|now · /mute · /unmute
+/dose [時段] · /checkin morning|afternoon|evening · /say 一句說話
+/thinking flash|sonnet 程度
+/fact 記低一樣嘢 · /story 講個故事 · /whoami · /cancel 取消
+每樣改動都會問你「確認／取消」先至做。
+DEFECT CONFIRMED: /help still mentions 摘要 (digest) which was removed 12 Nov (BUILD_LOG §9)
+..
+8 passed in 15.81s

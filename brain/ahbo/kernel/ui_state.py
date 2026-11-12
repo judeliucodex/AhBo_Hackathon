@@ -88,15 +88,13 @@ class UIState:
 
     def replay_commands(self) -> list[dict[str, Any]]:
         """Face commands that rebuild the current face from blank (§10.1 reconnect, §23.9 reload)."""
-        out: list[dict[str, Any]] = [{"type": "reset"}]
-        if self.mood != "idle":
-            out.append({"type": "mood", "mood": self.mood})
+        out: list[dict[str, Any]] = [{"type": "reset"}, {"type": "mood", "mood": self.mood}]   # CONTRACTS §2.4
         for card in self.cards.values():
             out.append({"type": "card", "card": public_card(card)})
         for gid, g in self.groups.items():
             group: dict[str, Any] = {"id": gid, "steps": [
                 {"id": sid, "label": s["label"], "state": s["state"],
-                 **({"doneLabel": s["doneLabel"]} if s.get("doneLabel") else {})}
+                 **({"doneLabel": s["doneLabel"]} if s.get("doneLabel") and s["state"] != "done" else {})}
                 for sid, s in g["steps"].items()]}
             if g.get("title"):
                 group["title"] = g["title"]

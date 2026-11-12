@@ -1,0 +1,57 @@
+[
+ {
+  "phrase": "阿寶，我胸口痛呀",
+  "matcher": [
+   "emergency",
+   "health",
+   "胸口痛"
+  ],
+  "concern_level": null,
+  "incident_state": "AWAITING_OK",
+  "spoken": [
+   "王婆婆，如果你冇跌親，請講「我冇事」。"
+  ]
+ },
+ {
+  "phrase": "阿寶，我胸口好痛呀",
+  "matcher": null,
+  "concern_level": "urgent",
+  "incident_state": null,
+  "spoken": [
+   "聽到你唔舒服，阿寶好擔心你。我會話俾阿珍知，你慢慢唞吓先好嗎？",
+   "我已經話咗俾阿珍知，佢會打俾你。使唔使叫阿珍即刻打俾你呀？"
+  ]
+ },
+ {
+  "phrase": "心口好痛呀，阿寶",
+  "matcher": null,
+  "concern_level": "urgent",
+  "incident_state": null,
+  "spoken": [
+   "聽到你唔舒服，阿寶好擔心你。我會話俾阿珍知，你慢慢唞吓先好嗎？",
+   "我已經話咗俾阿珍知，佢會打俾你。使唔使叫阿珍即刻打俾你呀？"
+  ]
+ },
+ {
+  "phrase": "我唞唔到氣呀",
+  "matcher": [
+   "emergency",
+   "health",
+   "唞唔到氣"
+  ],
+  "concern_level": null,
+  "incident_state": "AWAITING_OK",
+  "spoken": [
+   "王婆婆，如果你冇跌親，請講「我冇事」。"
+  ]
+ },
+ {
+  "phrase": "我透大氣都透唔到呀",
+  "matcher": null,
+  "concern_level": null,
+  "incident_state": null,
+  "spoken": [
+   "阿寶聽唔太明，你可唔可以講多一次呀？"
+  ]
+ }
+]

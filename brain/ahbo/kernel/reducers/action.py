@@ -117,6 +117,39 @@ def _ref(detail: Any) -> str | None:
     return m.group(0) if m else None
 
 
+# Plain Traditional Chinese for 阿珍 (QA 25 D6): never a raw dict, exception or English code in a family message.
+REASON_WORDS = {"timeout": "等太耐冇回應", "browser_error": "報名網頁開唔到", "browser_unavailable": "報名網頁開唔到",
+                "internal_error": "系統出咗問題", "daily_cap": "今日自動報名次數已經用晒", "captcha": "網頁要驗證碼",
+                "forbidden_field": "網頁要填私人資料（例如身份證號碼）", "login": "網頁要登入", "payment": "網頁要付款",
+                "unknown_required_field": "有必填資料阿寶唔知點填", "submit_rejected": "網頁唔接受個報名",
+                "cross_domain_redirect": "網頁轉咗去第二個網站", "domain_not_allowed": "網址唔喺允許清單",
+                "read_only_domain": "呢個網站只可以睇唔可以報名", "method_handoff": "呢個活動要人手報名",
+                "unknown_method": "呢個活動要人手報名", "no_url": "搵唔到報名網址",
+                "contact_not_allowlisted": "收件人唔喺聯絡人名單", "not_templated": "訊息格式唔啱",
+                "already_sent": "訊息已經傳過", "wrong_method": "呢個行動唔可以咁做", "not_running": "行動已經停咗"}
+
+
+def _reason_words(detail: Any) -> str:
+    code = ""
+    if isinstance(detail, dict):
+        code = str(detail.get("reason") or detail.get("status") or "")
+    elif isinstance(detail, str):
+        code = detail.strip()
+    return REASON_WORDS.get(code, "出現技術問題")
+
+
+def _prefill_lines(prefill: Any) -> str:
+    """Prefilled details as readable `key: value` lines; empty → ""."""
+    if not isinstance(prefill, dict):
+        return ""
+    lines = []
+    for k, v in prefill.items():
+        if v is None or v == "" or isinstance(v, (dict, list)):
+            continue
+        lines.append(f"{str(k)[:30]}: {str(v)[:80]}")
+    return "\n".join(lines[:12])
+
+
 def _finish(state: KernelState, ctx: Any, a: dict[str, Any], status: str, detail: Any,
             screenshots: list[str]) -> list[Command]:
     a["state"] = status
@@ -156,9 +189,10 @@ def _finish(state: KernelState, ctx: Any, a: dict[str, Any], status: str, detail
             line = LINES["done"].format(when=w, title=title) if w else f"報咗名喇，{title}到時我會提你㗎。"
     elif status == "needs_human":
         url = d.get("url") or ""
+        prefill = _prefill_lines(d.get("prefill") or (detail.get("prefill") if isinstance(detail, dict) else None))
         text = (f"王婆婆想傳訊息俾{title}，阿寶未能自動完成，請你幫手聯絡。" if msg else
-                f"王婆婆想報名{title}（{hhmm or ''} {venue}），阿寶未能自動完成，請你幫手：{url}\n"
-                f"已準備資料：{dumps(d.get('prefill') or {})}")
+                f"王婆婆想報名{title}（{hhmm or ''} {venue}），阿寶未能自動完成（{_reason_words(detail)}），"
+                f"請你幫手：{url}" + (f"\n已準備資料：\n{prefill}" if prefill else ""))
         out.append(cmd("family.send", P2, a["id"], kind="HANDOFF", contact_ids=fam, text=text,
                        screenshots=a.get("screenshots") or [], action_id=a["id"]))
         card = {"id": f"action_{a['id']}", "kind": "message", "label": "已通知阿珍",
@@ -167,14 +201,34 @@ def _finish(state: KernelState, ctx: Any, a: dict[str, Any], status: str, detail
     else:
         what = f"傳訊息俾{title}" if msg else f"報名{title}"
         out.append(cmd("family.send", P2, a["id"], kind="INFO", contact_ids=fam,
-                       text=f"王婆婆想{what}，但係做唔到（{str(detail or '')[:80]}）。請你幫手睇下。",
+                       text=f"王婆婆想{what}，但係做唔到（{_reason_words(detail)}）。請你幫手睇下。",
                        action_id=a["id"]))
         card = {"id": f"action_{a['id']}", "kind": "message", "label": "已通知阿珍",
                 "small": "傳唔到訊息" if msg else "報唔到名"}
         line = "傳唔到訊息，我叫阿珍幫你睇下。" if msg else LINES["failed"]
+    out += _action_step_done(ctx, a, status)
     item = arbiter.make_item("行動結果", P2, line, "話俾佢知結果，一句就夠。", cards=[card], corr=a["id"])
     _, cmds = arbiter.request(state, ctx, item)
     return out + cmds
+
+
+MSG_STEP_LABELS = {"done": "傳咗訊息", "needs_human": "叫咗阿珍幫手", "failed": "傳唔到訊息"}
+
+
+def _action_step_done(ctx: Any, a: dict[str, Any], status: str) -> list[Command]:
+    """The turn's confirm_action step 「幫你報緊名…」 stays active until the runner's result (the tool's outcome is
+    `pending`); give it its ✓ / ✕ and label now if it is still showing (§23.6 rule 3, QA 25 D5)."""
+    spec = (ctx.config.ui_steps.get("tools") or {}).get("confirm_action") or {}
+    labels = MSG_STEP_LABELS if a.get("kind") == "message" else (spec.get("done") or {})
+    for gid, g in ctx.ui.groups.items():
+        for sid, s in g["steps"].items():
+            if sid.startswith("confirm_action") and s.get("state") == "active":
+                f = {"type": "step", "group": gid, "id": sid, "state": "failed" if status == "failed" else "done"}
+                lab = labels.get(status) if isinstance(labels, dict) else None
+                if lab:
+                    f["label"] = lab
+                return [ui(f, P2, a["id"])]
+    return []
 
 
 # ---------------------------------------------------------------- telegram-message actions
@@ -216,13 +270,14 @@ def _message_send(state: KernelState, ctx: Any, ev: Event) -> list[Command] | No
 
 
 # ---------------------------------------------------------------- deep tasks
-_URL = re.compile(r"https?://\S+|www\.\S+")
-
-
 def _speakable(text: str) -> str:
-    """Deep text is data (INV-7): keep only sentences without Latin letters/URLs, at most two."""
-    parts = re.split(r"(?<=[。！？])", _URL.sub("", str(text or "")))
-    keep = [s.strip() for s in parts if s.strip() and not re.search(r"[A-Za-z0-9０-９]", s)]
+    """Deep text is data (INV-7): keep only sentences without Latin letters/URLs and without instruction markers
+    (QA 22 D2), at most two. URLs are cut with the spoken filter's punctuation-aware regex, so a URL glued to
+    Chinese text never swallows the following sentence. A dropped sentence is dropped: there is no fallback."""
+    from ahbo.agent.filters.spoken import INSTRUCTION_RE, URL_RE
+    parts = re.split(r"(?<=[。！？])", URL_RE.sub("", str(text or "")))
+    keep = [s.strip() for s in parts if s.strip() and not re.search(r"[A-Za-z0-9０-９]", s)
+            and not INSTRUCTION_RE.search(s)]
     return "".join(keep[:2])
 
 

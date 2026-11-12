@@ -139,10 +139,17 @@ async def inject_voice_note(svc: Any, file: str | Path | None = None) -> dict[st
         log.warning("could not copy voice note: %r", e)
         return {"ok": False, "reason": "copy_failed"}
     duration = telegram.ffprobe_duration(dest) or 4.0
+    transcript = None
+    if not file:                      # the seed note's words are known → caption 「阿珍：…」 (QA 25 D7)
+        try:
+            from ahbo.core.config import load_seed
+            transcript = (load_seed("demo.yaml").get("voice_messages") or [{}])[0].get("transcript")
+        except Exception:
+            transcript = None
     svc.db.execute(
         "INSERT INTO voice_messages(id, direction, from_name, to_name, contact_id, file_path, mime, duration_s, "
         "transcript, received_at) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        (vm_id, "in", contact["name"], "王婆婆", contact["id"], str(dest), "audio/mp4", duration, None,
+        (vm_id, "in", contact["name"], "王婆婆", contact["id"], str(dest), "audio/mp4", duration, transcript,
          svc.clock.iso()))
     await svc.kernel.process(Event(type="family.voice_note", source="telegram",
                                    payload={"contact_id": contact["id"], "voice_id": vm_id,

@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from ahbo.core.ids import new_id
 
-from ..auth import require_device_or_operator, require_operator
+from ..auth import bearer, check_device_token, has_operator_cookie, require_device_or_operator, require_operator
 from ..services import fixed_dir
 
 router = APIRouter()
@@ -54,9 +54,23 @@ async def upload_photo(request: Request, file: UploadFile = File(...), incident_
     return {"ok": True, "photo_id": photo_id}
 
 
-@router.get("/media/photo/{photo_id}", dependencies=[Depends(require_operator)])
+def _photo_access(request: Request, svc, photo_id: str) -> None:
+    """Operator cookie: any photo. Device token: only photos a life story shows on the iPad (`life_stories.photo_id`,
+    the story card's `photo_url`); incident (fall) photos stay console-only (§3.3)."""
+    s = svc.settings
+    if has_operator_cookie(s, request):
+        return
+    if check_device_token(s, bearer(request)):
+        if svc.db.one("SELECT 1 AS x FROM life_stories WHERE photo_id=? LIMIT 1", (photo_id,)):
+            return
+        raise HTTPException(status_code=403, detail="console_only")
+    raise HTTPException(status_code=401, detail="login required")
+
+
+@router.get("/media/photo/{photo_id}")
 async def get_photo(request: Request, photo_id: str) -> FileResponse:
     svc = request.app.state.svc
+    _photo_access(request, svc, photo_id)
     row = svc.db.one("SELECT path FROM media WHERE id=? AND kind='photo'", (photo_id,))
     if not row:
         raise HTTPException(status_code=404)
@@ -105,6 +119,8 @@ async def screens(request: Request, name: str) -> FileResponse:
 
 @router.get("/media/public/{rand}/{name}")
 async def public_clip(request: Request, rand: str, name: str) -> FileResponse:
-    if not RANDOM_DIR.match(rand):
+    svc = request.app.state.svc
+    # Only the current clip dir is served (QA 26 D1): an old or wiped dir name is a 404 even if files linger.
+    if not RANDOM_DIR.match(rand) or rand != svc.db.kv_get("public_clip_rand"):
         raise HTTPException(status_code=404)
-    return _file_in(request.app.state.svc.settings.media_dir / "public" / rand, name)
+    return _file_in(svc.settings.media_dir / "public" / rand, name)

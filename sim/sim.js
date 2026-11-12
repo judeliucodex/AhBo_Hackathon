@@ -146,7 +146,7 @@ const channel = new DeviceChannel({
   onOffline: on => face({ type: "offline", on }),
   onFrame: (dir, frame) => {
     tracePush(dir, frame);
-    if (dir === "in") log("in", `← ${frame.type}${frame.ui ? " " + JSON.stringify(frame.ui) : ""}`);
+    if (dir === "in") { if (frame.type !== "pong") log("in", `← ${frame.type}${frame.ui ? " " + JSON.stringify(frame.ui) : ""}`); }
     else if (dir === "out") log("out", `→ ${frame.type}`);
     else log(dir === "drop" ? "err" : "note", `${dir} ${JSON.stringify(frame)}`);
   },

@@ -1,0 +1,130 @@
+POST /login                                          wrong password   -> 401 expect 401
+POST /login                                          correct password -> 303 set-cookie flags=['httponly', 'max-age', 'path', 'samesite'] maxage=True
+welcome keys=['config', 'device_token', 'fixed_cache_version', 'id', 'server_time', 'text_sessions', 'type'] device_token_prefix=dt.ipa.…
+/healthz                                             no auth          -> 200 expect 200
+/healthz                                             wrong cookie     -> 200 expect 200
+/healthz                                             device token     -> 200 expect 200
+/healthz                                             operator cookie  -> 200 expect 200
+/login                                               no auth          -> 200 expect 200
+/login                                               wrong cookie     -> 200 expect 200
+/login                                               device token     -> 200 expect None
+/login                                               operator cookie  -> 303 expect 303
+/face/index.html                                     no auth          -> 200 expect 200
+/face/index.html                                     wrong cookie     -> 200 expect 200
+/face/index.html                                     device token     -> 200 expect 200
+/face/index.html                                     operator cookie  -> 200 expect 200
+/mock-centre/                                        no auth          -> 200 expect 200
+/mock-centre/                                        wrong cookie     -> 200 expect 200
+/mock-centre/                                        device token     -> 200 expect 200
+/mock-centre/                                        operator cookie  -> 200 expect 200
+/mock-centre/api/activities                          no auth          -> 200 expect 200
+/mock-centre/api/activities                          wrong cookie     -> 200 expect 200
+/mock-centre/api/activities                          device token     -> 200 expect 200
+/mock-centre/api/activities                          operator cookie  -> 200 expect 200
+POST /mock-centre/api/register                       no auth, empty body -> 400 public; 4xx-validation ok
+/                                                    no auth          -> 303 expect 303
+/                                                    wrong cookie     -> 303 expect 303
+/                                                    device token     -> 303 expect None
+/                                                    operator cookie  -> 302 expect None
+/sim/                                                no auth          -> 303 expect 303
+/sim/                                                wrong cookie     -> 303 expect 303
+/sim/                                                device token     -> 303 expect None
+/sim/                                                operator cookie  -> 200 expect None
+/sim/index.html                                      no auth          -> 303 expect 303
+/sim/index.html                                      wrong cookie     -> 303 expect 303
+/sim/index.html                                      device token     -> 303 expect None
+/sim/index.html                                      operator cookie  -> 200 expect None
+/operator/                                           no auth          -> 303 expect 303
+/operator/                                           wrong cookie     -> 303 expect 303
+/operator/                                           device token     -> 303 expect None
+/operator/                                           operator cookie  -> 404 expect None
+/operator/index.html                                 no auth          -> 303 expect 303
+/operator/index.html                                 wrong cookie     -> 303 expect 303
+/operator/index.html                                 device token     -> 303 expect None
+/operator/index.html                                 operator cookie  -> 404 expect None
+GET / (with cookie)                                  operator cookie  -> 302 → /sim/
+GET /sim/ (with cookie)                              operator cookie  -> 200 
+GET /operator/ (with cookie)                         operator cookie  -> 404 operator-ui deleted → 404 acceptable
+POST /logout                                         no auth          -> 303 public → 303 + clears cookie
+POST /logout                                         set-cookie       -> ahbo_session=""; expires=Wed, 11 Nov 2026 17:54:41 GMT; Max- 
+/operator/api/state                                  no auth          -> 401 expect 401
+/operator/api/state                                  wrong cookie     -> 401 expect 401
+/operator/api/state                                  device token     -> 401 expect 401
+/operator/api/state                                  operator cookie  -> 200 expect 200
+/operator/api/health                                 no auth          -> 401 expect 401
+/operator/api/health                                 wrong cookie     -> 401 expect 401
+/operator/api/health                                 device token     -> 401 expect 401
+/operator/api/health                                 operator cookie  -> 200 expect 200
+/operator/api/outbox                                 no auth          -> 401 expect 401
+/operator/api/outbox                                 wrong cookie     -> 401 expect 401
+/operator/api/outbox                                 device token     -> 401 expect 401
+/operator/api/outbox                                 operator cookie  -> 200 expect 200
+/operator/api/trace                                  no auth          -> 401 expect 401
+/operator/api/trace                                  wrong cookie     -> 401 expect 401
+/operator/api/trace                                  device token     -> 401 expect 401
+/operator/api/trace                                  operator cookie  -> 200 expect 200
+/operator/api/fixed                                  no auth          -> 401 expect 401
+/operator/api/fixed                                  wrong cookie     -> 401 expect 401
+/operator/api/fixed                                  device token     -> 401 expect 401
+/operator/api/fixed                                  operator cookie  -> 200 expect 200
+/operator/api/trigger                                no auth          -> 401 expect 401
+/operator/api/trigger                                wrong cookie     -> 401 expect 401
+/operator/api/trigger                                device token     -> 401 expect 401
+/operator/api/trigger                                operator cookie  -> 200 expect 200
+/operator/api/clock                                  no auth          -> 401 expect 401
+/operator/api/clock                                  wrong cookie     -> 401 expect 401
+/operator/api/clock                                  device token     -> 401 expect 401
+/operator/api/clock                                  operator cookie  -> 200 expect 200
+/operator/api/outbox/x/press                         no auth          -> 401 expect 401
+/operator/api/outbox/x/press                         wrong cookie     -> 401 expect 401
+/operator/api/outbox/x/press                         device token     -> 401 expect 401
+/operator/api/outbox/x/press                         operator cookie  -> 400 expect None
+GET /operator/stream                                 no auth          -> 401 expect 401
+GET /operator/stream                                 operator cookie  -> 200 SSE open
+/session                                             no auth          -> 401 expect 401
+/session                                             wrong cookie     -> 401 expect 401
+/session                                             device token     -> 200 expect 200
+/session                                             operator cookie  -> 200 expect 200
+POST /session                                        Bearer APP_SECRET -> 401 expect 401 (APP_SECRET is not a device token)
+POST /session                                        Bearer forged dt token -> 401 expect 401
+POST /media/photo                                    device token     -> 200 photo_id=ph_01M75VYV50SBVMFBNS10XKXZ2R
+/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R           no auth          -> 401 expect 401
+/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R           wrong cookie     -> 401 expect 401
+/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R           device token     -> 403 expect 403
+/media/photo/ph_01M75VYV50SBVMFBNS10XKXZ2R           operator cookie  -> 200 expect 200
+GET /media/fixed/manifest.json                       device token     -> 200 
+/media/fixed/F1.m4a                                  no auth          -> 401 expect 401
+/media/fixed/F1.m4a                                  wrong cookie     -> 401 expect 401
+/media/fixed/F1.m4a                                  device token     -> 200 expect 200
+/media/fixed/F1.m4a                                  operator cookie  -> 200 expect 200
+/media/fixed/manifest.json                           no auth          -> 401 expect 401
+/media/fixed/manifest.json                           wrong cookie     -> 401 expect 401
+/media/fixed/manifest.json                           device token     -> 200 expect None
+/media/fixed/manifest.json                           operator cookie  -> 200 expect None
+/media/voice/vm_demo                                 no auth          -> 401 expect 401
+/media/voice/vm_demo                                 wrong cookie     -> 401 expect 401
+/media/voice/vm_demo                                 device token     -> 200 expect 200
+/media/voice/vm_demo                                 operator cookie  -> 200 expect 200
+/media/screens/whatever.png                          no auth          -> 401 expect 401
+/media/screens/whatever.png                          wrong cookie     -> 401 expect 401
+/media/screens/whatever.png                          device token     -> 401 expect 401
+/media/screens/whatever.png                          operator cookie  -> 404 expect 404
+/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a      no auth          -> 404 expect 200
+/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a      wrong cookie     -> 404 expect 200
+/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a      device token     -> 404 expect 200
+/media/public/01m75vmt6r1fdf2fnnfvdbecxf/F1.m4a      operator cookie  -> 404 expect 200
+/media/public/short/P1.m4a                           no auth          -> 404 expect 404
+/media/public/short/P1.m4a                           wrong cookie     -> 404 expect 404
+/media/public/short/P1.m4a                           device token     -> 404 expect 404
+/media/public/short/P1.m4a                           operator cookie  -> 404 expect 404
+/internal/context/sess_x                             no auth          -> 401 expect 401
+/internal/context/sess_x                             wrong cookie     -> 401 expect 401
+/internal/context/sess_x                             device token     -> 401 expect 401
+/internal/context/sess_x                             operator cookie  -> 401 expect 401
+GET /internal/context/sess_x                         wrong internal token -> 401 expect 401
+GET /internal/context/sess_x                         internal token   -> 200 200/501 = auth ok
+POST /internal/turn                                  internal token   -> 200 
+POST /internal/event                                 internal token   -> 200 
+POST /internal/clock                                 internal token   -> 200 
+
+WROTE /scratch/auth_matrix.json: 127 rows

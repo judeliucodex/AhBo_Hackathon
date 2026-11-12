@@ -356,6 +356,8 @@ class DeviceHub:
             await self.kernel.submit(Event(type="device.heartbeat", source="device", payload={
                 "device_id": dev, "battery": msg.get("battery"), "thermal": msg.get("thermal"),
                 "in_session": bool(msg.get("in_session"))}))
+            # liveness answer (no `id`: not a command, never acked): lets a client notice a silently dead path
+            await self._send(conn, {"type": "pong", "ref": msg.get("id")})
         elif t == "wake":
             await self.kernel.process(Event(type="device.wake", source="device", payload={
                 "trigger": msg.get("trigger", "touch"), "s1_score": msg.get("s1_score"),

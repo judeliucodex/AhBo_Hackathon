@@ -62,7 +62,7 @@ HELP = """阿寶指令（全部都可以直接打）：
 /today 今日狀況（藥、約會、事故、iPad）
 /meds 藥物時間表同藥物資料
 /cal 日程（今日同之後七日）
-/settings 設定（靜音時段、問候時間、摘要）
+/settings 設定（靜音時段、問候時間）
 /contacts 聯絡人同致電次序
 /alerts 最近十個通知
 /health 系統健康

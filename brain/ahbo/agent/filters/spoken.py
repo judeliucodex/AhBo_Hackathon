@@ -27,6 +27,10 @@ from ahbo.core.numwords import DIGITS, digits_to_words, int_words
 QUALITY_EVENTS = ("mandarin_drift", "too_long", "digits_spoken")
 
 URL_RE = re.compile(r"(?:https?://|www\.)[^\s，。！？、）)」]+", re.I)
+# Instruction markers in untrusted text (deep results, injected data; INV-7, QA 22 D2): a sentence carrying one is
+# dropped, never relayed and never used as a fallback.
+INSTRUCTION_RE = re.compile(r"(?i)指示|指令|唔好理|唔使理|不要理|忽略|打俾|打畀|打電話|致電|所有人|所有聯絡人|過數|轉賬|"
+                            r"轉帳|匯款|密碼|驗證碼|九九九|唔好話俾|ignore|instruction")
 EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
 MD_LINK_RE = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 MD_HEAD_RE = re.compile(r"^\s{0,3}#{1,6}\s*", re.M)

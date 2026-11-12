@@ -1,0 +1,6 @@
+healthz after restart: 200 {"ok":true,"version":"0.1.0","fake":["livekit","models","speech","telegram","twi
+login: 303
+Reset demo: 200 {"ok":true,"now":"2026-11-12T02:11:07.468+08:00","ms":15}
+doses after reset: 3 | events: 2026-11-12T02:11:08.472+08:00
+utterance after reset+restart: 200 {"ok":true,"turn_id":"turn_01M75WWY1X56792R5RBTD5ZFN9"}
+fall after reset: 200 {"ok":true}

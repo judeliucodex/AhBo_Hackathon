@@ -1,0 +1,7 @@
+RESTART-AWAITING sees: ['ok_button', 'countdown']
+RESTART-AWAITING clips: []
+.RESTART-ESCALATING sees: []
+RESTART-ESCALATING clips: []
+calls after restart: [{'payload': '{"contact_id":"c_chun","clip":"P1","incident_id":"inc_01M75W45XXZ6JAGHQBWQNGDT3B","call_id":"call_01M75W46JTE5VX8F6YA7NF9H1M"}'}, {'payload': '{"contact_id":"c_chun","clip":"P1","incident_id":"inc_01M75W45XXZ6JAGHQBWQNGDT3B","call_id":"call_01M75W4CFJMCF97PH7D12FX8HR"}'}]
+.
+2 passed in 8.71s

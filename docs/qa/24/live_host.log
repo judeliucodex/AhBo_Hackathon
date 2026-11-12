@@ -1,0 +1,24 @@
+== live host read-only checks, 2026-11-11T18:25:33Z ==
+/healthz                 -> 200
+/internal/turn           -> 404
+/INTERNAL/turn           -> 404
+/%69nternal/turn         -> 404
+/operator/api/state      -> 401
+/sim/                    -> 303
+/ws/device               -> 404
+-- /ws/device with WS upgrade headers, no auth:
+HTTP/1.1 101 Switching Protocols
+Alt-Svc: h3=":443"; ma=2592000
+-- ss -ltnp:
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                                
+LISTEN 0      4096       127.0.0.1:8000       0.0.0.0:*    users:(("docker-proxy",pid=749059,fd=8))              
+LISTEN 0      4096       127.0.0.1:65529      0.0.0.0:*    users:(("monarx-agent",pid=715,fd=11))                
+LISTEN 0      4096         0.0.0.0:443        0.0.0.0:*    users:(("docker-proxy",pid=85114,fd=8))               
+LISTEN 0      4096         0.0.0.0:80         0.0.0.0:*    users:(("docker-proxy",pid=85056,fd=8))               
+LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=485,fd=17))             
+LISTEN 0      4096         0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=790,fd=3),("systemd",pid=1,fd=116))
+LISTEN 0      511        127.0.0.1:42345      0.0.0.0:*    users:(("node",pid=137656,fd=23))                     
+LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=485,fd=15))             
+LISTEN 0      4096            [::]:443           [::]:*    users:(("docker-proxy",pid=85126,fd=8))               
+LISTEN 0      4096            [::]:80            [::]:*    users:(("docker-proxy",pid=85067,fd=8))               
+LISTEN 0      4096            [::]:22            [::]:*    users:(("sshd",pid=790,fd=4),("systemd",pid=1,fd=117))

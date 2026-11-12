@@ -1,0 +1,16 @@
+WS /ws/device no auth                                      -> CLOSED code=4401 expect close 4401
+WS wrong bearer                                            -> CLOSED code=4401 expect close 4401
+WS bearer = device token (dt.)                             -> CLOSED code=4401 expect close 4401
+WS cookie valid, no ?sim=1                                 -> CLOSED code=4401 expect close 4401
+WS cookie valid + sim=1                                    -> OPEN (no frame before hello - correct) expect OPEN (browser iPad)
+WS cookie valid + sim=0                                    -> CLOSED code=4401 expect close 4401
+WS cookie forged + sim=1                                   -> CLOSED code=4401 expect close 4401
+WS bearer APP_SECRET                                       -> OPEN (no frame before hello - correct) expect OPEN
+GET /media/public/01m75vmt6r1fdf2fnnfvdbecxf/P1.m4a (no auth) -> 200 unguessable path: expect 200
+GET /media/public/…/../../ahbo.sqlite                      -> 404 expect 404
+GET /media/public/01m75vmt6r1fdf2fnnfvdbecxf/nope.m4a      -> 404 expect 404
+POST /login x8 wrong password                              -> [401, 429, 429, 429, 429, 429, 429, 429] expect [401 x5, 429, 429, 429]
+POST /login correct after limit                            -> 429 expect 429 (limit counts all attempts)
+POST /login with X-Forwarded-For 9.9.9.9                   -> 401 401 = different key (app trusts last XFF)
+
+WROTE /scratch/ws_login_public.json

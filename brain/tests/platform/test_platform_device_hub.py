@@ -78,9 +78,9 @@ def test_commands_broadcast_and_ack(client):
     with client.websocket_connect("/ws/device", headers=AUTH) as a, \
             client.websocket_connect("/ws/device", headers=AUTH) as b:
         hello(a, "ipad-a")
-        a.receive_json()            # replay: reset
+        a.receive_json(), a.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
         hello(b, "ipad-b")
-        b.receive_json()
+        b.receive_json(), b.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
         c = cmd("device.play_fixed", P0, clip_id="F1", say_id="say_x_F1")
         emit(client, c)
         fa, fb = a.receive_json(), b.receive_json()
@@ -107,7 +107,7 @@ def test_p0_resend_then_red(client, monkeypatch):
     svc = svc_of(client)
     with client.websocket_connect("/ws/device", headers=AUTH) as ws:
         hello(ws)
-        ws.receive_json()
+        ws.receive_json(), ws.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
         c = cmd("device.capture_photo", P0, incident_id="inc_1")
         emit(client, c)
         ids = [ws.receive_json()["id"] for _ in range(4)]     # original + 3 resends, same id
@@ -150,7 +150,7 @@ async def test_p0_drops_queued_non_p0_ui():
 def test_step_done_held_600ms_and_order_kept(client):
     with client.websocket_connect("/ws/device", headers=AUTH) as ws:
         hello(ws)
-        ws.receive_json()
+        ws.receive_json(), ws.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
         group = {"id": "turn_1", "steps": [{"id": "a", "label": "睇緊", "state": "active"}]}
         emit(client, ui({"type": "steps", "group": group}), ui({"type": "step", "group": "turn_1", "id": "a",
                                                                  "state": "done"}),
@@ -168,7 +168,7 @@ def test_device_events_become_kernel_events(client):
     svc = svc_of(client)
     with client.websocket_connect("/ws/device", headers=AUTH) as ws:
         hello(ws)
-        ws.receive_json()
+        ws.receive_json(), ws.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
         ws.send_json({"id": "e1", "type": "playback_done", "clip_id": "F1", "say_id": "say_dup"})
         ws.send_json({"id": "e2", "type": "playback_done", "clip_id": "F1", "say_id": "say_dup"})
         ws.send_json({"id": "e3", "type": "heartbeat", "battery": 0.8, "thermal": "nominal", "in_session": False})
@@ -189,7 +189,7 @@ def test_utterance_runs_text_session(client):
     """S2 through the device channel: the reply reaches the device as face commands."""
     with client.websocket_connect("/ws/device", headers=AUTH) as ws:
         hello(ws)
-        ws.receive_json()
+        ws.receive_json(), ws.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
         ws.send_json({"id": "u1", "type": "utterance", "text": "阿寶，我幾時食藥呀？", "final": True})
         got = drain_until(ws, lambda f: f.get("type") == "ui" and f["ui"].get("type") == "say_start")
         types = [f["type"] for f in got]
@@ -206,7 +206,7 @@ def test_offline_after_disconnect(client, monkeypatch):
     svc = svc_of(client)
     with client.websocket_connect("/ws/device", headers=AUTH) as ws:
         hello(ws, "ipad-off")
-        ws.receive_json()
+        ws.receive_json(), ws.receive_json()   # replay: reset + mood (CONTRACTS §2.4)
     time.sleep(0.6)
     assert svc.db.one("SELECT online FROM devices WHERE id='ipad-off'")["online"] == 0
     assert svc.db.one("SELECT COUNT(*) AS n FROM events WHERE type='device.offline'")["n"] == 1

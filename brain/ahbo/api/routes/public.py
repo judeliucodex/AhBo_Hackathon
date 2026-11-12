@@ -10,7 +10,7 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 
-from ahbo.core.settings import BRAIN_DIR, REPO_ROOT
+from ahbo.core.settings import BRAIN_DIR, REPO_ROOT, SEED_DIR
 
 from ..auth import (
     COOKIE,
@@ -148,6 +148,8 @@ def static_router() -> APIRouter:
 
     @r.get("/sim/{path:path}", include_in_schema=False, dependencies=[Depends(require_operator_page)])
     async def sim_files(path: str = "") -> Response:
+        if path == "fall_placeholder.jpg" and not (sim / path).is_file():
+            return _serve(SEED_DIR, path)        # PRD §26.3: the sim uploads seed/fall_placeholder.jpg (QA 25 D10)
         return _serve(sim, path, ("index.html", "ipad.html"))
 
     @r.get("/operator/{path:path}", include_in_schema=False, dependencies=[Depends(require_operator_page)])

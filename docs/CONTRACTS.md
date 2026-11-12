@@ -53,6 +53,10 @@ agent→api API · 6 Tools · 7 Deep result schema · 8 HTTP endpoints · 9 Oper
 Every command frame: `{"id": "<ulid>", "type": "<type>", "priority": 0..3, ...fields}`. The iPad answers
 every command with `ack` within 2 s and de-duplicates by `id`.
 
+Liveness (added 12 Nov 2026, QA 25 D2): the server answers every `heartbeat` with `{"type":"pong","ref":"<heartbeat
+id>"}`. It has no `id`, is not a command and is never acked (clients ignore frames without an `id`). A client that
+has seen a pong treats ~25 s without any frame as a dead connection (the browser iPad's `sim/channel.js` does).
+
 | type | fields | example |
 |---|---|---|
 | `ui` | `ui`: one face command (§3) | `{"id":"01J…","type":"ui","priority":0,"ui":{"type":"mood","mood":"alarm"}}` |

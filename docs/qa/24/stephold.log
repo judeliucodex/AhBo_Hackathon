@@ -1,0 +1,10 @@
+--- turn '阿寶，我幾時食藥呀？' (med) ---
+  +  106.3 ms  {"type": "steps", "group": {"id": "turn_01M75WTA818D127J2QQYY980SG", "steps": [{"id": "get_med_status", "label": "查緊藥物時間表…", "state": "active"}]}}
+  +  654.4 ms  {"type": "step", "group": "turn_01M75WTA818D127J2QQYY980SG", "id": "get_med_status", "state": "done", "label": "下一次：十二點正，四隻藥"}
+  active→done wire gap: 548.2 ms (contract: ≥600)
+--- turn '今日有咩約會呀？' (events) ---
+  +   83.7 ms  {"type": "steps", "group": {"id": "turn_01M75WTP5MRRV89Z6MF950AFH5", "steps": [{"id": "list_events", "label": "睇緊今日日程…", "state": "active"}, {"id": "get_route", "label": "查緊去聯合醫院嘅巴士路線…", "state": "pending"}]}}
+  +  628.9 ms  {"type": "step", "group": "turn_01M75WTP5MRRV89Z6MF950AFH5", "id": "list_events", "state": "done", "label": "今日有兩個約會"}
+  +  649.5 ms  {"type": "step", "group": "turn_01M75WTP5MRRV89Z6MF950AFH5", "id": "get_route", "state": "active"}
+  + 1229.4 ms  {"type": "step", "group": "turn_01M75WTP5MRRV89Z6MF950AFH5", "id": "get_route", "state": "done", "label": "路線已查好"}
+  active→done wire gap: 545.2 ms (contract: ≥600)

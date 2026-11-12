@@ -1,0 +1,24 @@
+PASS login ok — 303
+PASS utterance trigger accepted — {"ok":true,"turn_id":"turn_01M75WDMQD5AJTME1X7YHD43EK"}
+PASS fall trigger accepted — {"ok":true}
+PASS all 73 commands have event_id + correlation_id (INV-6) — bad=0
+FAIL all 68 events carry a correlation_id — bad=52
+PASS an incident exists — inc_01M75WDQPD7C9E7EXK35HPCTDA
+PASS trace endpoint 200 — 200
+PASS trace returns events+commands+spans — 9 events, 50 cmds, 0 spans
+FAIL story has the fall sensor event — ['timer.fired', 'timer.fired', 'timer.fired', 'timer.fired', 'family.send_result', 'phone.call_status']
+PASS story has the F-series clips — ['F1', 'F2', 'F3', 'F4']
+PASS story has the family alert — ['timer.cancel', 'device.ui', 'agent.say_done', 'agent.pause', 'agent.mode', 'device.ui', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'device.capture_photo', 'device.wake_enable', 'timer.cancel', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'timer.cancel', 'timer.cancel', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'timer.cancel', 'device.ui', 'device.ui', 'timer.set', 'device.wake_enable', 'timer.cancel', 'timer.cancel', 'timer.cancel', 'timer.cancel', 'timer.cancel', 'device.ui', 'device.ui', 'device.ui', 'device.ui', 'device.ui', 'device.ui', 'phone.call', 'family.send', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'timer.set', 'timer.cancel', 'device.ui', 'agent.resume', 'agent.mode']
+PASS story has the phone call — ['timer.cancel', 'device.ui', 'agent.say_done', 'agent.pause', 'agent.mode', 'device.ui', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'device.capture_photo', 'device.wake_enable', 'timer.cancel', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'timer.cancel', 'timer.cancel', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'timer.cancel', 'device.ui', 'device.ui', 'timer.set', 'device.wake_enable', 'timer.cancel', 'timer.cancel', 'timer.cancel', 'timer.cancel', 'timer.cancel', 'device.ui', 'device.ui', 'device.ui', 'device.ui', 'device.ui', 'device.ui', 'phone.call', 'family.send', 'device.ui', 'device.ui', 'device.play_fixed', 'timer.set', 'timer.set', 'timer.cancel', 'device.ui', 'agent.resume', 'agent.mode']
+PASS every traced command matches the correlation_id — {'inc_01M75WDQPD7C9E7EXK35HPCTDA'}
+PASS every traced event matches the correlation_id — {'inc_01M75WDQPD7C9E7EXK35HPCTDA'}
+PASS a session exists — sess_01M75WDMQAF6KEBDSQEX94AFBX
+PASS session trace has her utterance + agent reply — ['user.utterance', 'agent.steps_plan', 'agent.tool_call', 'agent.tool_result', 'agent.reply_start', 'agent.reply_end', 'timer.fired']
+PASS session trace has tool calls — ['agent.steps_plan', 'agent.tool_call', 'agent.tool_result', 'agent.reply_start', 'agent.reply_end']
+FAIL session trace has spans (§15 waterfall) — 0
+  span names: []
+PASS unknown correlation id → empty trace, 200 — {"events":[],"commands":[],"spans":[]}
+PASS trace without cookie refused — 401
+  turn.latency spans recorded: 0
+
+CHECK FAILURES: all 68 events carry a correlation_id; story has the fall sensor event; session trace has spans (§15 waterfall)

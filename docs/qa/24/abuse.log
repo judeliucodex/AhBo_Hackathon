@@ -1,0 +1,57 @@
+POST /events/sensor 25MB json (no token)                       -> 400 {"ok":false,"reason":"bad_beacon_id"} 0.3s
+POST /operator/api/trigger 25MB json (cookie)                  -> 400 {"ok":false,"reason":"unknown_kind"} expect 4xx not 500
+POST /events/sensor malformed json                             -> 400 {"ok":false,"reason":"bad_json"} 
+POST /events/sensor json array                                 -> 400 {"ok":false,"reason":"bad_json"} 
+POST /events/sensor wrong types                                -> 401 {"ok":false,"reason":"bad_token"} 
+trigger kind=123                                               -> 400 {"ok":false,"reason":"unknown_kind"} 
+trigger slot_id=object                                         -> 200 {"ok":true} 
+trigger kind=nonsense                                          -> 400 {"ok":false,"reason":"unknown_kind"} 
+clock set=object                                               -> 400 {"ok":false,"reason":"bad_args"} 
+clock offset_s=banana                                          -> 400 {"ok":false,"reason":"bad_args"} 
+scenario name=NOPE                                             -> 400 {"ok":false,"reason":"unknown_scenario"} 
+trace limit=99999999                                           -> 200 {"events":[{"id":"evt_01M75XM1VAHY59EK5P0G5WFYZT","ts":"2026-11-12T02: 
+trace limit=-5                                                 -> 200 {"events":[{"id":"evt_01M75XM1VAHY59EK5P0G5WFYZT","ts":"2026-11-12T02: 
+trace correlation_id=sqlish                                    -> 200 {"events":[],"commands":[],"spans":[]} 
+outbox press path traversal                                    -> 405 {"detail":"Method Not Allowed"} 
+outbox limit=abc                                               -> 422 {"detail":[{"type":"int_parsing","loc":["query","limit"],"msg":"Input  
+internal/turn control-char + 20k CJK text                      -> 200 {"ok":true,"consumed":true,"mode":"companion","text":"阿寶​﻿\u0000\u0004 
+internal/tool 5000-char name                                   -> 200 {"ok":false,"reason":"unknown_tool"} 
+GET /media/fixed/../../brain/pyproject.toml                    -> 404 {"detail":"Not Found"} 
+GET /media/fixed/..%2F..%2Fbrain%2Fpyproject.toml              -> 404 {"detail":"Not Found"} 
+GET /media/fixed/%2e%2e%2f%2e%2e%2fbrain%2Fpyproject.tom       -> 404 {"detail":"Not Found"} 
+GET /media/fixed/..\..\brain\pyproject.toml                    -> 401 {"detail":"device token or login required"} 
+GET /media/fixed/....//....//brain/pyproject.toml              -> 404 {"detail":"Not Found"} 
+GET /media/voice/..%2f..%2frepo%2fpyproject.toml               -> 404 {"detail":"Not Found"} 
+GET /media/screens/../../brain/pyproject.toml                  -> 404 {"detail":"Not Found"} 
+GET /media/public/AAAAAAAAAAAAAAAAAAAAAAAA/../../../brai       -> 404 {"detail":"Not Found"} 
+GET /media/photo/../../../../etc/passwd                        -> 404 {"detail":"Not Found"} 
+GET /media/fixed/F1.m4a%00.png                                 -> 401 {"detail":"device token or login required"} 
+photo upload 9MB (>8MB cap)                                    -> 413 {"detail":"too_large"} expect 413
+photo upload GIF disguised                                     -> 415 {"detail":"jpeg_or_png_only"} expect 415
+photo incident_id traversal                                    -> 422 {"detail":"bad_incident_id"} expect 422
+photo upload 300-char filename                                 -> 200 {"ok":true,"photo_id":"ph_01M75XM294TRVEMDCPWJ1FX1RW"} 
+photo incident_id 200 chars                                    -> 422 {"detail":"bad_incident_id"} expect 422 (max 64)
+login next=//evil.com                                          -> 303  loc=/operator/ expect local
+Traceback (most recent call last):
+  File "/scratch/probe6_abuse.py", line 158, in <module>
+    asyncio.run(ws_abuse())
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/scratch/probe6_abuse.py", line 139, in ws_abuse
+    await ws.send(json.dumps({"id": "01HQAPROBE6UTTER000000", "type": "utterance",
+  File "/usr/local/lib/python3.12/site-packages/websockets/asyncio/connection.py", line 480, in send
+    async with self.send_context():
+               ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/websockets/asyncio/connection.py", line 962, in send_context
+    raise self.close_exc
+websockets.exceptions.ConnectionClosedOK: received 1000 (OK); then sent 1000 (OK)

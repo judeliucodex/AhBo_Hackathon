@@ -1,0 +1,171 @@
+== Phase A: hello/welcome/replay/utterance/step timing ==
+  [iPad1] ← welcome            id=01M75W5SJPGB prio=None {'device_token': 'dt.ipad-qa24-1.1794506310.5XOAuxmGkicKXe2bBu3PCP0Iq4LSK4vEC65_tjvsXXA', 'server_time': '2026
+  [iPad1] ← ui                 id=01M75W5SJPGB prio=1 {'ui': {'type': 'reset'}}
+   welcome field checks: {"device_token dt.*": true, "server_time +08:00": true, "fixed_cache_version": true, "text_sessions": true, "config.quiet_hours": true, "config.interruption_enabled": true, "config.wake": true, "config.reminder_mirror": [{"slot_id": "s_0800", "time": "08:00", "clip_id": "R_s_0800", "cards": [{"id": "med_dm", "kind": "med", "label": "\u7cd6\u5c3f\u85e5", "small": "Metformin 500 mg", "pill": ["--pill-a", "--pill-a"]}]}, {"slot_id": "s_1200", "time": "12:00", "clip_id": "R_s_1200", "cards": [{"id": "med_bp", "kind": "med", "label": "\u8840\u58d3\u85e5", "small": "Amlodipine 5 mg", "pill": ["--pill-b", "--pill-a"]}, {"id": "med_dm", "kind": "med", "label": "\u7cd6\u5c3f\u85e5", "small": "Metformin 500 mg", "pill": ["--pill-a", "--pill-a"]}, {"id": "med_chol", "kind": "med", "label": "\u81bd\u56fa\u9187\u85e5", "small": "Atorvastatin 20 mg", "pill": ["--pill-a", "--pill-c"]}, {"id": "med_asp", "kind": "med", "label": "\u8584\u8840\u4e38", "small": "Aspirin 80 mg", "pill": ["--pill-c", "--pill-a"]}]}, {"slot_id": "s_2000", "time": "20:00", "clip_id": "R_s_2000", "cards": [{"id": "med_dm", "kind": "med", "label": "\u7cd6\u5c3f\u85e5", "small": "Metformin 500 mg", "pill": ["--pill-a", "--pill-a"]}]}]}
+   RESULT A1 welcome fields: PASS
+   replay ui sequence: ['reset']
+   RESULT A2 replay starts reset then mood: FAIL ['reset']
+  [iPad1] ← ui                 id=01M75W5SMBPQ prio=2 {'ui': {'type': 'mood', 'mood': 'listening'}}
+  [iPad1] ← session.open       id=01M75W5SMBPQ prio=2 {'reason': 'touch', 'mode': 'companion', 'session_id': 'sess_01M75W5SMBPQD31C92YRQ1DWG5', 'text_only': True}
+  [iPad1] ← wake.enable        id=01M75W5SMBPQ prio=2 {'on': False}
+  [iPad1] ← ui                 id=01M75W5SMCKN prio=2 {'ui': {'type': 'heard', 'text': '阿寶，我幾時食藥呀？', 'final': True}}
+  [iPad1] ← ui                 id=01M75W5SMD77 prio=2 {'ui': {'type': 'mood', 'mood': 'thinking'}}
+  [iPad1] ← ui                 id=01M75W5SNF7X prio=2 {'ui': {'type': 'steps', 'group': {'id': 'turn_01M75W5SMCKN5AMX96NF14XZ0P', 'steps': [{'id': 'get_med_status',
+  [iPad1] ← ui                 id=01M75W5SNGER prio=2 {'ui': {'type': 'step', 'group': 'turn_01M75W5SMCKN5AMX96NF14XZ0P', 'id': 'get_med_status', 'state': 'done', '
+  [iPad1] ← ui                 id=01M75W5SQ7W4 prio=2 {'ui': {'type': 'mood', 'mood': 'idle'}}
+  [iPad1] ← ui                 id=01M75W5SQ83M prio=2 {'ui': {'type': 'card', 'card': {'id': 'next_dose', 'kind': 'event', 'icon': '⏰', 'label': '12:00 食藥', 'small'
+  [iPad1] ← ui                 id=01M75W5SQ83M prio=2 {'ui': {'type': 'card', 'card': {'id': 'med_bp', 'kind': 'med', 'label': '血壓藥', 'small': 'Amlodipine 5 mg', 'p
+  [iPad1] ← ui                 id=01M75W5SQ83M prio=2 {'ui': {'type': 'card', 'card': {'id': 'med_dm', 'kind': 'med', 'label': '糖尿藥', 'small': 'Metformin 500 mg', '
+  [iPad1] ← ui                 id=01M75W5SQ83M prio=2 {'ui': {'type': 'card', 'card': {'id': 'med_chol', 'kind': 'med', 'label': '膽固醇藥', 'small': 'Atorvastatin 20 m
+  [iPad1] ← ui                 id=01M75W5SQ83M prio=2 {'ui': {'type': 'card', 'card': {'id': 'med_asp', 'kind': 'med', 'label': '薄血丸', 'small': 'Aspirin 80 mg', 'pi
+  [iPad1] ← ui                 id=01M75W5SQ83M prio=2 {'ui': {'type': 'say_start', 'id': 'say_turn_01M75W5SMCKN5AMX96NF14XZ0P_41', 'text': '大約十個鐘之後，十二點正。有血壓藥、糖尿藥、膽固
+   turn frames: ['ui', 'session.open', 'wake.enable', 'ui', 'ui', 'ui', 'ui', 'ui', 'ui', 'ui', 'ui', 'ui', 'ui', 'ui']
+   reply caption: 大約十個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。
+   RESULT A3 utterance starts text turn with say_start/say_end: FAIL
+   step active→done gaps (ms): {}
+   RESULT A4 step done held ≥600 ms after active: FAIL {}
+== Phase B: P0 resend ≤3× when not acked ==
+  [iPad1] ← ui                 id=01M75W5TM4YV prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← wake.enable        id=01M75W5TM4YV prio=1 {'on': True}
+   trigger fall: 200 {"ok":true}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'mood', 'mood': 'alarm'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'card', 'card': {'id': 'incident', 'kind': 'incident', 'label': '偵測到跌倒', 'small': '操作員觸發', 'pe
+  [iPad1] ← play_fixed         id=01M75W5WJXR7 prio=0 {'clip_id': 'F1', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F1_0'}
+  [iPad1] ← capture_photo      id=01M75W5WJXR7 prio=0 {'incident_id': 'inc_01M75W5WJW889X3JQA8A04QPX0'}
+  [iPad1] ← wake.enable        id=01M75W5WJXR7 prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'mood', 'mood': 'alarm'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'card', 'card': {'id': 'incident', 'kind': 'incident', 'label': '偵測到跌倒', 'small': '操作員觸發', 'pe
+  [iPad1] ← play_fixed         id=01M75W5WJXR7 prio=0 {'clip_id': 'F1', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F1_0'}
+  [iPad1] ← capture_photo      id=01M75W5WJXR7 prio=0 {'incident_id': 'inc_01M75W5WJW889X3JQA8A04QPX0'}
+  [iPad1] ← wake.enable        id=01M75W5WJXR7 prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'flash'}}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'steps', 'group': {'id': 'fall', 'title': '跌倒處理', 'steps': [{'id': 'photo', 'label': '分析緊相片…',
+  [iPad1] ← play_fixed         id=01M75W5ZFFJB prio=0 {'clip_id': 'F2', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F2_1'}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'mood', 'mood': 'alarm'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'card', 'card': {'id': 'incident', 'kind': 'incident', 'label': '偵測到跌倒', 'small': '操作員觸發', 'pe
+  [iPad1] ← play_fixed         id=01M75W5WJXR7 prio=0 {'clip_id': 'F1', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F1_0'}
+  [iPad1] ← capture_photo      id=01M75W5WJXR7 prio=0 {'incident_id': 'inc_01M75W5WJW889X3JQA8A04QPX0'}
+  [iPad1] ← wake.enable        id=01M75W5WJXR7 prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'flash'}}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'steps', 'group': {'id': 'fall', 'title': '跌倒處理', 'steps': [{'id': 'photo', 'label': '分析緊相片…',
+  [iPad1] ← play_fixed         id=01M75W5ZFFJB prio=0 {'clip_id': 'F2', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F2_1'}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'photo', 'state': 'done', 'label': '相片已送出'}}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'ask', 'state': 'active'}}
+  [iPad1] ← play_fixed         id=01M75W61M9ZP prio=0 {'clip_id': 'F3', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F3_2'}
+  [iPad1] ← session.open       id=01M75W61M9ZP prio=0 {'reason': 'fall_check', 'mode': 'kernel_listen', 'session_id': 'sess_01M75W61M9ZPNWEC95F1EFVB3J', 'text_only'
+  [iPad1] ← wake.enable        id=01M75W61M9ZP prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'mood', 'mood': 'alarm'}}
+  [iPad1] ← ui                 id=01M75W5WJXR7 prio=0 {'ui': {'type': 'card', 'card': {'id': 'incident', 'kind': 'incident', 'label': '偵測到跌倒', 'small': '操作員觸發', 'pe
+  [iPad1] ← play_fixed         id=01M75W5WJXR7 prio=0 {'clip_id': 'F1', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F1_0'}
+  [iPad1] ← capture_photo      id=01M75W5WJXR7 prio=0 {'incident_id': 'inc_01M75W5WJW889X3JQA8A04QPX0'}
+  [iPad1] ← wake.enable        id=01M75W5WJXR7 prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'flash'}}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'steps', 'group': {'id': 'fall', 'title': '跌倒處理', 'steps': [{'id': 'photo', 'label': '分析緊相片…',
+  [iPad1] ← play_fixed         id=01M75W5ZFFJB prio=0 {'clip_id': 'F2', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F2_1'}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'photo', 'state': 'done', 'label': '相片已送出'}}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'ask', 'state': 'active'}}
+  [iPad1] ← play_fixed         id=01M75W61M9ZP prio=0 {'clip_id': 'F3', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F3_2'}
+  [iPad1] ← session.open       id=01M75W61M9ZP prio=0 {'reason': 'fall_check', 'mode': 'kernel_listen', 'session_id': 'sess_01M75W61M9ZPNWEC95F1EFVB3J', 'text_only'
+  [iPad1] ← wake.enable        id=01M75W61M9ZP prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'ok_button', 'show': True}}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'countdown', 'id': 'fall_cd', 'n': 5}}
+  [iPad1] ← wake.enable        id=01M75W65EJ0V prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'flash'}}
+  [iPad1] ← ui                 id=01M75W5ZFFJB prio=0 {'ui': {'type': 'steps', 'group': {'id': 'fall', 'title': '跌倒處理', 'steps': [{'id': 'photo', 'label': '分析緊相片…',
+  [iPad1] ← play_fixed         id=01M75W5ZFFJB prio=0 {'clip_id': 'F2', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F2_1'}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'photo', 'state': 'done', 'label': '相片已送出'}}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'ask', 'state': 'active'}}
+  [iPad1] ← play_fixed         id=01M75W61M9ZP prio=0 {'clip_id': 'F3', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F3_2'}
+  [iPad1] ← session.open       id=01M75W61M9ZP prio=0 {'reason': 'fall_check', 'mode': 'kernel_listen', 'session_id': 'sess_01M75W61M9ZPNWEC95F1EFVB3J', 'text_only'
+  [iPad1] ← wake.enable        id=01M75W61M9ZP prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'ok_button', 'show': True}}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'countdown', 'id': 'fall_cd', 'n': 5}}
+  [iPad1] ← wake.enable        id=01M75W65EJ0V prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'photo', 'state': 'done', 'label': '相片已送出'}}
+  [iPad1] ← ui                 id=01M75W61M9ZP prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'ask', 'state': 'active'}}
+  [iPad1] ← play_fixed         id=01M75W61M9ZP prio=0 {'clip_id': 'F3', 'say_id': 'say_inc_01M75W5WJW889X3JQA8A04QPX0_F3_2'}
+  [iPad1] ← session.open       id=01M75W61M9ZP prio=0 {'reason': 'fall_check', 'mode': 'kernel_listen', 'session_id': 'sess_01M75W61M9ZPNWEC95F1EFVB3J', 'text_only'
+  [iPad1] ← wake.enable        id=01M75W61M9ZP prio=0 {'on': False}
+   frames seen >1× (count, times s): {"01M75W5WJXR7F18QXF0JAAJYN2": [4, [0.0, 2.08, 4.08, 6.08]], "01M75W5WJXR7F18QXF0JAAJYN3": [4, [0.0, 2.08, 4.08, 6.08]], "01M75W5WJXR7F18QXF0JAAJYN4": [4, [0.0, 2.08, 4.08, 6.08]], "01M75W5WJXR7F18QXF0JAAJYN5": [4, [0.0, 2.08, 4.08, 6.08]], "01M75W5WJXR7F18QXF0JAAJYN7": [4, [0.0, 2.08, 4.08, 6.08]], "01M75W5WJXR7F18QXF0JAAJYN8": [4, [0.0, 2.08, 4.08, 6.08]], "01M75W5ZFFJBQB1M126737N6MQ": [4, [2.96, 5.08, 7.08, 9.09]], "01M75W5ZFFJBQB1M126737N6MR": [4, [2.96, 5.08, 7.08, 9.09]], "01M75W5ZFFJBQB1M126737N6MS": [4, [2.96, 5.08, 7.08, 9.09]], "01M75W61M9ZPNWEC95F1EFVB3E": [4, [5.16, 7.33, 9.34, 11.34]], "01M75W61M9ZPNWEC95F1EFVB3F": [4, [5.16, 7.33, 9.34, 11.34]], "01M75W61M9ZPNWEC95F1EFVB3G": [4, [5.16, 7.33, 9.34, 11.34]], "01M75W61M9ZPNWEC95F1EFVB3K": [4, [5.16, 7.33, 9.34, 11.34]], "01M75W61M9ZPNWEC95F1EFVB3N": [4, [5.16, 7.33, 9.34, 11.34]], "01M75W65EJ0VYDB7MG375GDTXX": [2, [9.08, 11.09]], "01M75W65EJ0VYDB7MG375GDTXY": [2, [9.08, 11.09]], "01M75W65EJ0VYDB7MG375GDTY0": [2, [9.08, 11.09]]}
+   devices snapshot unacked_p0: [('ipad-qa24-1', 9), ('ipad-matrix-1', 0)]
+   RESULT B1 P0 resent same id ≤3×: PASS
+   after ack unacked_p0: [('ipad-qa24-1', 8), ('ipad-matrix-1', 0)]
+  [iPad1] ← ui                 id=01M75W69AK3A prio=1 {'ui': {'type': 'ok_button', 'show': False}}
+  [iPad1] ← ui                 id=01M75W69AK3A prio=1 {'ui': {'type': 'card_clear', 'id': 'incident'}}
+  [iPad1] ← ui                 id=01M75W69AK3A prio=1 {'ui': {'type': 'steps_clear', 'group': 'fall'}}
+  [iPad1] ← ui                 id=01M75W69AK3A prio=1 {'ui': {'type': 'mood', 'mood': 'idle'}}
+  [iPad1] ← session.close      id=01M75W69AK3A prio=2 {'session_id': 'sess_01M75W61M9ZPNWEC95F1EFVB3J'}
+  [iPad1] ← wake.enable        id=01M75W69AK3A prio=2 {'on': True}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'ok_button', 'show': True}}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'countdown', 'id': 'fall_cd', 'n': 5}}
+  [iPad1] ← wake.enable        id=01M75W65EJ0V prio=0 {'on': False}
+  [iPad2-sim] ← welcome            id=01M75W6AJZSH prio=None {'device_token': 'dt.sim-qa24-2.1794506327.RJIVLoLF92OcexaSz30HCs5MsfzBy3vpkTl2KlyiyuI', 'server_time': '2026-
+  [iPad2-sim] ← ui                 id=01M75W6AJZSH prio=1 {'ui': {'type': 'reset'}}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'ok_button', 'show': True}}
+  [iPad1] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'countdown', 'id': 'fall_cd', 'n': 5}}
+  [iPad1] ← wake.enable        id=01M75W65EJ0V prio=0 {'on': False}
+  [iPad2-sim] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'ok_button', 'show': True}}
+== Phase C: two devices, first ack counts, playback_done dedup ==
+  [iPad1] ← ui                 id=01M75W6BJPFJ prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← wake.enable        id=01M75W6BJPFJ prio=1 {'on': True}
+  [iPad2-sim] ← ui                 id=01M75W65EJ0V prio=0 {'ui': {'type': 'countdown', 'id': 'fall_cd', 'n': 5}}
+  [iPad2-sim] ← wake.enable        id=01M75W65EJ0V prio=0 {'on': False}
+  [iPad2-sim] ← ui                 id=01M75W6BJPFJ prio=0 {'ui': {'type': 'reset'}}
+  [iPad2-sim] ← wake.enable        id=01M75W6BJPFJ prio=1 {'on': True}
+  [iPad1] ← ui                 id=01M75W6E0ZQ1 prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← ui                 id=01M75W6E0ZQ1 prio=0 {'ui': {'type': 'mood', 'mood': 'alarm'}}
+  [iPad1] ← ui                 id=01M75W6E0ZQ1 prio=0 {'ui': {'type': 'card', 'card': {'id': 'incident', 'kind': 'incident', 'label': '偵測到跌倒', 'small': '操作員觸發', 'pe
+  [iPad1] ← play_fixed         id=01M75W6E0ZQ1 prio=0 {'clip_id': 'F1', 'say_id': 'say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F1_0'}
+  [iPad1] ← capture_photo      id=01M75W6E0ZQ1 prio=0 {'incident_id': 'inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP'}
+  [iPad1] ← wake.enable        id=01M75W6E0ZQ1 prio=0 {'on': False}
+  [iPad2-sim] ← ui                 id=01M75W6E0ZQ1 prio=0 {'ui': {'type': 'reset'}}
+  [iPad2-sim] ← ui                 id=01M75W6E0ZQ1 prio=0 {'ui': {'type': 'mood', 'mood': 'alarm'}}
+  [iPad2-sim] ← ui                 id=01M75W6E0ZQ1 prio=0 {'ui': {'type': 'card', 'card': {'id': 'incident', 'kind': 'incident', 'label': '偵測到跌倒', 'small': '操作員觸發', 'pe
+  [iPad2-sim] ← play_fixed         id=01M75W6E0ZQ1 prio=0 {'clip_id': 'F1', 'say_id': 'say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F1_0'}
+  [iPad2-sim] ← capture_photo      id=01M75W6E0ZQ1 prio=0 {'incident_id': 'inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP'}
+  [iPad2-sim] ← wake.enable        id=01M75W6E0ZQ1 prio=0 {'on': False}
+  [iPad1] ← ui                 id=01M75W6GXJ0N prio=0 {'ui': {'type': 'flash'}}
+  [iPad1] ← ui                 id=01M75W6GXKA9 prio=0 {'ui': {'type': 'steps', 'group': {'id': 'fall', 'title': '跌倒處理', 'steps': [{'id': 'photo', 'label': '分析緊相片…',
+  [iPad1] ← play_fixed         id=01M75W6GXKA9 prio=0 {'clip_id': 'F2', 'say_id': 'say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F2_1'}
+  [iPad2-sim] ← ui                 id=01M75W6GXJ0N prio=0 {'ui': {'type': 'flash'}}
+  [iPad2-sim] ← ui                 id=01M75W6GXKA9 prio=0 {'ui': {'type': 'steps', 'group': {'id': 'fall', 'title': '跌倒處理', 'steps': [{'id': 'photo', 'label': '分析緊相片…',
+  [iPad2-sim] ← play_fixed         id=01M75W6GXKA9 prio=0 {'clip_id': 'F2', 'say_id': 'say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F2_1'}
+   frames on ipad1=9 ipad2=9 shared=9
+   sending playback_done say_id=say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F1_0 clip_id=F1 from BOTH devices
+  [iPad1] ← ui                 id=01M75W6K2E1W prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'photo', 'state': 'done', 'label': '相片已送出'}}
+  [iPad1] ← ui                 id=01M75W6K2E1W prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'ask', 'state': 'active'}}
+  [iPad1] ← play_fixed         id=01M75W6K2E1W prio=0 {'clip_id': 'F3', 'say_id': 'say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F3_2'}
+  [iPad1] ← session.open       id=01M75W6K2E1W prio=0 {'reason': 'fall_check', 'mode': 'kernel_listen', 'session_id': 'sess_01M75W6K2E1WX8WEBBXZA7YPF3', 'text_only'
+  [iPad1] ← wake.enable        id=01M75W6K2E1W prio=0 {'on': False}
+  [iPad2-sim] ← ui                 id=01M75W6K2E1W prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'photo', 'state': 'done', 'label': '相片已送出'}}
+  [iPad2-sim] ← ui                 id=01M75W6K2E1W prio=0 {'ui': {'type': 'step', 'group': 'fall', 'id': 'ask', 'state': 'active'}}
+  [iPad2-sim] ← play_fixed         id=01M75W6K2E1W prio=0 {'clip_id': 'F3', 'say_id': 'say_inc_01M75W6E0ZQ1KPRRDZ9W7VB2YP_F3_2'}
+  [iPad2-sim] ← session.open       id=01M75W6K2E1W prio=0 {'reason': 'fall_check', 'mode': 'kernel_listen', 'session_id': 'sess_01M75W6K2E1WX8WEBBXZA7YPF3', 'text_only'
+  [iPad2-sim] ← wake.enable        id=01M75W6K2E1W prio=0 {'on': False}
+   device.playback_done kernel events after both sent: 1
+   RESULT C2 playback_done de-duplicated by say_id: PASS
+   device.ack kernel events for one shared command id: 1
+  [iPad1] ← ui                 id=01M75W6MD365 prio=1 {'ui': {'type': 'card_clear', 'id': 'incident'}}
+  [iPad1] ← ui                 id=01M75W6MD365 prio=1 {'ui': {'type': 'steps_clear', 'group': 'fall'}}
+  [iPad1] ← ui                 id=01M75W6MD365 prio=1 {'ui': {'type': 'mood', 'mood': 'idle'}}
+  [iPad1] ← session.close      id=01M75W6MD365 prio=2 {'session_id': 'sess_01M75W6K2E1WX8WEBBXZA7YPF3'}
+  [iPad1] ← wake.enable        id=01M75W6MD365 prio=2 {'on': True}
+  [iPad2-sim] ← ui                 id=01M75W6MD365 prio=1 {'ui': {'type': 'card_clear', 'id': 'incident'}}
+  [iPad2-sim] ← ui                 id=01M75W6MD365 prio=1 {'ui': {'type': 'steps_clear', 'group': 'fall'}}
+  [iPad2-sim] ← ui                 id=01M75W6MD365 prio=1 {'ui': {'type': 'mood', 'mood': 'idle'}}
+  [iPad2-sim] ← session.close      id=01M75W6MD365 prio=2 {'session_id': 'sess_01M75W6K2E1WX8WEBBXZA7YPF3'}
+  [iPad2-sim] ← wake.enable        id=01M75W6MD365 prio=2 {'on': True}
+== Phase D: disconnect 30 s → device.offline; reset timing ==
+   ipad2 (sim-qa24-2) disconnected; waiting 32 s for the offline timer
+   device.offline events total=3 (before=0); state row=[{'device_id': 'sim-qa24-2', 'online': False, 'last_seen': '2026-11-12T01:58:58.711+08:00', 'battery': None, 'thermal': None, 'wake_engine': 'speech_transcriber', 'app_version': '0.1.0', 'fixed_cache_version': '', 'ack_latency_ms': 105.1, 'unacked_p0': 0, 'sim': True}]
+   RESULT D1 disconnect → device.offline after 30 s: PASS
+   POST /operator/api/reset -> 200 {"ok":true,"now":"2026-11-12T01:59:30.736+08:00","ms":12} took 14 ms
+   RESULT D2 reset demo ≤5 s: PASS
+  [iPad1] ← ui                 id=01M75W7MNF3E prio=0 {'ui': {'type': 'reset'}}
+  [iPad1] ← wake.enable        id=01M75W7MNF3E prio=1 {'on': True}
+
+WROTE /scratch/device_results.json

@@ -25,7 +25,7 @@ Every row turns green or says exactly what is wrong.
 | 6 | **Telegram bot** `@ahbo_silverlining_bot` | ✅ live | `TELEGRAM_BOT_TOKEN=` `FAMILY_TELEGRAM_CHAT_IDS=阿珍:<chat id>` | Webhook set; 阿珍's chat is the caregiver + admin. To add/replace 阿珍: that phone sends `/whoami` to the bot, put the id in `.env`, recreate. Consider `/revoke` in @BotFather (token was pasted in chat). |
 | 7 | **Twilio** (phone call to 阿珍 on a real fall) | ⬜ **real, but number not verified** | `TWILIO_ACCOUNT_SID=` ✅ `TWILIO_AUTH_TOKEN=` ✅ `TWILIO_FROM=+17372508034` ✅ `FAMILY_PHONE=+85297298627` ✅ | Trial account, balance $0. **You:** (a) Console → Phone Numbers → Buy a number (trial: one US number with Voice from trial credit) → `TWILIO_FROM=+1…`; (b) Verified Caller IDs → add 阿珍's phone; (c) put 阿珍's number in Telegram **聯絡人 → 改聯絡人** (or `FAMILY_PHONE=+852…`); (d) approve a top-up when you want calls without the trial announcement; (e) remove `twilio` from `AHBO_FAKE`. 999/112/911 are refused in code. |
 | 8 | Emergency centre number | ➖ | `EMERGENCY_SIM_PHONE=` | Owner decision 11 Nov: falls call 阿珍 only. |
-| 9 | Beacon (pocket fall sensor) | ⬜ optional | `BEACON_TOKENS=beacon1:<token>` | Without it, use Telegram **示範控制 → 模擬跌倒** or `/fall`. |
+| 9 | Beacon (pocket fall sensor) | ➖ not needed (owner 12 Nov) | `BEACON_TOKENS=beacon1:<token>` | Falls come from the iPad camera/voice; Telegram **示範控制 → 模擬跌倒** stays for demos. |
 | 10 | **Website login** (`https://srv2135273.hstgr.cloud/login`, protects `/sim/`) | ✅ owner's password set 12 Nov | `OPERATOR_PASSWORD_HASH=` | Change it any time: `/opt/ahbo/deploy/make.sh set-password`. |
 | 11 | App secret (for the iPad) | ✅ generated | `APP_SECRET=` | Shown once with `/opt/ahbo/deploy/make.sh show-app-secret`; typed into the iPad's hidden settings. |
 
@@ -34,7 +34,8 @@ Every row turns green or says exactly what is wrong.
 ## 2. Decisions only you can make
 - [ ] The voice for the recorded safety lines: listen to `evals/audio/tts_eleven_v4.mp3` (chosen) vs `tts_eleven_v3.mp3`;
       to switch, change `speech.tts.fixed_model` in `brain/config/models.yaml` (clips re-record on restart).
-- [ ] A real recording for 阿珍's voice note (send a voice message to the bot from 阿珍's phone).
+- [x] 阿珍's demo voice note: stock ElevenLabs voice "Bella" (`brain/seed/voice/demo_daughter.m4a`, 「媽，記得食飯呀！星期日我帶阿明嚟探你。」).
+      To replace it with a real one later, send a voice message to the bot from 阿珍's phone.
 - [ ] Approve running the eval suites against the real AI (< $1 on Opper).
 - [ ] The grand-final date.
 
@@ -42,6 +43,24 @@ Every row turns green or says exactly what is wrong.
 Follow `ios/BUILD_ON_MAC.md` (Xcode 26, `brew install xcodegen`, `cd ios && xcodegen && open AhBo.xcodeproj`, Personal
 Team signing, Simulator first, then the iPad Air 5 on iPadOS 26). `ios/MAC_BRIDGE.md` describes the optional remote
 build bridge. The app has **never been compiled**; expect a few compile fixes (listed in BUILD_ON_MAC.md §7).
+
+**Keep the Mac in sync with the VPS (Mutagen, two-way, over SSH; secrets and data are never copied):**
+```bash
+brew install mutagen-io/mutagen/mutagen xcodegen
+```
+```bash
+mutagen sync create --name=ahbo --sync-mode=two-way-resolved \
+  --ignore-vcs --ignore=.env --ignore=data --ignore=Root_password.md --ignore=deploy \
+  --ignore=evals/audio --ignore=docs/screens --ignore=docs/qa --ignore=node_modules \
+  --ignore=DerivedData --ignore=build --ignore=AhBo.xcodeproj --ignore=.DS_Store \
+  root@srv2135273.hstgr.cloud:/opt/ahbo ~/ahbo
+```
+```bash
+cd ~/ahbo/ios && xcodegen && open AhBo.xcodeproj
+```
+The whole repo is synced because `ios/project.yml` uses `../face` and `../brain/config`. Re-run `xcodegen` when
+`project.yml` changes. `mutagen sync list` shows the state.
+
 Until then, `https://srv2135273.hstgr.cloud/sim/` (browser iPad, "Talk (browser mic)") is the full face + voice.
 
 ## 4. How to try everything today

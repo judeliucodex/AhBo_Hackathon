@@ -1,0 +1,176 @@
+[
+ {
+  "what": "POST /events/sensor 25MB json (no token)",
+  "code": "400",
+  "note": "0.2s"
+ },
+ {
+  "what": "POST /operator/api/trigger 25MB json (cookie)",
+  "code": "400",
+  "note": "expect 4xx not 500"
+ },
+ {
+  "what": "POST /events/sensor malformed json",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "POST /events/sensor json array",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "POST /events/sensor wrong types",
+  "code": "401",
+  "note": ""
+ },
+ {
+  "what": "trigger kind=123",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "trigger slot_id=object",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "trigger kind=nonsense",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "clock set=object",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "clock offset_s=banana",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "scenario name=NOPE",
+  "code": "400",
+  "note": ""
+ },
+ {
+  "what": "trace limit=99999999",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "trace limit=-5",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "trace correlation_id=sqlish",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "outbox press path traversal",
+  "code": "405",
+  "note": ""
+ },
+ {
+  "what": "outbox limit=abc",
+  "code": "422",
+  "note": ""
+ },
+ {
+  "what": "internal/turn control-char + 20k CJK text",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "internal/tool 5000-char name",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "GET /media/fixed/../../brain/pyproject.toml",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/fixed/..%2F..%2Fbrain%2Fpyproject.toml",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/fixed/%2e%2e%2f%2e%2e%2fbrain%2Fpyproject.tom",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/fixed/..\\..\\brain\\pyproject.toml",
+  "code": "401",
+  "note": ""
+ },
+ {
+  "what": "GET /media/fixed/....//....//brain/pyproject.toml",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/voice/..%2f..%2frepo%2fpyproject.toml",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/screens/../../brain/pyproject.toml",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/public/AAAAAAAAAAAAAAAAAAAAAAAA/../../../brai",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/photo/../../../../etc/passwd",
+  "code": "404",
+  "note": ""
+ },
+ {
+  "what": "GET /media/fixed/F1.m4a%00.png",
+  "code": "401",
+  "note": ""
+ },
+ {
+  "what": "photo upload 9MB (>8MB cap)",
+  "code": "413",
+  "note": "expect 413"
+ },
+ {
+  "what": "photo upload GIF disguised",
+  "code": "415",
+  "note": "expect 415"
+ },
+ {
+  "what": "photo incident_id traversal",
+  "code": "422",
+  "note": "expect 422"
+ },
+ {
+  "what": "photo upload 300-char filename",
+  "code": "200",
+  "note": ""
+ },
+ {
+  "what": "photo incident_id 200 chars",
+  "code": "422",
+  "note": "expect 422 (max 64)"
+ },
+ {
+  "what": "login next=//evil.com",
+  "code": "303",
+  "note": "loc=/operator/ expect local"
+ },
+ {
+  "what": "ws survives garbage + normal turn",
+  "code": true
+ }
+]

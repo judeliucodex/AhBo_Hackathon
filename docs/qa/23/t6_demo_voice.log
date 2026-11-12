@@ -1,0 +1,6 @@
+..........SAY NOTE: {'op': 'say', 'args': {'text': '王婆婆，飲啖水先'}, 'by': 'c_chun', 'via': 'telegram'}
+.S1 completed end-to-end: None
+.VOICE: /tmp/pytest-of-root/pytest-0/test_family_voice_note_stored_0/media/voice_in/vm_01M75X6D6M1JA9EDX6X6D8PE4N.m4a mime=audio/mp4 duration=1.5s transcript=None
+ANNOUNCEMENT present; play_fixed A1 commands: 1
+..
+14 passed in 27.60s

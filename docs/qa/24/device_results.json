@@ -1,0 +1,120 @@
+{
+ "A": {
+  "welcome": {
+   "device_token dt.*": true,
+   "server_time +08:00": true,
+   "fixed_cache_version": true,
+   "text_sessions": true,
+   "config.quiet_hours": true,
+   "config.interruption_enabled": true,
+   "config.wake": true,
+   "config.reminder_mirror": [
+    {
+     "slot_id": "s_0800",
+     "time": "08:00",
+     "clip_id": "R_s_0800",
+     "cards": [
+      {
+       "id": "med_dm",
+       "kind": "med",
+       "label": "\u7cd6\u5c3f\u85e5",
+       "small": "Metformin 500 mg",
+       "pill": [
+        "--pill-a",
+        "--pill-a"
+       ]
+      }
+     ]
+    },
+    {
+     "slot_id": "s_1200",
+     "time": "12:00",
+     "clip_id": "R_s_1200",
+     "cards": [
+      {
+       "id": "med_bp",
+       "kind": "med",
+       "label": "\u8840\u58d3\u85e5",
+       "small": "Amlodipine 5 mg",
+       "pill": [
+        "--pill-b",
+        "--pill-a"
+       ]
+      },
+      {
+       "id": "med_dm",
+       "kind": "med",
+       "label": "\u7cd6\u5c3f\u85e5",
+       "small": "Metformin 500 mg",
+       "pill": [
+        "--pill-a",
+        "--pill-a"
+       ]
+      },
+      {
+       "id": "med_chol",
+       "kind": "med",
+       "label": "\u81bd\u56fa\u9187\u85e5",
+       "small": "Atorvastatin 20 mg",
+       "pill": [
+        "--pill-a",
+        "--pill-c"
+       ]
+      },
+      {
+       "id": "med_asp",
+       "kind": "med",
+       "label": "\u8584\u8840\u4e38",
+       "small": "Aspirin 80 mg",
+       "pill": [
+        "--pill-c",
+        "--pill-a"
+       ]
+      }
+     ]
+    },
+    {
+     "slot_id": "s_2000",
+     "time": "20:00",
+     "clip_id": "R_s_2000",
+     "cards": [
+      {
+       "id": "med_dm",
+       "kind": "med",
+       "label": "\u7cd6\u5c3f\u85e5",
+       "small": "Metformin 500 mg",
+       "pill": [
+        "--pill-a",
+        "--pill-a"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "replay": false,
+  "utterance_turn": false,
+  "step_gaps_ms": {}
+ },
+ "B": {
+  "max_resends": 3,
+  "unacked_after_ack": [
+   [
+    "ipad-qa24-1",
+    8
+   ],
+   [
+    "ipad-matrix-1",
+    0
+   ]
+  ]
+ },
+ "C": {
+  "both_devices_shared": 9,
+  "playback_dedup": true
+ },
+ "D": {
+  "offline_event": true,
+  "reset_ms": 14
+ }
+}

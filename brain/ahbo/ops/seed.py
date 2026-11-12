@@ -41,6 +41,8 @@ def load_demo(db: Database, clock: Clock, settings: Settings, seed: dict[str, An
             db.execute("INSERT INTO med_schedule(slot_id,time,med_names,active) VALUES (?,?,?,1)",
                        (s["id"], s["time"], dumps(s["meds"])))
         for d in meds.get("seeded_today", []):
+            if at(d["at"]) > clock.now():      # never record a dose as taken in the future (QA 25 D1, INV-4)
+                continue
             db.execute("INSERT INTO dose_events(id,slot_id,date,state,resolved_at,source,updated_at) VALUES (?,?,?,?,?,?,?)",
                        (new_id("dose"), d["slot"], today.isoformat(), d["state"], at(d["at"]).isoformat(), "seed",
                         clock.iso()))

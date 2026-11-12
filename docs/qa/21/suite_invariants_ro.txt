@@ -1,0 +1,4 @@
+ERROR    ahbo.kernel:core.py:238 background task phone_call failed: OSError(30, 'Read-only file system')
+=========================== short test summary info ============================
+FAILED tests/invariants/test_inv_09_never_999.py::test_fall_calls_only_verified_contacts
+1 failed, 71 passed in 24.88s

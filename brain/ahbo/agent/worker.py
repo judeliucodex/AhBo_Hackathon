@@ -330,12 +330,19 @@ def make_agent_class():
             r.mode = res.get("mode", r.mode)
             if res.get("consumed") or r.mode in SILENT_MODES:
                 raise StopResponse()                      # kernel_listen: transcripts go to the Kernel only
+            r.capped_line = res.get("line") if res.get("llm_capped") else None   # daily llm_usd cap (QA 26 D3)
             await r.refresh_context(self)
 
         async def llm_node(self, chat_ctx: Any, tools: list[Any], model_settings: Any):
             r = self.run
             filt = ReplyFilter()
             started = False
+            if r.capped_line:            # over the llm_usd cap: the Kernel's fixed line, no model call (QA 26 D3)
+                line, r.capped_line = r.capped_line, None
+                await r.reply_start(line)
+                yield line
+                await r.api.turn(op="reply_end", session_id=r.sid, turn_id=r.turn_id)
+                return
             try:
                 async for chunk in Agent.default.llm_node(self, chat_ctx, tools, model_settings):
                     text = chunk if isinstance(chunk, str) else (getattr(getattr(chunk, "delta", None), "content", None)
@@ -401,6 +408,7 @@ class SessionRun:
         self.mode: str = claim.get("mode", "companion")
         self.wake = claim.get("wake")
         self.stage3_pending = False
+        self.capped_line: str | None = None
         self.turn_id: str | None = None
         self._n = 0
         self.session: Any = None

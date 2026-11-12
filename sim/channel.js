@@ -3,6 +3,12 @@
  * wss://<host>/ws/device?sim=1 with the operator cookie. hello → welcome → replay; heartbeat every 10 s;
  * ack every command at once; de-duplicate commands by id (a resent command is acked again, never re-run);
  * reconnect with backoff 0.5, 1, 2, 4, 8 s (cap) ± 20 % jitter; after 30 s disconnected → onOffline(true).
+ *
+ * Silent network loss (QA 25 D2): a dead TCP path never fires `onclose`, so the socket would stay "online"
+ * forever. The hub answers every heartbeat with `pong {ref}` (CONTRACTS §2.2); once a pong has been seen, a
+ * socket that has received nothing for `deadAfterMs` (default 2.5 heartbeats = 25 s) is abandoned as closed, and
+ * the 30 s offline timer counts from the last frame received. A server without pongs is never timed out.
+ * Connect attempts that hang (QA 25 D11) are abandoned after `connectTimeoutMs` (default 6 s) and retried.
  */
 
 const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
@@ -32,9 +38,17 @@ export class DeviceChannel {
    * @param {(dir: string, frame: object) => void} o.onFrame       log hook
    * @param {number} [o.heartbeatMs=10000]
    * @param {number} [o.offlineAfterMs=30000]
+   * @param {number} [o.deadAfterMs]          silence after which an "open" socket is dead (default 2.5 × heartbeat)
+   * @param {number} [o.connectTimeoutMs]     a connect attempt with no welcome by then is abandoned (default 6 s)
    */
   constructor(o) {
     Object.assign(this, { heartbeatMs: 10000, offlineAfterMs: 30000 }, o);
+    if (!this.deadAfterMs) this.deadAfterMs = Math.round(this.heartbeatMs * 2.5);
+    if (!this.connectTimeoutMs) this.connectTimeoutMs = Math.max(2000, Math.min(6000, this.heartbeatMs * 2));
+    this.watchTimer = 0;
+    this.connectTimer = 0;
+    this.pongs = false;              // the server answers heartbeats (enables the silence watchdog)
+    this.lastRx = Date.now();
     this.ws = null;
     this.attempt = 0;
     this.seen = new Map();           // command id → ack result (de-dup; insertion-ordered for pruning)
@@ -78,21 +92,45 @@ export class DeviceChannel {
     let ws;
     try { ws = new WebSocket(this.url); } catch (e) { this._scheduleRetry(); return; }
     this.ws = ws;
+    clearTimeout(this.connectTimer);
+    this.connectTimer = setTimeout(() => {         // the attempt hangs (server half-up, dead path): try again
+      if (this.ws === ws && !this.welcomed) this._abandon(ws, "connect timeout", Date.now());
+    }, this.connectTimeoutMs);
     ws.onopen = () => {
       this.onState("open");
       this.send("hello", this.hello());
     };
-    ws.onmessage = ev => this._onMessage(ev.data);
+    ws.onmessage = ev => { if (this.ws === ws) this._onMessage(ev.data); };
     ws.onclose = ev => {
       if (this.ws !== ws) return;
-      clearInterval(this.hbTimer);
-      const wasOnline = this.welcomed;
-      this.welcomed = false;
-      if (wasOnline) { this.disconnectedSince = Date.now(); this._armOffline(); }
-      this.onState(ev.code === 4401 ? "auth_failed" : "closed", `code ${ev.code}`);
-      this._scheduleRetry();
+      this._closed(ev.code === 4401 ? "auth_failed" : "closed", `code ${ev.code}`, Date.now());
     };
     ws.onerror = () => { /* onclose follows */ };
+  }
+
+  /** The socket is gone: stop its timers, start the offline countdown from `since`, retry with backoff. */
+  _closed(state, detail, since) {
+    clearInterval(this.hbTimer);
+    clearInterval(this.watchTimer);
+    clearTimeout(this.connectTimer);
+    const wasOnline = this.welcomed;
+    this.welcomed = false;
+    if (wasOnline) { this.disconnectedSince = since; this._armOffline(); }
+    this.onState(state, detail);
+    this._scheduleRetry();
+  }
+
+  /** Give up on a socket the browser still thinks is open (no onclose will come in time). */
+  _abandon(ws, why, since) {
+    this.ws = null;
+    try { ws.close(); } catch (e) { /* already closing */ }
+    this._closed("closed", why, since);
+  }
+
+  _watch() {
+    if (!this.welcomed || !this.ws || !this.pongs) return;
+    const silent = Date.now() - this.lastRx;
+    if (silent > this.deadAfterMs) this._abandon(this.ws, `no frames for ${silent} ms`, this.lastRx);
   }
 
   _scheduleRetry() {
@@ -117,14 +155,19 @@ export class DeviceChannel {
     let msg;
     try { msg = JSON.parse(data); } catch (e) { this.onFrame("bad", { raw: String(data).slice(0, 200) }); return; }
     if (!msg || typeof msg.type !== "string") return;
+    this.lastRx = Date.now();
     this.onFrame("in", msg);
+    if (msg.type === "pong") { this.pongs = true; return; }
     if (msg.type === "welcome") {
       this.welcomed = true;
       this.attempt = 0;
+      clearTimeout(this.connectTimer);
       clearTimeout(this.offlineTimer);
       if (this.offline) { this.offline = false; this.onOffline(false); }
       clearInterval(this.hbTimer);
       this.hbTimer = setInterval(() => this.send("heartbeat", this.heartbeat()), this.heartbeatMs);
+      clearInterval(this.watchTimer);
+      this.watchTimer = setInterval(() => this._watch(), Math.min(1000, Math.max(100, this.heartbeatMs / 4)));
       this.onState("online");
       this.onWelcome(msg);
       return;

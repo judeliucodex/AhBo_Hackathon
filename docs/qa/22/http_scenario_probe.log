@@ -1,0 +1,10 @@
+healthz: {"ok":true,"version":"0.1.0","fake":["livekit","models","speech","telegram","twilio","vision"],"profile":"demo"}
+login: 200
+scenario S2: 200
+session: {'id': 'sess_01M76MDKG0JN1JFADFHEM4VRKW', 'mode': 'companion', 'reason': 'touch', 'text_only': True, 'agent_state': 'listening', 'opened_at': '2026-11-12T10:00:00.315307+08:00'}
+incident: None
+doses: [{"slot_id": "s_0800", "time": "08:00", "state": "taken_self_reported", "meds": ["dm"], "snoozes": 0}, {"slot_id": "s_1200", "time": "12:00", "state": "scheduled", "meds": ["bp", "dm", "chol", "asp"], "snoozes": 0}, {"slot_id": "s_2000", "time": "20:00", "state": "scheduled", "meds": ["dm"], "snoozes": 0}]
+ui cards: ["12:00 食藥", "血壓藥", "糖尿藥", "膽固醇藥", "薄血丸"]
+spend: {"llm_usd": 0.0, "deep_tasks": 0, "twilio_calls": 0, "playwright_actions": 0, "sessions": 1}
+fake: ['livekit', 'models', 'speech', 'telegram', 'twilio', 'vision']
+replies: ["兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。", "兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。"]

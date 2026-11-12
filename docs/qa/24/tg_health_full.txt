@@ -1,0 +1,44 @@
+🩺 系統健康：
+🟢 APP_SECRET：set (…6dff)
+🟢 INTERNAL_TOKEN：set (…03de)
+🟢 SESSION_SECRET：set (…7d5d)
+🟢 OPERATOR_PASSWORD_HASH：set (…gcE2)
+🟢 AZURE_TTS_VOICE：set (zh-HK-HiuMaanNeural)
+🟢 DEEPSEEK_API_KEY：unset (optional)
+🟢 ANTHROPIC_API_KEY：unset (optional)
+🟢 OPPER_API_KEY：unset (optional)
+🟢 ELEVENLABS_API_KEY：unset (optional)
+🟢 ELEVENLABS_VOICE_ID：unset (optional)
+🟢 LIVEKIT_URL：unset (optional)
+🟢 LIVEKIT_API_KEY：unset (optional)
+🟢 LIVEKIT_API_SECRET：unset (optional)
+🟢 TELEGRAM_BOT_TOKEN：unset (optional)
+🟢 TELEGRAM_WEBHOOK_SECRET：set (…cdef)
+🟢 FAMILY_TELEGRAM_CHAT_IDS：1 pair(s): 阿珍=…
+🟢 TWILIO_ACCOUNT_SID：set (…1111)
+🟢 TWILIO_AUTH_TOKEN：set (…4321)
+🟢 TWILIO_FROM：set (…0001)
+🟢 EMERGENCY_SIM_PHONE：unset (optional)
+🟢 FAMILY_PHONE：unset (optional)
+🟢 BEACON_TOKENS：1 pair(s): beacon1=…
+⚪ model flash (opper/deepseek-v4.1-flash)：fake (needs owner)
+⚪ model flash fallback (opper/claude-haiku-5-5)：fake (needs owner)
+⚪ model sonnet (deep) (opper/claude-sonnet-5-5)：fake (needs owner)
+⚪ model vision (opper/claude-haiku-5-5)：fake (needs owner)
+⚪ ElevenLabs voice：fake (needs owner)
+⚪ ElevenLabs TTS models：fake (needs owner)
+⚪ ElevenLabs STT：fake (needs owner)
+🟢 Azure TTS：optional (not used; speech provider is elevenlabs)
+🟢 Azure STT：optional (not used; speech provider is elevenlabs)
+⚪ LiveKit：fake (needs owner)
+⚪ Telegram webhook：fake (needs owner)
+⚪ Twilio：fake (needs owner)
+🔴 Playwright：cannot reach ws://browser:3000/: Error('BrowserType.connect: WebSocket error: getaddrinfo ENOTFOUND browser\nCall log:\n
+🔴 iPad connected：no device online → open /sim/ (browser iPad) or run the app (SETUP.md §27.4)
+🔴 Beacon heartbeat：no heartbeat yet → flash the ESP32 + set BEACON_TOKENS (SETUP.md §27.1 #10); the operator fall trigger still works (§10.
+🟢 Fixed cache：f-dcfc2e6081a0 · 13 clips
+🟢 Clock：virtual ••••1120T15:00:00.000+08:00 (offset +0 s)
+🟢 Disk：87.2 GB free
+🟢 Database：integrity_check ok
+
+紅色 3 項；⚪ = 示範（假）模式。

@@ -8,6 +8,7 @@ Mode is the Kernel's: companion (default), reminder, kernel_listen, reassure, pa
 """
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from ahbo.core.events import P1, P2, Command, Event, cmd, ui
@@ -15,13 +16,31 @@ from ahbo.core.ids import new_id
 
 from ..state import KernelState, SessionState
 
+log = logging.getLogger("ahbo.kernel.session")
 IDLE_CLOSE_S = 30.0       # §24.2 rule 5
+SAFETY_MODES = ("kernel_listen", "reassure", "reminder")
+SAFETY_REASONS = ("fall_check", "reassure", "dose", "sos", "emergency", "concern")
 MAX_SESSION_S = 600.0     # 10 min
 
 
+def _cap_ok(state: KernelState, ctx: Any, reason: str, mode: str) -> bool:
+    """`caps.yaml sessions_per_day` (QA 26 D2): over the cap a new ordinary session is refused and the cap warning
+    (`system.cap_exceeded`) is raised. Safety sessions are never refused: an open incident (fall, SOS, emergency
+    concern), the fall check / reassure / dose-reminder modes and the safety reasons."""
+    if state.incident_active or mode in SAFETY_MODES or reason in SAFETY_REASONS:
+        return True
+    try:
+        from ahbo.ops.caps import check_cap
+        return bool(check_cap(ctx.db, ctx.kernel.clock, ctx.config, "sessions_per_day")[0])
+    except Exception:
+        log.exception("sessions_per_day check failed; allowing the session")
+        return True
+
+
 def open_session(state: KernelState, ctx: Any, reason: str, mode: str, *, priority: int = P2,
-                 listening_mood: bool = True) -> list[Command]:
-    """Open a session (or re-mode the open one). Shared by other reducers (fall, dose, checkin)."""
+                 listening_mood: bool = True, safety: bool = False) -> list[Command]:
+    """Open a session (or re-mode the open one). Shared by other reducers (fall, dose, checkin).
+    A new non-safety session over the daily `sessions_per_day` cap is refused: returns [] and no session opens."""
     text_only = ctx.settings.is_fake("livekit")
     out: list[Command] = []
     if state.session is not None:
@@ -29,6 +48,8 @@ def open_session(state: KernelState, ctx: Any, reason: str, mode: str, *, priori
             state.session.mode = mode
             out.append(cmd("agent.mode", priority, mode=mode, session_id=state.session.id))
         state.session.last_activity = ctx.now
+        return out
+    if not safety and not _cap_ok(state, ctx, reason, mode):
         return out
     sid = new_id("sess")
     state.session = SessionState(id=sid, reason=reason, mode=mode, text_only=text_only, opened_at=ctx.now,

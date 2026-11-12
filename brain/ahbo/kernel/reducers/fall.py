@@ -129,6 +129,15 @@ def _ui(inc: dict[str, Any], face: dict[str, Any], prio: int = P0) -> Command:
     return ui(face, prio, inc["id"])
 
 
+def _heard(state: KernelState, inc: dict[str, Any], p: dict[str, Any]) -> list[Command]:
+    """Text sessions echo her words on the face (`heard`), also in kernel_listen (§23.5). Voice sessions get them from
+    the iPad's own STT; in reassure mode the turn reducer shows them like any turn."""
+    s, text = state.session, str(p.get("text") or "")
+    if s is None or not s.text_only or s.mode in ("paused", "reassure") or not text:
+        return []
+    return [_ui(inc, {"type": "heard", "text": text, "final": True})]
+
+
 def _play(ctx: Any, inc: dict[str, Any], clip: str, phase: str, prio: int = P0) -> list[Command]:
     n = len(inc["says"]) + len(inc.get("said", []))
     say_id = f"say_{inc['id']}_{clip}_{n}"
@@ -353,12 +362,15 @@ def escalate(state: KernelState, ctx: Any, inc: dict[str, Any], why: str) -> lis
     late = why == "camera" and inc["state"] == "RESOLVED_OK"
     if inc["state"] not in PRE and not late:
         return []
+    st0 = inc["state"]
     inc["why"] = why
     inc["decide_pending"] = False
     _to(ctx, inc, "ESCALATING", why)
     cfg = _steps_cfg(ctx)
     pr = params(ctx)
     out = _cancel(inc, "countdown", "f3again", "photo_wait", "decide", "clear")
+    if inc.get("ok_shown") and st0 == "AWAITING_OK" and why != "timeout":    # timeout: the chip has run out
+        out.append(_ui(inc, {"type": "card_clear", "id": "fall_cd"}))   # the face's countdown chip (QA 25 D8)
     if not inc["group"]:
         if "photo" in inc["steps"] and inc["steps"]["photo"] == "pending":
             inc["steps"]["photo"] = "active"
@@ -596,14 +608,17 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         return None
 
     # ---- de-escalation: deterministic signals only (INV-2)
+    if t == "user.utterance" and p.get("final", True):
+        heard = _heard(state, inc, p)        # her words first (§23.5, kit S4ok; QA 25 D3)
+        if st not in PRE:
+            return heard or None
+        m = match_ok(str(p.get("text") or ""), ctx.config)
+        if m == "help":
+            return heard + escalate(state, ctx, inc, "help")
+        if m == "ok":
+            return heard + resolve(state, ctx, inc, "voice")
+        return heard or None
     if st in PRE:
-        if t == "user.utterance" and p.get("final", True):
-            m = match_ok(str(p.get("text") or ""), ctx.config)
-            if m == "help":
-                return escalate(state, ctx, inc, "help")
-            if m == "ok":
-                return resolve(state, ctx, inc, "voice")
-            return None
         if t == "device.touch_ok" and src == "device":
             return resolve(state, ctx, inc, "touch")
         if t == "operator.ok" and src == "operator":

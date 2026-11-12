@@ -1,0 +1,15 @@
+PASS only 7 kept (oldest pruned) — ['ahbo-20261112-030004.sqlite', 'ahbo-20261112-030005.sqlite', 'ahbo-20261112-030006.sqlite', 'ahbo-20261112-030007.sqlite', 'ahbo-20261112-030099.sqlite', 'ahbo-20261112-030100.sqlite', 'ahbo-20261112-039999.sqlite']
+PASS pruned the oldest — first=ahbo-20261112-030004.sqlite
+PASS newest kept
+PASS backup file mode 600 — 0o600
+PASS backup PRAGMA integrity_check ok — ok
+PASS row count sane for events (live=100, backup=100) — backup=100
+PASS row count sane for commands (live=84, backup=84) — backup=84
+PASS row count sane for sessions (live=3, backup=3) — backup=3
+PASS row count sane for turns (live=2, backup=2) — backup=2
+PASS row count sane for incidents (live=1, backup=1) — backup=1
+PASS row count sane for contacts (live=2, backup=2) — backup=2
+PASS row count sane for med_schedule (live=3, backup=3) — backup=3
+PASS backup taken during writes contains the committed row — 1
+
+ALL CHECKS PASS

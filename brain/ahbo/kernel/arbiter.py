@@ -122,6 +122,7 @@ def request(state: Any, ctx: Any, item: dict[str, Any]) -> tuple[str, list[Comma
         item = {**old, "content": f"{old['content'].rstrip('。')}；{item['content']}",
                 "instruction": f"{old.get('instruction', '')} {item.get('instruction', '')}".strip(),
                 "dose": bool(old.get("dose") or item.get("dose")),
+                "safety": bool(old.get("safety") or item.get("safety")),
                 "cards": (old.get("cards") or []) + (item.get("cards") or [])}
         reason = f"{reason}_merged"
     elif old is not None:
@@ -200,9 +201,13 @@ def _inject(state: Any, ctx: Any, item: dict[str, Any]) -> list[Command]:
     if state.session is None:
         sess = item.get("session") or {}
         out += open_session(state, ctx, reason=sess.get("reason", item["kind"]), mode=sess.get("mode", "companion"),
-                            priority=min(prio, P2), listening_mood=False)
+                            priority=min(prio, P2), listening_mood=False,
+                            safety=prio == P0 or bool(item.get("dose") or item.get("safety")))
         a = slice_(state)
         a["seen"] = state.session.id if state.session else None
+        if state.session is None:          # refused (sessions_per_day cap, QA 26 D2): nobody to speak to
+            _record(ctx, item, "dropped", "session_refused")
+            return out
     out.append(Command(type="agent.inject", priority=prio, correlation_id=item.get("corr"), payload={
         "session_id": state.session.id if state.session else None, "kind": item["kind"], "content": item["content"],
         "instruction": item.get("instruction", ""), "priority": prio}))
@@ -243,6 +248,9 @@ def reduce(state: Any, ev: Event, ctx: Any) -> list[Command] | None:
             item = a["queue"].get("1")
             if item and item["id"] == data.get("id") and not state.incident_active and not state.muted:
                 a["queue"].pop("1", None)
+                if quiet_hours(ctx) and not item.get("dose"):      # §6: quiet hours = P0 and P1 doses only (QA 21 D3)
+                    _record(ctx, item, "dropped", "quiet_hours")
+                    return None
                 _record(ctx, item, "now", "max_wait")
                 return _deliver(state, ctx, item)
             return None

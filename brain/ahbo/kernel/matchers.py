@@ -11,6 +11,7 @@ a help phrase.
 """
 from __future__ import annotations
 
+import re
 import unicodedata
 from functools import lru_cache
 from typing import Any
@@ -21,6 +22,10 @@ from opencc import OpenCC
 # Simplified/formal STT spellings are covered because the text is converted (s2t) first: 有没有事 → 有沒有事.
 NOT_OK_CONTEXTS = ("有冇事", "有無事", "有沒有事", "有沒事", "有冇問題", "有無問題", "有沒有問題", "唔係冇事", "唔係無事",
                    "唔係沒事", "不是沒事", "不是沒有事", "點會冇事", "點會沒事")
+# Negated OK words (QA 21 D1): 「唔OK」「我唔係好OK」「not ok」「唔係冇問題」 are not an OK. Matched on the normalised text.
+_NEGATED_OK = re.compile(r"(唔係|唔系|不是|唔|不|點會|not|isnt|arent|aint)(係|系|是|好|太|咁|very|really|so|feeling|feel)?"
+                         r"(okay|ok|冇事|無事|沒事|冇問題|無問題|沒問題|好好)")
+_SARCASTIC_OK = ("冇事個頭", "冇事就假", "ok個頭")
 LEVELS = ("info", "urgent", "emergency")
 
 
@@ -70,8 +75,9 @@ def is_help(text: str, cfg: Any = None) -> bool:
 def is_ok(text: str, cfg: Any = None) -> bool:
     """OK phrase present (ignores help; use match_ok for the decision)."""
     t = normalise(text)
-    for ctx in NOT_OK_CONTEXTS:
+    for ctx in NOT_OK_CONTEXTS + _SARCASTIC_OK:
         t = t.replace(ctx, "|")
+    t = _NEGATED_OK.sub("|", t)
     return any(p in t for p in _phrases(_cfg_list(cfg, "ok")))
 
 
@@ -98,7 +104,26 @@ def match_redflag(text: str, cfg: Any = None) -> tuple[str, str, str] | None:
                 if best is None or LEVELS.index(cand[0]) > LEVELS.index(best[0]):
                     best = cand
                 break
+    for level, rx in _patterns(cfg):
+        if any(rx.search(v) for v in vs):
+            cand = (level, "health", rx.pattern)
+            if best is None or LEVELS.index(cand[0]) > LEVELS.index(best[0]):
+                best = cand
     return best
+
+
+def _patterns(cfg: Any) -> list[tuple[str, re.Pattern[str]]]:
+    """Symptom phrasing variants (redflags.yaml `*_patterns`, regexes on the normalised text; QA 22 D1)."""
+    out = []
+    for key, level in (("emergency_patterns", "emergency"), ("urgent_patterns", "urgent")):
+        for p in _cfg_list(cfg, key):
+            out.append((level, _rx(p)))
+    return out
+
+
+@lru_cache(maxsize=64)
+def _rx(p: str) -> re.Pattern[str]:
+    return re.compile(p)
 
 
 def raise_level(*levels: str | None) -> str:

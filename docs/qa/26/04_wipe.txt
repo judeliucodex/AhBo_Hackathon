@@ -1,0 +1,22 @@
+tables with rows before wipe: {'events': 116, 'commands': 89, 'contacts': 2, 'resident': 1, 'med_catalogue': 4, 'med_schedule': 3, 'dose_events': 1, 'incidents': 1, 'calendar_events': 3, 'day_plans': 1, 'facts': 6, 'facts_fts_data': 8, 'facts_fts_idx': 6, 'facts_fts_docsize': 6, 'facts_fts_config': 1, 'sessions': 3, 'sessions_fts_data': 4, 'sessions_fts_idx': 2, 'sessions_fts_docsize': 3, 'sessions_fts_config': 1, 'turns': 2, 'turns_fts_data': 4, 'turns_fts_idx': 2, 'turns_fts_docsize': 2, 'turns_fts_config': 1, 'life_stories': 3, 'life_stories_fts_data': 5, 'life_stories_fts_idx': 3, 'life_stories_fts_docsize': 3, 'life_stories_fts_config': 1, 'repetition': 1, 'voice_messages': 1, 'costs': 3, 'outbox': 4, 'kv': 6}
+PASS there is personal data to wipe - 35
+PASS media files exist before - 15 files (fixed clips + public P1)
+PASS wipe without --yes exits non-zero - rc=2
+PASS refusal says why - refusing to wipe without --yes (this deletes every conversation, dose record, photo and me
+PASS nothing was deleted without --yes - {}
+PASS no export written without --yes
+PASS marker data present before wipe - 2
+wiped: 250 rows across 28 tables, 0 media files
+export written first: /tmp/qa/export-2026-11-12.json
+fixed-clip cache files kept; run `ahbo seed` (or Reset demo) to reload the demo data
+PASS wipe --yes exits 0 - rc=0 
+PASS export file exists - /tmp/qa/export-2026-11-12.json
+PASS export mode 600 - 0o600
+PASS export carries schema_version + every table - 29 tables in export
+PASS export contains the PRE-wipe fall event (taken before deletion) - 116 events exported
+FAIL every table except meta is empty - {'facts_fts_data': 2, 'facts_fts_config': 1, 'sessions_fts_data': 2, 'sessions_fts_config': 1, 'turns_fts_data': 2, 'turns_fts_config': 1, 'life_stories_fts_data': 2, 'life_stories_fts_config': 1}
+PASS meta kept (kv intact) - 1
+FAIL personal media gone (public phone clip + voice) - left: ['media/public/01m75vr00hbbftm6qkmr00x8gr/P1.m4a'] []
+PASS fixed-clip cache kept by design (not personal data) - 14 files
+
+CHECK FAILURES: every table except meta is empty; personal media gone (public phone clip + voice)

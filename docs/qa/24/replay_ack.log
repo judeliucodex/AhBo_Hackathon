@@ -1,0 +1,7 @@
+turn ui sequence: ['mood', 'heard', 'mood', 'steps', 'step', 'mood', 'card', 'card', 'card', 'card', 'card', 'say_start', 'say_end']
+step gaps: [{'step': ('turn_01M75WPNYPKAVJXZY7RAFRY0DF', 'get_med_status'), 'gap_ms': 513}]
+replay during incident: [('reset', None, None, None), ('mood', 'alarm', None, None), ('card', 'incident', None, None), ('steps', None, 'fall', None), ('ok_button', None, None, True)]
+ack latency before: {'sim-qa24-r4': None, 'ipad-qa24-r3': None, 'sim-qa24-r2': None, 'ipad-qa24-r1': 42.7, 'ipad-qa24-p0': None, 'ipad-qa24-1': 12039.6, 'sim-qa24-2': 105.1, 'ipad-matrix-1': None}
+ack latency after: {'sim-qa24-r4': (None, True), 'ipad-qa24-r3': (None, True), 'sim-qa24-r2': (None, False), 'ipad-qa24-r1': (42.3, True), 'ipad-qa24-p0': (None, False), 'ipad-qa24-1': (12039.6, False), 'sim-qa24-2': (105.1, False), 'ipad-matrix-1': (None, False)}
+device.ack kernel events (last turn): 113
+WROTE /scratch/replay_ack_results.json

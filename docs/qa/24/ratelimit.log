@@ -1,0 +1,3 @@
+IP 10.77.0.101 x7 wrong: [401, 401, 401, 401, 401, 429, 429] -> expect [401*5, 429, 429]
+IP 10.77.0.102 x2 wrong: [401, 401] -> expect [401, 401] (independent per IP)
+IP 10.77.0.103 x6 correct: [303, 303, 303, 303, 303, 429] -> expect [303, 303, 303, 303, 303, 429] (success counts too)

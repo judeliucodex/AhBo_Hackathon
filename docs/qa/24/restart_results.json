@@ -1,0 +1,58 @@
+{
+ "replay": [
+  [
+   "reset",
+   null,
+   null
+  ],
+  [
+   "mood",
+   "alarm",
+   null
+  ],
+  [
+   "card",
+   "incident",
+   null
+  ],
+  [
+   "card",
+   "esc_call",
+   null
+  ],
+  [
+   "card",
+   "esc_tell",
+   null
+  ],
+  [
+   "steps",
+   null,
+   [
+    "fall",
+    [
+     "done",
+     "failed",
+     "done",
+     "done"
+    ]
+   ]
+  ]
+ ],
+ "escalated_after_restart": true,
+ "outbox": [
+  [
+   "twilio",
+   "CALL",
+   "in-progress",
+   "c_chun"
+  ],
+  [
+   "telegram",
+   "ALERT",
+   "sent",
+   "c_chun"
+  ]
+ ],
+ "after_touch_ok": "REASSURING"
+}

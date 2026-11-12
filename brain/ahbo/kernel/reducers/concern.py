@@ -54,18 +54,20 @@ def handle(state: KernelState, ctx: Any, ev: Event, level: str, category: str, r
     if eff == "emergency":
         return eff, fall.start(state, ctx, ev, "concern", at="AWAITING_OK",
                                detail={"category": category, "reason": reason[:120], "origin": origin})
-    # urgent
-    last = c["recent"].get(category)
+    # urgent: one family message per canonical category per 10 min. The matcher and the agent's raise_concern for the
+    # same utterance name their category differently (health vs symptom …), so key on scam / health (QA 21 D2).
+    key = "scam" if category == "scam" else "health"
+    last = c["recent"].get(key)
     if last and (ctx.now - datetime.fromisoformat(last)).total_seconds() < URGENT_REPEAT_S:
         return eff, []
-    c["recent"][category] = ctx.now.isoformat()
+    c["recent"][key] = ctx.now.isoformat()
     c["digest"].append(entry)
     what = "可能遇到電話騙案" if category == "scam" else "話身體唔舒服"
     out = [cmd("family.send", P1, ev.correlation_id, kind="INFO", contact_ids=family_contact_ids(ctx),
                text=f"王婆婆{what}：「{reason[:60]}」。請盡快打電話關心下佢。", category=category)]
     content = "我已經話咗俾阿珍知，佢會打俾你。" if category != "scam" else "呢啲電話要小心，我已經話咗俾阿珍知。"
     item = arbiter.make_item("家人", P1, content, "安慰佢，問佢使唔使叫阿珍即刻打電話俾佢。唔好診斷。",
-                             corr=ev.correlation_id, after_turn=origin == "redflag")
+                             corr=ev.correlation_id, after_turn=origin == "redflag", safety=True)
     _, cmds = arbiter.request(state, ctx, item)
     return eff, out + cmds
 

@@ -111,6 +111,10 @@ class StubHub:
         self.hellos = 0
         self.reject_ws = False                      # True: accept then close 4401 (cookie expired)
         self.replay: list[dict] = [{"type": "reset"}, {"type": "mood", "mood": "alarm"}]
+        self.pong = True                            # answer heartbeats with `pong` like the DeviceHub
+        self.silent = False                         # True: a silently dead path (frames in, nothing out, no close)
+        self.hang_upgrade = False                   # True: new WebSocket upgrades never complete
+        self.hangs = 0
 
     async def handle(self, conn: WSConn) -> None:
         if self.reject_ws:
@@ -128,10 +132,15 @@ class StubHub:
                 continue
             if not isinstance(msg, dict):
                 continue
+            if self.silent:
+                continue
             self.frames.append(msg)
             await self._on(msg, conn)
 
     async def _on(self, msg: dict, conn: WSConn) -> None:
+        if msg.get("type") == "heartbeat" and self.pong:
+            await conn.send_text(json.dumps({"type": "pong", "ref": msg.get("id")}))
+            return
         if msg.get("type") == "hello":
             self.hellos += 1
             await conn.send_text(json.dumps({
@@ -256,6 +265,15 @@ class StubServer:
 
     # ------------------------------------------------------------------ websocket upgrade
     async def _websocket(self, reader, writer, headers: dict, path: str, query: str) -> None:
+        if self.hub.hang_upgrade:                   # a half-up server: this upgrade never answers, the TCP
+            self.hub.hangs += 1                     # stays open until the client gives up on it
+            try:
+                while await reader.read(1024):
+                    pass
+            except (ConnectionError, OSError):
+                pass
+            writer.close()
+            return
         key = headers.get("sec-websocket-key", "")
         accept = base64.b64encode(hashlib.sha1((key + WS_GUID).encode()).digest()).decode()
         writer.write(("HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\n"

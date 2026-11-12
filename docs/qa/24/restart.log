@@ -1,0 +1,5 @@
+POST-RESTART REPLAY: [('reset', None, None), ('mood', 'alarm', None), ('card', 'incident', None), ('card', 'esc_call', None), ('card', 'esc_tell', None), ('steps', None, ('fall', ['done', 'failed', 'done', 'done']))]
+escalated after restart: state=ESCALATING at +1.1 s
+outbox rows: [('twilio', 'CALL', 'in-progress', 'c_chun'), ('telegram', 'ALERT', 'sent', 'c_chun')]
+after touch_ok: incident = REASSURING
+last ui frames: ['reset', 'mood', 'card', 'card', 'card', 'steps', 'mood']

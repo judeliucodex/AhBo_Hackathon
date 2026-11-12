@@ -1,0 +1,36 @@
+PASS 5 fake twilio records -> spend_today=5 — {'llm_usd': 0.0, 'total_usd': 0.0, 'deep_tasks': 0, 'twilio_calls': 5, 'playwright_actions': 0, 'sessions': 0}
+PASS regular call refused when twilio_calls cap reached
+PASS refusal reason is cap_reached — {'reason': 'cap_reached', 'command_id': 'cmd_01M75WAS46VD9C8WBPEWAFC6SF', 'contact_id': 'c_chun', 'incident_id': None}
+PASS refused call wrote no outbox row — 0 rows
+PASS system.cap_exceeded warning recorded (console-visible) — {'name': 'twilio_calls', 'used': 5, 'cap': 5.0, 'date': '2026-11-20'}
+PASS quality row cap_exceeded recorded
+PASS refused attempt not double-counted
+PASS safety call 1/3 allowed at cap (exempt)
+PASS safety call 2/3 allowed at cap (exempt)
+PASS safety call 3/3 allowed at cap (exempt)
+PASS 4th safety call for the same incident refused
+PASS 4th refusal reason cap_reached (3/incident used) — {'reason': 'cap_reached', 'command_id': 'cmd_01M75WAX87T5Q395AERBZ8SXMX', 'contact_id': 'c_chun', 'incident_id': 'inc_cap_test'}
+PASS exactly 3 safety outbox rows — 3 outbox rows
+.PASS 15 fake deep_tasks rows today — 15
+PASS deep.start_request over cap -> busy/daily_cap (CONTRACTS §6) — {'ok': False, 'status': 'busy', 'reason': 'daily_cap'}
+PASS no deep_tasks row added over cap — 15
+PASS kernel daily_cap path emits NO cap warning (ops.caps never consulted here) — []
+PASS ops.caps counts costs rows: refuses at 15/15 (different source than the kernel gate) — ok=False 15/15.0
+PASS deep worker gate _cap_ok SKIPS caps when models faked
+.PASS check_cap refuses at $4.0/$3.0 (mechanics ok) — 4.0/3.0
+PASS llm_usd warning recorded via ops.caps — {'name': 'llm_usd', 'used': 4.0, 'cap': 3.0, 'date': '2026-11-20'}
+PASS conversation STILL runs over the llm_usd cap (no refusal anywhere) — 兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。
+.PASS 120 fake sessions today — 120
+PASS check_cap itself refuses the 121st session — 120/120.0
+PASS a 121st session still opened (cap not enforced anywhere)
+PASS sessions now 121 (cap 120 exceeded, no refusal, no warning) — 121
+PASS no sessions_per_day warning exists (feature never calls check_cap)
+PASS grep confirms no check_cap('sessions_per_day') call site — /repo/brain/ahbo/ops/caps.py:5:Names: `llm_usd`, `deep_tasks`, `twilio_calls`, `playwright_actions`, `sessions_per_day`, `session_minutes`
+/repo/brain/ahbo/ops/caps.py:29:CAP_NAMES = ("llm_usd", "deep
+.PASS action proposed — {'ok': True, 'action_id': 'act_01M75WAYG541NCH7A87EBQTQGR', 'question': '我幫你報名下晝三點嘅粵曲班，好唔好呀？'}
+PASS action confirmed -> running — {'ok': True, 'status': 'running', 'action_id': 'act_01M75WAYG541NCH7A87EBQTQGR'}
+PASS playwright action failed with daily_cap at 10/10 — {'action_id': 'act_01M75WAYG541NCH7A87EBQTQGR', 'status': 'failed', 'screenshots': [], 'detail': {'reason': 'daily_cap', 'used': 10, 'cap': 10.0}}
+PASS playwright_actions warning recorded as system.cap_exceeded — ['playwright_actions']
+PASS quality row cap_exceeded recorded — 1
+.
+5 passed in 7.45s

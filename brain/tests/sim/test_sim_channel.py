@@ -371,3 +371,44 @@ async def test_reconnect_with_backoff_and_offline_dot(page, stub):
     while await face.locator("#offline.on").count() > 0:
         assert asyncio.get_running_loop().time() < deadline, "offline dot still on after reconnect"
         await asyncio.sleep(0.1)
+
+
+# ------------------------------------------------------------------ QA 25 D2 / D11: silent loss + hanging connects
+async def _offline_dot(face, want: bool, timeout_s: float) -> None:
+    deadline = asyncio.get_running_loop().time() + timeout_s
+    while (await face.locator("#offline.on").count() > 0) != want:
+        assert asyncio.get_running_loop().time() < deadline, f"offline dot never {'on' if want else 'off'}"
+        await asyncio.sleep(0.05)
+
+
+async def test_silent_network_loss_is_detected_by_the_pong_watchdog(page, stub):
+    await page.goto(f"{stub.url}/sim/?hb_ms=300&offline_ms=1200")
+    await wait_online(page)
+    await wait_trace(page, "e.dir === 'in' && e.obj.type === 'pong'")          # the hub answers heartbeats
+    hub = stub.hub
+    hub.silent = True              # the path dies silently: no frames reach the sim, the socket never closes
+    await wait_online_off(page, timeout_s=3)                                  # dead after ~2.5 heartbeats
+    face = face_frame(page)
+    await _offline_dot(face, True, 4)                                         # offline_ms after the last frame
+    hellos = hub.hellos
+    hub.silent = False                                                        # the network is back
+    await wait_online(page, timeout_s=10)
+    assert hub.hellos > hellos
+    await _offline_dot(face, False, 3)
+
+
+async def test_hanging_connect_attempt_is_abandoned_and_retried(page, stub):
+    await page.goto(f"{stub.url}/sim/?hb_ms=300&offline_ms=1200")
+    await wait_online(page)
+    hub = stub.hub
+    hub.hang_upgrade = True                    # the server is half up: upgrades never answer
+    await hub.drop()
+    face = face_frame(page)
+    await _offline_dot(face, True, 6)
+    deadline = asyncio.get_running_loop().time() + 8
+    while hub.hangs < 2:                       # the first hung attempt was given up and a new one made
+        assert asyncio.get_running_loop().time() < deadline, f"hung attempts: {hub.hangs}"
+        await asyncio.sleep(0.1)
+    hub.hang_upgrade = False                   # the server is back: the next attempt (≤ 2 s timeout + backoff)
+    await wait_online(page, timeout_s=8)
+    await _offline_dot(face, False, 3)

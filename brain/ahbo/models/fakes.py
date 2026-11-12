@@ -520,7 +520,10 @@ class FakeFlash:
         """Injected system lines (§5.3): relay the content kindly and briefly. Quoted text is data (INV-7)."""
         sentences = [s for s in re.split(r"(?<=[。！？])", body) if s.strip()]
         instr = re.compile(r"(講俾佢知|話俾佢知|講俾佢聽|問佢|提佢|簡單|有需要|唔好|relay|instruction|needs_confirmation)")
-        content = [s for s in sentences if not instr.search(s)] or sentences[:1]
+        content = [s for s in sentences if not instr.search(s)]
+        if not content:      # fall back to the first sentence only when it carries no instruction marker (QA 22 D2)
+            from ahbo.agent.filters.spoken import INSTRUCTION_RE
+            content = [s for s in sentences[:1] if not INSTRUCTION_RE.search(s)]
         if kind == "提醒":
             meds = re.search(r"提佢食(?P<m>[^，。]+)", body)
             when = re.search(r"而家係(?P<w>[^，。]+)", body)

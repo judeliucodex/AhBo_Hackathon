@@ -3,6 +3,7 @@ Kernel (CONTRACTS §5). Every call becomes a Kernel event, so the trace explains
 from __future__ import annotations
 
 import asyncio
+import logging
 from typing import Any
 
 from ahbo.core.events import Command, Event
@@ -11,6 +12,7 @@ from ahbo.kernel.core import Kernel
 
 from .tools import ToolCtx, public, run_tool
 
+log = logging.getLogger("ahbo.agent.bridge")
 STT_LOW = 0.6     # below this an utterance is flagged `quality.stt_low_confidence` (the transcript is not logged)
 
 
@@ -69,7 +71,33 @@ class AgentBridge:
         st = self.kernel.state
         mode = st.session.mode if st.session else "companion"
         consumed = st.session is None or mode in ("kernel_listen", "paused") or (st.incident_active and mode != "reassure")
-        return {"ok": True, "consumed": consumed, "mode": mode, "text": text}
+        out = {"ok": True, "consumed": consumed, "mode": mode, "text": text}
+        line = None if consumed else self.llm_cap_line(text)
+        if line:              # the LiveKit worker speaks this fixed line instead of calling the model (QA 26 D3)
+            out.update(llm_capped=True, line=line)
+        return out
+
+    def llm_cap_line(self, text: str = "") -> str | None:
+        """The daily `llm_usd` cap on the chat path (§11, QA 26 D3): over the cap her ordinary chat gets the fixed
+        G1 line instead of a model call, and the cap warning (`system.cap_exceeded`) is raised once. Never applied to
+        safety: an open incident, the reminder / reassure / kernel_listen / paused modes, an utterance the red-flag
+        matcher flags, or a Kernel system line (injected reminders, family and concern messages)."""
+        st = self.kernel.state
+        s = st.session
+        if st.incident_active or s is None or s.mode != "companion" or str(text).startswith("[阿寶系統"):
+            return None
+        k = self.kernel
+        try:
+            from ahbo.kernel.matchers import match_redflag
+            if text and match_redflag(text, k.config):
+                return None
+            from ahbo.ops.caps import check_cap
+            if check_cap(k.db, k.clock, k.config, "llm_usd")[0]:
+                return None
+        except Exception:
+            log.exception("llm cap check failed; allowing the turn")
+            return None
+        return (k.config.fixed_lines or {}).get("G1") or "阿寶而家諗唔到嘢，等陣再試吓好嗎？"
 
     async def steps_plan(self, session_id: str, turn_id: str, tools: list[Any]) -> dict[str, Any]:
         await self.kernel.process(self._ev("agent.steps_plan", session_id, turn_id=turn_id, tools=tools))

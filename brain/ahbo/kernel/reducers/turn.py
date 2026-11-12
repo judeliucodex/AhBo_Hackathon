@@ -14,7 +14,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from ahbo.core.events import P2, Command, Event, cmd, ui
+from ahbo.core.events import P1, P2, Command, Event, cmd, ui
 from ahbo.core.ids import new_id
 
 from ..state import KernelState, TurnState
@@ -82,6 +82,11 @@ def reduce(state: KernelState, ev: Event, ctx: Any) -> list[Command] | None:
         sess = state.session
         if sess is None or sess.mode in ("kernel_listen", "paused") or \
                 (state.incident_active and sess.mode != "reassure"):
+            # §23.5: in kernel_listen her words are still shown (QA 25 D3); during an incident the fall reducer
+            # sends them itself, before its own reaction, so the room sees 「我冇事」 land first.
+            if sess is not None and sess.text_only and sess.mode == "kernel_listen" and not state.incident_active \
+                    and p.get("text"):
+                return [ui({"type": "heard", "text": p.get("text", ""), "final": True}, P1)]
             return None
         out: list[Command] = []
         # Barge-in: the previous reply is cut (§24.6)

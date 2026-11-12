@@ -42,6 +42,16 @@ class TurnAgent:
             [{"role": "user", "content": text}]
         start = len(msgs) - 1
         planned, replied = False, False
+        capped = self.bridge.llm_cap_line(text)
+        if capped:            # over the daily llm_usd cap: a fixed line, no model call (QA 26 D3)
+            try:
+                if not self._silent():
+                    say_id = await self.bridge.reply_start(session_id, turn_id, capped)
+                    if say_id:
+                        await self.bridge.wait_say(say_id)
+            finally:
+                await self.bridge.reply_end(session_id, turn_id)
+            return
         try:
             for _ in range(MAX_ROUNDS):
                 s = self.bridge.kernel.state.session

@@ -89,3 +89,9 @@ async def test_alerts_lists_the_last_ten_outbox_rows(svc):
                       to_contact="c_chun", to_address=CHUN_CHAT, payload={"text": f"通知{i}"}, fake=True)
     [r] = await say(svc, "/alerts")
     assert r["text"].count("• ") == 10 and "通知11" in r["text"] and "通知1\n" not in r["text"]
+
+
+async def test_help_does_not_advertise_the_removed_digest(svc):
+    """QA 23 D1: the 20:00 digest is gone (BUILD_LOG §9); /help must not list 摘要 among the settings."""
+    [r] = await say(svc, "/help")
+    assert "/settings" in r["text"] and "摘要" not in r["text"]

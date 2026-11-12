@@ -1,0 +1,78 @@
+PASS clip F1 present
+PASS clip F1 text == fixed_lines.yaml — '哎呀！我感應到你好似跌低咗！'
+PASS clip F2 present
+PASS clip F2 text == fixed_lines.yaml — '我而家影張相睇吓先。'
+PASS clip F3 present
+PASS clip F3 text == fixed_lines.yaml — '王婆婆，如果你冇跌親，請講「我冇事」。'
+PASS clip F4 present
+PASS clip F4 text == fixed_lines.yaml — '我已經打電話俾阿珍，佢就嚟幫你。唔使驚，阿寶喺度陪住你。'
+PASS clip F4p present
+PASS clip F4p text == fixed_lines.yaml — '我已經打電話俾阿珍，佢好快會嚟幫你。唔使驚，阿寶喺度陪住你。'
+PASS clip F5 present
+PASS clip F5 text == fixed_lines.yaml — '好啦，冇事就好。阿寶喺度陪住你。'
+PASS clip A1 present
+PASS clip A1 text == fixed_lines.yaml — '王婆婆，阿珍留咗段錄音俾你。'
+PASS clip G1 present
+PASS clip G1 text == fixed_lines.yaml — '阿寶而家諗唔到嘢，等陣再試吓好嗎？'
+PASS clip G2 present
+PASS clip G2 text == fixed_lines.yaml — '網絡有啲問題，不過提醒照樣會有㗎。'
+PASS R_s_0800 present
+PASS R_s_0800 text == template with joined names — '王婆婆，夠鐘食藥喇：糖尿藥。'
+PASS R_s_1200 present
+PASS R_s_1200 text == template with joined names — '王婆婆，夠鐘食藥喇：血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。'
+PASS R_s_2000 present
+PASS R_s_2000 text == template with joined names — '王婆婆，夠鐘食藥喇：糖尿藥。'
+PASS no extra R_ clips — ['R_s_0800', 'R_s_1200', 'R_s_2000']
+PASS clips.P1 present
+PASS P1 text == P1_TEMPLATE with address — '阿珍你好，呢度係阿寶。王婆婆喺屋企懷疑跌倒，需要你即刻跟進。地址：九龍觀塘秀茂坪'
+PASS manifest has public section
+PASS kv public_clip_rand == public.dir — 01m75vr00hbbftm6qkmr00x8gr
+PASS kv public_clip_path == /media/public/<rand>/P1.m4a — /media/public/01m75vr00hbbftm6qkmr00x8gr/P1.m4a
+PASS public file exists on disk
+PASS public dir is a lowercase ULID (unguessable) — 01m75vr00hbbftm6qkmr00x8gr
+PASS A1 duration ffprobe ±0.1s — manifest 2.66 vs ffprobe 2.660
+PASS F1 duration ffprobe ±0.1s — manifest 2.66 vs ffprobe 2.660
+PASS F2 duration ffprobe ±0.1s — manifest 1.9 vs ffprobe 1.900
+PASS F3 duration ffprobe ±0.1s — manifest 3.61 vs ffprobe 3.610
+PASS F4 duration ffprobe ±0.1s — manifest 5.32 vs ffprobe 5.320
+PASS F4p duration ffprobe ±0.1s — manifest 5.7 vs ffprobe 5.700
+PASS F5 duration ffprobe ±0.1s — manifest 3.04 vs ffprobe 3.040
+PASS G1 duration ffprobe ±0.1s — manifest 3.23 vs ffprobe 3.230
+PASS G2 duration ffprobe ±0.1s — manifest 3.23 vs ffprobe 3.230
+PASS P1 duration ffprobe ±0.1s — manifest 11.78 vs ffprobe 11.780
+PASS R_s_0800 duration ffprobe ±0.1s — manifest 2.66 vs ffprobe 2.660
+PASS R_s_1200 duration ffprobe ±0.1s — manifest 5.51 vs ffprobe 5.510
+PASS R_s_2000 duration ffprobe ±0.1s — manifest 2.66 vs ffprobe 2.660
+PASS A1 segments cover text (0..14) in order — 12 segs, first=[0, 1, 0.0, 0.19], last=[12, 14, 2.28, 2.47]
+PASS A1 every UTF-16 offset revealed — missing []
+PASS F1 segments cover text (0..14) in order — 12 segs, first=[0, 1, 0.0, 0.19], last=[12, 14, 2.28, 2.47]
+PASS F1 every UTF-16 offset revealed — missing []
+PASS F2 segments cover text (0..10) in order — 9 segs, first=[0, 1, 0.0, 0.19], last=[8, 10, 1.52, 1.71]
+PASS F2 every UTF-16 offset revealed — missing []
+PASS F3 segments cover text (0..19) in order — 14 segs, first=[0, 1, 0.0, 0.19], last=[16, 19, 3.04, 3.23]
+PASS F3 every UTF-16 offset revealed — missing []
+PASS F4 segments cover text (0..28) in order — 24 segs, first=[0, 1, 0.0, 0.19], last=[26, 28, 4.94, 5.13]
+PASS F4 every UTF-16 offset revealed — missing []
+PASS F4p segments cover text (0..30) in order — 26 segs, first=[0, 1, 0.0, 0.19], last=[28, 30, 5.32, 5.51]
+PASS F4p every UTF-16 offset revealed — missing []
+PASS F5 segments cover text (0..16) in order — 13 segs, first=[0, 1, 0.0, 0.19], last=[14, 16, 2.66, 2.85]
+PASS F5 every UTF-16 offset revealed — missing []
+PASS G1 segments cover text (0..17) in order — 15 segs, first=[0, 1, 0.0, 0.19], last=[15, 17, 2.85, 3.04]
+PASS G1 every UTF-16 offset revealed — missing []
+PASS G2 segments cover text (0..17) in order — 15 segs, first=[0, 1, 0.0, 0.19], last=[15, 17, 2.85, 3.04]
+PASS G2 every UTF-16 offset revealed — missing []
+PASS P1 segments cover text (0..62) in order — 46 segs, first=[0, 1, 0.0, 0.19], last=[59, 62, 11.21, 11.4]
+PASS P1 every UTF-16 offset revealed — missing []
+PASS R_s_0800 segments cover text (0..14) in order — 11 segs, first=[0, 1, 0.0, 0.19], last=[12, 14, 2.28, 2.47]
+PASS R_s_0800 every UTF-16 offset revealed — missing []
+PASS R_s_1200 segments cover text (0..29) in order — 23 segs, first=[0, 1, 0.0, 0.19], last=[27, 29, 5.13, 5.32]
+PASS R_s_1200 every UTF-16 offset revealed — missing []
+PASS R_s_2000 segments cover text (0..14) in order — 11 segs, first=[0, 1, 0.0, 0.19], last=[12, 14, 2.28, 2.47]
+PASS R_s_2000 every UTF-16 offset revealed — missing []
+PASS F4 says 打電話俾阿珍 — 我已經打電話俾阿珍，佢就嚟幫你。唔使驚，阿寶喺度陪住你。
+PASS F4p says 打電話俾阿珍 — 我已經打電話俾阿珍，佢好快會嚟幫你。唔使驚，阿寶喺度陪住你。
+PASS F4 makes no ambulance claim
+PASS version = f-sha1(texts+voice+fake) — f-dcfc2e6081a0
+PASS no clip is the platform fallback
+
+ALL PASS

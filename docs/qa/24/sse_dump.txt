@@ -1,0 +1,200 @@
+retry: 2000
+
+event: state
+data: {"now":"2026-11-12T02:18:33.200+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":null,"arbiter":{"queue":{}},"devices":[],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":0},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[],"steps":[],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: health
+data: {"rows":[{"item":"APP_SECRET","status":"green","detail":"set (…6dff)"},{"item":"INTERNAL_TOKEN","status":"green","detail":"set (…03de)"},{"item":"SESSION_SECRET","status":"green","detail":"set (…7d5d)"},{"item":"OPERATOR_PASSWORD_HASH","status":"green","detail":"set (…wEr2)"},{"item":"AZURE_TTS_VOICE","status":"green","detail":"set (zh-HK-HiuMaanNeural)"},{"item":"DEEPSEEK_API_KEY","status":"green","detail":"unset (optional)"},{"item":"ANTHROPIC_API_KEY","status":"green","detail":"unset (optional)"},{"item":"OPPER_API_KEY","status":"green","detail":"unset (optional)"},{"item":"ELEVENLABS_API_KEY","status":"green","detail":"unset (optional)"},{"item":"ELEVENLABS_VOICE_ID","status":"green","detail":"unset (optional)"},{"item":"LIVEKIT_URL","status":"green","detail":"unset (optional)"},{"item":"LIVEKIT_API_KEY","status":"green","detail":"unset (optional)"},{"item":"LIVEKIT_API_SECRET","status":"green","detail":"unset (optional)"},{"item":"TELEGRAM_BOT_TOKEN","status":"green","detail":"unset (optional)"},{"item":"TELEGRAM_WEBHOOK_SECRET","status":"green","detail":"set (…cdef)"},{"item":"FAMILY_TELEGRAM_CHAT_IDS","status":"green","detail":"1 pair(s): 阿珍=…"},{"item":"TWILIO_ACCOUNT_SID","status":"green","detail":"set (…1111)"},{"item":"TWILIO_AUTH_TOKEN","status":"green","detail":"set (…4321)"},{"item":"TWILIO_FROM","status":"green","detail":"set (…0001)"},{"item":"EMERGENCY_SIM_PHONE","status":"green","detail":"unset (optional)"},{"item":"FAMILY_PHONE","status":"green","detail":"unset (optional)"},{"item":"BEACON_TOKENS","status":"green","detail":"1 pair(s): beacon1=…"},{"item":"model flash (opper/deepseek-v4.1-flash)","status":"fake","detail":"fake (needs owner)"},{"item":"model flash fallback (opper/claude-haiku-5-5)","status":"fake","detail":"fake (needs owner)"},{"item":"model sonnet (deep) (opper/claude-sonnet-5-5)","status":"fake","detail":"fake (needs owner)"},{"item":"model vision (opper/claude-haiku-5-5)","status":"fake","detail":"fake (needs owner)"},{"item":"ElevenLabs voice","status":"fake","detail":"fake (needs owner)"},{"item":"ElevenLabs TTS models","status":"fake","detail":"fake (needs owner)"},{"item":"ElevenLabs STT","status":"fake","detail":"fake (needs owner)"},{"item":"Azure TTS","status":"green","detail":"optional (not used; speech provider is elevenlabs)"},{"item":"Azure STT","status":"green","detail":"optional (not used; speech provider is elevenlabs)"},{"item":"LiveKit","status":"fake","detail":"fake (needs owner)"},{"item":"Telegram webhook","status":"fake","detail":"fake (needs owner)"},{"item":"Twilio","status":"fake","detail":"fake (needs owner)"},{"item":"Playwright","status":"green","detail":"connected to ws://ahbo-qa24-browser:3000/ (chromium 156.0.8078.4)"},{"item":"iPad connected","status":"green","detail":"ipad-qa24-sec (v0.1, battery ?%)"},{"item":"Beacon heartbeat","status":"red","detail":"no heartbeat yet → flash the ESP32 + set BEACON_TOKENS (SETUP.md §27.1 #10); the operator fall trigger still works (§10.4)"},{"item":"Fixed cache","status":"green","detail":"f-dcfc2e6081a0 · 13 clips"},{"item":"Clock","status":"green","detail":"virtual 2026-11-12T02:18:33.969+08:00 (offset +0 s)"},{"item":"Disk","status":"green","detail":"87.2 GB free"},{"item":"Database","status":"green","detail":"integrity_check ok"}]}
+
+event: kernel_event
+data: {"id":"evt_01M75XAGGMSG9Z9M47E8E4NCC9","ts":"2026-11-12T02:18:33.364+08:00","type":"device.online","source":"device","correlation_id":null,"payload":{"device_id":"ipad-qa24-sec","app_version":"0.1","fixed_cache_version":"","wake_engine":"none","sim":false}}
+
+event: state
+data: {"now":"2026-11-12T02:18:34.473+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":null,"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:33.352+08:00","battery":null,"thermal":null,"wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":0},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[],"steps":[],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAHVKXGJW2KF0VFBEMDGG","ts":"2026-11-12T02:18:34.739+08:00","type":"schedule.tick","source":"scheduler","correlation_id":null,"payload":{"now":"2026-11-12T02:18:34.739803+08:00"}}
+
+event: state
+data: {"now":"2026-11-12T02:18:34.991+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":null,"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:33.352+08:00","battery":null,"thermal":null,"wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":0},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[],"steps":[],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAJETG67ST091CZE0RA04","ts":"2026-11-12T02:18:35.354+08:00","type":"device.wake","source":"device","correlation_id":null,"payload":{"trigger":"touch","implicit":true}}
+
+event: command
+data: {"id":"cmd_01M75XAJEVF1CGAR5FAPG4Y5JB","event_id":"evt_01M75XAJETG67ST091CZE0RA04","type":"device.ui","target":"device","priority":2,"correlation_id":"evt_01M75XAJETG67ST091CZE0RA04","payload":{"ui":{"type":"mood","mood":"listening"}}}
+
+event: ui
+data: {"type":"mood","mood":"listening"}
+
+event: command
+data: {"id":"cmd_01M75XAJEVF1CGAR5FAPG4Y5JC","event_id":"evt_01M75XAJETG67ST091CZE0RA04","type":"device.session_open","target":"device","priority":2,"correlation_id":"evt_01M75XAJETG67ST091CZE0RA04","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","reason":"touch","mode":"companion","text_only":true}}
+
+event: command
+data: {"id":"cmd_01M75XAJEVF1CGAR5FAPG4Y5JD","event_id":"evt_01M75XAJETG67ST091CZE0RA04","type":"session.open","target":"session","priority":2,"correlation_id":"evt_01M75XAJETG67ST091CZE0RA04","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","reason":"touch","mode":"companion","text_only":true}}
+
+event: command
+data: {"id":"cmd_01M75XAJEVF1CGAR5FAPG4Y5JE","event_id":"evt_01M75XAJETG67ST091CZE0RA04","type":"device.wake_enable","target":"device","priority":2,"correlation_id":"evt_01M75XAJETG67ST091CZE0RA04","payload":{"on":false}}
+
+event: command
+data: {"id":"cmd_01M75XAJEVF1CGAR5FAPG4Y5JF","event_id":"evt_01M75XAJETG67ST091CZE0RA04","type":"timer.set","target":"timer","priority":2,"correlation_id":"evt_01M75XAJETG67ST091CZE0RA04","payload":{"key":"session_idle:sess_01M75XAJEVF1CGAR5FAPG4Y5JA","delay_s":30.0,"data":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA"}}}
+
+event: command
+data: {"id":"cmd_01M75XAJEVF1CGAR5FAPG4Y5JG","event_id":"evt_01M75XAJETG67ST091CZE0RA04","type":"timer.set","target":"timer","priority":2,"correlation_id":"evt_01M75XAJETG67ST091CZE0RA04","payload":{"key":"session_max:sess_01M75XAJEVF1CGAR5FAPG4Y5JA","delay_s":600.0,"data":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA"}}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAJEX2DAWWMX9HK5V5YND","ts":"2026-11-12T02:18:35.357+08:00","type":"user.utterance","source":"agent","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","text":"阿寶，我幾時食藥呀？","stt_confidence":1.0,"final":true}}
+
+event: turn
+data: {"role":"user","text":"阿寶，我幾時食藥呀？","session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","stt_confidence":1.0,"ts":"2026-11-12T02:18:35.357+08:00"}
+
+event: command
+data: {"id":"cmd_01M75XAJGMY9MX3XKS0TM2BM8X","event_id":"evt_01M75XAJEX2DAWWMX9HK5V5YND","type":"timer.set","target":"timer","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"session_idle:sess_01M75XAJEVF1CGAR5FAPG4Y5JA","delay_s":30.0,"data":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA"}}}
+
+event: command
+data: {"id":"cmd_01M75XAJGMY9MX3XKS0TM2BM8Z","event_id":"evt_01M75XAJEX2DAWWMX9HK5V5YND","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"heard","text":"阿寶，我幾時食藥呀？","final":true}}}
+
+event: ui
+data: {"type":"heard","text":"阿寶，我幾時食藥呀？","final":true}
+
+event: command
+data: {"id":"cmd_01M75XAJGNJ04MXPCTP2PB4KXN","event_id":"evt_01M75XAJEX2DAWWMX9HK5V5YND","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"mood","mood":"thinking"}}}
+
+event: ui
+data: {"type":"mood","mood":"thinking"}
+
+event: kernel_event
+data: {"id":"evt_01M75XAJJ4M7CDBYG188AA9VS3","ts":"2026-11-12T02:18:35.460+08:00","type":"agent.steps_plan","source":"agent","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","tools":["get_med_status"]}}
+
+event: command
+data: {"id":"cmd_01M75XAJJ58M0AMZQXSWCQR55G","event_id":"evt_01M75XAJJ4M7CDBYG188AA9VS3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"steps","group":{"id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","steps":[{"id":"get_med_status","label":"查緊藥物時間表…","state":"active"}]}}}}
+
+event: ui
+data: {"type":"steps","group":{"id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","steps":[{"id":"get_med_status","label":"查緊藥物時間表…","state":"active"}]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAJJ58M0AMZQXSWCQR55H","ts":"2026-11-12T02:18:35.461+08:00","type":"agent.tool_call","source":"agent","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","call_id":"call_01M75XAJJ4M7CDBYG188AA9VS2","name":"get_med_status","args":{"scope":"next"}}}
+
+event: command
+data: {"id":"cmd_01M75XAJJ58M0AMZQXSWCQR55J","event_id":"evt_01M75XAJJ58M0AMZQXSWCQR55H","type":"timer.set","target":"timer","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"session_idle:sess_01M75XAJEVF1CGAR5FAPG4Y5JA","delay_s":30.0,"data":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA"}}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAJJ67HVBY4EAPKT34DEP","ts":"2026-11-12T02:18:35.462+08:00","type":"agent.tool_result","source":"agent","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","call_id":"call_01M75XAJJ4M7CDBYG188AA9VS2","name":"get_med_status","ok":true,"result":{"ok":true,"next":{"slot_id":"s_1200","time":"12:00","time_words":"十二點正","time_words_period":"中午十二點","rel_words":"大約九個半鐘之後","due_now":false,"meds":[{"id":"bp","yue":"血壓藥","en":"Amlodipine","dose":"5 mg"},{"id":"dm","yue":"糖尿藥","en":"Metformin","dose":"500 mg"},{"id":"chol","yue":"膽固醇藥","en":"Atorvastatin","dose":"20 mg"},{"id":"asp","yue":"薄血丸","en":"Aspirin","dose":"80 mg"}],"count":4,"count_words":"四"},"today":[{"slot_id":"s_0800","time":"08:00","time_words":"朝早八點","state":"taken_self_reported","meds":["糖尿藥"]},{"slot_id":"s_1200","time":"12:00","time_words":"中午十二點","state":"scheduled","meds":["血壓藥","糖尿藥","膽固醇藥","薄血丸"]},{"slot_id":"s_2000","time":"20:00","time_words":"夜晚八點","state":"scheduled","meds":["糖尿藥"]}],"taken_today":["s_0800"]},"cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when_candidates":["十二點正","十二點"]},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when_candidates":["血壓藥"]},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when_candidates":["糖尿藥"]},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when_candidates":["膽固醇藥"]},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when_candidates":["薄血丸"]}],"step":{"outcome":"next","vars":{"next_time_words":"十二點正","count_words":"四"}},"tone":null}}
+
+event: command
+data: {"id":"cmd_01M75XAJJ67HVBY4EAPKT34DEQ","event_id":"evt_01M75XAJJ67HVBY4EAPKT34DEP","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"step","group":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","id":"get_med_status","state":"done","label":"下一次：十二點正，四隻藥"}}}
+
+event: ui
+data: {"type":"step","group":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","id":"get_med_status","state":"done","label":"下一次：十二點正，四隻藥"}
+
+event: kernel_event
+data: {"id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","ts":"2026-11-12T02:18:35.514+08:00","type":"agent.reply_start","source":"agent","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","text":"大約九個半鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。","tone":null}}
+
+event: turn
+data: {"role":"ahbo","text":"大約九個半鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。","session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","stt_confidence":null,"ts":"2026-11-12T02:18:35.514+08:00"}
+
+event: command
+data: {"id":"cmd_01M75XAJKTEC3GF2C348ZM2WC4","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"timer.set","target":"timer","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"session_idle:sess_01M75XAJEVF1CGAR5FAPG4Y5JA","delay_s":30.0,"data":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA"}}}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313E","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"mood","mood":"idle"}}}
+
+event: ui
+data: {"type":"mood","mood":"idle"}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313F","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"card","card":{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"}}}}
+
+event: ui
+data: {"type":"card","card":{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"}}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313G","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"card","card":{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"}}}}
+
+event: ui
+data: {"type":"card","card":{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"}}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313H","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"card","card":{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"}}}}
+
+event: ui
+data: {"type":"card","card":{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"}}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313J","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"card","card":{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"}}}}
+
+event: ui
+data: {"type":"card","card":{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"}}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313K","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"card","card":{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}}}}
+
+event: ui
+data: {"type":"card","card":{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313M","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"say_start","id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42","text":"大約九個半鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。","durationSec":8.08}}}
+
+event: ui
+data: {"type":"say_start","id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42","text":"大約九個半鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。","durationSec":8.08}
+
+event: command
+data: {"id":"cmd_01M75XAJKVR22FAXHW3YDP313N","event_id":"evt_01M75XAJKTEC3GF2C348ZM2WC3","type":"timer.set","target":"timer","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"say_end:say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42","delay_s":8.226923076923077,"data":{"say_id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}}}
+
+event: state
+data: {"now":"2026-11-12T02:18:35.519+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":{"id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","mode":"companion","reason":"touch","text_only":true,"agent_state":"listening","opened_at":"2026-11-12T02:18:35.354985+08:00"},"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:33.352+08:00","battery":null,"thermal":null,"wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":1},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}],"steps":[{"id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","title":null,"steps":{"get_med_status":{"label":"下一次：十二點正，四隻藥","doneLabel":null,"state":"done"}}}],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XATMZWHEA4D09FHRYBEWW","ts":"2026-11-12T02:18:43.743+08:00","type":"timer.fired","source":"system","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"say_end:say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42","data":{"say_id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}}}
+
+event: command
+data: {"id":"cmd_01M75XATMZWHEA4D09FHRYBEWX","event_id":"evt_01M75XATMZWHEA4D09FHRYBEWW","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"say_end","id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42"}}}
+
+event: ui
+data: {"type":"say_end","id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42"}
+
+event: command
+data: {"id":"cmd_01M75XATMZWHEA4D09FHRYBEWY","event_id":"evt_01M75XATMZWHEA4D09FHRYBEWW","type":"agent.say_done","target":"agent","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"say_id":"say_turn_01M75XAJEX2DAWWMX9HK5V5YNB_42"}}
+
+event: state
+data: {"now":"2026-11-12T02:18:43.744+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":{"id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","mode":"companion","reason":"touch","text_only":true,"agent_state":"listening","opened_at":"2026-11-12T02:18:35.354985+08:00"},"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:33.352+08:00","battery":null,"thermal":null,"wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":1},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}],"steps":[{"id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","title":null,"steps":{"get_med_status":{"label":"下一次：十二點正，四隻藥","doneLabel":null,"state":"done"}}}],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XATN1JVM0TKNKZTKHKQMS","ts":"2026-11-12T02:18:43.745+08:00","type":"agent.reply_end","source":"agent","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","turn_id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}}
+
+event: command
+data: {"id":"cmd_01M75XATN1JVM0TKNKZTKHKQMT","event_id":"evt_01M75XATN1JVM0TKNKZTKHKQMS","type":"timer.set","target":"timer","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"session_idle:sess_01M75XAJEVF1CGAR5FAPG4Y5JA","delay_s":30.0,"data":{"session_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA"}}}
+
+event: command
+data: {"id":"cmd_01M75XATN257YB8CJG7YK4V3P8","event_id":"evt_01M75XATN1JVM0TKNKZTKHKQMS","type":"timer.set","target":"timer","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"steps_clear:turn_01M75XAJEX2DAWWMX9HK5V5YNB","delay_s":4.0,"data":{"group":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}}}
+
+event: state
+data: {"now":"2026-11-12T02:18:44.249+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":{"id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","mode":"companion","reason":"touch","text_only":true,"agent_state":"listening","opened_at":"2026-11-12T02:18:35.354985+08:00"},"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:33.352+08:00","battery":null,"thermal":null,"wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":1},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}],"steps":[{"id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","title":null,"steps":{"get_med_status":{"label":"下一次：十二點正，四隻藥","doneLabel":null,"state":"done"}}}],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAW7C3VBGMF5THDKAXRMS","ts":"2026-11-12T02:18:45.356+08:00","type":"device.heartbeat","source":"device","correlation_id":null,"payload":{"device_id":"ipad-qa24-sec","battery":0.8,"thermal":"nominal","in_session":false}}
+
+event: state
+data: {"now":"2026-11-12T02:18:45.357+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":{"id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","mode":"companion","reason":"touch","text_only":true,"agent_state":"listening","opened_at":"2026-11-12T02:18:35.354985+08:00"},"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:45.356+08:00","battery":0.8,"thermal":"nominal","wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":1},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}],"steps":[{"id":"turn_01M75XAJEX2DAWWMX9HK5V5YNB","title":null,"steps":{"get_med_status":{"label":"下一次：十二點正，四隻藥","doneLabel":null,"state":"done"}}}],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+event: kernel_event
+data: {"id":"evt_01M75XAYJ2FG727GW91TGEP99R","ts":"2026-11-12T02:18:47.746+08:00","type":"timer.fired","source":"system","correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"key":"steps_clear:turn_01M75XAJEX2DAWWMX9HK5V5YNB","data":{"group":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}}}
+
+event: command
+data: {"id":"cmd_01M75XAYJ2FG727GW91TGEP99S","event_id":"evt_01M75XAYJ2FG727GW91TGEP99R","type":"device.ui","target":"device","priority":2,"correlation_id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","payload":{"ui":{"type":"steps_clear","group":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}}}
+
+event: ui
+data: {"type":"steps_clear","group":"turn_01M75XAJEX2DAWWMX9HK5V5YNB"}
+
+event: state
+data: {"now":"2026-11-12T02:18:47.747+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":{"id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","mode":"companion","reason":"touch","text_only":true,"agent_state":"listening","opened_at":"2026-11-12T02:18:35.354985+08:00"},"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:45.356+08:00","battery":0.8,"thermal":"nominal","wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":1},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}],"steps":[],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+: ping
+
+event: kernel_event
+data: {"id":"evt_01M75XB0GCQTP7A0DHGEBXJ3P6","ts":"2026-11-12T02:18:49.740+08:00","type":"schedule.tick","source":"scheduler","correlation_id":null,"payload":{"now":"2026-11-12T02:18:49.740695+08:00"}}
+
+event: state
+data: {"now":"2026-11-12T02:18:49.742+08:00","clock_offset_s":0.0,"profile":"demo","fake":["livekit","models","speech","telegram","twilio","vision"],"incident":null,"doses":[{"slot_id":"s_0800","time":"08:00","state":"taken_self_reported","meds":["dm"],"snoozes":0},{"slot_id":"s_1200","time":"12:00","state":"scheduled","meds":["bp","dm","chol","asp"],"snoozes":0},{"slot_id":"s_2000","time":"20:00","state":"scheduled","meds":["dm"],"snoozes":0}],"actions":[],"deep_tasks":[],"session":{"id":"sess_01M75XAJEVF1CGAR5FAPG4Y5JA","mode":"companion","reason":"touch","text_only":true,"agent_state":"listening","opened_at":"2026-11-12T02:18:35.354985+08:00"},"arbiter":{"queue":{}},"devices":[{"device_id":"ipad-qa24-sec","online":true,"last_seen":"2026-11-12T02:18:45.356+08:00","battery":0.8,"thermal":"nominal","wake_engine":"none","app_version":"0.1","fixed_cache_version":"","ack_latency_ms":null,"unacked_p0":0,"sim":false}],"beacons":[{"id":"beacon1","last_seen":null,"battery":null,"rssi":null,"last_seq":null}],"spend":{"llm_usd":0.0,"deep_tasks":0,"twilio_calls":0,"playwright_actions":0,"sessions":1},"caps":{"llm_usd":3.0,"deep_tasks":15,"deep_task_usd":0.3,"deep_task_seconds":90,"twilio_calls":5,"playwright_actions":10,"session_minutes":10,"sessions_per_day":120},"knobs":{"flash_thinking":"off","sonnet_thinking":"low","interruption_enabled":true,"muted":false},"ui":{"mood":"idle","cards":[{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"大約九個半鐘之後","when":"十二點正"},{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"},{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"},{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"},{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}],"steps":[],"ok_button":false,"offline":false},"components":{"installed":["kernel","agent","memory","links","actions","speech","trace"],"reducers":["fall","concern","dose","checkin","action","family","session","turn","voice","arbiter","misc"]}}
+
+: ping

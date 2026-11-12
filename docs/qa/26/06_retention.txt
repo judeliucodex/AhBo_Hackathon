@@ -1,0 +1,17 @@
+PASS repo seed file exists before — /repo/brain/seed/fall_placeholder.jpg
+retention counts: {'turns': 1, 'transcripts': 1, 'voice_messages': 1, 'photos': 3, 'files': 4}
+PASS photo >7d deleted (row)
+PASS photo >7d file deleted
+PASS photo ≤7d kept
+PASS photo exactly 7d old kept (strictly-older rule)
+PASS photo with past expires_at deleted
+PASS life-story photo kept (D-15)
+PASS voice >30d deleted
+PASS voice ≤30d kept
+PASS old turn deleted, new turn kept
+PASS old session transcript file deleted + ref cleared
+PASS new session transcript kept
+PASS REPO SEED FILE still there (never deleted) — /repo/brain/seed/fall_placeholder.jpg
+PASS outside-path row itself was removed from media
+
+ALL CHECKS PASS

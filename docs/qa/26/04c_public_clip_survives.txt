@@ -1,0 +1,2 @@
+after wipe + restart + reset demo: GET /media/public/<old-rand>/P1.m4a -> 200 3065 bytes, no auth
+kv public_clip_rand now: 01m75wwp4qs418x8trqg6f7r6t (re-minted/reused dir still holds the old file)

@@ -1,0 +1,121 @@
+{
+ "A2_replay_idle": [
+  "reset"
+ ],
+ "A3_turn_types": {
+  "say_start": 1,
+  "say_end": 1
+ },
+ "A4_step_gaps": [
+  {
+   "step": [
+    "turn_01M75WPNYPKAVJXZY7RAFRY0DF",
+    "get_med_status"
+   ],
+   "gap_ms": 513
+  }
+ ],
+ "A2b_replay_incident": [
+  {
+   "type": "reset"
+  },
+  {
+   "type": "mood",
+   "mood": "alarm"
+  },
+  {
+   "type": "card",
+   "card": {
+    "id": "incident",
+    "kind": "incident",
+    "label": "\u5075\u6e2c\u5230\u8dcc\u5012",
+    "small": "\u64cd\u4f5c\u54e1\u89f8\u767c",
+    "persistent": true
+   }
+  },
+  {
+   "type": "steps",
+   "group": {
+    "id": "fall",
+    "steps": [
+     {
+      "id": "photo",
+      "label": "\u76f8\u7247\u5df2\u9001\u51fa",
+      "state": "done",
+      "doneLabel": "\u76f8\u7247\u5df2\u9001\u51fa"
+     },
+     {
+      "id": "ask",
+      "label": "\u7b49\u5a46\u5a46\u56de\u61c9",
+      "state": "active",
+      "doneLabel": "\u5a46\u5a46\u8a71\u5187\u4e8b"
+     },
+     {
+      "id": "call",
+      "label": "\u81f4\u96fb\u963f\u73cd",
+      "state": "pending",
+      "doneLabel": "\u5df2\u81f4\u96fb\u963f\u73cd"
+     },
+     {
+      "id": "tell",
+      "label": "\u901a\u77e5\u963f\u73cd",
+      "state": "pending",
+      "doneLabel": "\u5df2\u901a\u77e5\u963f\u73cd"
+     }
+    ],
+    "title": "\u8dcc\u5012\u8655\u7406"
+   }
+  },
+  {
+   "type": "ok_button",
+   "show": true
+  }
+ ],
+ "C_ack": {
+  "lat_before": {
+   "sim-qa24-r4": null,
+   "ipad-qa24-r3": null,
+   "sim-qa24-r2": null,
+   "ipad-qa24-r1": 42.7,
+   "ipad-qa24-p0": null,
+   "ipad-qa24-1": 12039.6,
+   "sim-qa24-2": 105.1,
+   "ipad-matrix-1": null
+  },
+  "lat_after": {
+   "sim-qa24-r4": [
+    null,
+    true
+   ],
+   "ipad-qa24-r3": [
+    null,
+    true
+   ],
+   "sim-qa24-r2": [
+    null,
+    false
+   ],
+   "ipad-qa24-r1": [
+    42.3,
+    true
+   ],
+   "ipad-qa24-p0": [
+    null,
+    false
+   ],
+   "ipad-qa24-1": [
+    12039.6,
+    false
+   ],
+   "sim-qa24-2": [
+    105.1,
+    false
+   ],
+   "ipad-matrix-1": [
+    null,
+    false
+   ]
+  },
+  "ack_events": 113
+ }
+}

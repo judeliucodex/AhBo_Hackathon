@@ -1,0 +1,6 @@
+..FALL: incident inc_01M75WY7RPD43H20T3DF6R1ZGK state=ESCALATING source=operator kind=fall; buttons=['我處理緊', '錄段聲俾媽媽', '已解決']
+.FALL: incident inc_01M75WYAEM96KS5CB03DN858RN state=ESCALATING source=operator kind=fall; buttons=['我處理緊', '錄段聲俾媽媽', '已解決']
+handled → ACKNOWLEDGED, resolved → CLOSED ✓
+.FALL: incident inc_01M75WYD7CKEB08HH35D5PJCJ3 state=ESCALATING source=operator kind=fall; buttons=['我處理緊', '錄段聲俾媽媽', '已解決']
+.
+5 passed in 13.09s

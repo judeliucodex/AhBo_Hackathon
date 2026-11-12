@@ -113,8 +113,28 @@ def export_all(db: Database) -> dict[str, Any]:
             "tables": {t: db.query(f'SELECT * FROM "{t}"') for t in _tables(db)}}
 
 
+def _wipe_public(data_dir: Path) -> int:
+    """Delete `data/media/public/` (the P1 phone clip: her name, address and the fall notice, QA 26 D1). Its URL was
+    disclosed to Twilio and the route serves it without auth, so nothing of it may survive a wipe."""
+    root = data_dir / "media" / "public"
+    if not root.is_dir() or root.is_symlink() or not _inside(root, data_dir):
+        return 0
+    n = 0
+    for p in sorted(root.rglob("*"), key=lambda x: len(x.parts), reverse=True):
+        try:
+            if p.is_dir() and not p.is_symlink():
+                p.rmdir()
+            else:
+                p.unlink(missing_ok=True)
+                n += 1
+        except OSError:
+            log.warning("could not delete %s", p.name)
+    return n
+
+
 def wipe(db: Database, data_dir: Path | None = None) -> dict[str, int]:
-    """Delete all personal data: every table except `meta`, plus media/voice/transcript files inside data_dir.
+    """Delete all personal data: every table except `meta`, plus media/voice/transcript files inside data_dir and the
+    whole `media/public/` folder (the public phone clip).
     Uses secure_delete and VACUUM so the rows don't linger in free pages."""
     files = 0
     if data_dir is not None:
@@ -122,6 +142,7 @@ def wipe(db: Database, data_dir: Path | None = None) -> dict[str, int]:
         paths += [r["file_path"] for r in db.query("SELECT file_path FROM voice_messages")]
         paths += [r["transcript_ref"] for r in db.query("SELECT transcript_ref FROM sessions WHERE transcript_ref IS NOT NULL")]
         files = sum(_unlink(p, data_dir) for p in paths)
+        files += _wipe_public(data_dir)
     counts: dict[str, int] = {}
     db.execute("PRAGMA secure_delete=ON")
     with db.transaction():
