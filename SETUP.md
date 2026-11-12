@@ -39,10 +39,10 @@ Every row turns green or says exactly what is wrong.
 - [ ] Approve running the eval suites against the real AI (< $1 on Opper).
 - [ ] The grand-final date.
 
-## 3. The iPad app (needs your Mac) — ⬜ not built yet
+## 3. The iPad app (needs your Mac) — ✅ compiles (12 Nov, Xcode 27.1, Simulator build, 0 errors); ⬜ not yet run
 Follow `ios/BUILD_ON_MAC.md` (Xcode 26, `brew install xcodegen`, `cd ios && xcodegen && open AhBo.xcodeproj`, Personal
 Team signing, Simulator first, then the iPad Air 5 on iPadOS 26). `ios/MAC_BRIDGE.md` describes the optional remote
-build bridge. The app has **never been compiled**; expect a few compile fixes (listed in BUILD_ON_MAC.md §7).
+build bridge. Claude can build it remotely through the Mac bridge (`ios/MAC_BRIDGE.md`, reverse tunnel on 127.0.0.1:2222).
 
 **Keep the Mac in sync with the VPS (Mutagen, two-way, over SSH; secrets and data are never copied):**
 ```bash
