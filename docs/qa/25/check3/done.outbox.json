@@ -1,0 +1,24 @@
+[
+ {
+  "id": "ob_01M75Z2PHP57WBREJ1928M83ZC",
+  "ts": "2026-11-12T08:30:19.183+08:00",
+  "channel": "telegram",
+  "kind": "INFO",
+  "to_contact": "c_chun",
+  "to_address": "fake:c_chun",
+  "payload": {
+   "text": "ℹ️【通知】\n王婆婆想報名粵曲班，但係做唔到（{'reason': 'browser_error', 'error': 'Error(\\'Page.goto: net::ERR_NAME_NOT_RESOL）。請你幫手睇下。",
+   "photo_id": null,
+   "screenshots": [],
+   "contact_name": "阿珍",
+   "command_id": "cmd_01M75Z2PHP57WBREJ1928M83Z7",
+   "attempts": 1
+  },
+  "buttons": [],
+  "status": "sent",
+  "fake": true,
+  "correlation_id": "act_01M75Z2D7DJBHCXT956B7128AK",
+  "provider_id": "tgfake0005",
+  "updated_at": "2026-11-12T08:30:19.184+08:00"
+ }
+]

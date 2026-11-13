@@ -18,6 +18,7 @@ import logging
 import re
 from types import SimpleNamespace
 from typing import Any
+from urllib.parse import urlsplit
 
 from ahbo.core.events import Command, Event
 from ahbo.core.jsonutil import loads
@@ -107,10 +108,34 @@ async def run_playwright(kernel: Any, action_id: str, details: dict[str, Any],
                                          timeout=RUN_BUDGET_S + 10.0)
     except TimeoutError:
         outcome = Outcome("failed", {"reason": "timeout"})
-    if outcome.status == "failed" and outcome.detail.get("reason") == "browser_error":
-        outcome.detail["hint"] = "browser container unreachable at settings.browser_ws"
+    if outcome.status == "failed" and outcome.detail.get("reason") == "browser_error" \
+            and not await browser_reachable(kernel.settings.browser_ws):
+        # No browser container (e.g. evals/tests without it): nothing was opened or submitted, so 阿珍 finishes
+        # the sign-up by hand (HANDOFF via the Kernel's normal needs_human path) instead of a hard failure.
+        return Outcome("needs_human", {"reason": "browser_unavailable", "url": url,
+                                       "error": str(outcome.detail.get("error") or "")[:200]}, outcome.screenshots)
     record_playwright_cost(kernel, action_id)
     return outcome
+
+
+async def browser_reachable(ws_url: str, timeout: float = 2.0) -> bool:
+    """Can we open a TCP connection to the Playwright server (`settings.browser_ws`)? Used only after a
+    `browser_error`, to tell "no browser container" (→ needs_human) from a failure inside a real run (→ failed)."""
+    parts = urlsplit(ws_url or "")
+    host = parts.hostname
+    if not host:
+        return False
+    port = parts.port or (443 if parts.scheme in ("wss", "https") else 80)
+    try:
+        _, writer = await asyncio.wait_for(asyncio.open_connection(host, port), timeout)
+    except (OSError, TimeoutError, ValueError):
+        return False
+    writer.close()
+    try:
+        await writer.wait_closed()
+    except OSError:
+        pass
+    return True
 
 
 def _target_url(kernel: Any, details: dict[str, Any]) -> tuple[str, str | None]:

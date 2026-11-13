@@ -1,0 +1,218 @@
+[
+ {
+  "n": 1,
+  "name": "mood_thinking",
+  "file": "S1_01_mood_thinking.png",
+  "dom": {
+   "faceClass": "face warm alert talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，今日有冇人搵過我呀？",
+   "caption": "有呀！阿珍今朝留咗段錄音俾你，我而家播俾你聽。",
+   "captionHtml": "<span class=\"w on\">有</span><span class=\"w on\">呀</span><span class=\"w\">！</span><span class=\"w\">阿</span><span class=\"w\">珍</span><span class=\"w\">今</span><span class=\"w\">朝</span><span class=\"w\">留</span><span class=\"w\">咗</span><span class=\"w\">段</span><span class=\"w\">錄</span><span class=\"w\">音</span><span class=\"w\">俾</span><span class=\"w\">你</span><span class=\"w\">，</span><span class=\"w\">我</span><span class=\"w\">而</span><span class=\"w\">家</span><span class=\"w\">播</span><span class=\"w\">俾</span><span class=\"w\">你</span><span class=\"w\">聽</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "vn_vm_demo",
+     "cls": "chip on",
+     "text": "🎙 阿珍嘅錄音 今朝 7:42",
+     "html": "<span class=\"icon\">🎙</span><span><span class=\"lbl\">阿珍嘅錄音</span> <small>今朝 7:42</small><span class=\"wave\"><i></i><i></i><i></i><i></i><i></i></span></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"list_voice_messages\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">搵到阿珍嘅語音訊息</span></li></ol></section>",
+   "stepsText": "搵到阿珍嘅語音訊息",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 2,
+  "name": "step_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_list_voice_messages_done",
+  "file": "S1_02_step_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_list_voice_messages_done.png",
+  "dom": {
+   "faceClass": "face warm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，今日有冇人搵過我呀？",
+   "caption": "有呀！阿珍今朝留咗段錄音俾你，我而家播俾你聽。",
+   "captionHtml": "<span class=\"w on\">有</span><span class=\"w on\">呀</span><span class=\"w on\">！</span><span class=\"w on\">阿</span><span class=\"w on\">珍</span><span class=\"w\">今</span><span class=\"w\">朝</span><span class=\"w\">留</span><span class=\"w\">咗</span><span class=\"w\">段</span><span class=\"w\">錄</span><span class=\"w\">音</span><span class=\"w\">俾</span><span class=\"w\">你</span><span class=\"w\">，</span><span class=\"w\">我</span><span class=\"w\">而</span><span class=\"w\">家</span><span class=\"w\">播</span><span class=\"w\">俾</span><span class=\"w\">你</span><span class=\"w\">聽</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "vn_vm_demo",
+     "cls": "chip on",
+     "text": "🎙 阿珍嘅錄音 今朝 7:42",
+     "html": "<span class=\"icon\">🎙</span><span><span class=\"lbl\">阿珍嘅錄音</span> <small>今朝 7:42</small><span class=\"wave\"><i></i><i></i><i></i><i></i><i></i></span></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"list_voice_messages\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">搵到阿珍嘅語音訊息</span></li></ol></section>",
+   "stepsText": "搵到阿珍嘅語音訊息",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 3,
+  "name": "mood_warm",
+  "file": "S1_03_mood_warm.png",
+  "dom": {
+   "faceClass": "face warm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，今日有冇人搵過我呀？",
+   "caption": "有呀！阿珍今朝留咗段錄音俾你，我而家播俾你聽。",
+   "captionHtml": "<span class=\"w on\">有</span><span class=\"w on\">呀</span><span class=\"w on\">！</span><span class=\"w on\">阿</span><span class=\"w on\">珍</span><span class=\"w on\">今</span><span class=\"w\">朝</span><span class=\"w\">留</span><span class=\"w\">咗</span><span class=\"w\">段</span><span class=\"w\">錄</span><span class=\"w\">音</span><span class=\"w\">俾</span><span class=\"w\">你</span><span class=\"w\">，</span><span class=\"w\">我</span><span class=\"w\">而</span><span class=\"w\">家</span><span class=\"w\">播</span><span class=\"w\">俾</span><span class=\"w\">你</span><span class=\"w\">聽</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "vn_vm_demo",
+     "cls": "chip on",
+     "text": "🎙 阿珍嘅錄音 今朝 7:42",
+     "html": "<span class=\"icon\">🎙</span><span><span class=\"lbl\">阿珍嘅錄音</span> <small>今朝 7:42</small><span class=\"wave\"><i></i><i></i><i></i><i></i><i></i></span></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"list_voice_messages\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">搵到阿珍嘅語音訊息</span></li></ol></section>",
+   "stepsText": "搵到阿珍嘅語音訊息",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 4,
+  "name": "say_end_say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23",
+  "file": "S1_04_say_end_say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23.png",
+  "dom": {
+   "faceClass": "face warm happy",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，今日有冇人搵過我呀？",
+   "caption": "媽，記得食飯呀！星期日我帶阿明嚟探你。",
+   "captionHtml": "<span class=\"w on\">媽</span><span class=\"w on\">，</span><span class=\"w on\">記</span><span class=\"w on\">得</span><span class=\"w on\">食</span><span class=\"w\">飯</span><span class=\"w\">呀</span><span class=\"w\">！</span><span class=\"w\">星</span><span class=\"w\">期</span><span class=\"w\">日</span><span class=\"w\">我</span><span class=\"w\">帶</span><span class=\"w\">阿</span><span class=\"w\">明</span><span class=\"w\">嚟</span><span class=\"w\">探</span><span class=\"w\">你</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "vn_vm_demo",
+     "cls": "chip on playing",
+     "text": "🎙 阿珍嘅錄音 今朝 7:42",
+     "html": "<span class=\"icon\">🎙</span><span><span class=\"lbl\">阿珍嘅錄音</span> <small>今朝 7:42</small><span class=\"wave\"><i></i><i></i><i></i><i></i><i></i></span></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"list_voice_messages\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">搵到阿珍嘅語音訊息</span></li></ol></section>",
+   "stepsText": "搵到阿珍嘅語音訊息",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 5,
+  "name": "say_end_say_vm_demo_1794445205",
+  "file": "S1_05_say_end_say_vm_demo_1794445205.png",
+  "dom": {
+   "faceClass": "face",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，今日有冇人搵過我呀？",
+   "caption": "媽，記得食飯呀！星期日我帶阿明嚟探你。",
+   "captionHtml": "<span class=\"w on\">媽</span><span class=\"w on\">，</span><span class=\"w on\">記</span><span class=\"w on\">得</span><span class=\"w on\">食</span><span class=\"w on\">飯</span><span class=\"w on\">呀</span><span class=\"w on\">！</span><span class=\"w on\">星</span><span class=\"w on\">期</span><span class=\"w on\">日</span><span class=\"w on\">我</span><span class=\"w on\">帶</span><span class=\"w on\">阿</span><span class=\"w on\">明</span><span class=\"w on\">嚟</span><span class=\"w on\">探</span><span class=\"w on\">你</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "vn_vm_demo",
+     "cls": "chip on",
+     "text": "🎙 阿珍嘅錄音 今朝 7:42",
+     "html": "<span class=\"icon\">🎙</span><span><span class=\"lbl\">阿珍嘅錄音</span> <small>今朝 7:42</small><span class=\"wave\"><i></i><i></i><i></i><i></i><i></i></span></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"list_voice_messages\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">搵到阿珍嘅語音訊息</span></li></ol></section>",
+   "stepsText": "搵到阿珍嘅語音訊息",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 99,
+  "name": "end",
+  "file": "S1_99_end.png",
+  "dom": {
+   "faceClass": "face",
+   "bodyClass": "",
+   "stageClass": "stage",
+   "heard": "阿寶，今日有冇人搵過我呀？",
+   "caption": "媽，記得食飯呀！星期日我帶阿明嚟探你。",
+   "captionHtml": "<span class=\"w on\">媽</span><span class=\"w on\">，</span><span class=\"w on\">記</span><span class=\"w on\">得</span><span class=\"w on\">食</span><span class=\"w on\">飯</span><span class=\"w on\">呀</span><span class=\"w on\">！</span><span class=\"w on\">星</span><span class=\"w on\">期</span><span class=\"w on\">日</span><span class=\"w on\">我</span><span class=\"w on\">帶</span><span class=\"w on\">阿</span><span class=\"w on\">明</span><span class=\"w on\">嚟</span><span class=\"w on\">探</span><span class=\"w on\">你</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "vn_vm_demo",
+     "cls": "chip on",
+     "text": "🎙 阿珍嘅錄音 今朝 7:42",
+     "html": "<span class=\"icon\">🎙</span><span><span class=\"lbl\">阿珍嘅錄音</span> <small>今朝 7:42</small><span class=\"wave\"><i></i><i></i><i></i><i></i><i></i></span></span>"
+    }
+   ],
+   "stepsHtml": "",
+   "stepsText": "",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ }
+]

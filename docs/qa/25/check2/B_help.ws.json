@@ -1,0 +1,932 @@
+[
+ {
+  "t": 20878,
+  "wall": 1794421944755,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WDJMJ4W8CFMY72HKE94",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 20879,
+  "wall": 1794421944756,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WDMA4H7QA3R9CKVV878",
+   "type": "ack",
+   "ref": "01M75Y3WDJMJ4W8CFMY72HKE94",
+   "ok": true
+  }
+ },
+ {
+  "t": 20880,
+  "wall": 1794421944757,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WDJMJ4W8CFMY72HKE96",
+   "type": "wake.enable",
+   "priority": 1,
+   "on": true
+  }
+ },
+ {
+  "t": 20880,
+  "wall": 1794421944757,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WDN7P1084GF8XD6JPCE",
+   "type": "ack",
+   "ref": "01M75Y3WDJMJ4W8CFMY72HKE96",
+   "ok": true
+  }
+ },
+ {
+  "t": 21181,
+  "wall": 1794421945057,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WPZDZY92GRV4VV7MZ01",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 21183,
+  "wall": 1794421945059,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WQ37NG0VDB5T9H2GBRC",
+   "type": "ack",
+   "ref": "01M75Y3WPZDZY92GRV4VV7MZ01",
+   "ok": true
+  }
+ },
+ {
+  "t": 21186,
+  "wall": 1794421945063,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WPZDZY92GRV4VV7MZ02",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "mood",
+    "mood": "alarm"
+   }
+  }
+ },
+ {
+  "t": 21188,
+  "wall": 1794421945064,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WQ80BY8G135CR8H8C18",
+   "type": "ack",
+   "ref": "01M75Y3WPZDZY92GRV4VV7MZ02",
+   "ok": true
+  }
+ },
+ {
+  "t": 21189,
+  "wall": 1794421945065,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WPZDZY92GRV4VV7MZ03",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "incident",
+     "kind": "incident",
+     "label": "偵測到跌倒",
+     "small": "感應器：急速下跌",
+     "persistent": true
+    }
+   }
+  }
+ },
+ {
+  "t": 21191,
+  "wall": 1794421945067,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WQBCDMTKWDB4AAGWNRN",
+   "type": "ack",
+   "ref": "01M75Y3WPZDZY92GRV4VV7MZ03",
+   "ok": true
+  }
+ },
+ {
+  "t": 21192,
+  "wall": 1794421945068,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WPZDZY92GRV4VV7MZ04",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F1",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F1_0"
+  }
+ },
+ {
+  "t": 21192,
+  "wall": 1794421945069,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WQD5GQZJ3GKEDY6WBJW",
+   "type": "ack",
+   "ref": "01M75Y3WPZDZY92GRV4VV7MZ04",
+   "ok": true
+  }
+ },
+ {
+  "t": 21193,
+  "wall": 1794421945070,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WPZDZY92GRV4VV7MZ06",
+   "type": "capture_photo",
+   "priority": 0,
+   "incident_id": "inc_01M75Y3WPZDZY92GRV4VV7MYZZ"
+  }
+ },
+ {
+  "t": 21194,
+  "wall": 1794421945071,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WQFTNRV1K6RXTG5HG65",
+   "type": "ack",
+   "ref": "01M75Y3WPZDZY92GRV4VV7MZ06",
+   "ok": true
+  }
+ },
+ {
+  "t": 21195,
+  "wall": 1794421945072,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3WPZDZY92GRV4VV7MZ07",
+   "type": "wake.enable",
+   "priority": 0,
+   "on": false
+  }
+ },
+ {
+  "t": 21197,
+  "wall": 1794421945074,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WQJG17GZQVPADADSCMY",
+   "type": "ack",
+   "ref": "01M75Y3WPZDZY92GRV4VV7MZ07",
+   "ok": true
+  }
+ },
+ {
+  "t": 21238,
+  "wall": 1794421945115,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3WRVPBJA23BWDS6BFDDE",
+   "type": "photo_uploaded",
+   "photo_id": "ph_01M75Y3WRN2EPQZ4XKDA5N1YMD",
+   "incident_id": "inc_01M75Y3WPZDZY92GRV4VV7MYZZ"
+  }
+ },
+ {
+  "t": 23887,
+  "wall": 1794421947764,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3ZBMGVTFXKYWC2FVXNE8",
+   "type": "playback_done",
+   "clip_id": "F1",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F1_0"
+  }
+ },
+ {
+  "t": 23889,
+  "wall": 1794421947766,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3ZBPTB7ZXYH863YJN1KB",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F1_0"
+   }
+  }
+ },
+ {
+  "t": 23891,
+  "wall": 1794421947767,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3ZBNZF1E12BVWXMB7M0G",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "flash"
+   }
+  }
+ },
+ {
+  "t": 23892,
+  "wall": 1794421947768,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3ZBRC444NTH4HC06YKMS",
+   "type": "ack",
+   "ref": "01M75Y3ZBNZF1E12BVWXMB7M0G",
+   "ok": true
+  }
+ },
+ {
+  "t": 23893,
+  "wall": 1794421947769,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3ZBPWJ9AGGK8DMN84JCP",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "fall",
+     "title": "跌倒處理",
+     "steps": [
+      {
+       "id": "photo",
+       "label": "分析緊相片…",
+       "doneLabel": "相片已送出",
+       "state": "active"
+      },
+      {
+       "id": "ask",
+       "label": "等婆婆回應",
+       "doneLabel": "婆婆話冇事",
+       "state": "pending"
+      },
+      {
+       "id": "call",
+       "label": "致電阿珍",
+       "doneLabel": "已致電阿珍",
+       "state": "pending"
+      },
+      {
+       "id": "tell",
+       "label": "通知阿珍",
+       "doneLabel": "已通知阿珍",
+       "state": "pending"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 23894,
+  "wall": 1794421947770,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3ZBT1FGHEZV4M95W79QT",
+   "type": "ack",
+   "ref": "01M75Y3ZBPWJ9AGGK8DMN84JCP",
+   "ok": true
+  }
+ },
+ {
+  "t": 23895,
+  "wall": 1794421947771,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y3ZBPWJ9AGGK8DMN84JCQ",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F2",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F2_1"
+  }
+ },
+ {
+  "t": 23895,
+  "wall": 1794421947772,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y3ZBW34T64KT5TGVTK4M7",
+   "type": "ack",
+   "ref": "01M75Y3ZBPWJ9AGGK8DMN84JCQ",
+   "ok": true
+  }
+ },
+ {
+  "t": 25814,
+  "wall": 1794421949691,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y417VD0TB8GPD159VBPQ9",
+   "type": "playback_done",
+   "clip_id": "F2",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F2_1"
+  }
+ },
+ {
+  "t": 25816,
+  "wall": 1794421949693,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y417XXQ1K8NAQ42DX2FY8",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F2_1"
+   }
+  }
+ },
+ {
+  "t": 25821,
+  "wall": 1794421949698,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y417W6NPCRKHBTVWGD4E7",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "photo",
+    "state": "done",
+    "label": "可能有人跌咗喺地下"
+   }
+  }
+ },
+ {
+  "t": 25822,
+  "wall": 1794421949699,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4183AEJSBQ8EBQM47TAA",
+   "type": "ack",
+   "ref": "01M75Y417W6NPCRKHBTVWGD4E7",
+   "ok": true
+  }
+ },
+ {
+  "t": 25823,
+  "wall": 1794421949700,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y417W6NPCRKHBTVWGD4E8",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "ask",
+    "state": "active"
+   }
+  }
+ },
+ {
+  "t": 25824,
+  "wall": 1794421949701,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4185AFY1H14PV5YVAECY",
+   "type": "ack",
+   "ref": "01M75Y417W6NPCRKHBTVWGD4E8",
+   "ok": true
+  }
+ },
+ {
+  "t": 25825,
+  "wall": 1794421949702,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y417XSNVHZN5EHJ70NDE5",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F3",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F3_2"
+  }
+ },
+ {
+  "t": 25826,
+  "wall": 1794421949702,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4186TYT81VQ97521BFWK",
+   "type": "ack",
+   "ref": "01M75Y417XSNVHZN5EHJ70NDE5",
+   "ok": true
+  }
+ },
+ {
+  "t": 25827,
+  "wall": 1794421949704,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y417XSNVHZN5EHJ70NDE8",
+   "type": "session.open",
+   "priority": 0,
+   "reason": "fall_check",
+   "mode": "kernel_listen",
+   "session_id": "sess_01M75Y417XSNVHZN5EHJ70NDE7",
+   "text_only": true
+  }
+ },
+ {
+  "t": 25827,
+  "wall": 1794421949704,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4188SGQ7FWKWZWAB02TA",
+   "type": "ack",
+   "ref": "01M75Y417XSNVHZN5EHJ70NDE8",
+   "ok": true
+  }
+ },
+ {
+  "t": 25828,
+  "wall": 1794421949705,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y417Y8QGF1E7ZGM0D8EJ7",
+   "type": "wake.enable",
+   "priority": 0,
+   "on": false
+  }
+ },
+ {
+  "t": 25829,
+  "wall": 1794421949706,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y418APNF77B8H1Y4AS7B7",
+   "type": "ack",
+   "ref": "01M75Y417Y8QGF1E7ZGM0D8EJ7",
+   "ok": true
+  }
+ },
+ {
+  "t": 29445,
+  "wall": 1794421953322,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y44S9ZNY7TA800MFVMPVM",
+   "type": "playback_done",
+   "clip_id": "F3",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F3_2"
+  }
+ },
+ {
+  "t": 29447,
+  "wall": 1794421953324,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y44SCE62Q5AMKMZFPJQSD",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F3_2"
+   }
+  }
+ },
+ {
+  "t": 29452,
+  "wall": 1794421953329,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y44SB9M84AD8Q6RE4NH0Q",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "ok_button",
+    "show": true
+   }
+  }
+ },
+ {
+  "t": 29453,
+  "wall": 1794421953330,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y44SH6N0QMNNWB1VJGSWG",
+   "type": "ack",
+   "ref": "01M75Y44SB9M84AD8Q6RE4NH0Q",
+   "ok": true
+  }
+ },
+ {
+  "t": 29454,
+  "wall": 1794421953331,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y44SB9M84AD8Q6RE4NH0R",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "countdown",
+    "id": "fall_cd",
+    "n": 5
+   }
+  }
+ },
+ {
+  "t": 29455,
+  "wall": 1794421953331,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y44SK7WXJQJ19A9T9YYR1",
+   "type": "ack",
+   "ref": "01M75Y44SB9M84AD8Q6RE4NH0R",
+   "ok": true
+  }
+ },
+ {
+  "t": 29455,
+  "wall": 1794421953332,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y44SB9M84AD8Q6RE4NH0T",
+   "type": "wake.enable",
+   "priority": 0,
+   "on": false
+  }
+ },
+ {
+  "t": 29457,
+  "wall": 1794421953333,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y44SN80FPPPP40V8FWQEN",
+   "type": "ack",
+   "ref": "01M75Y44SB9M84AD8Q6RE4NH0T",
+   "ok": true
+  }
+ },
+ {
+  "t": 29542,
+  "wall": 1794421953419,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y44WBSSZ0ZCYACXEGAXY6",
+   "type": "utterance",
+   "text": "今日天氣點呀？",
+   "final": true
+  }
+ },
+ {
+  "t": 30159,
+  "wall": 1794421954036,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y45FMB0KGF7486Z23Z03T",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 31290,
+  "wall": 1794421955167,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46JZBMCH2400D80SR4V2",
+   "type": "utterance",
+   "text": "救命",
+   "final": true
+  }
+ },
+ {
+  "t": 31302,
+  "wall": 1794421955179,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K21MQX90VG4531F5YG",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "ok_button",
+    "show": false
+   }
+  }
+ },
+ {
+  "t": 31304,
+  "wall": 1794421955181,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46KDK73Z9CYE3N55PJCS",
+   "type": "ack",
+   "ref": "01M75Y46K21MQX90VG4531F5YG",
+   "ok": true
+  }
+ },
+ {
+  "t": 31307,
+  "wall": 1794421955183,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K21MQX90VG4531F5YH",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "ask",
+    "state": "failed",
+    "label": "婆婆話要幫手"
+   }
+  }
+ },
+ {
+  "t": 31311,
+  "wall": 1794421955188,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46KM60D2V8EBJJ7XDW67",
+   "type": "ack",
+   "ref": "01M75Y46K21MQX90VG4531F5YH",
+   "ok": true
+  }
+ },
+ {
+  "t": 31312,
+  "wall": 1794421955189,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K21MQX90VG4531F5YJ",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "call",
+    "state": "active",
+    "label": "致電阿珍"
+   }
+  }
+ },
+ {
+  "t": 31313,
+  "wall": 1794421955190,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46KP7T5XS88VCQ1CQX07",
+   "type": "ack",
+   "ref": "01M75Y46K21MQX90VG4531F5YJ",
+   "ok": true
+  }
+ },
+ {
+  "t": 31314,
+  "wall": 1794421955191,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K21MQX90VG4531F5YK",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "tell",
+    "state": "active"
+   }
+  }
+ },
+ {
+  "t": 31315,
+  "wall": 1794421955192,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46KRHPJQTXSVWTNVPYYQ",
+   "type": "ack",
+   "ref": "01M75Y46K21MQX90VG4531F5YK",
+   "ok": true
+  }
+ },
+ {
+  "t": 31318,
+  "wall": 1794421955195,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K21MQX90VG4531F5YM",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "esc_call",
+     "kind": "action",
+     "label": "致電阿珍",
+     "small": "已致電",
+     "when": "打電話"
+    }
+   }
+  }
+ },
+ {
+  "t": 31319,
+  "wall": 1794421955196,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46KWQVX4PJ9C434CRB2M",
+   "type": "ack",
+   "ref": "01M75Y46K21MQX90VG4531F5YM",
+   "ok": true
+  }
+ },
+ {
+  "t": 31320,
+  "wall": 1794421955197,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K21MQX90VG4531F5YN",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "esc_tell",
+     "kind": "message",
+     "label": "已通知阿珍",
+     "small": "訊息已送出",
+     "when": "阿珍"
+    }
+   }
+  }
+ },
+ {
+  "t": 31321,
+  "wall": 1794421955198,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y46KY5A8XWRX7TME4BK81",
+   "type": "ack",
+   "ref": "01M75Y46K21MQX90VG4531F5YN",
+   "ok": true
+  }
+ },
+ {
+  "t": 31902,
+  "wall": 1794421955779,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K3KMY19TC3YC4GZXMM",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "tell",
+    "state": "done"
+   }
+  }
+ },
+ {
+  "t": 31904,
+  "wall": 1794421955780,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y47641BY39JFRCV5QAK83",
+   "type": "ack",
+   "ref": "01M75Y46K3KMY19TC3YC4GZXMM",
+   "ok": true
+  }
+ },
+ {
+  "t": 31905,
+  "wall": 1794421955782,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K3KMY19TC3YC4GZXMN",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "call",
+    "state": "done"
+   }
+  }
+ },
+ {
+  "t": 31907,
+  "wall": 1794421955784,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4768CD06XDAS9AHSNQNE",
+   "type": "ack",
+   "ref": "01M75Y46K3KMY19TC3YC4GZXMN",
+   "ok": true
+  }
+ },
+ {
+  "t": 31907,
+  "wall": 1794421955784,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y46K3KMY19TC3YC4GZXMP",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F4",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F4_3"
+  }
+ },
+ {
+  "t": 31908,
+  "wall": 1794421955785,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4769J4FFT6XC8B2K9XA0",
+   "type": "ack",
+   "ref": "01M75Y46K3KMY19TC3YC4GZXMP",
+   "ok": true
+  }
+ },
+ {
+  "t": 34462,
+  "wall": 1794421958338,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y49P2K4S5K4E1878YHGNF",
+   "type": "face_event",
+   "event": {
+    "type": "countdown_done",
+    "id": "fall_cd"
+   }
+  }
+ },
+ {
+  "t": 36919,
+  "wall": 1794421960796,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Y4C2VRWGAPT54NCQA1699",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "mood",
+    "mood": "warm"
+   }
+  }
+ },
+ {
+  "t": 36921,
+  "wall": 1794421960798,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4C2XGYGZH8VVK2GMPPFW",
+   "type": "ack",
+   "ref": "01M75Y4C2VRWGAPT54NCQA1699",
+   "ok": true
+  }
+ },
+ {
+  "t": 37256,
+  "wall": 1794421961133,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4CDDQB7K7S9817VVZ4SG",
+   "type": "playback_done",
+   "clip_id": "F4",
+   "say_id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F4_3"
+  }
+ },
+ {
+  "t": 37260,
+  "wall": 1794421961137,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4CDHBHMGN3SSH5EC430R",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75Y3WPZDZY92GRV4VV7MYZZ_F4_3"
+   }
+  }
+ },
+ {
+  "t": 40159,
+  "wall": 1794421964036,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Y4F846MSPRV5QDNVB04GK",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ }
+]

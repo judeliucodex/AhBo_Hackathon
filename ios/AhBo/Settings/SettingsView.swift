@@ -59,6 +59,13 @@ final class AppSettings {
         cameraOn = d.bool(forKey: "cameraOn")
         interruptionOn = d.bool(forKey: "interruptionOn")
         debugOverlay = d.bool(forKey: "debugOverlay")
+        #if DEBUG
+        // Simulator only: the hidden settings need a three-finger press the Simulator can't do. The launch
+        // environment (`SIMCTL_CHILD_AHBO_HOST` / `SIMCTL_CHILD_AHBO_APP_SECRET`) seeds them; never in Release.
+        let env = ProcessInfo.processInfo.environment
+        if let h = env["AHBO_HOST"], !h.isEmpty { host = h; d.set(h, forKey: "host") }
+        if let s = env["AHBO_APP_SECRET"], !s.isEmpty { Keychain.set("app_secret", s) }
+        #endif
         if let id = d.string(forKey: "deviceId") {
             deviceId = id
         } else {

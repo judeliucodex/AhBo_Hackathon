@@ -1,0 +1,62 @@
+[
+ {
+  "id": "ob_01M75Y46K9AYN8Q6Q3751RKPW7",
+  "ts": "2026-11-12T15:00:10.438+08:00",
+  "channel": "twilio",
+  "kind": "CALL",
+  "to_contact": "c_chun",
+  "to_address": null,
+  "payload": {
+   "call_id": "call_01M75Y46K21MQX90VG4531F5YP",
+   "clip": "P1",
+   "incident_id": "inc_01M75Y3WPZDZY92GRV4VV7MYZZ",
+   "contact_name": "阿珍",
+   "twiml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response><Play loop=\"2\">http://ahbo-qa25-api:8000/media/public/01m75xs7nc5w849h54qmrxf0hk/P1.m4a</Play><Gather numDigits=\"1\" action=\"http://ahbo-qa25-api:8000/twilio/gather?call_id=call_01M75Y46K21MQX90VG4531F5YP\" method=\"POST\" timeout=\"12\"><Say language=\"zh-HK\" voice=\"zh-HK-HiuMaanNeural\">收到阿寶嘅緊急電話，請撳一個字確認。</Say></Gather><Say language=\"zh-HK\" voice=\"zh-HK-HiuMaanNeural\">收唔到確認，再見。</Say></Response>",
+   "fake_sequence": true
+  },
+  "buttons": [],
+  "status": "completed",
+  "fake": true,
+  "correlation_id": "inc_01M75Y3WPZDZY92GRV4VV7MYZZ",
+  "provider_id": "call_01M75Y46K21MQX90VG4531F5YP",
+  "updated_at": "2026-11-12T15:00:16.448+08:00"
+ },
+ {
+  "id": "ob_01M75Y46K5WTRMAMAM01BG3FYK",
+  "ts": "2026-11-12T15:00:10.435+08:00",
+  "channel": "telegram",
+  "kind": "ALERT",
+  "to_contact": "c_chun",
+  "to_address": "fake:c_chun",
+  "payload": {
+   "text": "🚨【緊急】\n王婆婆喺屋企懷疑跌倒，佢話要幫手。阿寶而家打電話俾你。地址：九龍觀塘秀茂坪示範邨 12 樓 1203 室（示範地址）\n相片判斷（只供參考）：可能有人跌咗喺地下\n時間：15:00",
+   "photo_id": "ph_01M75Y3WRN2EPQZ4XKDA5N1YMD",
+   "screenshots": [],
+   "contact_name": "阿珍",
+   "command_id": "cmd_01M75Y46K3KMY19TC3YC4GZXMK",
+   "attempts": 1
+  },
+  "buttons": [
+   {
+    "id": "handled",
+    "text": "我處理緊",
+    "callback_data": "b:handled:ob_01M75Y46K5WTRMAMAM01BG3FYK"
+   },
+   {
+    "id": "voice_mum",
+    "text": "錄段聲俾媽媽",
+    "callback_data": "b:voice_mum:ob_01M75Y46K5WTRMAMAM01BG3FYK"
+   },
+   {
+    "id": "resolved",
+    "text": "已解決",
+    "callback_data": "b:resolved:ob_01M75Y46K5WTRMAMAM01BG3FYK"
+   }
+  ],
+  "status": "sent",
+  "fake": true,
+  "correlation_id": "inc_01M75Y3WPZDZY92GRV4VV7MYZZ",
+  "provider_id": "tgfake0004",
+  "updated_at": "2026-11-12T15:00:10.446+08:00"
+ }
+]

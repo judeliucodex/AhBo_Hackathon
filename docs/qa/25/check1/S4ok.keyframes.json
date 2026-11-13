@@ -1,0 +1,417 @@
+[
+ {
+  "n": 1,
+  "name": "mood_alarm",
+  "file": "S4ok_01_mood_alarm.png",
+  "dom": {
+   "faceClass": "face alarm talking",
+   "bodyClass": "",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "哎呀！我感應到你好似跌低咗！",
+   "captionHtml": "<span class=\"w on\">哎</span><span class=\"w on\">呀</span><span class=\"w on\">！</span><span class=\"w\">我</span><span class=\"w\">感</span><span class=\"w\">應</span><span class=\"w\">到</span><span class=\"w\">你</span><span class=\"w\">好</span><span class=\"w\">似</span><span class=\"w\">跌</span><span class=\"w\">低</span><span class=\"w\">咗</span><span class=\"w\">！</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    }
+   ],
+   "stepsHtml": "",
+   "stepsText": "",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 2,
+  "name": "say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F1_0",
+  "file": "S4ok_02_say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F1_0.png",
+  "dom": {
+   "faceClass": "face alarm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "我而家影張相睇吓先。",
+   "captionHtml": "<span class=\"w on\">我</span><span class=\"w on\">而</span><span class=\"w on\">家</span><span class=\"w\">影</span><span class=\"w\">張</span><span class=\"w\">相</span><span class=\"w\">睇</span><span class=\"w\">吓</span><span class=\"w\">先</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step active\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">分析緊相片…</span></li><li class=\"step pending\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">等婆婆回應</span></li><li class=\"step pending\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">致電阿珍</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n分析緊相片…\n等婆婆回應\n致電阿珍\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 3,
+  "name": "say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F2_1",
+  "file": "S4ok_03_say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F2_1.png",
+  "dom": {
+   "faceClass": "face alarm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "王婆婆，如果你冇跌親，請講「我冇事」。",
+   "captionHtml": "<span class=\"w on\">王</span><span class=\"w on\">婆</span><span class=\"w on\">婆</span><span class=\"w on\">，</span><span class=\"w\">如</span><span class=\"w\">果</span><span class=\"w\">你</span><span class=\"w\">冇</span><span class=\"w\">跌</span><span class=\"w\">親</span><span class=\"w\">，</span><span class=\"w\">請</span><span class=\"w\">講</span><span class=\"w\">「</span><span class=\"w\">我</span><span class=\"w\">冇</span><span class=\"w\">事</span><span class=\"w\">」</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step active\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">等婆婆回應</span></li><li class=\"step pending\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">致電阿珍</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n等婆婆回應\n致電阿珍\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 4,
+  "name": "step_fall_photo_done",
+  "file": "S4ok_04_step_fall_photo_done.png",
+  "dom": {
+   "faceClass": "face alarm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "王婆婆，如果你冇跌親，請講「我冇事」。",
+   "captionHtml": "<span class=\"w on\">王</span><span class=\"w on\">婆</span><span class=\"w on\">婆</span><span class=\"w on\">，</span><span class=\"w\">如</span><span class=\"w\">果</span><span class=\"w\">你</span><span class=\"w\">冇</span><span class=\"w\">跌</span><span class=\"w\">親</span><span class=\"w\">，</span><span class=\"w\">請</span><span class=\"w\">講</span><span class=\"w\">「</span><span class=\"w\">我</span><span class=\"w\">冇</span><span class=\"w\">事</span><span class=\"w\">」</span><span class=\"w\">。</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step active\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">等婆婆回應</span></li><li class=\"step pending\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">致電阿珍</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n等婆婆回應\n致電阿珍\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 5,
+  "name": "say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F3_2",
+  "file": "S4ok_05_say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F3_2.png",
+  "dom": {
+   "faceClass": "face alarm",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "王婆婆，如果你冇跌親，請講「我冇事」。",
+   "captionHtml": "<span class=\"w on\">王</span><span class=\"w on\">婆</span><span class=\"w on\">婆</span><span class=\"w on\">，</span><span class=\"w on\">如</span><span class=\"w on\">果</span><span class=\"w on\">你</span><span class=\"w on\">冇</span><span class=\"w on\">跌</span><span class=\"w on\">親</span><span class=\"w on\">，</span><span class=\"w on\">請</span><span class=\"w on\">講</span><span class=\"w on\">「</span><span class=\"w on\">我</span><span class=\"w on\">冇</span><span class=\"w on\">事</span><span class=\"w on\">」</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    },
+    {
+     "id": "fall_cd",
+     "cls": "chip count on",
+     "text": "⏳ 5",
+     "html": "<span class=\"icon\">⏳</span><span class=\"num\">5</span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step active\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">等婆婆回應</span></li><li class=\"step pending\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">致電阿珍</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n等婆婆回應\n致電阿珍\n通知阿珍",
+   "ok": {
+    "visible": true,
+    "cls": "okbtn on",
+    "text": "我冇事",
+    "w": 238,
+    "h": 97
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 6,
+  "name": "ok_button",
+  "file": "S4ok_06_ok_button.png",
+  "dom": {
+   "faceClass": "face alarm",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "王婆婆，如果你冇跌親，請講「我冇事」。",
+   "captionHtml": "<span class=\"w on\">王</span><span class=\"w on\">婆</span><span class=\"w on\">婆</span><span class=\"w on\">，</span><span class=\"w on\">如</span><span class=\"w on\">果</span><span class=\"w on\">你</span><span class=\"w on\">冇</span><span class=\"w on\">跌</span><span class=\"w on\">親</span><span class=\"w on\">，</span><span class=\"w on\">請</span><span class=\"w on\">講</span><span class=\"w on\">「</span><span class=\"w on\">我</span><span class=\"w on\">冇</span><span class=\"w on\">事</span><span class=\"w on\">」</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    },
+    {
+     "id": "fall_cd",
+     "cls": "chip count on",
+     "text": "⏳ 5",
+     "html": "<span class=\"icon\">⏳</span><span class=\"num\">5</span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step active\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">等婆婆回應</span></li><li class=\"step pending\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">致電阿珍</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n等婆婆回應\n致電阿珍\n通知阿珍",
+   "ok": {
+    "visible": true,
+    "cls": "okbtn on",
+    "text": "我冇事",
+    "w": 238,
+    "h": 97
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 7,
+  "name": "countdown",
+  "file": "S4ok_07_countdown.png",
+  "dom": {
+   "faceClass": "face alarm",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "王婆婆，如果你冇跌親，請講「我冇事」。",
+   "captionHtml": "<span class=\"w on\">王</span><span class=\"w on\">婆</span><span class=\"w on\">婆</span><span class=\"w on\">，</span><span class=\"w on\">如</span><span class=\"w on\">果</span><span class=\"w on\">你</span><span class=\"w on\">冇</span><span class=\"w on\">跌</span><span class=\"w on\">親</span><span class=\"w on\">，</span><span class=\"w on\">請</span><span class=\"w on\">講</span><span class=\"w on\">「</span><span class=\"w on\">我</span><span class=\"w on\">冇</span><span class=\"w on\">事</span><span class=\"w on\">」</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "incident",
+     "cls": "chip persistent incident on",
+     "text": "⚠️ 偵測到跌倒 感應器：急速下跌",
+     "html": "<span class=\"icon\">⚠️</span><span><span class=\"lbl\">偵測到跌倒</span> <small>感應器：急速下跌</small></span>"
+    },
+    {
+     "id": "fall_cd",
+     "cls": "chip count on",
+     "text": "⏳ 4",
+     "html": "<span class=\"icon\">⏳</span><span class=\"num\">4</span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step active\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">等婆婆回應</span></li><li class=\"step pending\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">致電阿珍</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n等婆婆回應\n致電阿珍\n通知阿珍",
+   "ok": {
+    "visible": true,
+    "cls": "okbtn on",
+    "text": "我冇事",
+    "w": 238,
+    "h": 97
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 8,
+  "name": "step_fall_ask_done",
+  "file": "S4ok_08_step_fall_ask_done.png",
+  "dom": {
+   "faceClass": "face warm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "好啦，冇事就好。阿寶喺度陪住你。",
+   "captionHtml": "<span class=\"w on\">好</span><span class=\"w on\">啦</span><span class=\"w on\">，</span><span class=\"w on\">冇</span><span class=\"w\">事</span><span class=\"w\">就</span><span class=\"w\">好</span><span class=\"w\">。</span><span class=\"w\">阿</span><span class=\"w\">寶</span><span class=\"w\">喺</span><span class=\"w\">度</span><span class=\"w\">陪</span><span class=\"w\">住</span><span class=\"w\">你</span><span class=\"w\">。</span>",
+   "cards": [],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step done\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">婆婆話冇事</span></li><li class=\"step failed\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">唔使致電</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n婆婆話冇事\n唔使致電\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 9,
+  "name": "step_fall_call_failed",
+  "file": "S4ok_09_step_fall_call_failed.png",
+  "dom": {
+   "faceClass": "face warm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "好啦，冇事就好。阿寶喺度陪住你。",
+   "captionHtml": "<span class=\"w on\">好</span><span class=\"w on\">啦</span><span class=\"w on\">，</span><span class=\"w on\">冇</span><span class=\"w\">事</span><span class=\"w\">就</span><span class=\"w\">好</span><span class=\"w\">。</span><span class=\"w\">阿</span><span class=\"w\">寶</span><span class=\"w\">喺</span><span class=\"w\">度</span><span class=\"w\">陪</span><span class=\"w\">住</span><span class=\"w\">你</span><span class=\"w\">。</span>",
+   "cards": [],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step done\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">婆婆話冇事</span></li><li class=\"step failed\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">唔使致電</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n婆婆話冇事\n唔使致電\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 10,
+  "name": "mood_warm",
+  "file": "S4ok_10_mood_warm.png",
+  "dom": {
+   "faceClass": "face warm talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "好啦，冇事就好。阿寶喺度陪住你。",
+   "captionHtml": "<span class=\"w on\">好</span><span class=\"w on\">啦</span><span class=\"w on\">，</span><span class=\"w on\">冇</span><span class=\"w on\">事</span><span class=\"w\">就</span><span class=\"w\">好</span><span class=\"w\">。</span><span class=\"w\">阿</span><span class=\"w\">寶</span><span class=\"w\">喺</span><span class=\"w\">度</span><span class=\"w\">陪</span><span class=\"w\">住</span><span class=\"w\">你</span><span class=\"w\">。</span>",
+   "cards": [],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step done\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">婆婆話冇事</span></li><li class=\"step failed\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">唔使致電</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n婆婆話冇事\n唔使致電\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 11,
+  "name": "say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F5_3",
+  "file": "S4ok_11_say_end_say_inc_01M75WK0JYWC68C26GEBFN0K9E_F5_3.png",
+  "dom": {
+   "faceClass": "face happy",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "好啦，冇事就好。阿寶喺度陪住你。",
+   "captionHtml": "<span class=\"w on\">好</span><span class=\"w on\">啦</span><span class=\"w on\">，</span><span class=\"w on\">冇</span><span class=\"w on\">事</span><span class=\"w on\">就</span><span class=\"w on\">好</span><span class=\"w on\">。</span><span class=\"w on\">阿</span><span class=\"w on\">寶</span><span class=\"w on\">喺</span><span class=\"w on\">度</span><span class=\"w on\">陪</span><span class=\"w on\">住</span><span class=\"w on\">你</span><span class=\"w on\">。</span>",
+   "cards": [],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"fall\"><h2 class=\"steps-title\">跌倒處理</h2><ol class=\"steplist\"><li class=\"step done\" data-id=\"photo\" data-done-label=\"相片已送出\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">相片已送出</span></li><li class=\"step done\" data-id=\"ask\" data-done-label=\"婆婆話冇事\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">婆婆話冇事</span></li><li class=\"step failed\" data-id=\"call\" data-done-label=\"已致電阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">唔使致電</span></li><li class=\"step pending\" data-id=\"tell\" data-done-label=\"已通知阿珍\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">通知阿珍</span></li></ol></section>",
+   "stepsText": "跌倒處理\n相片已送出\n婆婆話冇事\n唔使致電\n通知阿珍",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 99,
+  "name": "end",
+  "file": "S4ok_99_end.png",
+  "dom": {
+   "faceClass": "face",
+   "bodyClass": "",
+   "stageClass": "stage",
+   "heard": "",
+   "caption": "好啦，冇事就好。阿寶喺度陪住你。",
+   "captionHtml": "<span class=\"w on\">好</span><span class=\"w on\">啦</span><span class=\"w on\">，</span><span class=\"w on\">冇</span><span class=\"w on\">事</span><span class=\"w on\">就</span><span class=\"w on\">好</span><span class=\"w on\">。</span><span class=\"w on\">阿</span><span class=\"w on\">寶</span><span class=\"w on\">喺</span><span class=\"w on\">度</span><span class=\"w on\">陪</span><span class=\"w on\">住</span><span class=\"w on\">你</span><span class=\"w on\">。</span>",
+   "cards": [],
+   "stepsHtml": "",
+   "stepsText": "",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ }
+]

@@ -1,0 +1,1 @@
+GET /sim/fall_placeholder.jpg -> HTTP Error 404: Not Found

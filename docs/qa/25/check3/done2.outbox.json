@@ -1,0 +1,27 @@
+[
+ {
+  "id": "ob_01M75ZC5PGGPCCT3HEB2Z7XSBC",
+  "ts": "2026-11-12T08:30:20.159+08:00",
+  "channel": "telegram",
+  "kind": "NOTIFY",
+  "to_contact": "c_chun",
+  "to_address": "fake:c_chun",
+  "payload": {
+   "text": "✅【完成】\n已幫王婆婆報名粵曲班（15:00 秀茂坪長者中心（示範））。參考編號：DEMO-0423。",
+   "photo_id": null,
+   "screenshots": [
+    "/tmp/qa/media/actions/act_01M75ZBVGS5EXV3HSG7QJX3ERG/pre_submit.png",
+    "/tmp/qa/media/actions/act_01M75ZBVGS5EXV3HSG7QJX3ERG/post_submit.png"
+   ],
+   "contact_name": "阿珍",
+   "command_id": "cmd_01M75ZC5PFV72R6RKNPRNFVXV8",
+   "attempts": 1
+  },
+  "buttons": [],
+  "status": "sent",
+  "fake": true,
+  "correlation_id": "act_01M75ZBVGS5EXV3HSG7QJX3ERG",
+  "provider_id": "tgfake0001",
+  "updated_at": "2026-11-12T08:30:20.160+08:00"
+ }
+]

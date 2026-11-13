@@ -52,3 +52,19 @@ button.mini { padding: 1px 8px; font-size: 10px; }
   body { grid-template-columns: 1fr; grid-template-rows: 60vh auto; overflow: auto; }
   .panel { border-left: 0; border-top: 1px solid var(--line); }
 }
+
+/* ---------- App mode (⛶ button / launched from the Home Screen) ----------
+   Face only, edge to edge, no bezel frame, no tester panel — looks like the native iPad app.
+   The face keeps its exact 1180×820 point layout scaled by --k, so vmin inside it stays exact. */
+body.appmode { grid-template-columns: minmax(0, 1fr); overflow: hidden; background: #000; }
+body.appmode .panel { display: none; }
+body.appmode .bezel { border: 0; border-radius: 0; }
+body.appmode .bezel.portrait { border: 0; }
+
+.exitapp {
+  position: absolute; z-index: 5;
+  top: max(calc(env(safe-area-inset-top, 0px) + 10px), 10px);
+  right: max(calc(env(safe-area-inset-right, 0px) + 10px), 10px);
+  opacity: .3; background: rgba(0, 0, 0, .55); font-size: 14px;
+}
+.exitapp:hover { opacity: .95; }

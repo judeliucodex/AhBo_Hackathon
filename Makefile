@@ -40,8 +40,9 @@ ps:
 test:                         ## full test suite inside the api image
 	$(COMPOSE) run --rm --no-deps api python -m pytest -q
 
-eval:
-	$(RUN) ahbo eval
+EVAL_FAKE ?= all
+eval:                         ## eval suites (§16.2) → evals/report.md; e.g. make eval EVAL_ARGS="--suite scenarios"
+	$(COMPOSE) run --rm --no-deps -e AHBO_FAKE=$(EVAL_FAKE) api ahbo eval $(EVAL_ARGS)
 
 demo-fake: .env               ## fake mode, reset the demo, print the URLs
 	@grep -q '^AHBO_FAKE=all' .env || echo "note: .env AHBO_FAKE is not 'all' — edit it for a pure fake demo"
@@ -71,10 +72,10 @@ show-initial-password:
 chat:                         ## text REPL on the real Kernel (in-memory demo DB)
 	$(COMPOSE) run --rm --no-deps -it api ahbo chat --text
 
-backup:                       ## one-off SQLite backup into data/backups (keeps 7)
-	$(EXEC) python -c "from ahbo.api.backup import backup_now; from ahbo.core.settings import get_settings as g; s=g(); print(backup_now(s.db_path, s.data_dir/'backups'))"
+backup:                       ## one-off SQLite backup into data/backups (keeps 7; ahbo.ops.backup)
+	$(EXEC) ahbo backup || $(RUN) ahbo backup
 
-screens:                      ## headless screenshots of /sim/ and /operator/ into docs/screens/
-	@test -f evals/visual/screens.py || { echo "evals/visual/screens.py not built yet"; exit 2; }
+screens:                      ## headless screenshots of /sim/ and /operator/ into docs/screens/ (evals/visual/screens.py)
+	@test -f evals/visual/screens.py || { echo "evals/visual/screens.py not built yet (G3); kit frames: evals/visual/kit_capture.py"; exit 2; }
 	docker run --rm --network ahbo_default -v $(CURDIR):/repo -w /repo --env-file .env \
 	  -e AHBO_BASE_URL=http://api:8000 ahbo-browser python evals/visual/screens.py

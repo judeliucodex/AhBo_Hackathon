@@ -1,5 +1,6 @@
 #!/bin/sh
-# Usage: deploy/make.sh <target> [...]   — same as `make <target>`, run inside a small container
+# Usage: deploy/make.sh <target> [VAR=value ...]   — same as `make <target>`, run inside a small container
+# e.g. deploy/make.sh eval EVAL_ARGS="--suite scenarios"   ·   deploy/make.sh screens   ·   deploy/make.sh doctor
 # (the host has Docker but no `make`; nothing is installed on the host). The repo is mounted at the same
 # absolute path so Compose's relative bind mounts resolve to host paths.
 set -e

@@ -1,0 +1,168 @@
+[
+ {
+  "t_ms": 0,
+  "cmd": {
+   "type": "reset"
+  }
+ },
+ {
+  "t_ms": 324,
+  "cmd": {
+   "type": "mood",
+   "mood": "listening"
+  }
+ },
+ {
+  "t_ms": 343,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，我幾時食藥呀？",
+   "final": true
+  }
+ },
+ {
+  "t_ms": 347,
+  "cmd": {
+   "type": "mood",
+   "mood": "thinking"
+  }
+ },
+ {
+  "t_ms": 386,
+  "cmd": {
+   "type": "steps",
+   "group": {
+    "id": "turn_01M75WGGPY5BHDE1VD5XQP639S",
+    "steps": [
+     {
+      "id": "get_med_status",
+      "label": "查緊藥物時間表…",
+      "state": "active"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "t_ms": 976,
+  "cmd": {
+   "type": "step",
+   "group": "turn_01M75WGGPY5BHDE1VD5XQP639S",
+   "id": "get_med_status",
+   "state": "done",
+   "label": "下一次：十二點正，四隻藥"
+  }
+ },
+ {
+  "t_ms": 1038,
+  "cmd": {
+   "type": "mood",
+   "mood": "idle"
+  }
+ },
+ {
+  "t_ms": 1045,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "next_dose",
+    "kind": "event",
+    "icon": "⏰",
+    "label": "12:00 食藥",
+    "small": "兩個鐘之後",
+    "when": "十二點正"
+   }
+  }
+ },
+ {
+  "t_ms": 1046,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "med_bp",
+    "kind": "med",
+    "label": "血壓藥",
+    "small": "Amlodipine 5 mg",
+    "pill": [
+     "--pill-b",
+     "--pill-a"
+    ],
+    "when": "血壓藥"
+   }
+  }
+ },
+ {
+  "t_ms": 1046,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "med_dm",
+    "kind": "med",
+    "label": "糖尿藥",
+    "small": "Metformin 500 mg",
+    "pill": [
+     "--pill-a",
+     "--pill-a"
+    ],
+    "when": "糖尿藥"
+   }
+  }
+ },
+ {
+  "t_ms": 1048,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "med_chol",
+    "kind": "med",
+    "label": "膽固醇藥",
+    "small": "Atorvastatin 20 mg",
+    "pill": [
+     "--pill-a",
+     "--pill-c"
+    ],
+    "when": "膽固醇藥"
+   }
+  }
+ },
+ {
+  "t_ms": 1048,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "med_asp",
+    "kind": "med",
+    "label": "薄血丸",
+    "small": "Aspirin 80 mg",
+    "pill": [
+     "--pill-c",
+     "--pill-a"
+    ],
+    "when": "薄血丸"
+   }
+  }
+ },
+ {
+  "t_ms": 1048,
+  "cmd": {
+   "type": "say_start",
+   "id": "say_turn_01M75WGGPY5BHDE1VD5XQP639S_39",
+   "text": "兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。",
+   "durationSec": 7.5
+  }
+ },
+ {
+  "t_ms": 8025,
+  "cmd": {
+   "type": "say_end",
+   "id": "say_turn_01M75WGGPY5BHDE1VD5XQP639S_39"
+  }
+ },
+ {
+  "t_ms": 12040,
+  "cmd": {
+   "type": "steps_clear",
+   "group": "turn_01M75WGGPY5BHDE1VD5XQP639S"
+  }
+ }
+]

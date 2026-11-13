@@ -1,0 +1,74 @@
+[
+ {
+  "t": 30155,
+  "wall": 1794443782677,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JYAGNMHNGX1TJN004R462",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 40155,
+  "wall": 1794443792677,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JYM959B0FJ743A8JAQFYK",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 50155,
+  "wall": 1794443802677,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JYY1NX733E9N8H28TYZFH",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 60155,
+  "wall": 1794443812677,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JZ7T5NPJN39XW85TW9VHW",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 70155,
+  "wall": 1794443822677,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JZHJN5E3BXNC7XGV12BYA",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 80155,
+  "wall": 1794443832677,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JZVB5CMM5FP9YZ0K0QXN1",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ }
+]

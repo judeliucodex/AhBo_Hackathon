@@ -1,0 +1,618 @@
+[
+ {
+  "t": 18488,
+  "wall": 1794422953327,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NBFS7GE1KA4QKKNBN7H",
+   "type": "utterance",
+   "text": "好呀，幫我報名啦",
+   "final": true
+  }
+ },
+ {
+  "t": 18499,
+  "wall": 1794422953339,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NBH756NG3CPTZ0HX17Q",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "listening"
+   }
+  }
+ },
+ {
+  "t": 18500,
+  "wall": 1794422953340,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NBWASH9PWDJFB0QSSCD",
+   "type": "ack",
+   "ref": "01M75Z2NBH756NG3CPTZ0HX17Q",
+   "ok": true
+  }
+ },
+ {
+  "t": 18500,
+  "wall": 1794422953340,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NBH756NG3CPTZ0HX17R",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "heard",
+    "text": "好呀，幫我報名啦",
+    "final": true
+   }
+  }
+ },
+ {
+  "t": 18502,
+  "wall": 1794422953342,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NBY5FZPS5KNBRA2QZQ9",
+   "type": "ack",
+   "ref": "01M75Z2NBH756NG3CPTZ0HX17R",
+   "ok": true
+  }
+ },
+ {
+  "t": 18503,
+  "wall": 1794422953342,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NBH756NG3CPTZ0HX17T",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps_clear",
+    "group": "turn_01M75Z2D5C6WRWF878BM2N78K4"
+   }
+  }
+ },
+ {
+  "t": 18503,
+  "wall": 1794422953343,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NBZ8HNTMJZNXKBZ07R3",
+   "type": "ack",
+   "ref": "01M75Z2NBH756NG3CPTZ0HX17T",
+   "ok": true
+  }
+ },
+ {
+  "t": 18506,
+  "wall": 1794422953345,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NBH756NG3CPTZ0HX17V",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card_clear"
+   }
+  }
+ },
+ {
+  "t": 18506,
+  "wall": 1794422953346,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NC2YMMSHRPJG2GNZWH2",
+   "type": "ack",
+   "ref": "01M75Z2NBH756NG3CPTZ0HX17V",
+   "ok": true
+  }
+ },
+ {
+  "t": 18507,
+  "wall": 1794422953346,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NBH756NG3CPTZ0HX17W",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "thinking"
+   }
+  }
+ },
+ {
+  "t": 18507,
+  "wall": 1794422953347,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NC3434Z78SKQGH4G3J8",
+   "type": "ack",
+   "ref": "01M75Z2NBH756NG3CPTZ0HX17W",
+   "ok": true
+  }
+ },
+ {
+  "t": 18519,
+  "wall": 1794422953358,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NBZ5TY00MM577AMFN4Y",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "turn_01M75Z2NBGFGC8S4X32PETWKXN",
+     "steps": [
+      {
+       "id": "confirm_action",
+       "label": "幫你報緊名…",
+       "state": "active"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 18520,
+  "wall": 1794422953360,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NCGCS5KDHWH5ZXPX387",
+   "type": "ack",
+   "ref": "01M75Z2NBZ5TY00MM577AMFN4Y",
+   "ok": true
+  }
+ },
+ {
+  "t": 18522,
+  "wall": 1794422953362,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NCC0T9W269BYN9J4YJT",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "idle"
+   }
+  }
+ },
+ {
+  "t": 18524,
+  "wall": 1794422953364,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NCM1AEZ6VSGQ2VJKEJE",
+   "type": "ack",
+   "ref": "01M75Z2NCC0T9W269BYN9J4YJT",
+   "ok": true
+  }
+ },
+ {
+  "t": 18526,
+  "wall": 1794422953365,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2NCC0T9W269BYN9J4YJV",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_start",
+    "id": "say_turn_01M75Z2NBGFGC8S4X32PETWKXN_19",
+    "text": "好呀，我而家幫你報名，報好咗再話你知。",
+    "durationSec": 3.65
+   }
+  }
+ },
+ {
+  "t": 18528,
+  "wall": 1794422953368,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2NCRGK0P6Q4FCHDWHMVF",
+   "type": "ack",
+   "ref": "01M75Z2NCC0T9W269BYN9J4YJV",
+   "ok": true
+  }
+ },
+ {
+  "t": 20122,
+  "wall": 1794422954961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2PYHX3V1NZAFRMM91TWJ",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 22324,
+  "wall": 1794422957164,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2S3AFP9NTF8EFHHZG5RC",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_end",
+    "id": "say_turn_01M75Z2NBGFGC8S4X32PETWKXN_19"
+   }
+  }
+ },
+ {
+  "t": 22325,
+  "wall": 1794422957165,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2S3DSY1R46MW854S62Y3",
+   "type": "ack",
+   "ref": "01M75Z2S3AFP9NTF8EFHHZG5RC",
+   "ok": true
+  }
+ },
+ {
+  "t": 22326,
+  "wall": 1794422957166,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2S3ESQ8Y3CG9EGVB3W3X",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_turn_01M75Z2NBGFGC8S4X32PETWKXN_19"
+   }
+  }
+ },
+ {
+  "t": 23827,
+  "wall": 1794422958666,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2TJ9VT7T9R8X6VM1DDD2",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "action_act_01M75Z2D7DJBHCXT956B7128AK",
+     "kind": "message",
+     "label": "已通知阿珍",
+     "small": "報唔到名"
+    }
+   }
+  }
+ },
+ {
+  "t": 23828,
+  "wall": 1794422958667,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2TJBE1SDXGKJXB8JNG72",
+   "type": "ack",
+   "ref": "01M75Z2TJ9VT7T9R8X6VM1DDD2",
+   "ok": true
+  }
+ },
+ {
+  "t": 23838,
+  "wall": 1794422958677,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2TJNK7DMT91VEAXZ9RMB",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_start",
+    "id": "say_turn_01M75Z2TJAGHRFGT5GMA4HAPRA_14",
+    "text": "報唔到名，我叫阿珍幫你睇下。",
+    "durationSec": 2.69
+   }
+  }
+ },
+ {
+  "t": 23839,
+  "wall": 1794422958678,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2TJPAV0ZS0KK81ZQ63ED",
+   "type": "ack",
+   "ref": "01M75Z2TJNK7DMT91VEAXZ9RMB",
+   "ok": true
+  }
+ },
+ {
+  "t": 26326,
+  "wall": 1794422961166,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2X0DSTYXNQ6HDGV443K7",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps_clear",
+    "group": "turn_01M75Z2NBGFGC8S4X32PETWKXN"
+   }
+  }
+ },
+ {
+  "t": 26327,
+  "wall": 1794422961167,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2X0FZZYFQG8NB6QVHKEY",
+   "type": "ack",
+   "ref": "01M75Z2X0DSTYXNQ6HDGV443K7",
+   "ok": true
+  }
+ },
+ {
+  "t": 26681,
+  "wall": 1794422961520,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z2XBE02SNYXZ99G7EWSMK",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_end",
+    "id": "say_turn_01M75Z2TJAGHRFGT5GMA4HAPRA_14"
+   }
+  }
+ },
+ {
+  "t": 26682,
+  "wall": 1794422961521,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2XBHP0F43V6XCAVX15W6",
+   "type": "ack",
+   "ref": "01M75Z2XBE02SNYXZ99G7EWSMK",
+   "ok": true
+  }
+ },
+ {
+  "t": 26683,
+  "wall": 1794422961523,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z2XBK6ZH82E823X5WA04R",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_turn_01M75Z2TJAGHRFGT5GMA4HAPRA_14"
+   }
+  }
+ },
+ {
+  "t": 30122,
+  "wall": 1794422964961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z30Q1BVP1G9B74MG5PZMX",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 40122,
+  "wall": 1794422974961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z3AFHT1WZXNYCD6QH78RE",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 50122,
+  "wall": 1794422984961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z3M81TYHFVMSJPTRVZSS0",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 56684,
+  "wall": 1794422991524,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z3TN1GCDWR84J2QDMXHW1",
+   "type": "session.close",
+   "priority": 2,
+   "session_id": "sess_01M75Z2442QPCX6NTP809J2AGW"
+  }
+ },
+ {
+  "t": 56685,
+  "wall": 1794422991524,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z3TN4BFN0CTAQA5X0PN6N",
+   "type": "ack",
+   "ref": "01M75Z3TN1GCDWR84J2QDMXHW1",
+   "ok": true
+  }
+ },
+ {
+  "t": 56686,
+  "wall": 1794422991526,
+  "dir": "in",
+  "obj": {
+   "id": "01M75Z3TN1GCDWR84J2QDMXHW4",
+   "type": "wake.enable",
+   "priority": 2,
+   "on": true
+  }
+ },
+ {
+  "t": 56687,
+  "wall": 1794422991526,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z3TN6ZG9PB9BHXH3F05T7",
+   "type": "ack",
+   "ref": "01M75Z3TN1GCDWR84J2QDMXHW4",
+   "ok": true
+  }
+ },
+ {
+  "t": 60122,
+  "wall": 1794422994961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z3Y0HGV19T0VEB53D4ZCA",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 70122,
+  "wall": 1794423004961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z47S1CK7FD7TQ5765NH1K",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 80122,
+  "wall": 1794423014961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z4HHH3CPW673YZTH15MSK",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 90122,
+  "wall": 1794423024961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z4VA1YYGS4F061F9BP7MP",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 100122,
+  "wall": 1794423034961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z552HWY4V0D02KT7CXKKR",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 110122,
+  "wall": 1794423044961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z5EV1E0MA22T3NEJTGFZN",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 120122,
+  "wall": 1794423054961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z5RKHG0T7GZC53HW5EKZS",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 130122,
+  "wall": 1794423064961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z62C1FQTH6903WJS3VMA8",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 140122,
+  "wall": 1794423074961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z6C4HJVJCC8AAFH8WRG7B",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 150122,
+  "wall": 1794423084961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z6NX1HN7P460VE8AHT1BZ",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 160122,
+  "wall": 1794423094961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z6ZNHHMV7QF1G5Y1ZYPNB",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 170122,
+  "wall": 1794423104961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75Z79E1C7DMHNX1P68DMFAM",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ }
+]

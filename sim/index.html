@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<!-- Home-screen app mode: Add to Home Screen → 阿寶 opens full-screen, no Safari chrome -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="阿寶">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <title>Ah Bo Browser iPad</title>
 <link rel="stylesheet" href="sim.css">
 </head>
@@ -11,6 +19,7 @@
      The face is /face/index.html in an iframe, untouched. Everything on the right is for the tester only. -->
 <main class="screen" id="screen">
   <div class="bezel" id="bezel"><iframe id="face" title="Ah Bo face" allow="autoplay"></iframe></div>
+  <button id="exitApp" class="exitapp" type="button" hidden title="Back to the tester panel">⚙</button>
 </main>
 <aside class="panel">
   <header>
@@ -30,6 +39,7 @@
     <button id="rot" type="button">Rotate</button>
     <button id="reloadFace" type="button">Reload face</button>
     <button id="sound" type="button">Enable sound</button>
+    <button id="appMode" type="button" title="Face only, full-screen — like the iPad app">⛶ App mode</button>
     <label class="check"><input id="camera" type="checkbox"> Camera</label>
   </div>
 

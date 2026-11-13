@@ -256,7 +256,8 @@ DELEGATES = {
     "wipe": ("ahbo.ops.wipe",),
     "render-fixed": ("ahbo.ops.render_fixed",),
     "gen-wake-table": ("ahbo.ops.gen_wake_table", "ahbo.wake.table", "ahbo.wake.gen_table"),
-    "eval": ("ahbo.ops.eval", "evals.runner"),
+    "eval": ("ahbo.evals.runner",),
+    "backup": ("ahbo.ops.backup",),
 }
 
 
@@ -288,15 +289,18 @@ def build_parser() -> argparse.ArgumentParser:
     sm.add_argument("what", choices=["beacon", "telegram", "twilio"])
     sm.add_argument("rest", nargs=argparse.REMAINDER)
     sm.set_defaults(fn=cmd_sim)
-    for name, mods in DELEGATES.items():
-        d = sub.add_parser(name, help=f"delegates to {mods[0]}")
+    for name, mods in DELEGATES.items():     # listed for --help; main() hands them their argv unparsed
+        d = sub.add_parser(name, help=f"delegates to {mods[0]} (its own flags, e.g. --help)", add_help=False)
         d.add_argument("rest", nargs=argparse.REMAINDER)
         d.set_defaults(fn=lambda a, mods=mods: _delegate(mods, a.rest))
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
-    a = build_parser().parse_args(argv)
+    rest = list(sys.argv[1:] if argv is None else argv)
+    if rest and rest[0] in DELEGATES:        # `ahbo doctor --latency`, `ahbo wipe --yes`, `ahbo eval --suite x`
+        return _delegate(DELEGATES[rest[0]], rest[1:])
+    a = build_parser().parse_args(rest)
     return int(a.fn(a) or 0)
 
 

@@ -1,0 +1,251 @@
+[
+ {
+  "t": 10149,
+  "wall": 1794443967077,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K3YK58WF1Z17XD7DADDHY",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 20147,
+  "wall": 1794443977076,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K48BM63WV052KXGHDE4XB",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 30147,
+  "wall": 1794443987076,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K4J440SZKVXCQ6JQ11SQP",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 40114,
+  "wall": 1794443997043,
+  "dir": "close",
+  "obj": null,
+  "code": 1006
+ },
+ {
+  "t": 40666,
+  "wall": 1794443997594,
+  "dir": "open",
+  "obj": null,
+  "url": "ws://ahbo-qa25-api:8000/ws/device?sim=1"
+ },
+ {
+  "t": 40666,
+  "wall": 1794443997595,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K4WCVG7V8BKXSEM3SHRQ9",
+   "type": "hello",
+   "device_id": "sim-eezh2c",
+   "app_version": "0.1.0-sim",
+   "fixed_cache_version": "f-dcfc2e6081a0",
+   "wake_engine": "none"
+  }
+ },
+ {
+  "t": 40673,
+  "wall": 1794443997602,
+  "dir": "in",
+  "obj": {
+   "id": "01M76K4WD0CY10V875BTAZ52CA",
+   "type": "welcome",
+   "device_token": "dt.sim-eezh2c.1794530397.YEJorhpP9EEJYPrpj4bxSb1YPqJhF-5wqHDGv2jGJE8",
+   "server_time": "2026-11-12T15:02:06.284+08:00",
+   "fixed_cache_version": "f-dcfc2e6081a0",
+   "text_sessions": true,
+   "config": {
+    "quiet_hours": {
+     "start": "22:30",
+     "end": "07:00"
+    },
+    "interruption_enabled": true,
+    "wake": {
+     "require_wai": true,
+     "require_two_updates": true,
+     "utterance_start_silence_ms": 300,
+     "cooldown_after_reject_s": 5,
+     "allow_missing_aa": true,
+     "plain_abou_wakes": false
+    },
+    "reminder_mirror": {
+     "date": "2026-11-12",
+     "slots": [
+      {
+       "slot_id": "s_0800",
+       "time": "08:00",
+       "clip_id": "R_s_0800",
+       "cards": [
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        }
+       ]
+      },
+      {
+       "slot_id": "s_1200",
+       "time": "12:00",
+       "clip_id": "R_s_1200",
+       "cards": [
+        {
+         "id": "med_bp",
+         "kind": "med",
+         "label": "血壓藥",
+         "small": "Amlodipine 5 mg",
+         "pill": [
+          "--pill-b",
+          "--pill-a"
+         ]
+        },
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        },
+        {
+         "id": "med_chol",
+         "kind": "med",
+         "label": "膽固醇藥",
+         "small": "Atorvastatin 20 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-c"
+         ]
+        },
+        {
+         "id": "med_asp",
+         "kind": "med",
+         "label": "薄血丸",
+         "small": "Aspirin 80 mg",
+         "pill": [
+          "--pill-c",
+          "--pill-a"
+         ]
+        }
+       ]
+      },
+      {
+       "slot_id": "s_2000",
+       "time": "20:00",
+       "clip_id": "R_s_2000",
+       "cards": [
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 40674,
+  "wall": 1794443997603,
+  "dir": "in",
+  "obj": {
+   "id": "01M76K4WD1XQT6NC9047N1JVPJ",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 40675,
+  "wall": 1794443997604,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K4WD4DNXHP9FCACN0RW4Z",
+   "type": "ack",
+   "ref": "01M76K4WD1XQT6NC9047N1JVPJ",
+   "ok": true
+  }
+ },
+ {
+  "t": 50674,
+  "wall": 1794444007603,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K565KJZY0HE6YFDXHC48Z",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 60674,
+  "wall": 1794444017602,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K5FY2ER56BC8TDMB90SC9",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 70674,
+  "wall": 1794444027602,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K5SPJXYKSRYQFXVQ0AVZB",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 80674,
+  "wall": 1794444037602,
+  "dir": "out",
+  "obj": {
+   "id": "01M76K63F2FVG5RWNR5FF9DV2T",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ }
+]

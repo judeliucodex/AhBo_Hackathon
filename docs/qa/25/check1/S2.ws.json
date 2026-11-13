@@ -1,0 +1,544 @@
+[
+ {
+  "t": 24665,
+  "wall": 1794420261287,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGD1R95AS7C104HQQX4S",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 24666,
+  "wall": 1794420261288,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGD8RDRX0YMBM59J7RCV",
+   "type": "ack",
+   "ref": "01M75WGGD1R95AS7C104HQQX4S",
+   "ok": true
+  }
+ },
+ {
+  "t": 24667,
+  "wall": 1794420261289,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGD1R95AS7C104HQQX4V",
+   "type": "wake.enable",
+   "priority": 1,
+   "on": true
+  }
+ },
+ {
+  "t": 24668,
+  "wall": 1794420261290,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGDAP1WGXDY3KC448REV",
+   "type": "ack",
+   "ref": "01M75WGGD1R95AS7C104HQQX4V",
+   "ok": true
+  }
+ },
+ {
+  "t": 24987,
+  "wall": 1794420261609,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGPNAVXFNXX02YW4F3HT",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "listening"
+   }
+  }
+ },
+ {
+  "t": 24988,
+  "wall": 1794420261610,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGQA5WWVWJD5C45K0HA7",
+   "type": "ack",
+   "ref": "01M75WGGPNAVXFNXX02YW4F3HT",
+   "ok": true
+  }
+ },
+ {
+  "t": 24991,
+  "wall": 1794420261613,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGPNAVXFNXX02YW4F3HV",
+   "type": "session.open",
+   "priority": 2,
+   "reason": "touch",
+   "mode": "companion",
+   "session_id": "sess_01M75WGGPMEM6ADM5K0T1RXVB8",
+   "text_only": true
+  }
+ },
+ {
+  "t": 24992,
+  "wall": 1794420261614,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGQERN0K52FVRXS0X309",
+   "type": "ack",
+   "ref": "01M75WGGPNAVXFNXX02YW4F3HV",
+   "ok": true
+  }
+ },
+ {
+  "t": 24993,
+  "wall": 1794420261615,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGPNAVXFNXX02YW4F3HX",
+   "type": "wake.enable",
+   "priority": 2,
+   "on": false
+  }
+ },
+ {
+  "t": 24993,
+  "wall": 1794420261615,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGQF051VWE5Q54M40YZS",
+   "type": "ack",
+   "ref": "01M75WGGPNAVXFNXX02YW4F3HX",
+   "ok": true
+  }
+ },
+ {
+  "t": 24998,
+  "wall": 1794420261620,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGQ4KH7AQ6YFXR02TXY4",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "heard",
+    "text": "阿寶，我幾時食藥呀？",
+    "final": true
+   }
+  }
+ },
+ {
+  "t": 25006,
+  "wall": 1794420261628,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGQWYBDREVQCSV6VK7ER",
+   "type": "ack",
+   "ref": "01M75WGGQ4KH7AQ6YFXR02TXY4",
+   "ok": true
+  }
+ },
+ {
+  "t": 25008,
+  "wall": 1794420261630,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGQ4KH7AQ6YFXR02TXY5",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "thinking"
+   }
+  }
+ },
+ {
+  "t": 25008,
+  "wall": 1794420261631,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGQZXSVXNXBJB1154HTX",
+   "type": "ack",
+   "ref": "01M75WGGQ4KH7AQ6YFXR02TXY5",
+   "ok": true
+  }
+ },
+ {
+  "t": 25048,
+  "wall": 1794420261670,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGQNTNPGV8AS525D9WXS",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "turn_01M75WGGPY5BHDE1VD5XQP639S",
+     "steps": [
+      {
+       "id": "get_med_status",
+       "label": "查緊藥物時間表…",
+       "state": "active"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 25051,
+  "wall": 1794420261673,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGGS97NNQFMRCGGA4HH9V",
+   "type": "ack",
+   "ref": "01M75WGGQNTNPGV8AS525D9WXS",
+   "ok": true
+  }
+ },
+ {
+  "t": 25637,
+  "wall": 1794420262259,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGQYQSF18SBBA66H59VE",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "step",
+    "group": "turn_01M75WGGPY5BHDE1VD5XQP639S",
+    "id": "get_med_status",
+    "state": "done",
+    "label": "下一次：十二點正，四隻藥"
+   }
+  }
+ },
+ {
+  "t": 25639,
+  "wall": 1794420262261,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHBNXNXTBQ008QKVF45D",
+   "type": "ack",
+   "ref": "01M75WGGQYQSF18SBBA66H59VE",
+   "ok": true
+  }
+ },
+ {
+  "t": 25648,
+  "wall": 1794420262270,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EF",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "idle"
+   }
+  }
+ },
+ {
+  "t": 25649,
+  "wall": 1794420262271,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHBZKWQT7MV2EFPDRWKB",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EF",
+   "ok": true
+  }
+ },
+ {
+  "t": 25658,
+  "wall": 1794420262280,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EG",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "next_dose",
+     "kind": "event",
+     "icon": "⏰",
+     "label": "12:00 食藥",
+     "small": "兩個鐘之後",
+     "when": "十二點正"
+    }
+   }
+  }
+ },
+ {
+  "t": 25675,
+  "wall": 1794420262297,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHCSZ8Y95MHH5SYQNXKC",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EG",
+   "ok": true
+  }
+ },
+ {
+  "t": 25685,
+  "wall": 1794420262307,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EH",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "med_bp",
+     "kind": "med",
+     "label": "血壓藥",
+     "small": "Amlodipine 5 mg",
+     "pill": [
+      "--pill-b",
+      "--pill-a"
+     ],
+     "when": "血壓藥"
+    }
+   }
+  }
+ },
+ {
+  "t": 25689,
+  "wall": 1794420262312,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHD8QBAVR4588N6RQDGD",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EH",
+   "ok": true
+  }
+ },
+ {
+  "t": 25692,
+  "wall": 1794420262315,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EJ",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "med_dm",
+     "kind": "med",
+     "label": "糖尿藥",
+     "small": "Metformin 500 mg",
+     "pill": [
+      "--pill-a",
+      "--pill-a"
+     ],
+     "when": "糖尿藥"
+    }
+   }
+  }
+ },
+ {
+  "t": 25694,
+  "wall": 1794420262316,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHDCGBWZ7FHXQW1EEHA7",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EJ",
+   "ok": true
+  }
+ },
+ {
+  "t": 25696,
+  "wall": 1794420262318,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EK",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "med_chol",
+     "kind": "med",
+     "label": "膽固醇藥",
+     "small": "Atorvastatin 20 mg",
+     "pill": [
+      "--pill-a",
+      "--pill-c"
+     ],
+     "when": "膽固醇藥"
+    }
+   }
+  }
+ },
+ {
+  "t": 25698,
+  "wall": 1794420262320,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHDGHDYH1VYZSDXEBB33",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EK",
+   "ok": true
+  }
+ },
+ {
+  "t": 25699,
+  "wall": 1794420262321,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EM",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "med_asp",
+     "kind": "med",
+     "label": "薄血丸",
+     "small": "Aspirin 80 mg",
+     "pill": [
+      "--pill-c",
+      "--pill-a"
+     ],
+     "when": "薄血丸"
+    }
+   }
+  }
+ },
+ {
+  "t": 25700,
+  "wall": 1794420262322,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHDJG5GDWR26HN0X6DQH",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EM",
+   "ok": true
+  }
+ },
+ {
+  "t": 25701,
+  "wall": 1794420262324,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGGRK662ZBQNP5R3A32EN",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_start",
+    "id": "say_turn_01M75WGGPY5BHDE1VD5XQP639S_39",
+    "text": "兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。",
+    "durationSec": 7.5
+   }
+  }
+ },
+ {
+  "t": 25703,
+  "wall": 1794420262326,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGHDPXY3W3ABCBTX5YQJZ",
+   "type": "ack",
+   "ref": "01M75WGGRK662ZBQNP5R3A32EN",
+   "ok": true
+  }
+ },
+ {
+  "t": 30179,
+  "wall": 1794420266801,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGNSHDSEK3SZ2GA9ENG3W",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 32689,
+  "wall": 1794420269311,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGR7W2NGKJVARJ0XGJ80B",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_end",
+    "id": "say_turn_01M75WGGPY5BHDE1VD5XQP639S_39"
+   }
+  }
+ },
+ {
+  "t": 32690,
+  "wall": 1794420269313,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGR81XZWWF08HDW23YQRZ",
+   "type": "ack",
+   "ref": "01M75WGR7W2NGKJVARJ0XGJ80B",
+   "ok": true
+  }
+ },
+ {
+  "t": 32692,
+  "wall": 1794420269314,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGR82FDWVK8FSF19B3DX4",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_turn_01M75WGGPY5BHDE1VD5XQP639S_39"
+   }
+  }
+ },
+ {
+  "t": 36703,
+  "wall": 1794420273325,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WGW5818SG9V48TM8G523R",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps_clear",
+    "group": "turn_01M75WGGPY5BHDE1VD5XQP639S"
+   }
+  }
+ },
+ {
+  "t": 36704,
+  "wall": 1794420273326,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGW5E9346XTQ5QX3N4CER",
+   "type": "ack",
+   "ref": "01M75WGW5818SG9V48TM8G523R",
+   "ok": true
+  }
+ },
+ {
+  "t": 40179,
+  "wall": 1794420276801,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGZJ1AJTQ69T822J8BEJ4",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ }
+]

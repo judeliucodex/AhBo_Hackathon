@@ -18,7 +18,8 @@ import { captureAndUpload } from "./photo.js";
 import { Talk } from "./talk.js";
 
 const $ = id => document.getElementById(id);
-const LANDSCAPE = { w: 1180 + 28, h: 820 + 28 };   // bezel adds a 14px border all round
+const LANDSCAPE = { w: 1180, h: 820 };              // the face's real point size
+const BEZEL_BORDER = 28;                            // 14px frame all round, absent in app mode
 
 const els = {
   bezel: $("bezel"), face: $("face"), conn: $("conn"), devId: $("devId"), clipVer: $("clipVer"),
@@ -26,6 +27,7 @@ const els = {
   sound: $("sound"), camera: $("camera"), sayForm: $("sayForm"), sayText: $("sayText"),
   sayBtn: $("sayBtn"), sayHint: $("sayHint"), okBtn: $("okBtn"), tapBtn: $("tapBtn"),
   talkBox: $("talkBox"), talk: $("talk"), log: $("log"), clearLog: $("clearLog"),
+  appMode: $("appMode"), exitApp: $("exitApp"),
 };
 
 /* ---------- log + protocol trace ---------- */
@@ -286,13 +288,39 @@ function renderSession() {
 function fitBezel() {
   const box = els.bezel.parentElement.getBoundingClientRect();
   const portrait = els.bezel.classList.contains("portrait");
-  const dims = portrait ? { w: LANDSCAPE.h, h: LANDSCAPE.w } : { w: LANDSCAPE.w, h: LANDSCAPE.h };
+  const b = document.body.classList.contains("appmode") ? 0 : BEZEL_BORDER;
+  const dims = portrait ? { w: LANDSCAPE.h + b, h: LANDSCAPE.w + b } : { w: LANDSCAPE.w + b, h: LANDSCAPE.h + b };
   const k = Math.min(box.width / dims.w, box.height / dims.h, 1);
   els.bezel.style.setProperty("--k", String(k));
 }
 addEventListener("resize", fitBezel);
 
 els.rot.onclick = () => { els.bezel.classList.toggle("portrait"); fitBezel(); };
+
+/* ---------- app mode: face only, full-screen — looks like the iPad app ---------- */
+/* ⛶ App mode (panel button) or Add to Home Screen + launch (standalone). The floating ⚙
+ * chip (safe-area aware) or Esc returns to the tester panel. If the browser refuses
+ * requestFullscreen (iOS is picky about it), the layout still hides the panel and frame. */
+function setAppMode(on) {
+  document.body.classList.toggle("appmode", on);
+  els.exitApp.hidden = !on;
+  const root = document.documentElement;
+  if (on) {
+    const req = root.requestFullscreen || root.webkitRequestFullscreen;
+    if (req) { try { req.call(root, { navigationUI: "hide" }); } catch (e) { log("note", "fullscreen refused: " + e.message); } }
+  } else if (document.fullscreenElement && (document.exitFullscreen || document.webkitExitFullscreen)) {
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  }
+  fitBezel();
+}
+els.appMode.onclick = () => setAppMode(!document.body.classList.contains("appmode"));
+els.exitApp.onclick = () => setAppMode(false);
+addEventListener("keydown", ev => {
+  if (ev.key === "Escape" && document.body.classList.contains("appmode")) setAppMode(false);
+});
+const standalone = matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches
+  || navigator.standalone === true;
+if (standalone) setAppMode(true);   // launched from the Home Screen icon
 
 els.reloadFace.onclick = () => {
   faceReady = false;

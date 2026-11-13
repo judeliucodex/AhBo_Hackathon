@@ -1,0 +1,144 @@
+[
+ {
+  "t_ms": 0,
+  "cmd": {
+   "type": "reset"
+  }
+ },
+ {
+  "t_ms": 357,
+  "cmd": {
+   "type": "mood",
+   "mood": "listening"
+  }
+ },
+ {
+  "t_ms": 529,
+  "cmd": {
+   "type": "heard",
+   "text": "阿寶，今日有冇人搵過我呀？",
+   "final": true
+  }
+ },
+ {
+  "t_ms": 530,
+  "cmd": {
+   "type": "mood",
+   "mood": "thinking"
+  }
+ },
+ {
+  "t_ms": 674,
+  "cmd": {
+   "type": "steps",
+   "group": {
+    "id": "turn_01M742WH5FECESW1B1WRJBDTTE",
+    "steps": [
+     {
+      "id": "list_voice_messages",
+      "label": "檢查緊訊息…",
+      "state": "active"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "t_ms": 1214,
+  "cmd": {
+   "type": "step",
+   "group": "turn_01M742WH5FECESW1B1WRJBDTTE",
+   "id": "list_voice_messages",
+   "state": "done",
+   "label": "搵到阿珍嘅語音訊息"
+  }
+ },
+ {
+  "t_ms": 1263,
+  "cmd": {
+   "type": "mood",
+   "mood": "warm"
+  }
+ },
+ {
+  "t_ms": 1319,
+  "cmd": {
+   "type": "card",
+   "card": {
+    "id": "vn_vm_demo",
+    "kind": "voice_note",
+    "label": "阿珍嘅錄音",
+    "small": "今朝 7:42",
+    "when": "錄音"
+   }
+  }
+ },
+ {
+  "t_ms": 1326,
+  "cmd": {
+   "type": "say_start",
+   "id": "say_turn_01M742WH5FECESW1B1WRJBDTTE_23",
+   "text": "有呀！阿珍今朝留咗段錄音俾你，我而家播俾你聽。",
+   "durationSec": 4.42
+  }
+ },
+ {
+  "t_ms": 5198,
+  "cmd": {
+   "type": "say_end",
+   "id": "say_turn_01M742WH5FECESW1B1WRJBDTTE_23"
+  }
+ },
+ {
+  "t_ms": 5226,
+  "cmd": {
+   "type": "card_update",
+   "id": "vn_vm_demo",
+   "patch": {
+    "playing": true
+   }
+  }
+ },
+ {
+  "t_ms": 5441,
+  "cmd": {
+   "type": "say_start",
+   "id": "say_vm_demo_1794358805",
+   "from": "family",
+   "fromName": "阿珍",
+   "text": "媽，記得食飯呀！星期日我帶阿明嚟探你。",
+   "durationSec": 3.65
+  }
+ },
+ {
+  "t_ms": 9181,
+  "cmd": {
+   "type": "say_end",
+   "id": "say_vm_demo_1794358805"
+  }
+ },
+ {
+  "t_ms": 9185,
+  "cmd": {
+   "type": "card_update",
+   "id": "vn_vm_demo",
+   "patch": {
+    "playing": false
+   }
+  }
+ },
+ {
+  "t_ms": 9201,
+  "cmd": {
+   "type": "mood",
+   "mood": "idle"
+  }
+ },
+ {
+  "t_ms": 13200,
+  "cmd": {
+   "type": "steps_clear",
+   "group": "turn_01M742WH5FECESW1B1WRJBDTTE"
+  }
+ }
+]

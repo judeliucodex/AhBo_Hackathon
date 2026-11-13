@@ -1,0 +1,211 @@
+[
+ {
+  "n": 1,
+  "name": "mood_thinking",
+  "file": "S2_01_mood_thinking.png",
+  "dom": {
+   "faceClass": "face thinking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，我幾時食藥呀？",
+   "caption": "",
+   "captionHtml": "",
+   "cards": [],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WGGPY5BHDE1VD5XQP639S\"><ol class=\"steplist\"><li class=\"step active\" data-id=\"get_med_status\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">查緊藥物時間表…</span></li></ol></section>",
+   "stepsText": "查緊藥物時間表…",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 2,
+  "name": "step_turn_01M75WGGPY5BHDE1VD5XQP639S_get_med_status_done",
+  "file": "S2_02_step_turn_01M75WGGPY5BHDE1VD5XQP639S_get_med_status_done.png",
+  "dom": {
+   "faceClass": "face talking",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，我幾時食藥呀？",
+   "caption": "兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。",
+   "captionHtml": "<span class=\"w on\">兩</span><span class=\"w on\">個</span><span class=\"w on\">鐘</span><span class=\"w\">之</span><span class=\"w\">後</span><span class=\"w\">，</span><span class=\"w\">十</span><span class=\"w\">二</span><span class=\"w\">點</span><span class=\"w\">正</span><span class=\"w\">。</span><span class=\"w\" hidden=\"\">有</span><span class=\"w\" hidden=\"\">血</span><span class=\"w\" hidden=\"\">壓</span><span class=\"w\" hidden=\"\">藥</span><span class=\"w\" hidden=\"\">、</span><span class=\"w\" hidden=\"\">糖</span><span class=\"w\" hidden=\"\">尿</span><span class=\"w\" hidden=\"\">藥</span><span class=\"w\" hidden=\"\">、</span><span class=\"w\" hidden=\"\">膽</span><span class=\"w\" hidden=\"\">固</span><span class=\"w\" hidden=\"\">醇</span><span class=\"w\" hidden=\"\">藥</span><span class=\"w\" hidden=\"\">，</span><span class=\"w\" hidden=\"\">同</span><span class=\"w\" hidden=\"\">埋</span><span class=\"w\" hidden=\"\">薄</span><span class=\"w\" hidden=\"\">血</span><span class=\"w\" hidden=\"\">丸</span><span class=\"w\" hidden=\"\">。</span><span class=\"w\" hidden=\"\">到</span><span class=\"w\" hidden=\"\">時</span><span class=\"w\" hidden=\"\">我</span><span class=\"w\" hidden=\"\">會</span><span class=\"w\" hidden=\"\">提</span><span class=\"w\" hidden=\"\">你</span><span class=\"w\" hidden=\"\">㗎</span><span class=\"w\" hidden=\"\">。</span>",
+   "cards": [
+    {
+     "id": "next_dose",
+     "cls": "chip on",
+     "text": "⏰ 12:00 食藥 兩個鐘之後",
+     "html": "<span class=\"icon\">⏰</span><span><span class=\"lbl\">12:00 食藥</span> <small>兩個鐘之後</small></span>"
+    },
+    {
+     "id": "med_bp",
+     "cls": "chip on",
+     "text": "血壓藥 Amlodipine 5 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F4C95D\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">血壓藥</span> <small>Amlodipine 5 mg</small></span>"
+    },
+    {
+     "id": "med_dm",
+     "cls": "chip on",
+     "text": "糖尿藥 Metformin 500 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F7F4EF\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">糖尿藥</span> <small>Metformin 500 mg</small></span>"
+    },
+    {
+     "id": "med_chol",
+     "cls": "chip on",
+     "text": "膽固醇藥 Atorvastatin 20 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F7F4EF\"></i><i style=\"background:#EFA3BA\"></i></span><span><span class=\"lbl\">膽固醇藥</span> <small>Atorvastatin 20 mg</small></span>"
+    },
+    {
+     "id": "med_asp",
+     "cls": "chip on",
+     "text": "薄血丸 Aspirin 80 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#EFA3BA\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">薄血丸</span> <small>Aspirin 80 mg</small></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WGGPY5BHDE1VD5XQP639S\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"get_med_status\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">下一次：十二點正，四隻藥</span></li></ol></section>",
+   "stepsText": "下一次：十二點正，四隻藥",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 3,
+  "name": "say_end_say_turn_01M75WGGPY5BHDE1VD5XQP639S_39",
+  "file": "S2_03_say_end_say_turn_01M75WGGPY5BHDE1VD5XQP639S_39.png",
+  "dom": {
+   "faceClass": "face happy",
+   "bodyClass": "has-steps",
+   "stageClass": "stage",
+   "heard": "阿寶，我幾時食藥呀？",
+   "caption": "兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。",
+   "captionHtml": "<span class=\"w on\" hidden=\"\">兩</span><span class=\"w on\" hidden=\"\">個</span><span class=\"w on\" hidden=\"\">鐘</span><span class=\"w on\" hidden=\"\">之</span><span class=\"w on\" hidden=\"\">後</span><span class=\"w on\" hidden=\"\">，</span><span class=\"w on\" hidden=\"\">十</span><span class=\"w on\" hidden=\"\">二</span><span class=\"w on\" hidden=\"\">點</span><span class=\"w on\" hidden=\"\">正</span><span class=\"w on\" hidden=\"\">。</span><span class=\"w on\" hidden=\"\">有</span><span class=\"w on\" hidden=\"\">血</span><span class=\"w on\" hidden=\"\">壓</span><span class=\"w on\" hidden=\"\">藥</span><span class=\"w on\" hidden=\"\">、</span><span class=\"w on\" hidden=\"\">糖</span><span class=\"w on\" hidden=\"\">尿</span><span class=\"w on\" hidden=\"\">藥</span><span class=\"w on\" hidden=\"\">、</span><span class=\"w on\" hidden=\"\">膽</span><span class=\"w on\" hidden=\"\">固</span><span class=\"w on\" hidden=\"\">醇</span><span class=\"w on\" hidden=\"\">藥</span><span class=\"w on\" hidden=\"\">，</span><span class=\"w on\" hidden=\"\">同</span><span class=\"w on\" hidden=\"\">埋</span><span class=\"w on\" hidden=\"\">薄</span><span class=\"w on\" hidden=\"\">血</span><span class=\"w on\" hidden=\"\">丸</span><span class=\"w on\" hidden=\"\">。</span><span class=\"w on\">到</span><span class=\"w on\">時</span><span class=\"w on\">我</span><span class=\"w on\">會</span><span class=\"w on\">提</span><span class=\"w on\">你</span><span class=\"w on\">㗎</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "next_dose",
+     "cls": "chip on",
+     "text": "⏰ 12:00 食藥 兩個鐘之後",
+     "html": "<span class=\"icon\">⏰</span><span><span class=\"lbl\">12:00 食藥</span> <small>兩個鐘之後</small></span>"
+    },
+    {
+     "id": "med_bp",
+     "cls": "chip on",
+     "text": "血壓藥 Amlodipine 5 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F4C95D\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">血壓藥</span> <small>Amlodipine 5 mg</small></span>"
+    },
+    {
+     "id": "med_dm",
+     "cls": "chip on",
+     "text": "糖尿藥 Metformin 500 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F7F4EF\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">糖尿藥</span> <small>Metformin 500 mg</small></span>"
+    },
+    {
+     "id": "med_chol",
+     "cls": "chip on",
+     "text": "膽固醇藥 Atorvastatin 20 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F7F4EF\"></i><i style=\"background:#EFA3BA\"></i></span><span><span class=\"lbl\">膽固醇藥</span> <small>Atorvastatin 20 mg</small></span>"
+    },
+    {
+     "id": "med_asp",
+     "cls": "chip on",
+     "text": "薄血丸 Aspirin 80 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#EFA3BA\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">薄血丸</span> <small>Aspirin 80 mg</small></span>"
+    }
+   ],
+   "stepsHtml": "<section class=\"stepgroup\" data-id=\"turn_01M75WGGPY5BHDE1VD5XQP639S\"><ol class=\"steplist\"><li class=\"step done\" data-id=\"get_med_status\"><span class=\"tick\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle class=\"ring\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><circle class=\"disc\" cx=\"12\" cy=\"12\" r=\"10.5\"></circle><path class=\"mark\" d=\"M7 12.5l3.3 3.3L17.2 8.6\"></path><path class=\"cross\" d=\"M8.5 8.5l7 7M15.5 8.5l-7 7\"></path></svg></span><span class=\"label\">下一次：十二點正，四隻藥</span></li></ol></section>",
+   "stepsText": "下一次：十二點正，四隻藥",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ },
+ {
+  "n": 99,
+  "name": "end",
+  "file": "S2_99_end.png",
+  "dom": {
+   "faceClass": "face",
+   "bodyClass": "",
+   "stageClass": "stage",
+   "heard": "阿寶，我幾時食藥呀？",
+   "caption": "兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。",
+   "captionHtml": "<span class=\"w on\" hidden=\"\">兩</span><span class=\"w on\" hidden=\"\">個</span><span class=\"w on\" hidden=\"\">鐘</span><span class=\"w on\" hidden=\"\">之</span><span class=\"w on\" hidden=\"\">後</span><span class=\"w on\" hidden=\"\">，</span><span class=\"w on\" hidden=\"\">十</span><span class=\"w on\" hidden=\"\">二</span><span class=\"w on\" hidden=\"\">點</span><span class=\"w on\" hidden=\"\">正</span><span class=\"w on\" hidden=\"\">。</span><span class=\"w on\" hidden=\"\">有</span><span class=\"w on\" hidden=\"\">血</span><span class=\"w on\" hidden=\"\">壓</span><span class=\"w on\" hidden=\"\">藥</span><span class=\"w on\" hidden=\"\">、</span><span class=\"w on\" hidden=\"\">糖</span><span class=\"w on\" hidden=\"\">尿</span><span class=\"w on\" hidden=\"\">藥</span><span class=\"w on\" hidden=\"\">、</span><span class=\"w on\" hidden=\"\">膽</span><span class=\"w on\" hidden=\"\">固</span><span class=\"w on\" hidden=\"\">醇</span><span class=\"w on\" hidden=\"\">藥</span><span class=\"w on\" hidden=\"\">，</span><span class=\"w on\" hidden=\"\">同</span><span class=\"w on\" hidden=\"\">埋</span><span class=\"w on\" hidden=\"\">薄</span><span class=\"w on\" hidden=\"\">血</span><span class=\"w on\" hidden=\"\">丸</span><span class=\"w on\" hidden=\"\">。</span><span class=\"w on\">到</span><span class=\"w on\">時</span><span class=\"w on\">我</span><span class=\"w on\">會</span><span class=\"w on\">提</span><span class=\"w on\">你</span><span class=\"w on\">㗎</span><span class=\"w on\">。</span>",
+   "cards": [
+    {
+     "id": "next_dose",
+     "cls": "chip on",
+     "text": "⏰ 12:00 食藥 兩個鐘之後",
+     "html": "<span class=\"icon\">⏰</span><span><span class=\"lbl\">12:00 食藥</span> <small>兩個鐘之後</small></span>"
+    },
+    {
+     "id": "med_bp",
+     "cls": "chip on",
+     "text": "血壓藥 Amlodipine 5 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F4C95D\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">血壓藥</span> <small>Amlodipine 5 mg</small></span>"
+    },
+    {
+     "id": "med_dm",
+     "cls": "chip on",
+     "text": "糖尿藥 Metformin 500 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F7F4EF\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">糖尿藥</span> <small>Metformin 500 mg</small></span>"
+    },
+    {
+     "id": "med_chol",
+     "cls": "chip on",
+     "text": "膽固醇藥 Atorvastatin 20 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#F7F4EF\"></i><i style=\"background:#EFA3BA\"></i></span><span><span class=\"lbl\">膽固醇藥</span> <small>Atorvastatin 20 mg</small></span>"
+    },
+    {
+     "id": "med_asp",
+     "cls": "chip on",
+     "text": "薄血丸 Aspirin 80 mg",
+     "html": "<span class=\"pill\"><i style=\"background:#EFA3BA\"></i><i style=\"background:#F7F4EF\"></i></span><span><span class=\"lbl\">薄血丸</span> <small>Aspirin 80 mg</small></span>"
+    }
+   ],
+   "stepsHtml": "",
+   "stepsText": "",
+   "ok": {
+    "visible": false,
+    "cls": "okbtn",
+    "text": "我冇事",
+    "w": 214,
+    "h": 87
+   },
+   "offline": {
+    "cls": "offline",
+    "visible": false
+   },
+   "vw": 1180,
+   "vh": 820
+  }
+ }
+]

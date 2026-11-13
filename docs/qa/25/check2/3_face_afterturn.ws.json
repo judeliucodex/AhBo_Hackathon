@@ -1,0 +1,931 @@
+[
+ {
+  "t": 7932,
+  "wall": 1794421747937,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXW70FJCC8RC6NJ6K9341",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 7933,
+  "wall": 1794421747939,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXW73JBG7RXE03QV9JPD0",
+   "type": "ack",
+   "ref": "01M75XXW70FJCC8RC6NJ6K9341",
+   "ok": true
+  }
+ },
+ {
+  "t": 7935,
+  "wall": 1794421747941,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXW70FJCC8RC6NJ6K9343",
+   "type": "wake.enable",
+   "priority": 1,
+   "on": true
+  }
+ },
+ {
+  "t": 7937,
+  "wall": 1794421747942,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXW76N41694QF1B352M51",
+   "type": "ack",
+   "ref": "01M75XXW70FJCC8RC6NJ6K9343",
+   "ok": true
+  }
+ },
+ {
+  "t": 8235,
+  "wall": 1794421748241,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXWGEGSTAKMN5M4TT6BVC",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 8236,
+  "wall": 1794421748242,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWGJA789E79QHXSAZVAR",
+   "type": "ack",
+   "ref": "01M75XXWGEGSTAKMN5M4TT6BVC",
+   "ok": true
+  }
+ },
+ {
+  "t": 8237,
+  "wall": 1794421748243,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXWGEGSTAKMN5M4TT6BVD",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "mood",
+    "mood": "alarm"
+   }
+  }
+ },
+ {
+  "t": 8238,
+  "wall": 1794421748244,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWGMV021ZCEQ775EPEEM",
+   "type": "ack",
+   "ref": "01M75XXWGEGSTAKMN5M4TT6BVD",
+   "ok": true
+  }
+ },
+ {
+  "t": 8239,
+  "wall": 1794421748245,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXWGEGSTAKMN5M4TT6BVE",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "incident",
+     "kind": "incident",
+     "label": "偵測到跌倒",
+     "small": "感應器：急速下跌",
+     "persistent": true
+    }
+   }
+  }
+ },
+ {
+  "t": 8240,
+  "wall": 1794421748246,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWGPCQH9F6ACYP7TVKXK",
+   "type": "ack",
+   "ref": "01M75XXWGEGSTAKMN5M4TT6BVE",
+   "ok": true
+  }
+ },
+ {
+  "t": 8242,
+  "wall": 1794421748248,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXWGEGSTAKMN5M4TT6BVF",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F1",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F1_0"
+  }
+ },
+ {
+  "t": 8243,
+  "wall": 1794421748249,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWGSMBWTKXAFJB1VWXK2",
+   "type": "ack",
+   "ref": "01M75XXWGEGSTAKMN5M4TT6BVF",
+   "ok": true
+  }
+ },
+ {
+  "t": 8247,
+  "wall": 1794421748252,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXWGEGSTAKMN5M4TT6BVH",
+   "type": "capture_photo",
+   "priority": 0,
+   "incident_id": "inc_01M75XXWGEGSTAKMN5M4TT6BVA"
+  }
+ },
+ {
+  "t": 8250,
+  "wall": 1794421748256,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWH0AA7X8V49XET0GGF1",
+   "type": "ack",
+   "ref": "01M75XXWGEGSTAKMN5M4TT6BVH",
+   "ok": true
+  }
+ },
+ {
+  "t": 8253,
+  "wall": 1794421748259,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXWGEGSTAKMN5M4TT6BVJ",
+   "type": "wake.enable",
+   "priority": 0,
+   "on": false
+  }
+ },
+ {
+  "t": 8254,
+  "wall": 1794421748260,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWH4RDDZBX1J7ZKRF1DE",
+   "type": "ack",
+   "ref": "01M75XXWGEGSTAKMN5M4TT6BVJ",
+   "ok": true
+  }
+ },
+ {
+  "t": 8382,
+  "wall": 1794421748387,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXWN3GVN8DJBB4KGG0H28",
+   "type": "photo_uploaded",
+   "photo_id": "ph_01M75XXWM9GKANX842YD79JCWC",
+   "incident_id": "inc_01M75XXWGEGSTAKMN5M4TT6BVA"
+  }
+ },
+ {
+  "t": 10172,
+  "wall": 1794421750177,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXYD1RSDWZWPWMQV1TBJN",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 10993,
+  "wall": 1794421750998,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXZ6PM7MGKCWJVCN66EFV",
+   "type": "playback_done",
+   "clip_id": "F1",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F1_0"
+  }
+ },
+ {
+  "t": 10994,
+  "wall": 1794421751000,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXZ6R5VZ2J3JDRJ56Z9Z5",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F1_0"
+   }
+  }
+ },
+ {
+  "t": 11000,
+  "wall": 1794421751006,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXZ6QZEYAWNEXVS6P3AAC",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "flash"
+   }
+  }
+ },
+ {
+  "t": 11002,
+  "wall": 1794421751008,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXZ70MGW9DAK8HGG0AYSD",
+   "type": "ack",
+   "ref": "01M75XXZ6QZEYAWNEXVS6P3AAC",
+   "ok": true
+  }
+ },
+ {
+  "t": 11003,
+  "wall": 1794421751009,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXZ6RTK93S6J34WYXQMVE",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "fall",
+     "title": "跌倒處理",
+     "steps": [
+      {
+       "id": "photo",
+       "label": "分析緊相片…",
+       "doneLabel": "相片已送出",
+       "state": "active"
+      },
+      {
+       "id": "ask",
+       "label": "等婆婆回應",
+       "doneLabel": "婆婆話冇事",
+       "state": "pending"
+      },
+      {
+       "id": "call",
+       "label": "致電阿珍",
+       "doneLabel": "已致電阿珍",
+       "state": "pending"
+      },
+      {
+       "id": "tell",
+       "label": "通知阿珍",
+       "doneLabel": "已通知阿珍",
+       "state": "pending"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 11005,
+  "wall": 1794421751011,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXZ7331C3VBQYRTAE0E5R",
+   "type": "ack",
+   "ref": "01M75XXZ6RTK93S6J34WYXQMVE",
+   "ok": true
+  }
+ },
+ {
+  "t": 11006,
+  "wall": 1794421751012,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XXZ6RTK93S6J34WYXQMVF",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F2",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F2_1"
+  }
+ },
+ {
+  "t": 11006,
+  "wall": 1794421751012,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XXZ74SJM8XCRG8N8HC3GQ",
+   "type": "ack",
+   "ref": "01M75XXZ6RTK93S6J34WYXQMVF",
+   "ok": true
+  }
+ },
+ {
+  "t": 12943,
+  "wall": 1794421752948,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY13MXXWPXC45TSH7Y3CY",
+   "type": "playback_done",
+   "clip_id": "F2",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F2_1"
+  }
+ },
+ {
+  "t": 12945,
+  "wall": 1794421752950,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY13P2FXB0HYZEJ1RDHE9",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F2_1"
+   }
+  }
+ },
+ {
+  "t": 12951,
+  "wall": 1794421752957,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY13Q7YE6RJ82P41NV4RW",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "photo",
+    "state": "done",
+    "label": "可能有人跌咗喺地下"
+   }
+  }
+ },
+ {
+  "t": 12953,
+  "wall": 1794421752959,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY13ZPZRKJTPS4V4AA3MZ",
+   "type": "ack",
+   "ref": "01M75XY13Q7YE6RJ82P41NV4RW",
+   "ok": true
+  }
+ },
+ {
+  "t": 12955,
+  "wall": 1794421752960,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY13Q7YE6RJ82P41NV4RX",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "ask",
+    "state": "active"
+   }
+  }
+ },
+ {
+  "t": 12955,
+  "wall": 1794421752961,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY141WDHQR89ZN2PFVND9",
+   "type": "ack",
+   "ref": "01M75XY13Q7YE6RJ82P41NV4RX",
+   "ok": true
+  }
+ },
+ {
+  "t": 12956,
+  "wall": 1794421752961,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY13Q7YE6RJ82P41NV4RY",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F3",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F3_2"
+  }
+ },
+ {
+  "t": 12956,
+  "wall": 1794421752962,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY142B178R135H973EF3B",
+   "type": "ack",
+   "ref": "01M75XY13Q7YE6RJ82P41NV4RY",
+   "ok": true
+  }
+ },
+ {
+  "t": 12958,
+  "wall": 1794421752963,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY13Q7YE6RJ82P41NV4S1",
+   "type": "session.open",
+   "priority": 0,
+   "reason": "fall_check",
+   "mode": "kernel_listen",
+   "session_id": "sess_01M75XY13Q7YE6RJ82P41NV4S0",
+   "text_only": true
+  }
+ },
+ {
+  "t": 12958,
+  "wall": 1794421752964,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY144V24MGJYMN3NPSDX6",
+   "type": "ack",
+   "ref": "01M75XY13Q7YE6RJ82P41NV4S1",
+   "ok": true
+  }
+ },
+ {
+  "t": 12959,
+  "wall": 1794421752965,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY13Q7YE6RJ82P41NV4S3",
+   "type": "wake.enable",
+   "priority": 0,
+   "on": false
+  }
+ },
+ {
+  "t": 12960,
+  "wall": 1794421752966,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY146DRD7PSHYV1G3BSWG",
+   "type": "ack",
+   "ref": "01M75XY13Q7YE6RJ82P41NV4S3",
+   "ok": true
+  }
+ },
+ {
+  "t": 16593,
+  "wall": 1794421756598,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY4NPFJ5KFJ294W9SSXK1",
+   "type": "playback_done",
+   "clip_id": "F3",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F3_2"
+  }
+ },
+ {
+  "t": 16600,
+  "wall": 1794421756606,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY4NYPBKE96TXJBJ3G26S",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F3_2"
+   }
+  }
+ },
+ {
+  "t": 16600,
+  "wall": 1794421756606,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY4NQYTYBVFP55TTP1AEW",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "ok_button",
+    "show": true
+   }
+  }
+ },
+ {
+  "t": 16601,
+  "wall": 1794421756607,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY4NZST6FCNJE5JP3ACV2",
+   "type": "ack",
+   "ref": "01M75XY4NQYTYBVFP55TTP1AEW",
+   "ok": true
+  }
+ },
+ {
+  "t": 16602,
+  "wall": 1794421756607,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY4NQYTYBVFP55TTP1AEX",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "countdown",
+    "id": "fall_cd",
+    "n": 5
+   }
+  }
+ },
+ {
+  "t": 16603,
+  "wall": 1794421756609,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY4P1MQ0CV3RW3SM0BPGH",
+   "type": "ack",
+   "ref": "01M75XY4NQYTYBVFP55TTP1AEX",
+   "ok": true
+  }
+ },
+ {
+  "t": 16603,
+  "wall": 1794421756609,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY4NQYTYBVFP55TTP1AEZ",
+   "type": "wake.enable",
+   "priority": 0,
+   "on": false
+  }
+ },
+ {
+  "t": 16605,
+  "wall": 1794421756610,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY4P2TW6A6XT473WS2V1Y",
+   "type": "ack",
+   "ref": "01M75XY4NQYTYBVFP55TTP1AEZ",
+   "ok": true
+  }
+ },
+ {
+  "t": 17413,
+  "wall": 1794421757418,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FAJZ1ZXXASGC8Q52YT",
+   "type": "touch_ok"
+  }
+ },
+ {
+  "t": 17418,
+  "wall": 1794421757423,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEE",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "ok_button",
+    "show": false
+   }
+  }
+ },
+ {
+  "t": 17419,
+  "wall": 1794421757424,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FGTMQMW000768048G0",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEE",
+   "ok": true
+  }
+ },
+ {
+  "t": 17419,
+  "wall": 1794421757425,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEF",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "ask",
+    "state": "failed",
+    "label": "相片見到可能跌親"
+   }
+  }
+ },
+ {
+  "t": 17420,
+  "wall": 1794421757425,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FHH5HTM9F7TQWY2MER",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEF",
+   "ok": true
+  }
+ },
+ {
+  "t": 17420,
+  "wall": 1794421757426,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEG",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "call",
+    "state": "active",
+    "label": "致電阿珍"
+   }
+  }
+ },
+ {
+  "t": 17421,
+  "wall": 1794421757427,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FKFJ9ETBZ324B84XJ4",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEG",
+   "ok": true
+  }
+ },
+ {
+  "t": 17423,
+  "wall": 1794421757428,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEH",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "tell",
+    "state": "active"
+   }
+  }
+ },
+ {
+  "t": 17423,
+  "wall": 1794421757429,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FNFXF58XMNQ9RZB5V9",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEH",
+   "ok": true
+  }
+ },
+ {
+  "t": 17424,
+  "wall": 1794421757430,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEJ",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "esc_call",
+     "kind": "action",
+     "label": "致電阿珍",
+     "small": "已致電",
+     "when": "打電話"
+    }
+   }
+  }
+ },
+ {
+  "t": 17425,
+  "wall": 1794421757430,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FP6C14QPRKNG2EVK01",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEJ",
+   "ok": true
+  }
+ },
+ {
+  "t": 17425,
+  "wall": 1794421757431,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEK",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "esc_tell",
+     "kind": "message",
+     "label": "已通知阿珍",
+     "small": "訊息已送出",
+     "when": "阿珍"
+    }
+   }
+  }
+ },
+ {
+  "t": 17426,
+  "wall": 1794421757432,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY5FRPSDPHX9S45XRMV4C",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEK",
+   "ok": true
+  }
+ },
+ {
+  "t": 18018,
+  "wall": 1794421758023,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACEQ",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "tell",
+    "state": "done"
+   }
+  }
+ },
+ {
+  "t": 18019,
+  "wall": 1794421758025,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY629T90Y0CZK0HZH3WG5",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACEQ",
+   "ok": true
+  }
+ },
+ {
+  "t": 18021,
+  "wall": 1794421758027,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACER",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "call",
+    "state": "done"
+   }
+  }
+ },
+ {
+  "t": 18022,
+  "wall": 1794421758028,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY62CFFHX2ZS4GK4RFMTM",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACER",
+   "ok": true
+  }
+ },
+ {
+  "t": 18023,
+  "wall": 1794421758029,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XY5FCP4QMHETJRNPRACES",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F4",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F4_3"
+  }
+ },
+ {
+  "t": 18024,
+  "wall": 1794421758029,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY62DD5GVW6BQJ3W666T4",
+   "type": "ack",
+   "ref": "01M75XY5FCP4QMHETJRNPRACES",
+   "ok": true
+  }
+ },
+ {
+  "t": 20171,
+  "wall": 1794421760177,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY85H6JJK3DMJWKA75EXM",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 21609,
+  "wall": 1794421761615,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XY9JFSH23BYDE1EENA3FQ",
+   "type": "face_event",
+   "event": {
+    "type": "countdown_done",
+    "id": "fall_cd"
+   }
+  }
+ },
+ {
+  "t": 23041,
+  "wall": 1794421763046,
+  "dir": "in",
+  "obj": {
+   "id": "01M75XYAZ3P482FP7DBFVAGBQV",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "mood",
+    "mood": "warm"
+   }
+  }
+ },
+ {
+  "t": 23042,
+  "wall": 1794421763048,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XYAZ8QK0AEPNB30T59RCP",
+   "type": "ack",
+   "ref": "01M75XYAZ3P482FP7DBFVAGBQV",
+   "ok": true
+  }
+ },
+ {
+  "t": 23363,
+  "wall": 1794421763369,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XYB99DEV74J2MSJ9E7EJ6",
+   "type": "playback_done",
+   "clip_id": "F4",
+   "say_id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F4_3"
+  }
+ },
+ {
+  "t": 23366,
+  "wall": 1794421763372,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XYB9CKM6T6HJ7FEJAGMAX",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M75XXWGEGSTAKMN5M4TT6BVA_F4_3"
+   }
+  }
+ },
+ {
+  "t": 30172,
+  "wall": 1794421770178,
+  "dir": "out",
+  "obj": {
+   "id": "01M75XYHY2CEJ10BHK25B8EEEA",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ }
+]

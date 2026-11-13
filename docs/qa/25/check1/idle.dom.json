@@ -1,0 +1,24 @@
+{
+ "faceClass": "face",
+ "bodyClass": "",
+ "stageClass": "stage",
+ "heard": "",
+ "caption": "",
+ "captionHtml": "",
+ "cards": [],
+ "stepsHtml": "",
+ "stepsText": "",
+ "ok": {
+  "visible": false,
+  "cls": "okbtn",
+  "text": "我冇事",
+  "w": 214,
+  "h": 87
+ },
+ "offline": {
+  "cls": "offline",
+  "visible": false
+ },
+ "vw": 1180,
+ "vh": 820
+}

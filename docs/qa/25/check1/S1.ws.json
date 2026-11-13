@@ -1,0 +1,535 @@
+[
+ {
+  "t": 2249,
+  "wall": 1794420238871,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTGPKZY80NS0NP561JM2",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 2251,
+  "wall": 1794420238873,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTGS75H6G049KR8S9SXF",
+   "type": "ack",
+   "ref": "01M75WFTGPKZY80NS0NP561JM2",
+   "ok": true
+  }
+ },
+ {
+  "t": 2259,
+  "wall": 1794420238882,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTGPKZY80NS0NP561JM4",
+   "type": "wake.enable",
+   "priority": 1,
+   "on": true
+  }
+ },
+ {
+  "t": 2260,
+  "wall": 1794420238882,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTH2V8WNZXDVCV4TK4RW",
+   "type": "ack",
+   "ref": "01M75WFTGPKZY80NS0NP561JM4",
+   "ok": true
+  }
+ },
+ {
+  "t": 2608,
+  "wall": 1794420239230,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTT3Q1775DFEDS4AXC7W",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "listening"
+   }
+  }
+ },
+ {
+  "t": 2609,
+  "wall": 1794420239231,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTVZQYYBB8HX51EMGAZF",
+   "type": "ack",
+   "ref": "01M75WFTT3Q1775DFEDS4AXC7W",
+   "ok": true
+  }
+ },
+ {
+  "t": 2615,
+  "wall": 1794420239237,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTT3Q1775DFEDS4AXC7X",
+   "type": "session.open",
+   "priority": 2,
+   "reason": "touch",
+   "mode": "companion",
+   "session_id": "sess_01M75WFTT3Q1775DFEDS4AXC7V",
+   "text_only": true
+  }
+ },
+ {
+  "t": 2616,
+  "wall": 1794420239238,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTW68JTFGRNQ3CFNQTVB",
+   "type": "ack",
+   "ref": "01M75WFTT3Q1775DFEDS4AXC7X",
+   "ok": true
+  }
+ },
+ {
+  "t": 2649,
+  "wall": 1794420239271,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTT3Q1775DFEDS4AXC7Z",
+   "type": "wake.enable",
+   "priority": 2,
+   "on": false
+  }
+ },
+ {
+  "t": 2650,
+  "wall": 1794420239272,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTX8F6S1GQQJ295XZFXN",
+   "type": "ack",
+   "ref": "01M75WFTT3Q1775DFEDS4AXC7Z",
+   "ok": true
+  }
+ },
+ {
+  "t": 2653,
+  "wall": 1794420239275,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTVWXYTGZ1CYD7A6887H",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "heard",
+    "text": "阿寶，今日有冇人搵過我呀？",
+    "final": true
+   }
+  }
+ },
+ {
+  "t": 2657,
+  "wall": 1794420239279,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTXFMF97GWPB0H6QM8E5",
+   "type": "ack",
+   "ref": "01M75WFTVWXYTGZ1CYD7A6887H",
+   "ok": true
+  }
+ },
+ {
+  "t": 2663,
+  "wall": 1794420239285,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTVWXYTGZ1CYD7A6887J",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "thinking"
+   }
+  }
+ },
+ {
+  "t": 2668,
+  "wall": 1794420239290,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFTXTH4J80B2BZQPRRENJ",
+   "type": "ack",
+   "ref": "01M75WFTVWXYTGZ1CYD7A6887J",
+   "ok": true
+  }
+ },
+ {
+  "t": 2885,
+  "wall": 1794420239507,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTZA8782D3VDMFBW92NH",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "turn_01M75WFTT4BK2ZAXY7Z1PZYSE9",
+     "steps": [
+      {
+       "id": "list_voice_messages",
+       "label": "檢查緊訊息…",
+       "state": "active"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 2900,
+  "wall": 1794420239522,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFV52QVA31G0MXT5D1J7C",
+   "type": "ack",
+   "ref": "01M75WFTZA8782D3VDMFBW92NH",
+   "ok": true
+  }
+ },
+ {
+  "t": 3455,
+  "wall": 1794420240077,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFTZCN5B7FNYZWDWKNT96",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "step",
+    "group": "turn_01M75WFTT4BK2ZAXY7Z1PZYSE9",
+    "id": "list_voice_messages",
+    "state": "done",
+    "label": "搵到阿珍嘅語音訊息"
+   }
+  }
+ },
+ {
+  "t": 3462,
+  "wall": 1794420240085,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFVPNEJ6HNK5PDA6CJDXG",
+   "type": "ack",
+   "ref": "01M75WFTZCN5B7FNYZWDWKNT96",
+   "ok": true
+  }
+ },
+ {
+  "t": 3468,
+  "wall": 1794420240091,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFV3HNEADYY38PX8TTVFN",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "warm"
+   }
+  }
+ },
+ {
+  "t": 3471,
+  "wall": 1794420240093,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFVPXYF8X8224CWVPV404",
+   "type": "ack",
+   "ref": "01M75WFV3HNEADYY38PX8TTVFN",
+   "ok": true
+  }
+ },
+ {
+  "t": 3505,
+  "wall": 1794420240127,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFV3HNEADYY38PX8TTVFP",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "vn_vm_demo",
+     "kind": "voice_note",
+     "label": "阿珍嘅錄音",
+     "small": "今朝 7:42",
+     "when": "錄音"
+    }
+   }
+  }
+ },
+ {
+  "t": 3521,
+  "wall": 1794420240144,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFVRGVDS0QZVN1V951C5Q",
+   "type": "ack",
+   "ref": "01M75WFV3HNEADYY38PX8TTVFP",
+   "ok": true
+  }
+ },
+ {
+  "t": 3530,
+  "wall": 1794420240152,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFV3HNEADYY38PX8TTVFQ",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_start",
+    "id": "say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23",
+    "text": "有呀！阿珍今朝留咗段錄音俾你，我而家播俾你聽。",
+    "durationSec": 4.42
+   }
+  }
+ },
+ {
+  "t": 3545,
+  "wall": 1794420240167,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFVS7ZNQGR26X4D1WJZBZ",
+   "type": "ack",
+   "ref": "01M75WFV3HNEADYY38PX8TTVFQ",
+   "ok": true
+  }
+ },
+ {
+  "t": 7429,
+  "wall": 1794420244052,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFZJFNGEJAC91T0FRP14T",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_end",
+    "id": "say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23"
+   }
+  }
+ },
+ {
+  "t": 7438,
+  "wall": 1794420244060,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFZJWRRX8Y4FD93KKA3EY",
+   "type": "ack",
+   "ref": "01M75WFZJFNGEJAC91T0FRP14T",
+   "ok": true
+  }
+ },
+ {
+  "t": 7444,
+  "wall": 1794420244067,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFZK3GZ2437RFBE3F4D4P",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23"
+   }
+  }
+ },
+ {
+  "t": 7447,
+  "wall": 1794420244070,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFZJTS5PVR8XW3Q36E2MG",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card_update",
+    "id": "vn_vm_demo",
+    "patch": {
+     "playing": true
+    }
+   }
+  }
+ },
+ {
+  "t": 7450,
+  "wall": 1794420244073,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFZK949GX59WE32AWBPM4",
+   "type": "ack",
+   "ref": "01M75WFZJTS5PVR8XW3Q36E2MG",
+   "ok": true
+  }
+ },
+ {
+  "t": 7469,
+  "wall": 1794420244091,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WFZJTS5PVR8XW3Q36E2MH",
+   "type": "play_voice_message",
+   "priority": 2,
+   "message_id": "vm_demo",
+   "url": "/media/voice/vm_demo",
+   "say_id": "say_vm_demo_1794445205",
+   "from_name": "阿珍",
+   "text": "媽，記得食飯呀！星期日我帶阿明嚟探你。",
+   "duration_s": 3.65
+  }
+ },
+ {
+  "t": 7474,
+  "wall": 1794420244096,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WFZM0G4FETA5ZRDZTTAQ9",
+   "type": "ack",
+   "ref": "01M75WFZJTS5PVR8XW3Q36E2MH",
+   "ok": true
+  }
+ },
+ {
+  "t": 10179,
+  "wall": 1794420246801,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WG28HHGRSZJBQWSNAMEN1",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 11286,
+  "wall": 1794420247908,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WG3B2Q3Q6PY5KKYXEKXQF",
+   "type": "playback_done",
+   "message_id": "vm_demo",
+   "say_id": "say_vm_demo_1794445205"
+  }
+ },
+ {
+  "t": 11292,
+  "wall": 1794420247915,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WG3BB3JZ29VDVTH2XY3T8",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_vm_demo_1794445205"
+   }
+  }
+ },
+ {
+  "t": 11313,
+  "wall": 1794420247935,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WG3B9BFMKFJHP20VCPAK4",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card_update",
+    "id": "vn_vm_demo",
+    "patch": {
+     "playing": false
+    }
+   }
+  }
+ },
+ {
+  "t": 11316,
+  "wall": 1794420247938,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WG3C2TH3REWXJ5ZW98BXH",
+   "type": "ack",
+   "ref": "01M75WG3B9BFMKFJHP20VCPAK4",
+   "ok": true
+  }
+ },
+ {
+  "t": 11323,
+  "wall": 1794420247946,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WG3C04NZCK40145BB0ZDS",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "idle"
+   }
+  }
+ },
+ {
+  "t": 11331,
+  "wall": 1794420247953,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WG3CHXH18DG1X3MV04TR5",
+   "type": "ack",
+   "ref": "01M75WG3C04NZCK40145BB0ZDS",
+   "ok": true
+  }
+ },
+ {
+  "t": 15316,
+  "wall": 1794420251939,
+  "dir": "in",
+  "obj": {
+   "id": "01M75WG791GSDTGXD4MYB3GSCQ",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps_clear",
+    "group": "turn_01M75WFTT4BK2ZAXY7Z1PZYSE9"
+   }
+  }
+ },
+ {
+  "t": 15317,
+  "wall": 1794420251940,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WG794Z2E8298YH716RK7Y",
+   "type": "ack",
+   "ref": "01M75WG791GSDTGXD4MYB3GSCQ",
+   "ok": true
+  }
+ },
+ {
+  "t": 20179,
+  "wall": 1794420256801,
+  "dir": "out",
+  "obj": {
+   "id": "01M75WGC112FKKR9NJ3PEEZN5P",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ }
+]

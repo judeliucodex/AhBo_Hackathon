@@ -1,0 +1,32 @@
+
+=== hkid: http://ahbo-qa25-api:8000/mock-centre/?variant=hkid ===
+request_action: {"ok": true, "action_id": "act_01M76JPBD9J2EXZ5JTX528W1MQ", "question": "我幫你報名下晝三點嘅粵曲班，好唔好呀？"}
+stored details.url: http://ahbo-qa25-api:8000/mock-centre/
+pinned details.url in my throwaway DB (same technique as brain/tests/actions/test_playwright_integration.py)
+confirm_action: {"ok": true, "status": "running", "action_id": "act_01M76JPBD9J2EXZ5JTX528W1MQ"}
+final state after 2.5s: needs_human
+result: {"status":"needs_human","detail":{"reason":"forbidden_field","forbidden":["身份證號碼*"],"unknown_required":[]}}
+screenshots: ["/tmp/qa/media/actions/act_01M76JPBD9J2EXZ5JTX528W1MQ/blocked.png"]
+outbox: telegram HANDOFF c_chun | "🤝【交接】\n王婆婆想報名粵曲班（15:00 秀茂坪長者中心（示範）），阿寶未能自動完成，請你幫手：http://ahbo-qa25-api:8000/mock-centre/\n已準備資料：{}" | screenshots: ['/tmp/qa/media/actions/act_01M76JPBD9J2EXZ5JTX528W1MQ/blocked.png'] | buttons: []
+
+=== captcha: http://ahbo-qa25-api:8000/mock-centre/?variant=captcha ===
+request_action: {"ok": true, "action_id": "act_01M76JPFB1S7YV98C561KNW8AC", "question": "我幫你報名下晝三點嘅粵曲班，好唔好呀？"}
+stored details.url: http://ahbo-qa25-api:8000/mock-centre/
+pinned details.url in my throwaway DB (same technique as brain/tests/actions/test_playwright_integration.py)
+confirm_action: {"ok": true, "status": "running", "action_id": "act_01M76JPFB1S7YV98C561KNW8AC"}
+final state after 1.5s: needs_human
+result: {"status":"needs_human","detail":{"reason":"captcha"}}
+screenshots: ["/tmp/qa/media/actions/act_01M76JPFB1S7YV98C561KNW8AC/hard_stop.png"]
+outbox: telegram HANDOFF c_chun | "🤝【交接】\n王婆婆想報名粵曲班（15:00 秀茂坪長者中心（示範）），阿寶未能自動完成，請你幫手：http://ahbo-qa25-api:8000/mock-centre/\n已準備資料：{}" | screenshots: ['/tmp/qa/media/actions/act_01M76JPFB1S7YV98C561KNW8AC/hard_stop.png'] | buttons: []
+
+=== evil: http://example.com/signup ===
+request_action: {"ok": true, "action_id": "act_01M76JPJ99KH1P93XHGE3WGXX9", "question": "我幫你報名下晝三點嘅粵曲班，好唔好呀？"}
+stored details.url: http://ahbo-qa25-api:8000/mock-centre/
+pinned details.url in my throwaway DB (same technique as brain/tests/actions/test_playwright_integration.py)
+confirm_action: {"ok": true, "status": "running", "action_id": "act_01M76JPJ99KH1P93XHGE3WGXX9"}
+final state after 0.5s: needs_human
+result: {"status":"needs_human","detail":{"reason":"domain_not_allowed","url":"http://example.com/signup"}}
+screenshots: []
+outbox: telegram HANDOFF c_chun | "🤝【交接】\n王婆婆想報名粵曲班（15:00 秀茂坪長者中心（示範）），阿寶未能自動完成，請你幫手：http://ahbo-qa25-api:8000/mock-centre/\n已準備資料：{}" | screenshots: [] | buttons: []
+
+mock_registrations: [{'reference': 'DEMO-0423', 'name_zh': '王婆婆', 'activity_id': 'act_opera_1500'}, {'reference': 'DEMO-0424', 'name_zh': '王婆婆', 'activity_id': 'act_opera_1500'}, {'reference': 'DEMO-0425', 'name_zh': '王婆婆', 'activity_id': 'act_opera_1500'}, {'reference': 'DEMO-0426', 'name_zh': '王婆婆', 'activity_id': 'act_opera_1500'}]

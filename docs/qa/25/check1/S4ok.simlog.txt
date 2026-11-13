@@ -1,0 +1,400 @@
+18:04:04  ← ui {"type":"say_end","id":"say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23"}
+18:04:04  face {"type":"say_end","id":"say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23"}
+18:04:04  → ack
+18:04:04  event {"type":"say_done","id":"say_turn_01M75WFTT4BK2ZAXY7Z1PZYSE9_23"}
+18:04:04  → face_event
+18:04:04  ← ui {"type":"card_update","id":"vn_vm_demo","patch":{"playing":true}}
+18:04:04  face {"type":"card_update","id":"vn_vm_demo","patch":{"playing":true}}
+18:04:04  → ack
+18:04:04  ← play_voice_message
+18:04:04  → ack
+18:04:04  face {"type":"say_start","id":"say_vm_demo_1794445205","from":"family","fromName":"阿珍","text":"媽，記得食飯呀！星期日我帶阿明嚟探你。","durationSec":3.65}
+18:04:06  → heartbeat
+18:04:07  face {"type":"say_end","id":"say_vm_demo_1794445205"}
+18:04:07  → playback_done
+18:04:07  event {"type":"say_done","id":"say_vm_demo_1794445205"}
+18:04:07  → face_event
+18:04:07  ← ui {"type":"card_update","id":"vn_vm_demo","patch":{"playing":false}}
+18:04:07  face {"type":"card_update","id":"vn_vm_demo","patch":{"playing":false}}
+18:04:07  → ack
+18:04:07  ← ui {"type":"mood","mood":"idle"}
+18:04:07  face {"type":"mood","mood":"idle"}
+18:04:07  → ack
+18:04:11  ← ui {"type":"steps_clear","group":"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9"}
+18:04:11  face {"type":"steps_clear","group":"turn_01M75WFTT4BK2ZAXY7Z1PZYSE9"}
+18:04:11  → ack
+18:04:16  → heartbeat
+18:04:21  ← ui {"type":"reset"}
+18:04:21  face {"type":"reset"}
+18:04:21  → ack
+18:04:21  ← wake.enable
+18:04:21  wake enabled (wake_engine is none: touch only)
+18:04:21  → ack
+18:04:21  ← ui {"type":"mood","mood":"listening"}
+18:04:21  face {"type":"mood","mood":"listening"}
+18:04:21  → ack
+18:04:21  ← session.open
+18:04:21  → ack
+18:04:21  ← wake.enable
+18:04:21  wake disabled (wake_engine is none: touch only)
+18:04:21  → ack
+18:04:21  ← ui {"type":"heard","text":"阿寶，我幾時食藥呀？","final":true}
+18:04:21  face {"type":"heard","text":"阿寶，我幾時食藥呀？","final":true}
+18:04:21  → ack
+18:04:21  ← ui {"type":"mood","mood":"thinking"}
+18:04:21  face {"type":"mood","mood":"thinking"}
+18:04:21  → ack
+18:04:21  ← ui {"type":"steps","group":{"id":"turn_01M75WGGPY5BHDE1VD5XQP639S","steps":[{"id":"get_med_status","label":"查緊藥物時間表…","state":"active"}]}}
+18:04:21  face {"type":"steps","group":{"id":"turn_01M75WGGPY5BHDE1VD5XQP639S","steps":[{"id":"get_med_status","label":"查緊藥物時間表…","state":"active"}]}}
+18:04:21  → ack
+18:04:22  ← ui {"type":"step","group":"turn_01M75WGGPY5BHDE1VD5XQP639S","id":"get_med_status","state":"done","label":"下一次：十二點正，四隻藥"}
+18:04:22  face {"type":"step","group":"turn_01M75WGGPY5BHDE1VD5XQP639S","id":"get_med_status","state":"done","label":"下一次：十二點正，四隻藥"}
+18:04:22  → ack
+18:04:22  ← ui {"type":"mood","mood":"idle"}
+18:04:22  face {"type":"mood","mood":"idle"}
+18:04:22  → ack
+18:04:22  ← ui {"type":"card","card":{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"兩個鐘之後","when":"十二點正"}}
+18:04:22  face {"type":"card","card":{"id":"next_dose","kind":"event","icon":"⏰","label":"12:00 食藥","small":"兩個鐘之後","when":"十二點正"}}
+18:04:22  → ack
+18:04:22  ← ui {"type":"card","card":{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"}}
+18:04:22  face {"type":"card","card":{"id":"med_bp","kind":"med","label":"血壓藥","small":"Amlodipine 5 mg","pill":["--pill-b","--pill-a"],"when":"血壓藥"}}
+18:04:22  → ack
+18:04:22  ← ui {"type":"card","card":{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"}}
+18:04:22  face {"type":"card","card":{"id":"med_dm","kind":"med","label":"糖尿藥","small":"Metformin 500 mg","pill":["--pill-a","--pill-a"],"when":"糖尿藥"}}
+18:04:22  → ack
+18:04:22  ← ui {"type":"card","card":{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"}}
+18:04:22  face {"type":"card","card":{"id":"med_chol","kind":"med","label":"膽固醇藥","small":"Atorvastatin 20 mg","pill":["--pill-a","--pill-c"],"when":"膽固醇藥"}}
+18:04:22  → ack
+18:04:22  ← ui {"type":"card","card":{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}}
+18:04:22  face {"type":"card","card":{"id":"med_asp","kind":"med","label":"薄血丸","small":"Aspirin 80 mg","pill":["--pill-c","--pill-a"],"when":"薄血丸"}}
+18:04:22  → ack
+18:04:22  ← ui {"type":"say_start","id":"say_turn_01M75WGGPY5BHDE1VD5XQP639S_39","text":"兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。","durationSec":7.5}
+18:04:22  face {"type":"say_start","id":"say_turn_01M75WGGPY5BHDE1VD5XQP639S_39","text":"兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。","durationSec":7.5}
+18:04:22  → ack
+18:04:26  → heartbeat
+18:04:29  ← ui {"type":"say_end","id":"say_turn_01M75WGGPY5BHDE1VD5XQP639S_39"}
+18:04:29  face {"type":"say_end","id":"say_turn_01M75WGGPY5BHDE1VD5XQP639S_39"}
+18:04:29  → ack
+18:04:29  event {"type":"say_done","id":"say_turn_01M75WGGPY5BHDE1VD5XQP639S_39"}
+18:04:29  → face_event
+18:04:33  ← ui {"type":"steps_clear","group":"turn_01M75WGGPY5BHDE1VD5XQP639S"}
+18:04:33  face {"type":"steps_clear","group":"turn_01M75WGGPY5BHDE1VD5XQP639S"}
+18:04:33  → ack
+18:04:36  → heartbeat
+18:04:42  ← ui {"type":"reset"}
+18:04:42  face {"type":"reset"}
+18:04:42  → ack
+18:04:42  ← wake.enable
+18:04:42  wake enabled (wake_engine is none: touch only)
+18:04:42  → ack
+18:04:43  ← ui {"type":"mood","mood":"listening"}
+18:04:43  face {"type":"mood","mood":"listening"}
+18:04:43  → ack
+18:04:43  ← session.open
+18:04:43  → ack
+18:04:43  ← wake.enable
+18:04:43  wake disabled (wake_engine is none: touch only)
+18:04:43  → ack
+18:04:43  ← ui {"type":"heard","text":"阿寶，我今日有咩安排呀？","final":true}
+18:04:43  face {"type":"heard","text":"阿寶，我今日有咩安排呀？","final":true}
+18:04:43  → ack
+18:04:43  ← ui {"type":"mood","mood":"thinking"}
+18:04:43  face {"type":"mood","mood":"thinking"}
+18:04:43  → ack
+18:04:43  ← ui {"type":"steps","group":{"id":"turn_01M75WH5M4JEJQYX6FB9561073","steps":[{"id":"list_events","label":"睇緊今日日程…","state":"active"},{"id":"get_route","label":"查緊去聯合醫院嘅巴士路線…","state":"pending"}]}}
+18:04:43  face {"type":"steps","group":{"id":"turn_01M75WH5M4JEJQYX6FB9561073","steps":[{"id":"list_events","label":"睇緊今日日程…","state":"active"},{"id":"get_route","label":"查緊去聯合醫院嘅巴士路線…","state":"pending"}]}}
+18:04:43  → ack
+18:04:43  ← ui {"type":"step","group":"turn_01M75WH5M4JEJQYX6FB9561073","id":"list_events","state":"done","label":"今日有兩個約會"}
+18:04:43  face {"type":"step","group":"turn_01M75WH5M4JEJQYX6FB9561073","id":"list_events","state":"done","label":"今日有兩個約會"}
+18:04:43  → ack
+18:04:43  ← ui {"type":"step","group":"turn_01M75WH5M4JEJQYX6FB9561073","id":"get_route","state":"active"}
+18:04:43  face {"type":"step","group":"turn_01M75WH5M4JEJQYX6FB9561073","id":"get_route","state":"active"}
+18:04:43  → ack
+18:04:44  ← ui {"type":"step","group":"turn_01M75WH5M4JEJQYX6FB9561073","id":"get_route","state":"done","label":"路線已查好"}
+18:04:44  face {"type":"step","group":"turn_01M75WH5M4JEJQYX6FB9561073","id":"get_route","state":"done","label":"路線已查好"}
+18:04:44  → ack
+18:04:44  ← ui {"type":"mood","mood":"idle"}
+18:04:44  face {"type":"mood","mood":"idle"}
+18:04:44  → ack
+18:04:44  ← ui {"type":"card","card":{"id":"ev_cal_01M75WH5AA9TK55Z4AGYYT1ZQ1","kind":"event","label":"10:30 覆診","small":"聯合醫院","icon":"🏥","when":"十點半"}}
+18:04:44  face {"type":"card","card":{"id":"ev_cal_01M75WH5AA9TK55Z4AGYYT1ZQ1","kind":"event","label":"10:30 覆診","small":"聯合醫院","icon":"🏥","when":"十點半"}}
+18:04:44  → ack
+18:04:44  ← ui {"type":"card","card":{"id":"ev_cal_01M75WH5AA9TK55Z4AGYYT1ZQ0","kind":"plan","label":"9:30 出門","small":"樓下巴士站","when":"九點半"}}
+18:04:44  face {"type":"card","card":{"id":"ev_cal_01M75WH5AA9TK55Z4AGYYT1ZQ0","kind":"plan","label":"9:30 出門","small":"樓下巴士站","when":"九點半"}}
+18:04:44  → ack
+18:04:44  ← ui {"type":"card","card":{"id":"ev_cal_01M75WH5AA9TK55Z4AGYYT1ZQ2","kind":"event","label":"12:30 同阿珍飲茶","small":"觀塘","icon":"🍵","when":"十二點半"}}
+18:04:44  face {"type":"card","card":{"id":"ev_cal_01M75WH5AA9TK55Z4AGYYT1ZQ2","kind":"event","label":"12:30 同阿珍飲茶","small":"觀塘","icon":"🍵","when":"十二點半"}}
+18:04:44  → ack
+18:04:44  ← ui {"type":"say_start","id":"say_turn_01M75WH5M4JEJQYX6FB9561073_43","text":"十點半你要去聯合醫院覆診，我已經查好路線，九點半喺樓下搭巴士就得。十二點半同阿珍飲茶。","durationSec":8.27}
+18:04:44  face {"type":"say_start","id":"say_turn_01M75WH5M4JEJQYX6FB9561073_43","text":"十點半你要去聯合醫院覆診，我已經查好路線，九點半喺樓下搭巴士就得。十二點半同阿珍飲茶。","durationSec":8.27}
+18:04:44  → ack
+18:04:46  → heartbeat
+18:04:51  ← ui {"type":"say_end","id":"say_turn_01M75WH5M4JEJQYX6FB9561073_43"}
+18:04:51  face {"type":"say_end","id":"say_turn_01M75WH5M4JEJQYX6FB9561073_43"}
+18:04:51  → ack
+18:04:51  event {"type":"say_done","id":"say_turn_01M75WH5M4JEJQYX6FB9561073_43"}
+18:04:51  → face_event
+18:04:52  ← ui {"type":"mood","mood":"listening"}
+18:04:52  face {"type":"mood","mood":"listening"}
+18:04:52  → ack
+18:04:52  ← ui {"type":"heard","text":"咁我下晝好悶喎……","final":true}
+18:04:52  face {"type":"heard","text":"咁我下晝好悶喎……","final":true}
+18:04:52  → ack
+18:04:52  ← ui {"type":"steps_clear","group":"turn_01M75WH5M4JEJQYX6FB9561073"}
+18:04:52  face {"type":"steps_clear","group":"turn_01M75WH5M4JEJQYX6FB9561073"}
+18:04:52  → ack
+18:04:52  ← ui {"type":"card_clear"}
+18:04:52  face {"type":"card_clear"}
+18:04:52  → ack
+18:04:52  ← ui {"type":"mood","mood":"thinking"}
+18:04:52  face {"type":"mood","mood":"thinking"}
+18:04:52  → ack
+18:04:52  ← ui {"type":"steps","group":{"id":"turn_01M75WHENYJ27AWM90747HVGF3","steps":[{"id":"find_local_activities","label":"搜尋緊附近長者活動…","state":"active"},{"id":"check_activity_logistics","label":"檢查緊時間同交通…","state":"pending"}]}}
+18:04:52  face {"type":"steps","group":{"id":"turn_01M75WHENYJ27AWM90747HVGF3","steps":[{"id":"find_local_activities","label":"搜尋緊附近長者活動…","state":"active"},{"id":"check_activity_logistics","label":"檢查緊時間同交通…","state":"pending"}]}}
+18:04:52  → ack
+18:04:52  ← ui {"type":"step","group":"turn_01M75WHENYJ27AWM90747HVGF3","id":"find_local_activities","state":"done","label":"搵到：三點粵曲班"}
+18:04:52  face {"type":"step","group":"turn_01M75WHENYJ27AWM90747HVGF3","id":"find_local_activities","state":"done","label":"搵到：三點粵曲班"}
+18:04:52  → ack
+18:04:52  ← ui {"type":"step","group":"turn_01M75WHENYJ27AWM90747HVGF3","id":"check_activity_logistics","state":"active"}
+18:04:52  face {"type":"step","group":"turn_01M75WHENYJ27AWM90747HVGF3","id":"check_activity_logistics","state":"active"}
+18:04:52  → ack
+18:04:53  ← ui {"type":"step","group":"turn_01M75WHENYJ27AWM90747HVGF3","id":"check_activity_logistics","state":"done","label":"下晝得閒，行路十分鐘"}
+18:04:53  face {"type":"step","group":"turn_01M75WHENYJ27AWM90747HVGF3","id":"check_activity_logistics","state":"done","label":"下晝得閒，行路十分鐘"}
+18:04:53  → ack
+18:04:53  ← ui {"type":"mood","mood":"curious"}
+18:04:53  face {"type":"mood","mood":"curious"}
+18:04:53  → ack
+18:04:53  ← ui {"type":"card","card":{"id":"act_act_opera_1500","kind":"activity","icon":"🎤","label":"3:00 粵曲班","small":"長者中心 · 可代報名","when":"粵曲班"}}
+18:04:53  face {"type":"card","card":{"id":"act_act_opera_1500","kind":"activity","icon":"🎤","label":"3:00 粵曲班","small":"長者中心 · 可代報名","when":"粵曲班"}}
+18:04:53  → ack
+18:04:53  ← ui {"type":"say_start","id":"say_turn_01M75WHENYJ27AWM90747HVGF3_35","text":"附近長者中心下晝三點有粵曲班，可以識多啲朋友。想唔想去？我幫你報名吖。","durationSec":6.73}
+18:04:53  face {"type":"say_start","id":"say_turn_01M75WHENYJ27AWM90747HVGF3_35","text":"附近長者中心下晝三點有粵曲班，可以識多啲朋友。想唔想去？我幫你報名吖。","durationSec":6.73}
+18:04:53  → ack
+18:04:56  → heartbeat
+18:04:59  ← ui {"type":"say_end","id":"say_turn_01M75WHENYJ27AWM90747HVGF3_35"}
+18:04:59  face {"type":"say_end","id":"say_turn_01M75WHENYJ27AWM90747HVGF3_35"}
+18:04:59  → ack
+18:04:59  ← ui {"type":"mood","mood":"idle"}
+18:04:59  face {"type":"mood","mood":"idle"}
+18:04:59  → ack
+18:04:59  event {"type":"say_done","id":"say_turn_01M75WHENYJ27AWM90747HVGF3_35"}
+18:04:59  → face_event
+18:05:03  ← ui {"type":"steps_clear","group":"turn_01M75WHENYJ27AWM90747HVGF3"}
+18:05:03  face {"type":"steps_clear","group":"turn_01M75WHENYJ27AWM90747HVGF3"}
+18:05:03  → ack
+18:05:06  → heartbeat
+18:05:13  ← ui {"type":"reset"}
+18:05:13  face {"type":"reset"}
+18:05:13  → ack
+18:05:13  ← wake.enable
+18:05:13  wake enabled (wake_engine is none: touch only)
+18:05:13  → ack
+18:05:13  ← ui {"type":"reset"}
+18:05:13  face {"type":"reset"}
+18:05:13  → ack
+18:05:13  ← ui {"type":"mood","mood":"alarm"}
+18:05:13  face {"type":"mood","mood":"alarm"}
+18:05:13  → ack
+18:05:13  ← ui {"type":"card","card":{"id":"incident","kind":"incident","label":"偵測到跌倒","small":"感應器：急速下跌","persistent":true}}
+18:05:13  face {"type":"card","card":{"id":"incident","kind":"incident","label":"偵測到跌倒","small":"感應器：急速下跌","persistent":true}}
+18:05:13  → ack
+18:05:13  ← play_fixed
+18:05:13  → ack
+18:05:13  ← capture_photo
+18:05:13  → ack
+18:05:13  ← wake.enable
+18:05:13  wake disabled (wake_engine is none: touch only)
+18:05:13  → ack
+18:05:13  face {"type":"say_start","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F1_0","text":"哎呀！我感應到你好似跌低咗！","segments":[[0,1,0,0.19],[1,3,0.19,0.38],[3,4,0.57,0.76],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,9,1.52,1.71],[9,10,1.71,1.9],[10,11,1.9,2.09],[11,12,2.09,2.28],[12,14,2.28,2.47]]}
+18:05:13  photo ph_01M75WJ3KS3AN62C6J6V7NMPA6 (placeholder_drawn)
+18:05:13  → photo_uploaded
+18:05:16  face {"type":"say_end","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F1_0"}
+18:05:16  → playback_done
+18:05:16  ← ui {"type":"flash"}
+18:05:16  face {"type":"flash"}
+18:05:16  → ack
+18:05:16  event {"type":"say_done","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F1_0"}
+18:05:16  → face_event
+18:05:16  ← ui {"type":"steps","group":{"id":"fall","title":"跌倒處理","steps":[{"id":"photo","label":"分析緊相片…","doneLabel":"相片已送出","state":"active"},{"id":"ask","label":"等婆婆回應","doneLabel":"婆婆話冇事","state":"pending"},{"id":"call","label":"致電阿珍","doneLabel":"已致電阿珍","state":"pending"},{"id":"tell","label":"通知阿珍","doneLabel":"已通知阿珍","state":"pending"}]}}
+18:05:16  face {"type":"steps","group":{"id":"fall","title":"跌倒處理","steps":[{"id":"photo","label":"分析緊相片…","doneLabel":"相片已送出","state":"active"},{"id":"ask","label":"等婆婆回應","doneLabel":"婆婆話冇事","state":"pending"},{"id":"call","label":"致電阿珍","doneLabel":"已致電阿珍","state":"pending"},{"id":"tell","label":"通知阿珍","doneLabel":"已通知阿珍","state":"pending"}]}}
+18:05:16  → ack
+18:05:16  ← play_fixed
+18:05:16  → ack
+18:05:16  face {"type":"say_start","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F2_1","text":"我而家影張相睇吓先。","segments":[[0,1,0,0.19],[1,2,0.19,0.38],[2,3,0.38,0.57],[3,4,0.57,0.76],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,10,1.52,1.71]]}
+18:05:16  → heartbeat
+18:05:18  face {"type":"say_end","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F2_1"}
+18:05:18  → playback_done
+18:05:18  event {"type":"say_done","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F2_1"}
+18:05:18  → face_event
+18:05:18  ← ui {"type":"step","group":"fall","id":"photo","state":"done","label":"可能有人跌咗喺地下"}
+18:05:18  face {"type":"step","group":"fall","id":"photo","state":"done","label":"可能有人跌咗喺地下"}
+18:05:18  → ack
+18:05:18  ← ui {"type":"step","group":"fall","id":"ask","state":"active"}
+18:05:18  face {"type":"step","group":"fall","id":"ask","state":"active"}
+18:05:18  → ack
+18:05:18  ← play_fixed
+18:05:18  → ack
+18:05:18  ← session.open
+18:05:18  → ack
+18:05:18  ← wake.enable
+18:05:18  wake disabled (wake_engine is none: touch only)
+18:05:18  → ack
+18:05:18  face {"type":"say_start","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F3_2","text":"王婆婆，如果你冇跌親，請講「我冇事」。","segments":[[0,1,0,0.19],[1,2,0.19,0.38],[2,4,0.38,0.57],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,9,1.52,1.71],[9,11,1.71,1.9],[11,12,2.09,2.28],[12,13,2.28,2.47],[13,15,2.66,2.85],[15,16,2.85,3.04],[16,19,3.04,3.23]]}
+18:05:22  face {"type":"say_end","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F3_2"}
+18:05:22  → playback_done
+18:05:22  event {"type":"say_done","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F3_2"}
+18:05:22  → face_event
+18:05:22  ← ui {"type":"ok_button","show":true}
+18:05:22  face {"type":"ok_button","show":true}
+18:05:22  → ack
+18:05:22  ← ui {"type":"countdown","id":"fall_cd","n":5}
+18:05:22  face {"type":"countdown","id":"fall_cd","n":5}
+18:05:22  → ack
+18:05:22  ← wake.enable
+18:05:22  wake disabled (wake_engine is none: touch only)
+18:05:22  → ack
+18:05:26  → heartbeat
+18:05:27  ← ui {"type":"ok_button","show":false}
+18:05:27  face {"type":"ok_button","show":false}
+18:05:27  → ack
+18:05:27  ← ui {"type":"step","group":"fall","id":"ask","state":"failed","label":"冇回應"}
+18:05:27  face {"type":"step","group":"fall","id":"ask","state":"failed","label":"冇回應"}
+18:05:27  → ack
+18:05:27  ← ui {"type":"step","group":"fall","id":"call","state":"active","label":"致電阿珍"}
+18:05:27  face {"type":"step","group":"fall","id":"call","state":"active","label":"致電阿珍"}
+18:05:27  → ack
+18:05:27  ← ui {"type":"step","group":"fall","id":"tell","state":"active"}
+18:05:27  face {"type":"step","group":"fall","id":"tell","state":"active"}
+18:05:27  → ack
+18:05:27  ← ui {"type":"card","card":{"id":"esc_call","kind":"action","label":"致電阿珍","small":"已致電","when":"打電話"}}
+18:05:27  face {"type":"card","card":{"id":"esc_call","kind":"action","label":"致電阿珍","small":"已致電","when":"打電話"}}
+18:05:27  → ack
+18:05:27  ← ui {"type":"card","card":{"id":"esc_tell","kind":"message","label":"已通知阿珍","small":"訊息已送出","when":"阿珍"}}
+18:05:27  face {"type":"card","card":{"id":"esc_tell","kind":"message","label":"已通知阿珍","small":"訊息已送出","when":"阿珍"}}
+18:05:27  → ack
+18:05:27  event {"type":"countdown_done","id":"fall_cd"}
+18:05:27  → face_event
+18:05:27  ← ui {"type":"step","group":"fall","id":"tell","state":"done"}
+18:05:27  face {"type":"step","group":"fall","id":"tell","state":"done"}
+18:05:27  → ack
+18:05:27  ← ui {"type":"step","group":"fall","id":"call","state":"done"}
+18:05:27  face {"type":"step","group":"fall","id":"call","state":"done"}
+18:05:27  → ack
+18:05:27  ← play_fixed
+18:05:27  → ack
+18:05:27  face {"type":"say_start","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F4_3","text":"我已經打電話俾阿珍，佢就嚟幫你。唔使驚，阿寶喺度陪住你。","segments":[[0,1,0,0.19],[1,2,0.19,0.38],[2,3,0.38,0.57],[3,4,0.57,0.76],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,10,1.52,1.71],[10,11,1.9,2.09],[11,12,2.09,2.28],[12,13,2.28,2.47],[13,14,2.47,2.66],[14,16,2.66,2.85],[16,17,3.04,3.23],[17,18,3.23,3.42],[18,20,3.42,3.61],[20,21,3.8,3.99],[21,22,3.99,4.18],[22,23,4.18,4.37],[23,24,4.37,4.56],[24,25,4.56,4.75],[25,26,4.75,4.94],[26,28,4.94,5.13]]}
+18:05:32  ← ui {"type":"mood","mood":"warm"}
+18:05:32  face {"type":"mood","mood":"warm"}
+18:05:32  → ack
+18:05:32  face {"type":"say_end","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F4_3"}
+18:05:32  → playback_done
+18:05:33  event {"type":"say_done","id":"say_inc_01M75WJ39Y6T4E6W7Z67SSX0MR_F4_3"}
+18:05:33  → face_event
+18:05:36  → heartbeat
+18:05:43  ← ui {"type":"reset"}
+18:05:43  face {"type":"reset"}
+18:05:43  → ack
+18:05:43  ← wake.enable
+18:05:43  wake enabled (wake_engine is none: touch only)
+18:05:43  → ack
+18:05:43  ← ui {"type":"reset"}
+18:05:43  face {"type":"reset"}
+18:05:43  → ack
+18:05:43  ← ui {"type":"mood","mood":"alarm"}
+18:05:43  face {"type":"mood","mood":"alarm"}
+18:05:43  → ack
+18:05:43  ← ui {"type":"card","card":{"id":"incident","kind":"incident","label":"偵測到跌倒","small":"感應器：急速下跌","persistent":true}}
+18:05:43  face {"type":"card","card":{"id":"incident","kind":"incident","label":"偵測到跌倒","small":"感應器：急速下跌","persistent":true}}
+18:05:43  → ack
+18:05:43  ← play_fixed
+18:05:43  → ack
+18:05:43  ← capture_photo
+18:05:43  → ack
+18:05:43  ← wake.enable
+18:05:43  wake disabled (wake_engine is none: touch only)
+18:05:43  → ack
+18:05:43  face {"type":"say_start","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F1_0","text":"哎呀！我感應到你好似跌低咗！","segments":[[0,1,0,0.19],[1,3,0.19,0.38],[3,4,0.57,0.76],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,9,1.52,1.71],[9,10,1.71,1.9],[10,11,1.9,2.09],[11,12,2.09,2.28],[12,14,2.28,2.47]]}
+18:05:43  photo ph_01M75WK0Q4QCSJ320EMBJW61JX (placeholder_drawn)
+18:05:43  → photo_uploaded
+18:05:46  face {"type":"say_end","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F1_0"}
+18:05:46  → playback_done
+18:05:46  event {"type":"say_done","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F1_0"}
+18:05:46  → face_event
+18:05:46  ← ui {"type":"flash"}
+18:05:46  face {"type":"flash"}
+18:05:46  → ack
+18:05:46  ← ui {"type":"steps","group":{"id":"fall","title":"跌倒處理","steps":[{"id":"photo","label":"分析緊相片…","doneLabel":"相片已送出","state":"active"},{"id":"ask","label":"等婆婆回應","doneLabel":"婆婆話冇事","state":"pending"},{"id":"call","label":"致電阿珍","doneLabel":"已致電阿珍","state":"pending"},{"id":"tell","label":"通知阿珍","doneLabel":"已通知阿珍","state":"pending"}]}}
+18:05:46  face {"type":"steps","group":{"id":"fall","title":"跌倒處理","steps":[{"id":"photo","label":"分析緊相片…","doneLabel":"相片已送出","state":"active"},{"id":"ask","label":"等婆婆回應","doneLabel":"婆婆話冇事","state":"pending"},{"id":"call","label":"致電阿珍","doneLabel":"已致電阿珍","state":"pending"},{"id":"tell","label":"通知阿珍","doneLabel":"已通知阿珍","state":"pending"}]}}
+18:05:46  → ack
+18:05:46  ← play_fixed
+18:05:46  → ack
+18:05:46  face {"type":"say_start","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F2_1","text":"我而家影張相睇吓先。","segments":[[0,1,0,0.19],[1,2,0.19,0.38],[2,3,0.38,0.57],[3,4,0.57,0.76],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,10,1.52,1.71]]}
+18:05:46  → heartbeat
+18:05:48  face {"type":"say_end","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F2_1"}
+18:05:48  → playback_done
+18:05:48  event {"type":"say_done","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F2_1"}
+18:05:48  → face_event
+18:05:48  ← ui {"type":"step","group":"fall","id":"photo","state":"done","label":"相片已送出"}
+18:05:48  face {"type":"step","group":"fall","id":"photo","state":"done","label":"相片已送出"}
+18:05:48  → ack
+18:05:48  ← ui {"type":"step","group":"fall","id":"ask","state":"active"}
+18:05:48  face {"type":"step","group":"fall","id":"ask","state":"active"}
+18:05:48  → ack
+18:05:48  ← play_fixed
+18:05:48  → ack
+18:05:48  ← session.open
+18:05:48  → ack
+18:05:48  ← wake.enable
+18:05:48  wake disabled (wake_engine is none: touch only)
+18:05:48  → ack
+18:05:48  face {"type":"say_start","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F3_2","text":"王婆婆，如果你冇跌親，請講「我冇事」。","segments":[[0,1,0,0.19],[1,2,0.19,0.38],[2,4,0.38,0.57],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,7,1.14,1.33],[7,8,1.33,1.52],[8,9,1.52,1.71],[9,11,1.71,1.9],[11,12,2.09,2.28],[12,13,2.28,2.47],[13,15,2.66,2.85],[15,16,2.85,3.04],[16,19,3.04,3.23]]}
+18:05:51  face {"type":"say_end","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F3_2"}
+18:05:51  → playback_done
+18:05:51  event {"type":"say_done","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F3_2"}
+18:05:51  → face_event
+18:05:51  ← ui {"type":"ok_button","show":true}
+18:05:51  face {"type":"ok_button","show":true}
+18:05:51  → ack
+18:05:51  ← ui {"type":"countdown","id":"fall_cd","n":5}
+18:05:51  face {"type":"countdown","id":"fall_cd","n":5}
+18:05:51  → ack
+18:05:51  ← wake.enable
+18:05:51  wake disabled (wake_engine is none: touch only)
+18:05:51  → ack
+18:05:54  ← ui {"type":"card_clear","id":"incident"}
+18:05:54  face {"type":"card_clear","id":"incident"}
+18:05:54  → ack
+18:05:54  ← ui {"type":"card_clear"}
+18:05:54  face {"type":"card_clear"}
+18:05:54  → ack
+18:05:54  ← ui {"type":"ok_button","show":false}
+18:05:54  face {"type":"ok_button","show":false}
+18:05:54  → ack
+18:05:54  ← ui {"type":"step","group":"fall","id":"ask","state":"done"}
+18:05:54  face {"type":"step","group":"fall","id":"ask","state":"done"}
+18:05:54  → ack
+18:05:54  ← ui {"type":"step","group":"fall","id":"call","state":"failed","label":"唔使致電"}
+18:05:54  face {"type":"step","group":"fall","id":"call","state":"failed","label":"唔使致電"}
+18:05:54  → ack
+18:05:54  ← ui {"type":"mood","mood":"warm"}
+18:05:54  face {"type":"mood","mood":"warm"}
+18:05:54  → ack
+18:05:54  ← play_fixed
+18:05:54  → ack
+18:05:54  face {"type":"say_start","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F5_3","text":"好啦，冇事就好。阿寶喺度陪住你。","segments":[[0,1,0,0.19],[1,3,0.19,0.38],[3,4,0.57,0.76],[4,5,0.76,0.95],[5,6,0.95,1.14],[6,8,1.14,1.33],[8,9,1.52,1.71],[9,10,1.71,1.9],[10,11,1.9,2.09],[11,12,2.09,2.28],[12,13,2.28,2.47],[13,14,2.47,2.66],[14,16,2.66,2.85]]}
+18:05:56  → heartbeat
+18:05:57  face {"type":"say_end","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F5_3"}
+18:05:57  → playback_done
+18:05:57  event {"type":"say_done","id":"say_inc_01M75WK0JYWC68C26GEBFN0K9E_F5_3"}
+18:05:57  → face_event
+18:05:57  ← ui {"type":"mood","mood":"idle"}
+18:05:57  face {"type":"mood","mood":"idle"}
+18:05:57  → ack
+18:05:58  ← ui {"type":"steps_clear","group":"fall"}
+18:05:58  face {"type":"steps_clear","group":"fall"}
+18:05:58  → ack
+18:05:58  ← session.close
+18:05:58  → ack
+18:05:58  ← wake.enable
+18:05:58  wake enabled (wake_engine is none: touch only)
+18:05:58  → ack

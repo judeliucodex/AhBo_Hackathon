@@ -1,0 +1,30 @@
+[
+ {
+  "id": "ob_01M75Y3HSWWJ5Y5XJK5HY67H62",
+  "ts": "2026-11-12T15:00:09.178+08:00",
+  "channel": "telegram",
+  "kind": "INFO",
+  "to_contact": "c_chun",
+  "to_address": "fake:c_chun",
+  "payload": {
+   "text": "ℹ️【通知】\n王婆婆可能跌咗一跤，之後佢話冇事（撳咗「我冇事」掣），相片睇落冇問題。阿寶會繼續陪住佢。如有需要可以撳「錄段聲俾媽媽」，錄段聲俾佢。",
+   "photo_id": null,
+   "screenshots": [],
+   "contact_name": "阿珍",
+   "command_id": "cmd_01M75Y3HSSP311Q5WZGDWXS423",
+   "attempts": 1
+  },
+  "buttons": [
+   {
+    "id": "voice_mum",
+    "text": "錄段聲俾媽媽",
+    "callback_data": "b:voice_mum:ob_01M75Y3HSWWJ5Y5XJK5HY67H62"
+   }
+  ],
+  "status": "sent",
+  "fake": true,
+  "correlation_id": "inc_01M75Y3951S10CWXWECNBTMXN2",
+  "provider_id": "tgfake0003",
+  "updated_at": "2026-11-12T15:00:09.180+08:00"
+ }
+]

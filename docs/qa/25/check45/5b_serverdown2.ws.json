@@ -1,0 +1,275 @@
+[
+ {
+  "t": 4759,
+  "wall": 1794444525774,
+  "dir": "close",
+  "obj": null,
+  "code": 1012
+ },
+ {
+  "t": 73652,
+  "wall": 1794444594667,
+  "dir": "open",
+  "obj": null,
+  "url": "ws://ahbo-qa25-api:8000/ws/device?sim=1"
+ },
+ {
+  "t": 73653,
+  "wall": 1794444594668,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KQ3FCHF24258MH6FAZ3E2",
+   "type": "hello",
+   "device_id": "sim-v8kudr",
+   "app_version": "0.1.0-sim",
+   "fixed_cache_version": "f-dcfc2e6081a0",
+   "wake_engine": "none"
+  }
+ },
+ {
+  "t": 73657,
+  "wall": 1794444594672,
+  "dir": "in",
+  "obj": {
+   "id": "01M76KQ3FEJDAD89603C97KZNP",
+   "type": "welcome",
+   "device_token": "dt.sim-v8kudr.1794530994.aCnLpTlYFA2QI9DqyZj4Mb7Fd9Q76sIggMt3rVP-oL0",
+   "server_time": "2026-11-12T10:02:43.124+08:00",
+   "fixed_cache_version": "f-dcfc2e6081a0",
+   "text_sessions": true,
+   "config": {
+    "quiet_hours": {
+     "start": "22:30",
+     "end": "07:00"
+    },
+    "interruption_enabled": true,
+    "wake": {
+     "require_wai": true,
+     "require_two_updates": true,
+     "utterance_start_silence_ms": 300,
+     "cooldown_after_reject_s": 5,
+     "allow_missing_aa": true,
+     "plain_abou_wakes": false
+    },
+    "reminder_mirror": {
+     "date": "2026-11-12",
+     "slots": [
+      {
+       "slot_id": "s_0800",
+       "time": "08:00",
+       "clip_id": "R_s_0800",
+       "cards": [
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        }
+       ]
+      },
+      {
+       "slot_id": "s_1200",
+       "time": "12:00",
+       "clip_id": "R_s_1200",
+       "cards": [
+        {
+         "id": "med_bp",
+         "kind": "med",
+         "label": "血壓藥",
+         "small": "Amlodipine 5 mg",
+         "pill": [
+          "--pill-b",
+          "--pill-a"
+         ]
+        },
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        },
+        {
+         "id": "med_chol",
+         "kind": "med",
+         "label": "膽固醇藥",
+         "small": "Atorvastatin 20 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-c"
+         ]
+        },
+        {
+         "id": "med_asp",
+         "kind": "med",
+         "label": "薄血丸",
+         "small": "Aspirin 80 mg",
+         "pill": [
+          "--pill-c",
+          "--pill-a"
+         ]
+        }
+       ]
+      },
+      {
+       "slot_id": "s_2000",
+       "time": "20:00",
+       "clip_id": "R_s_2000",
+       "cards": [
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 73660,
+  "wall": 1794444594675,
+  "dir": "in",
+  "obj": {
+   "id": "01M76KQ3FGN42PC5ZMGEDQAJV2",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 73661,
+  "wall": 1794444594676,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KQ3FMBQ95ZKBQG03MFVDC",
+   "type": "ack",
+   "ref": "01M76KQ3FGN42PC5ZMGEDQAJV2",
+   "ok": true
+  }
+ },
+ {
+  "t": 83658,
+  "wall": 1794444604673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KQD815AW8GQ4W399ND3BK",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 93658,
+  "wall": 1794444614673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KQQ0HV1V18HG898XPFMGA",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 103658,
+  "wall": 1794444624673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KR0S1Q4JHKQKE0BQN5CVX",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 113658,
+  "wall": 1794444634673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KRAHHRK9TCRY4BTM3J2KW",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 123658,
+  "wall": 1794444644673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KRMA108AJMY73B25ZA1AK",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 133658,
+  "wall": 1794444654673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KRY2HM7CZT01TRG8QZV68",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 143658,
+  "wall": 1794444664673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KS7V1M6CHZVF59WT92MHP",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 153658,
+  "wall": 1794444674673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KSHKHTZ1X5HQQX7P36653",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ },
+ {
+  "t": 163658,
+  "wall": 1794444684673,
+  "dir": "out",
+  "obj": {
+   "id": "01M76KSVC15ZDZZNPW3VQQ7XRQ",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ }
+]

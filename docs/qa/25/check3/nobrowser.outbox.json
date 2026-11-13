@@ -1,0 +1,24 @@
+[
+ {
+  "id": "ob_01M76JQQM9303H53JR00AN2QJD",
+  "ts": "2026-11-12T08:30:18.829+08:00",
+  "channel": "telegram",
+  "kind": "HANDOFF",
+  "to_contact": "c_chun",
+  "to_address": "fake:c_chun",
+  "payload": {
+   "text": "🤝【交接】\n王婆婆想報名粵曲班（15:00 秀茂坪長者中心（示範）），阿寶未能自動完成，請你幫手：http://ahbo-qa25-api:8000/mock-centre/\n已準備資料：{}",
+   "photo_id": null,
+   "screenshots": [],
+   "contact_name": "阿珍",
+   "command_id": "cmd_01M76JQQM89ZV9Y4QQSS5RMGR3",
+   "attempts": 1
+  },
+  "buttons": [],
+  "status": "sent",
+  "fake": true,
+  "correlation_id": "act_01M76JQERNH7FVXY8NEYJ5N8KQ",
+  "provider_id": "tgfake0012",
+  "updated_at": "2026-11-12T08:30:18.829+08:00"
+ }
+]

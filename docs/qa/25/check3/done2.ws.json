@@ -1,0 +1,406 @@
+[
+ {
+  "t": 18665,
+  "wall": 1794423262850,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3M2AQE4H1HGRHX4CHQE",
+   "type": "utterance",
+   "text": "好呀，幫我報名啦",
+   "final": true
+  }
+ },
+ {
+  "t": 18678,
+  "wall": 1794423262863,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3M4D7FR0H7Y8EWM6QQF",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "listening"
+   }
+  }
+ },
+ {
+  "t": 18679,
+  "wall": 1794423262864,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3MGZ4N8V3AT67BQEY9W",
+   "type": "ack",
+   "ref": "01M75ZC3M4D7FR0H7Y8EWM6QQF",
+   "ok": true
+  }
+ },
+ {
+  "t": 18680,
+  "wall": 1794423262866,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3M4D7FR0H7Y8EWM6QQG",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "heard",
+    "text": "好呀，幫我報名啦",
+    "final": true
+   }
+  }
+ },
+ {
+  "t": 18680,
+  "wall": 1794423262866,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3MJBZEEJ3693RFW5PHD",
+   "type": "ack",
+   "ref": "01M75ZC3M4D7FR0H7Y8EWM6QQG",
+   "ok": true
+  }
+ },
+ {
+  "t": 18682,
+  "wall": 1794423262868,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3M4D7FR0H7Y8EWM6QQJ",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps_clear",
+    "group": "turn_01M75ZBVF7F1EXE3WW5NFD8R9W"
+   }
+  }
+ },
+ {
+  "t": 18683,
+  "wall": 1794423262868,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3MMD0X68BZ5MM8GBM2Y",
+   "type": "ack",
+   "ref": "01M75ZC3M4D7FR0H7Y8EWM6QQJ",
+   "ok": true
+  }
+ },
+ {
+  "t": 18684,
+  "wall": 1794423262869,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3M595R4QCM6DZQ3SSHF",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card_clear"
+   }
+  }
+ },
+ {
+  "t": 18684,
+  "wall": 1794423262870,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3MPECCADC13FEZCF0XX",
+   "type": "ack",
+   "ref": "01M75ZC3M595R4QCM6DZQ3SSHF",
+   "ok": true
+  }
+ },
+ {
+  "t": 18685,
+  "wall": 1794423262871,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3M595R4QCM6DZQ3SSHG",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "thinking"
+   }
+  }
+ },
+ {
+  "t": 18686,
+  "wall": 1794423262872,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3MRZGRZ69FKNC133V03",
+   "type": "ack",
+   "ref": "01M75ZC3M595R4QCM6DZQ3SSHG",
+   "ok": true
+  }
+ },
+ {
+  "t": 18701,
+  "wall": 1794423262886,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3MSFK1MKSQMAFYDTXN4",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "turn_01M75ZC3M3CN6JP6R6SHFPBQKS",
+     "steps": [
+      {
+       "id": "confirm_action",
+       "label": "幫你報緊名…",
+       "state": "active"
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 18702,
+  "wall": 1794423262888,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3N8490EWKH6KD8RFX8Q",
+   "type": "ack",
+   "ref": "01M75ZC3MSFK1MKSQMAFYDTXN4",
+   "ok": true
+  }
+ },
+ {
+  "t": 18705,
+  "wall": 1794423262891,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3N5876V81B25KSHH6FV",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "mood",
+    "mood": "idle"
+   }
+  }
+ },
+ {
+  "t": 18708,
+  "wall": 1794423262894,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3NDJFBMJEYJXEZKQBT5",
+   "type": "ack",
+   "ref": "01M75ZC3N5876V81B25KSHH6FV",
+   "ok": true
+  }
+ },
+ {
+  "t": 18708,
+  "wall": 1794423262894,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC3N5876V81B25KSHH6FW",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_start",
+    "id": "say_turn_01M75ZC3M3CN6JP6R6SHFPBQKS_19",
+    "text": "好呀，我而家幫你報名，報好咗再話你知。",
+    "durationSec": 3.65
+   }
+  }
+ },
+ {
+  "t": 18711,
+  "wall": 1794423262897,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC3NH9Z30YT913F2QHHR5",
+   "type": "ack",
+   "ref": "01M75ZC3N5876V81B25KSHH6FW",
+   "ok": true
+  }
+ },
+ {
+  "t": 20229,
+  "wall": 1794423264415,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC54ZDXG7ZA6THY5XNS0S",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ },
+ {
+  "t": 22509,
+  "wall": 1794423266695,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC7C40DK3V5TFV2ZH35DR",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_end",
+    "id": "say_turn_01M75ZC3M3CN6JP6R6SHFPBQKS_19"
+   }
+  }
+ },
+ {
+  "t": 22510,
+  "wall": 1794423266696,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC7C8XQXJZ51FAG9NTQBB",
+   "type": "ack",
+   "ref": "01M75ZC7C40DK3V5TFV2ZH35DR",
+   "ok": true
+  }
+ },
+ {
+  "t": 22512,
+  "wall": 1794423266697,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC7C9QDQ6TY5DTR9EMH7F",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_turn_01M75ZC3M3CN6JP6R6SHFPBQKS_19"
+   }
+  }
+ },
+ {
+  "t": 24011,
+  "wall": 1794423268196,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC8V2BP1CGQEQ7H61DJ0G",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "action_act_01M75ZBVGS5EXV3HSG7QJX3ERG",
+     "kind": "action",
+     "label": "已報名",
+     "small": "編號 DEMO-0423"
+    }
+   }
+  }
+ },
+ {
+  "t": 24012,
+  "wall": 1794423268198,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC8V65557RWNG878GCAXR",
+   "type": "ack",
+   "ref": "01M75ZC8V2BP1CGQEQ7H61DJ0G",
+   "ok": true
+  }
+ },
+ {
+  "t": 24026,
+  "wall": 1794423268211,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZC8VFRM9FS8KKTH8T7HA0",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_start",
+    "id": "say_turn_01M75ZC8V3PSZQ5WG9S4RSNA0T_22",
+    "text": "報咗名喇，下晝三點嘅粵曲班，到時我會提你㗎。",
+    "durationSec": 4.23
+   }
+  }
+ },
+ {
+  "t": 24028,
+  "wall": 1794423268214,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZC8VPR2WBGP4VHEJEHSGP",
+   "type": "ack",
+   "ref": "01M75ZC8VFRM9FS8KKTH8T7HA0",
+   "ok": true
+  }
+ },
+ {
+  "t": 26511,
+  "wall": 1794423270696,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZCB97QC879MJKXWTJ4B71",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "steps_clear",
+    "group": "turn_01M75ZC3M3CN6JP6R6SHFPBQKS"
+   }
+  }
+ },
+ {
+  "t": 26512,
+  "wall": 1794423270698,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZCB99ZD87R1X82M61V6DW",
+   "type": "ack",
+   "ref": "01M75ZCB97QC879MJKXWTJ4B71",
+   "ok": true
+  }
+ },
+ {
+  "t": 28406,
+  "wall": 1794423272591,
+  "dir": "in",
+  "obj": {
+   "id": "01M75ZCD4DBHF2V9M8RK0NPF3F",
+   "type": "ui",
+   "priority": 2,
+   "ui": {
+    "type": "say_end",
+    "id": "say_turn_01M75ZC8V3PSZQ5WG9S4RSNA0T_22"
+   }
+  }
+ },
+ {
+  "t": 28407,
+  "wall": 1794423272593,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZCD4HHB27EN6QBPPP07JH",
+   "type": "ack",
+   "ref": "01M75ZCD4DBHF2V9M8RK0NPF3F",
+   "ok": true
+  }
+ },
+ {
+  "t": 28410,
+  "wall": 1794423272595,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZCD4KX4DENMK05WC0NHQ8",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_turn_01M75ZC8V3PSZQ5WG9S4RSNA0T_22"
+   }
+  }
+ },
+ {
+  "t": 30230,
+  "wall": 1794423274415,
+  "dir": "out",
+  "obj": {
+   "id": "01M75ZCEXFWJAH3DSJM6STNB5F",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": true
+  }
+ }
+]

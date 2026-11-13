@@ -1,0 +1,33 @@
+login: 200
+
+=== clock 07:00 → Reset demo → 「阿寶，我幾時食藥呀？」 ===
+clock: (200, {'ok': True, 'now': '2026-11-12T07:00:00.000+08:00', 'offset_s': -6767.351341})
+reset: (200, {'ok': True, 'now': '2026-11-12T07:00:00.019+08:00', 'ms': 16})
+wake: (200, {'ok': True})
+utterance: (200, {'ok': True, 'turn_id': 'turn_01M76KWCM6RA87KEZPQE5JFGBT'})
+
+=== clock 10:00 → Reset demo → 「阿寶，我幾時食藥呀？」 ===
+clock: (200, {'ok': True, 'now': '2026-11-12T10:00:00.000+08:00', 'offset_s': 4028.061309})
+reset: (200, {'ok': True, 'now': '2026-11-12T10:00:00.024+08:00', 'ms': 23})
+wake: (200, {'ok': True})
+utterance: (200, {'ok': True, 'turn_id': 'turn_01M76KWH3P5AXVEMD9BFPKEY9X'})
+   get_med_status next: {"slot_id": "s_1200", "time": "12:00", "rel_words": "兩個鐘之後"} | today: [["s_0800", "08:00", "taken_self_reported"], ["s_1200", "12:00", "scheduled"], ["s_2000", "20:00", "scheduled"]]
+   reply: 兩個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。
+
+--- NOTE (tester) ---
+In the run above the 07:00 block printed no tool/reply lines: /operator/api/trace sorts by virtual-clock time, and by
+then the DB held >2000 events stamped later than 07:00. The lines below are the console output of the ORIGINAL run of
+the same script earlier in the session (fresh DB), pasted by hand; they were not regenerated.
+
+=== clock 07:00 → Reset demo → 「阿寶，我幾時食藥呀？」 ===
+utterance: (200, {'ok': True, 'turn_id': 'turn_01M75YAX18460BRJQV1K7RE5N1'})
+   get_med_status next: {"slot_id": "s_1200", "time": "12:00", "rel_words": "五個鐘之後"} | today: [["s_0800", "08:00", "taken_self_reported"], ["s_1200", "12:00", "scheduled"], ["s_2000", "20:00", "scheduled"]]
+   reply: 五個鐘之後，十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。
+dose_events (docker exec … open_db): [{'slot_id': 's_0800', 'date': '2026-11-12', 'state': 'taken_self_reported', 'resolved_at': '2026-11-12T08:05:00+08:00', 'source': 'seed'}]
+
+med_probe2.py (same original session), trace rows across 08:00 and 12:00:
+    08:00:12 eve dose.due {"slot_id": "s_0800", "date": "2026-11-12"}          <- nothing else follows (no clip, card or session)
+    12:00:13 eve dose.due {"slot_id": "s_1200", "date": "2026-11-12"}
+    12:00:13 com device.play_fixed {"clip_id": "R_s_1200", ...}  + 5 cards
+    12:00:18 com device.session_open {"reason": "dose", "mode": "reminder", "text_only": true}
+    12:00:18 eve agent.reply_start {"text": "王婆婆，十二點正喇，記得食血壓藥、糖尿藥、膽固醇藥、薄血丸呀。食咗未呀？"}

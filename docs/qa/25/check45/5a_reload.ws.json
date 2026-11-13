@@ -1,0 +1,775 @@
+[
+ {
+  "t": 127,
+  "wall": 1794443672587,
+  "dir": "open",
+  "obj": null,
+  "url": "ws://ahbo-qa25-api:8000/ws/device?sim=1"
+ },
+ {
+  "t": 131,
+  "wall": 1794443672591,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ0FSBYN2M353A4Q35SA",
+   "type": "hello",
+   "device_id": "sim-0g5cg4",
+   "app_version": "0.1.0-sim",
+   "fixed_cache_version": "f-dcfc2e6081a0",
+   "wake_engine": "none"
+  }
+ },
+ {
+  "t": 139,
+  "wall": 1794443672599,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ0H9WZ2DBR65JS2SK0E",
+   "type": "welcome",
+   "device_token": "dt.sim-0g5cg4.1794530072.icKeYdmLZCUz8JNE7iES6M2_HCV8gEeabzaa-qrG9K4",
+   "server_time": "2026-11-12T15:00:09.835+08:00",
+   "fixed_cache_version": "f-dcfc2e6081a0",
+   "text_sessions": true,
+   "config": {
+    "quiet_hours": {
+     "start": "22:30",
+     "end": "07:00"
+    },
+    "interruption_enabled": true,
+    "wake": {
+     "require_wai": true,
+     "require_two_updates": true,
+     "utterance_start_silence_ms": 300,
+     "cooldown_after_reject_s": 5,
+     "allow_missing_aa": true,
+     "plain_abou_wakes": false
+    },
+    "reminder_mirror": {
+     "date": "2026-11-12",
+     "slots": [
+      {
+       "slot_id": "s_0800",
+       "time": "08:00",
+       "clip_id": "R_s_0800",
+       "cards": [
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        }
+       ]
+      },
+      {
+       "slot_id": "s_1200",
+       "time": "12:00",
+       "clip_id": "R_s_1200",
+       "cards": [
+        {
+         "id": "med_bp",
+         "kind": "med",
+         "label": "血壓藥",
+         "small": "Amlodipine 5 mg",
+         "pill": [
+          "--pill-b",
+          "--pill-a"
+         ]
+        },
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        },
+        {
+         "id": "med_chol",
+         "kind": "med",
+         "label": "膽固醇藥",
+         "small": "Atorvastatin 20 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-c"
+         ]
+        },
+        {
+         "id": "med_asp",
+         "kind": "med",
+         "label": "薄血丸",
+         "small": "Aspirin 80 mg",
+         "pill": [
+          "--pill-c",
+          "--pill-a"
+         ]
+        }
+       ]
+      },
+      {
+       "slot_id": "s_2000",
+       "time": "20:00",
+       "clip_id": "R_s_2000",
+       "cards": [
+        {
+         "id": "med_dm",
+         "kind": "med",
+         "label": "糖尿藥",
+         "small": "Metformin 500 mg",
+         "pill": [
+          "--pill-a",
+          "--pill-a"
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ },
+ {
+  "t": 165,
+  "wall": 1794443672625,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ0H9WZ2DBR65JS2SK0G",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 166,
+  "wall": 1794443672626,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ1JPDP105NKF0HTPSFZ",
+   "type": "ack",
+   "ref": "01M76JTZ0H9WZ2DBR65JS2SK0G",
+   "ok": true
+  }
+ },
+ {
+  "t": 167,
+  "wall": 1794443672627,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ0H9WZ2DBR65JS2SK0H",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "mood",
+    "mood": "alarm"
+   }
+  }
+ },
+ {
+  "t": 167,
+  "wall": 1794443672627,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ1KV1QFP78NYQMTP4W2",
+   "type": "ack",
+   "ref": "01M76JTZ0H9WZ2DBR65JS2SK0H",
+   "ok": true
+  }
+ },
+ {
+  "t": 168,
+  "wall": 1794443672628,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ0JYS48MBDMG5ERPG7Y",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "incident",
+     "kind": "incident",
+     "label": "偵測到跌倒",
+     "small": "感應器：急速下跌",
+     "persistent": true
+    }
+   }
+  }
+ },
+ {
+  "t": 169,
+  "wall": 1794443672628,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ1M0MTXWR2VPJ171SKK",
+   "type": "ack",
+   "ref": "01M76JTZ0JYS48MBDMG5ERPG7Y",
+   "ok": true
+  }
+ },
+ {
+  "t": 169,
+  "wall": 1794443672629,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ0JYS48MBDMG5ERPG7Z",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "fall",
+     "steps": [
+      {
+       "id": "photo",
+       "label": "可能有人跌咗喺地下",
+       "state": "done",
+       "doneLabel": "相片已送出"
+      },
+      {
+       "id": "ask",
+       "label": "等婆婆回應",
+       "state": "active",
+       "doneLabel": "婆婆話冇事"
+      },
+      {
+       "id": "call",
+       "label": "致電阿珍",
+       "state": "pending",
+       "doneLabel": "已致電阿珍"
+      },
+      {
+       "id": "tell",
+       "label": "通知阿珍",
+       "state": "pending",
+       "doneLabel": "已通知阿珍"
+      }
+     ],
+     "title": "跌倒處理"
+    }
+   }
+  }
+ },
+ {
+  "t": 170,
+  "wall": 1794443672629,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ1NKY004K2FESTNKY7K",
+   "type": "ack",
+   "ref": "01M76JTZ0JYS48MBDMG5ERPG7Z",
+   "ok": true
+  }
+ },
+ {
+  "t": 170,
+  "wall": 1794443672630,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ0JYS48MBDMG5ERPG80",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "ok_button",
+    "show": true
+   }
+  }
+ },
+ {
+  "t": 170,
+  "wall": 1794443672630,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ1PA2K69H7AB8QW6D6E",
+   "type": "ack",
+   "ref": "01M76JTZ0JYS48MBDMG5ERPG80",
+   "ok": true
+  }
+ },
+ {
+  "t": 174,
+  "wall": 1794443672634,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ1T4521773CF66D2J2V",
+   "type": "face_event",
+   "event": {
+    "type": "ready",
+    "version": "1.0.0"
+   }
+  }
+ },
+ {
+  "t": 222,
+  "wall": 1794443672682,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ27YAV4WJ4E8N7J8NR8",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "reset"
+   }
+  }
+ },
+ {
+  "t": 223,
+  "wall": 1794443672682,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ3A3X3XKHAE61S42EV1",
+   "type": "ack",
+   "ref": "01M76JTZ27YAV4WJ4E8N7J8NR8",
+   "ok": true
+  }
+ },
+ {
+  "t": 229,
+  "wall": 1794443672689,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ27YAV4WJ4E8N7J8NR9",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "mood",
+    "mood": "alarm"
+   }
+  }
+ },
+ {
+  "t": 230,
+  "wall": 1794443672690,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ3JWXDB4VTFPZ1TJSA2",
+   "type": "ack",
+   "ref": "01M76JTZ27YAV4WJ4E8N7J8NR9",
+   "ok": true
+  }
+ },
+ {
+  "t": 233,
+  "wall": 1794443672693,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ27YAV4WJ4E8N7J8NRA",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "incident",
+     "kind": "incident",
+     "label": "偵測到跌倒",
+     "small": "感應器：急速下跌",
+     "persistent": true
+    }
+   }
+  }
+ },
+ {
+  "t": 236,
+  "wall": 1794443672696,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ3RTHWA4WDT0P7RWT8V",
+   "type": "ack",
+   "ref": "01M76JTZ27YAV4WJ4E8N7J8NRA",
+   "ok": true
+  }
+ },
+ {
+  "t": 236,
+  "wall": 1794443672696,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ27YAV4WJ4E8N7J8NRB",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "steps",
+    "group": {
+     "id": "fall",
+     "steps": [
+      {
+       "id": "photo",
+       "label": "可能有人跌咗喺地下",
+       "state": "done",
+       "doneLabel": "相片已送出"
+      },
+      {
+       "id": "ask",
+       "label": "等婆婆回應",
+       "state": "active",
+       "doneLabel": "婆婆話冇事"
+      },
+      {
+       "id": "call",
+       "label": "致電阿珍",
+       "state": "pending",
+       "doneLabel": "已致電阿珍"
+      },
+      {
+       "id": "tell",
+       "label": "通知阿珍",
+       "state": "pending",
+       "doneLabel": "已通知阿珍"
+      }
+     ],
+     "title": "跌倒處理"
+    }
+   }
+  }
+ },
+ {
+  "t": 237,
+  "wall": 1794443672697,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ3SMVNZMARDVJY0G761",
+   "type": "ack",
+   "ref": "01M76JTZ27YAV4WJ4E8N7J8NRB",
+   "ok": true
+  }
+ },
+ {
+  "t": 238,
+  "wall": 1794443672698,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JTZ27YAV4WJ4E8N7J8NRC",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "ok_button",
+    "show": true
+   }
+  }
+ },
+ {
+  "t": 238,
+  "wall": 1794443672698,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JTZ3TG5SKXF7236PPF7XM",
+   "type": "ack",
+   "ref": "01M76JTZ27YAV4WJ4E8N7J8NRC",
+   "ok": true
+  }
+ },
+ {
+  "t": 3970,
+  "wall": 1794443676430,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R8RNEEPA6E6S5HGTH5",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "ok_button",
+    "show": false
+   }
+  }
+ },
+ {
+  "t": 3971,
+  "wall": 1794443676431,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV2RFHSJTBE0CBAQ2SYFW",
+   "type": "ack",
+   "ref": "01M76JV2R8RNEEPA6E6S5HGTH5",
+   "ok": true
+  }
+ },
+ {
+  "t": 3972,
+  "wall": 1794443676431,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R8RNEEPA6E6S5HGTH6",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "ask",
+    "state": "failed",
+    "label": "冇回應"
+   }
+  }
+ },
+ {
+  "t": 3973,
+  "wall": 1794443676432,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV2RG29ME32YC4FVNMB42",
+   "type": "ack",
+   "ref": "01M76JV2R8RNEEPA6E6S5HGTH6",
+   "ok": true
+  }
+ },
+ {
+  "t": 3973,
+  "wall": 1794443676433,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R8RNEEPA6E6S5HGTH7",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "call",
+    "state": "active",
+    "label": "致電阿珍"
+   }
+  }
+ },
+ {
+  "t": 3974,
+  "wall": 1794443676434,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV2RJ0DVFAEF4QWS2G5W6",
+   "type": "ack",
+   "ref": "01M76JV2R8RNEEPA6E6S5HGTH7",
+   "ok": true
+  }
+ },
+ {
+  "t": 3975,
+  "wall": 1794443676435,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R8RNEEPA6E6S5HGTH8",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "tell",
+    "state": "active"
+   }
+  }
+ },
+ {
+  "t": 3976,
+  "wall": 1794443676435,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV2RKHEZPNTZRMFKY7YS8",
+   "type": "ack",
+   "ref": "01M76JV2R8RNEEPA6E6S5HGTH8",
+   "ok": true
+  }
+ },
+ {
+  "t": 3976,
+  "wall": 1794443676436,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R8RNEEPA6E6S5HGTH9",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "esc_call",
+     "kind": "action",
+     "label": "致電阿珍",
+     "small": "已致電",
+     "when": "打電話"
+    }
+   }
+  }
+ },
+ {
+  "t": 3977,
+  "wall": 1794443676437,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV2RNC34QP9H1N0SY39ZA",
+   "type": "ack",
+   "ref": "01M76JV2R8RNEEPA6E6S5HGTH9",
+   "ok": true
+  }
+ },
+ {
+  "t": 3979,
+  "wall": 1794443676438,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R8RNEEPA6E6S5HGTHA",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "card",
+    "card": {
+     "id": "esc_tell",
+     "kind": "message",
+     "label": "已通知阿珍",
+     "small": "訊息已送出",
+     "when": "阿珍"
+    }
+   }
+  }
+ },
+ {
+  "t": 3979,
+  "wall": 1794443676439,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV2RQV0CQTZX27ABA4TWC",
+   "type": "ack",
+   "ref": "01M76JV2R8RNEEPA6E6S5HGTHA",
+   "ok": true
+  }
+ },
+ {
+  "t": 4572,
+  "wall": 1794443677032,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R9VV7MNQCNZR7JZ1N9",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "tell",
+    "state": "done"
+   }
+  }
+ },
+ {
+  "t": 4574,
+  "wall": 1794443677034,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV3BA1TFJGQPVDXS8AZEC",
+   "type": "ack",
+   "ref": "01M76JV2R9VV7MNQCNZR7JZ1N9",
+   "ok": true
+  }
+ },
+ {
+  "t": 4575,
+  "wall": 1794443677035,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R9VV7MNQCNZR7JZ1NA",
+   "type": "ui",
+   "priority": 0,
+   "ui": {
+    "type": "step",
+    "group": "fall",
+    "id": "call",
+    "state": "done"
+   }
+  }
+ },
+ {
+  "t": 4578,
+  "wall": 1794443677038,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV3BDFB4MZ98T8VF112WA",
+   "type": "ack",
+   "ref": "01M76JV2R9VV7MNQCNZR7JZ1NA",
+   "ok": true
+  }
+ },
+ {
+  "t": 4579,
+  "wall": 1794443677039,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV2R9VV7MNQCNZR7JZ1NB",
+   "type": "play_fixed",
+   "priority": 0,
+   "clip_id": "F4",
+   "say_id": "say_inc_01M76JTNQ2JN88P9BY3X8R91ST_F4_3"
+  }
+ },
+ {
+  "t": 4579,
+  "wall": 1794443677039,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV3BFJ554P935686Q1473",
+   "type": "ack",
+   "ref": "01M76JV2R9VV7MNQCNZR7JZ1NB",
+   "ok": true
+  }
+ },
+ {
+  "t": 9592,
+  "wall": 1794443682052,
+  "dir": "in",
+  "obj": {
+   "id": "01M76JV882BEGH0RS7QZ5Q4HW6",
+   "type": "ui",
+   "priority": 1,
+   "ui": {
+    "type": "mood",
+    "mood": "warm"
+   }
+  }
+ },
+ {
+  "t": 9594,
+  "wall": 1794443682054,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV885SJ4D1B8B8T33GPW3",
+   "type": "ack",
+   "ref": "01M76JV882BEGH0RS7QZ5Q4HW6",
+   "ok": true
+  }
+ },
+ {
+  "t": 10019,
+  "wall": 1794443682479,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV8NFEJEM22GSQNW5NYSN",
+   "type": "playback_done",
+   "clip_id": "F4",
+   "say_id": "say_inc_01M76JTNQ2JN88P9BY3X8R91ST_F4_3"
+  }
+ },
+ {
+  "t": 10021,
+  "wall": 1794443682481,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV8NHEA943GDKTD11A7CD",
+   "type": "face_event",
+   "event": {
+    "type": "say_done",
+    "id": "say_inc_01M76JTNQ2JN88P9BY3X8R91ST_F4_3"
+   }
+  }
+ },
+ {
+  "t": 10140,
+  "wall": 1794443682600,
+  "dir": "out",
+  "obj": {
+   "id": "01M76JV8S8Q1T1E2MCG0ZHT7WZ",
+   "type": "heartbeat",
+   "battery": 0.8,
+   "thermal": "nominal",
+   "in_session": false
+  }
+ }
+]
