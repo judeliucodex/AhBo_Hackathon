@@ -216,6 +216,10 @@ async def callback(svc: Any, contact: dict[str, Any], chat_id: str, data: str) -
         return [main_menu(contact.get("name"))]
     if verb == "v" and args:
         return [await view(svc, args[0], args[1] if len(args) > 1 else None)]
+    if verb == "vn":
+        from ahbo.links.telegram import _arm_voice_mum, VOICE_MUM_REPLY   # deferred: links cycle
+        _arm_voice_mum(svc, contact["id"])
+        return [Reply(VOICE_MUM_REPLY, [back_row()])]
     if verb == "f" and args:
         return start_form(svc, contact, chat_id, args[0], args[1] if len(args) > 1 else None)
     if verb in ("ok", "no"):

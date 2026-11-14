@@ -47,6 +47,9 @@ def install(svc: Any) -> None:
     link = FamilyLink(svc, tg, fake=svc.settings.is_fake("telegram"))
     svc.kernel.on("family.send", link.dispatch)
     svc.kernel.on("phone.call", twilio.phone_dispatcher(svc, tfl, fake=svc.settings.is_fake("twilio")))
+    def _on_playback_done(cmd: Any) -> None:
+        telegram.on_playback_done(svc, cmd)
+    svc.kernel.on("agent.playback_done", _on_playback_done)
     sensors.install_beacons(svc)
     if not hasattr(svc, "extra"):        # the evals' svc is a SimpleNamespace without the Services fields
         svc.extra = {}
@@ -154,4 +157,5 @@ async def inject_voice_note(svc: Any, file: str | Path | None = None) -> dict[st
     await svc.kernel.process(Event(type="family.voice_note", source="telegram",
                                    payload={"contact_id": contact["id"], "voice_id": vm_id,
                                             "via": "operator_fake"}))
+    svc.db.kv_set("voice_note_demo", vm_id)   # console/S1 demo injection: no caregiver played-confirmation
     return {"ok": True, "voice_id": vm_id, "via": "operator_fake"}

@@ -128,8 +128,10 @@ class TelegramReal:
                                        files={"photo": (Path(photo_path).name, f)})
             provider_id = res.get("message_id")
         else:
-            res = await self._api("sendMessage", data={"chat_id": chat_id, "text": text,
-                                                       "reply_markup": dumps(markup) if markup else None})
+            data = {"chat_id": chat_id, "text": text}
+            if markup:
+                data["reply_markup"] = dumps(markup)   # null reply_markup → Telegram 400 "object expected as reply markup"
+            res = await self._api("sendMessage", data=data)
             provider_id = res.get("message_id")
         for shot in screenshots or []:
             p = Path(shot)
@@ -249,6 +251,8 @@ async def _handle(svc: Any, update: dict[str, Any]) -> tuple[str, list[Reply] | 
     answered = await bot.text(svc, contact, chat_id, text)        # an open edit form / pending confirm
     if answered is not None:
         return chat_id, answered
+    from ahbo.agent.caregiver import caregiver_reply              # deferred: agent ↔ links must not cycle
+    svc.spawn(caregiver_reply(svc, contact, chat_id, text), name="caregiver_chat")
     await svc.kernel.submit(_ev(svc, "family.text", contact["id"],
                                 {"contact_id": contact["id"], "text": _clip(text, 600),
                                  "message_id": msg.get("message_id"), "via": "telegram"}))
@@ -364,9 +368,71 @@ async def _on_voice(svc: Any, contact: dict[str, Any], msg: dict[str, Any], voic
         "transcript, received_at, telegram_file_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
         (vm_id, "in", contact["name"], "王婆婆", contact["id"], str(final), "audio/mp4" if final.suffix == ".m4a"
          else "audio/ogg", duration, transcript, svc.clock.iso(), file_id))
+    armed = _voice_mum_armed(svc, contact)
     await svc.kernel.submit(_ev(svc, "family.voice_note", None,
-                                {"contact_id": contact["id"], "voice_id": vm_id, "via": "telegram"}))
+                                {"contact_id": contact["id"], "voice_id": vm_id, "via": "telegram",
+                                 **({"voice_mum": True} if armed else {})}))
+    if armed:
+        return "✅ 收到，已經話俾王婆婆聽有段錄音等緊佢。"
     return "收到你嘅語音訊息，會話俾王婆婆聽。"
+
+
+def _arm_voice_mum(svc: Any, contact_id: str) -> None:
+    """Arm the one-shot voice-note mode: the caregiver's NEXT voice note announces to Po-po at P1."""
+    svc.db.kv_set("voice_mum_armed", f"{contact_id}|{svc.clock.now().timestamp()}")
+
+
+def on_playback_done(svc: Any, cmd: Any) -> None:
+    """Caregiver confirmation: their voice note finished playing (or gave up) on Po-po's device.
+    Sync kernel dispatcher → spawns the async send. Only real, recent caregiver notes confirm —
+    injected/console demo notes (kv `voice_note_demo`) and anything older than 15 min stay silent."""
+    p = cmd.payload
+    mid = p.get("message_id")
+    if not mid:
+        return
+    db = svc.db
+    row = db.one("SELECT * FROM voice_messages WHERE id=?", (mid,))
+    if row is None or row.get("direction") != "in":
+        return
+    if db.kv_get("voice_note_demo") == mid:
+        return                                   # console/S1 demo injection: stay silent
+    try:
+        from datetime import datetime
+        age = svc.clock.now() - datetime.fromisoformat(str(row["received_at"]))
+        if age.total_seconds() > 15 * 60:
+            return
+    except (ValueError, TypeError):
+        return
+    contact = db.one("SELECT id, telegram_chat_id FROM contacts WHERE id=?", (row["contact_id"],))
+    channel = svc.extra.get("telegram_channel")
+    if contact is None or not contact["telegram_chat_id"] or channel is None:
+        return
+    text = ("✅ 媽媽啱啱聽完你嘅錄音喇。") if p.get("ok") \
+        else ("⚠️ 暫時播唔到（iPad 離線？）。段錄音留咗喺度，阿寶遲啲會再試播俾佢聽。")
+    hhmm = svc.clock.now().strftime("%H:%M")
+
+    async def _send() -> None:
+        try:
+            await channel.send(kind="INFO", contact_id=contact["id"],
+                               chat_id=str(contact["telegram_chat_id"]),
+                               text=f"{text}（{hhmm}）")
+        except Exception as e:
+            log.warning("voice-note confirmation failed (%s)", type(e).__name__)
+
+    svc.spawn(_send(), name="voice_confirm")
+
+
+def _voice_mum_armed(svc: Any, contact: dict[str, Any]) -> bool:
+    raw = svc.db.kv_get("voice_mum_armed")
+    svc.db.kv_set("voice_mum_armed", "")                   # one-shot: armed covers exactly one note
+    if not raw:
+        return False
+    cid, _, ts = str(raw).rpartition("|")
+    try:
+        age = svc.clock.now().timestamp() - float(ts)
+    except ValueError:
+        return False
+    return cid == contact["id"] and 0 <= age <= 600        # expires after 10 minutes
 
 
 # ---------- commands (§9.2 table)
@@ -431,6 +497,9 @@ async def _on_command(svc: Any, contact: dict[str, Any], chat_id: str, text: str
             return "記低咗你嘅故事，多謝分享。"
         except MemoryRejected as e:
             return polite_reject(e.reason)
+    if cmd in ("/voicenote", "/voice"):
+        _arm_voice_mum(svc, contact["id"])
+        return VOICE_MUM_REPLY
     return await bot.command(svc, contact, chat_id, text)
 
 
@@ -491,6 +560,7 @@ async def _on_callback(svc: Any, cb: dict[str, Any]) -> list[Reply] | str | None
     await svc.kernel.submit(_ev(svc, "family.button", corr, payload))
     await _answer(svc, cb, "已確認" if button == "confirm" else "收到")
     if button == "voice_mum":
+        _arm_voice_mum(svc, contact["id"])
         return [Reply(VOICE_MUM_REPLY)]
     return None
 

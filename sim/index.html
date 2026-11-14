@@ -23,7 +23,7 @@
 </main>
 <aside class="panel">
   <header>
-    <h1>Ah Bo · browser iPad</h1>
+    <h1>Ah Bo · browser iPad <a href="script.html" style="color:var(--dim);font-size:12px;text-decoration:none">🎬 Director</a></h1>
     <span class="pill" id="conn" data-state="connecting">connecting</span>
   </header>
 
@@ -60,6 +60,23 @@
     <label class="check"><input id="talk" type="checkbox"> Talk (browser mic)</label>
     <p class="hint">Joins the LiveKit room for voice sessions (needs real LiveKit keys on the server).</p>
   </div>
+
+  <h2>示範 Demo</h2>
+  <div class="row" id="demoBtns">
+    <button data-demo="reset">↺ Reset</button>
+    <button data-demo="s2">💊 S2 食藥</button>
+    <button data-demo="s3a">📅 S3 安排</button>
+    <button data-demo="s3b">😴 S3 悶</button>
+    <button data-demo="s3c">✍️ 好呀報名</button>
+    <button data-demo="fall">🤕 S4 跌倒</button>
+    <button data-demo="play_voice">▶ 播錄音</button>
+  </div>
+  <div class="row">
+    <button id="noInt" data-on="false" style="border-color:var(--green)">🚫 No-interrupt: <b>OFF</b>（喂阿寶可以先打斷）</button>
+  </div>
+  <p class="hint" id="noIntHint">OFF = 佢答嘢嗰陣，得「喂阿寶」可以先插嘴。ON = 全部打斷都禁 — 適用於新開嘅 session。</p>
+  <p class="hint">💊/📅 anchor the clock + inject the line (deterministic fast answer) · ▶ 播錄音 plays the
+  voice note directly, no announce/offer · Reset clears everything (≤5 s).</p>
 
   <h2>Log <button id="clearLog" class="mini" type="button">clear</button></h2>
   <div id="log" aria-live="off"></div>

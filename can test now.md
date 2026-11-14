@@ -13,7 +13,7 @@ scripting fallback.
 
 1. [Control surfaces](#1-control-surfaces)
 2. [Pre-demo prep](#2-pre-demo-prep-10-minutes)
-3. [The core scenarios S1–S4](#3-the-core-scenarios)
+3. [The core scenarios S2–S4](#3-the-core-scenarios)
 4. [Free conversation & Cantonese tests](#4-free-conversation--cantonese-tests)
 5. [Safety red-team tests you can run live](#5-safety-red-team-tests-you-can-run-live)
 6. [Memory tests](#6-memory-tests)
@@ -82,7 +82,7 @@ Panel controls: **Rotate · Reload face · Enable sound · Camera checkbox · �
 | 5 | Reset the demo | Telegram 🔄重設示範 (or `/reset`) | Face idle, no cards; ≤5 s |
 | 6 | Demo device | `/sim/` on the stage machine → login → **Enable sound** → **Talk (browser mic)** → allow mic | **One live test utterance NOW**: 「阿寶，早晨」 |
 | 7 | 阿珍's phone ready | Telegram logged in, notifications ON, volume up | This is where alerts land |
-| 8 | Backup video | On the presenter's laptop | Covers: real voice, fall escalation, sign-up |
+| 8 | Backup video | On the presenter's laptop | Covers: real voice, fall escalation |
 | 9 | Panic rehearsal | Press **`/panic`** once | Audio stops, face idles |
 | 10 | Latency proof ready | `docker exec ahbo-api-1 python -m ahbo.ops.doctor --latency` | p50/p95 of last 50 turns |
 
@@ -93,41 +93,28 @@ text box runs the identical brain — the demo never depends on the mic.
 
 ## 3. The core scenarios
 
+**Stage script = S2 (medicine) → S4 (fall).** Voice-note (S1), check-ins and the S3 sign-up demo are
+**cut from the demo** — the capabilities still exist live (a real incoming voice note is still announced,
+the browser can still sign her up, check-ins still fire 3×/day unless disabled in `checkins.yaml`).
+
 Drive each with the Telegram `/scenario Sx` (resets + anchors the clock + drives) — or run the utterances
-live after `/clock Sx`. Anchor clocks: **S1 09:00 · S2 10:00 · S3 08:30 · S4 15:00**.
+live after `/clock Sx`. Anchor clocks: **S2 10:00 · S4 15:00**. The **Director console**
+(`/sim/script.html`) fires every step for you.
 
-### S1 — the family voice note (anchor 09:00)
-- **Live:** send a Telegram voice note from 阿珍's phone while Po-po's session is idle.
-  - Face: idle → warm mood → card 「阿珍嘅錄音 · 今朝 7:42」 → announces 「王婆婆，阿珍留咗段錄音俾你。」
-    → asks 「想唔想而家聽阿珍嘅錄音呀？」
-  - Say **「好呀」** → waveform card plays with the 「阿珍：媽，記得食飯呀！星期日我帶阿明嚟探你。」 caption.
-- **Backup:** trigger `{"kind":"voice_note"}` (console-less; plays the seeded note; QA note D7: operator-injected
-  note has no 「阿珍：…」 caption).
-- **Ask live:** 「阿寶，今日有冇人搵過我呀？」 → 「有呀」 + plays the note.
-- **Evidence:** 阿珍's real chat shows the delivered note; trace: `family.voice_note → arbiter.decision →
-  voice.play_request → device.play_voice_message`.
-
-### S2 — the medicine question (anchor 10:00)
+### S2 — the medicine question (anchor 10:00) — now with the caregiver Telegram moment
 - Say **「阿寶，我幾時食藥呀？」**
   - Steps: 「查緊藥物時間表…」 → ✓ 「下一次：十二點正，四隻藥」
   - Reply names the 4 medicines (血壓藥、糖尿藥、膽固醇藥、薄血丸); **4 pill chips** appear.
+- **📲 Caregiver moment (automatic):** right after her answer, **阿珍's phone buzzes** — Telegram
+  「媽媽（王婆婆）託阿寶話你知：「我啱啱問阿寶幾時食藥，佢話十二點正，有血壓藥、糖尿藥、膽固醇藥、
+  薄血丸，到時會提我。」」 — the family sees mum is on top of her meds, live. (Director console does this
+  in the same button press; the message goes through the Kernel's family link — INV-1 safe, template-fixed.)
 - **Reminder moment:** Telegram `/clock 11:58` → wait ~2 min → reminder fires with chips + R-clip.
   (Or 💊即刻食藥 button / `/dose` for instant.)
 - **Confirm taken:** 「我食咗喇」 → confirm within the 3 h window; dose_events updated; 阿珍 sees it in /meds.
 - **Snooze:** 「遲少少先食得」 → +15 min, ≤2 times (she'll say so).
-- **Evidence:** the answer comes from `get_med_status` — Kernel dose state; show `trace?correlation_id=<sess_…>`.
-
-### S3 — schedule → boredom → autonomous sign-up (anchor 08:30)
-- **Turn 1:** 「阿寶，我今日有咩安排呀？」 → cards 10:30 覆診 · 聯合醫院 / 12:30 同阿珍飲茶 (bus route context).
-- **Turn 2:** 「咁我下晝好悶喎……」 → deep agent researches → offers 粵曲班 3:00 長者中心 + sign-up card
-  「可代報名」.
-- **Turn 3:** 「好呀，幫我報名啦」 → spoken yes → Playwright fills the real form (only name/age/phone
-  placeholder/activity/session) → **~5 s**: card 「已報名 · 編號 DEMO-04xx」 → spoken confirmation → **阿珍's
-  Telegram NOTIFY with both screenshots** → calendar event 15:00 booked.
-- **Guardrail wow:** open `https://…/mock-centre/?variant=hkid` (or `captcha`) in a corner tab first; her
-  attempt hits the HKID field → **hard stop** → `needs_human` → 阿珍 receives the HANDOFF with screenshot,
-  nothing registered.
-- **Requires:** the `browser` container Up (check in prep).
+- **Evidence:** the answer comes from `get_med_status` — Kernel dose state; the Telegram row is in the
+  **Outbox**; show `trace?correlation_id=<sess_…>`.
 
 ### S4 — the fall (anchor 15:00)
 Full detail in §7. Telegram `/fall` or `/scenario S4` (escalating) / `S4ok` (resolved).
@@ -225,13 +212,11 @@ countdown → ALERT → call → status.
 |---|---|---|
 | **Change a medicine live** | /meds → 糖尿藥 12:00 slot → change time → 確認 → then ask Po-po 「我幾時食藥呀？」 | The answer reflects the change — one source of truth |
 | **Clock control** | `/clock 07:58` → wait → morning dose reminder fires; `/clock now` to return | Timers, re-prompt T+15/T+30, MISSED at T+60 → family INFO |
-| **Check-in** | `/checkin afternoon` | Po-po gets the afternoon check-in on the face |
 | **Quiet hours** | /settings → adjust → `/clock 23:00` → try a P3 announcement | Nothing disturbs her at night except P0/P1 dose |
 | **Thinking knob** | 🧠思考程度 → flash low/off | Live model-config change, no restart |
 | **Mute** | 🔇靜音 → talk to Po-po | No replies; /unmute restores |
 | **Contacts** | /contacts → view 阿珍 (已核實 state) | E.164 + caller-ID-verified semantics |
 | **Health** | /health | The doctor table in chat |
-| **Voice note round-trip** | 阿珍 sends a voice note → proactive announce → play; then 錄段聲俾媽媽 during an incident | Full two-way family link |
 
 ---
 
@@ -286,7 +271,7 @@ countdown → ALERT → call → status.
 
 **Phrasing honesty:** her sentences come from the live model — wording varies run to run. The *facts*
 (4 medicines, 12:00, DEMO number, escalation, refusals) are deterministic; the *sentences* are hers. Rehearse
-S2/S3 a few times so you know her natural phrasing.
+S2 a few times so you know her natural phrasing.
 
 ---
 
@@ -300,7 +285,6 @@ S2/S3 a few times so you know her natural phrasing.
 | Voice sounds wrong | `/knobs` → switch STT/TTS/LLM fallback; or restart `agent` container (`deploy/make.sh restart`) |
 | Telegram down | Alerts sit in Outbox with retry (backoff ≤10 min); press via API `/operator/api/outbox/{oid}/press` |
 | Login fails | 5/min/IP — wait 1 min; or `deploy/make.sh set-password` |
-| Sign-up fails | Browser container down → she says needs-human and 阿珍 gets the HANDOFF — *that's also a demo* |
 | Incident stuck | Alert buttons 我處理緊 / 已解決, or override API |
 | Disk / DB red | `deploy/make.sh backup`; restore newest from `data/backups/` |
 
@@ -315,11 +299,9 @@ S2/S3 a few times so you know her natural phrasing.
 - [ ] `/sim/` login works; **Enable sound** clicked
 - [ ] **Mic test** on the stage machine: 「阿寶，早晨」 → reply heard
 - [ ] Text-box fallback tested once (王婆婆講)
-- [ ] S1 live voice note from 阿珍's phone → announce → play
-- [ ] S2 utterance → 4 chips; reminder via `/clock 11:58`
+- [ ] S1 / S3 / check-ins are CUT from the stage script (Director console drives S2 → S4 only)
+- [ ] S2 utterance → 4 chips + **阿珍 gets the 「媽媽託阿寶話你知」 Telegram**; reminder via `/clock 11:58`
 - [ ] Double-dose refusal + 999 refusal delivered naturally
-- [ ] S3 turn 1–3 → DEMO number → 阿珍 NOTIFY with screenshots
-- [ ] `?variant=hkid` → HANDOFF to 阿珍
 - [ ] S4 branch B (救命) → ALERT on 阿珍's phone → Outbox 答咗 → ACKNOWLEDGED
 - [ ] S4ok branch A → INFO only
 - [ ] Memory demo (tell → forget → recall) once

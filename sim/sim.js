@@ -362,6 +362,58 @@ const talkLog = { face: cmd => face(cmd), log: s => log("note", s),
                   error: (code, detail) => channel.send("error", { code, detail }) };
 const talk = new Talk(talkLog);
 
+/* ---------- 示範 Demo controls (merged Director, 13 Nov): same-origin operator API ---------- */
+console.error("SIMJS-DEBUG", document.readyState, "demoBtns:", !!document.getElementById("demoBtns"), "noInt:", !!document.getElementById("noInt"), "buttons:", document.querySelectorAll("button").length);
+const demoBox = document.getElementById("demoBtns");
+demoBox.addEventListener("click", async ev => {
+  const b = ev.target.closest("button[data-demo]");
+  if (!b) return;
+  b.disabled = true;
+  const post = (path, body) => fetch("/operator/api/" + path, {method: "POST",
+    headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)})
+    .then(r => { if (!r.ok) throw new Error("http_" + r.status); return r.json(); });
+  try {
+    const k = b.dataset.demo;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    if (k === "reset")       await post("reset", {});
+    else if (k === "s2")  { await post("clock", {anchor: "S2"}); await sleep(400);
+                            await post("trigger", {kind: "utterance", text: "喂阿寶，早晨。我幾時食藥呀？"}); }
+    else if (k === "s3a") { await post("clock", {anchor: "S3"}); await sleep(400);
+                            await post("trigger", {kind: "utterance", text: "喂阿寶，我聽日有咩安排呀？"}); }
+    else if (k === "s3b")  await post("trigger", {kind: "utterance", text: "咁我下晝好悶喎……"});
+    else if (k === "s3c")  await post("trigger", {kind: "utterance", text: "好呀，幫我報名啦"});
+    else if (k === "fall") await post("trigger", {kind: "fall"});
+    else if (k === "play_voice") await post("trigger", {kind: "play_voice"});
+    log("note", "demo ✓ " + k);
+  } catch (e) {
+    log("err", "demo ✗ " + ((e && e.message) || e) + " — login 過期就開返 /login");
+  }
+  b.disabled = false;
+});
+
+/* 🚫 No-interrupt toggle (default OFF): ON = even 「喂阿寶」 cannot cut in; applies to new sessions.
+ * Document-level delegation — cannot break on a null lookup, same pattern as script.html. */
+document.addEventListener("click", async ev => {
+  const b = ev.target.closest("#noInt");
+  if (!b) return;
+  const turnOn = b.dataset.on !== "true";
+  b.disabled = true;
+  try {
+    await fetch("/operator/api/override", {method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({kind: "interruption", on: !turnOn})}).then(r => { if (!r.ok) throw new Error("http_" + r.status); });
+    b.dataset.on = turnOn ? "true" : "false";
+    b.innerHTML = turnOn
+      ? '🚫 No-interrupt: <b>ON</b>（冇人可以打斷）'
+      : '🚫 No-interrupt: <b>OFF</b>（喂阿寶可以先打斷）';
+    b.style.borderColor = turnOn ? "var(--red)" : "var(--green)";
+    log("note", "no-interrupt " + (turnOn ? "ON — 新 session 開始先生效" : "OFF"));
+  } catch (e) {
+    log("err", "no-interrupt ✗ " + ((e && e.message) || e));
+  }
+  b.disabled = false;
+});
+
 /* ---------- go ---------- */
 function start() {
   els.face.src = "/face/index.html";

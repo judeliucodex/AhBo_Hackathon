@@ -55,9 +55,15 @@ async def set_clock(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
 
 # ---------------------------------------------------------------- reset / panic
 async def reset_demo(svc: Services, *, anchor: str | None = None) -> dict[str, Any]:
-    """Reload the seed, re-anchor relative times, clear incidents/sessions/cards/queues, face `reset` (≤ 5 s)."""
+    """Reload the seed, re-anchor relative times, clear incidents/sessions/cards/queues, face `reset` (≤ 5 s).
+    Without an explicit `anchor`, the clock keeps its previous setting — a Reset no longer drags real HKT
+    back to the seed's virtual morning (13 Nov: owner wants the clock on real Hong Kong time)."""
     t0 = time.monotonic()
     k = svc.kernel
+    try:
+        prev_offset = svc.clock.offset_s          # kept when anchor is None (real HKT stays real)
+    except Exception:
+        prev_offset = None
     if svc.text_loop is not None and getattr(svc.text_loop, "task", None) and not svc.text_loop.task.done():
         svc.text_loop.task.cancel()
     if anchor:
@@ -71,6 +77,8 @@ async def reset_demo(svc: Services, *, anchor: str | None = None) -> dict[str, A
             k.queue.get_nowait()
         from ahbo.ops.seed import load_demo
         load_demo(svc.db, svc.clock, svc.settings)
+        if anchor is None and prev_offset is not None:
+            svc.clock.set_offset(prev_offset)   # restore the pre-reset clock (real HKT)
         svc.db.kv_set("ui_state", {})
     if svc.hub is not None:
         svc.hub.reset_queues()
@@ -202,6 +210,16 @@ async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
                               payload={"contact_id": body.get("contact_id") or "c_chun", "text": text}))
     elif kind == "reset":
         return await reset_demo(svc)
+    elif kind == "family_info":
+        # Operator-initiated INFO to the caregiver — same INV-1 path as the tool: the Kernel owns the send,
+        # the text is rebuilt from the fixed template + quoted words (her_words), never free-form LLM text.
+        words = str(body.get("text") or "").strip()
+        if not words:
+            return {"ok": False, "reason": "bad_args"}
+        await k.process(Event(type="family.message_request", source="operator",
+                              payload={"contact_id": body.get("contact_id") or "c_chun", "kind": "text",
+                                       "her_words": words}))
+        return {"ok": True}
     elif kind == "wake":
         await k.process(Event(type="device.wake", source="operator", payload={"trigger": "touch", "by": "operator"}))
     elif kind == "utterance":
@@ -210,6 +228,18 @@ async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
             return {"ok": False, "reason": "bad_args"}
         r = await svc.text_loop.utterance(text)
         return {"ok": bool(r.get("ok", True)), **{x: r[x] for x in ("turn_id", "reason") if x in r}}
+    elif kind == "play_voice":
+        links = _links()
+        if links is not None:
+            r = await links.inject_voice_note(svc)
+            if not r.get("ok"):
+                return r
+            vid = str(r.get("voice_id"))
+        else:
+            vid = str(body.get("voice_id") or "vm_demo")
+        await k.process(Event(type="voice.play_request", source="agent",
+                              payload={"message_id": vid}))          # plays directly: no announce, no offer
+        return {"ok": True, "voice_id": vid, "played": True}
     elif kind == "birth":
         await k.process(op_event("operator.birth"))
         await k.emit(ui({"type": "birth"}, P1))

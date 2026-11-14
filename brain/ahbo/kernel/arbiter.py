@@ -290,7 +290,8 @@ def reduce(state: Any, ev: Event, ctx: Any) -> list[Command] | None:
                  ev.correlation_id)
             return out or None
         who = vm.get("from_name") or fam["name"]
-        item = make_item("錄音", P2, f"想唔想而家聽{who}嘅錄音呀？",
+        prio = P1 if p.get("voice_mum") else P2             # voice_mum armed (錄段聲俾媽媽): announce immediately
+        item = make_item("錄音", prio, f"想唔想而家聽{who}嘅錄音呀？",
                          f"{who}留咗段錄音（{vid}）。佢話想聽就用 play_voice_message 播。", clip="A1", mood="warm",
                          session={"reason": "voice_note", "mode": "companion"}, voice_id=vid, corr=ev.correlation_id)
         _, cmds = request(state, ctx, item)

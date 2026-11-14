@@ -301,8 +301,22 @@ def make_agent_class():
             self.run = run
 
         async def stt_node(self, audio: Any, model_settings: Any):
-            """Her words in Traditional before anything sees them (captions, Kernel, Stage 3, LLM; INV-10)."""
+            """Her words in Traditional before anything sees them (captions, Kernel, Stage 3, LLM; INV-10).
+            While she is speaking, the ONLY thing that may cut her in is 「喂阿寶」 (13 Nov): hearing it
+            force-interrupts the reply; every other sound is dropped — her speech is never cut by VAD
+            (allow_interruptions=False during replies)."""
             async for ev in Agent.default.stt_node(self, audio, model_settings):
+                r = self.run
+                txt = (getattr(ev, "transcript", "") or "").strip()
+                if r.speaking and not r.no_interrupt and txt and not r.wake_bargein:
+                    from ahbo.wake.matcher import stage3_check
+                    if stage3_check(txt)[0] or "喂阿寶" in txt:
+                        r.wake_bargein = True
+                        log.info("wake-gated barge-in: 「喂阿寶」 heard mid-reply")
+                        try:
+                            await self.session.interrupt(force=True)
+                        except Exception as e:
+                            log.warning("wake barge-in interrupt failed (%s)", type(e).__name__)
                 yield hk_event(ev)
 
         async def on_user_turn_completed(self, turn_ctx: Any, new_message: Any) -> None:
@@ -312,10 +326,28 @@ def make_agent_class():
             text = to_hk(raw)                             # idempotent; stt_node already converted it
             self.run.start_timing()
             r = self.run
+            r.user_text = text
             if not text:
                 raise StopResponse()
             if text != raw:
                 new_message.content = [text]
+            wake_hit = ("喂阿寶" in text)
+            try:
+                from ahbo.wake.matcher import stage3_check as _s3
+                wake_hit = wake_hit or _s3(text)[0]
+            except Exception:
+                pass
+            if getattr(r, "wake_bargein", False) or wake_hit:
+                r.wake_bargein = False              # 「喂阿寶」 heard mid-reply: keep the turn, strip the wake word
+                r.last_reply_interrupted = False
+                r.speaking = False
+                ok, rem = _s3(text) if wake_hit else (True, text)
+                if wake_hit and rem:
+                    text = rem
+                    new_message.content = [text]
+            elif r.speaking or r.last_reply_interrupted:
+                r.last_reply_interrupted = False    # interrupted her without the wake word: ignored entirely
+                raise StopResponse()
             if r.stage3_pending:
                 verdict, rem = stage3_decision(r.reason, None, text)
                 r.stage3_pending = False
@@ -337,9 +369,29 @@ def make_agent_class():
             r = self.run
             filt = ReplyFilter()
             started = False
+            if r.mode in ("companion", "reminder"):     # demo fast path: scripted Qs answered with no model call
+                from ahbo.agent.fastpath import match as fp_match, tool_for as fp_tool, answer as fp_answer
+                kind = fp_match(getattr(r, "user_text", ""))
+                if kind:
+                    from livekit.agents import NOT_GIVEN
+                    tool, args = fp_tool(kind)
+                    reply = fp_answer(kind, await r.api.tool(tool, r.sid, r.turn_id, None, args),
+                                      getattr(r, "user_text", ""))
+                    if reply:
+                        prev_int = getattr(self, "_allow_interruptions", NOT_GIVEN)
+                        self._allow_interruptions = False      # demo answers: she speaks, nobody can cut in
+                        try:
+                            await r.reply_start(reply)
+                            r.speaking = True
+                            yield reply
+                        finally:
+                            self._allow_interruptions = prev_int
+                        await r.api.turn(op="reply_end", session_id=r.sid, turn_id=r.turn_id)
+                        return
             if r.capped_line:            # over the llm_usd cap: the Kernel's fixed line, no model call (QA 26 D3)
                 line, r.capped_line = r.capped_line, None
                 await r.reply_start(line)
+                r.speaking = True
                 yield line
                 await r.api.turn(op="reply_end", session_id=r.sid, turn_id=r.turn_id)
                 return
@@ -356,10 +408,18 @@ def make_agent_class():
                     for s in filt.push(text):
                         if not started:
                             started = True
+                            r.speaking = True
+                            self._prev_allow_int = self._allow_interruptions
+                            self._allow_interruptions = False       # she speaks the full answer (13 Nov)
                             await r.reply_start(s)
                         yield s
                     if filt.stopped:
                         break                              # §5.6 step 4: cut the generation after two sentences
+            except GeneratorExit:                          # barge-in closed the reply mid-stream
+                r.last_reply_interrupted = True
+                r.speaking = False
+                self._allow_interruptions = getattr(self, "_prev_allow_int", NOT_GIVEN)
+                raise
             except Exception:                              # every model attempt failed (§10.4): never stay silent
                 log.exception("LLM failed after fallbacks; speaking the generic fallback line G1")
                 await r.api.event("quality.llm_failed", {"session_id": r.sid, "turn_id": r.turn_id})
@@ -378,6 +438,8 @@ def make_agent_class():
                 await r.api.event(f"quality.{q}", {"session_id": r.sid, "turn_id": r.turn_id})
             if started:
                 await r.api.turn(op="reply_end", session_id=r.sid, turn_id=r.turn_id)
+            r.speaking = False
+            self._allow_interruptions = getattr(self, "_prev_allow_int", NOT_GIVEN)
 
     return AhBoAgent
 
@@ -411,6 +473,11 @@ class SessionRun:
         self.capped_line: str | None = None
         self.turn_id: str | None = None
         self._n = 0
+        self.user_text: str = ""
+        self.speaking = False                # True while a reply is streaming (interruption gate)
+        self.wake_bargein = False            # 「喂阿寶」 heard mid-reply → deliberate interrupt
+        self.last_reply_interrupted = False  # the previous reply was cut by barge-in
+        self.no_interrupt = not claim.get("interruption_enabled", True)  # console 🚫 toggle (default OFF)
         self.session: Any = None
         self.agent: Any = None
         self.instructions = ""
@@ -547,7 +614,7 @@ async def entrypoint(ctx: Any) -> None:
     run.all_tools = proxied_tools(run)
     comps = build_components(settings, ctx.proc.userdata.get("vad"))
     session = AgentSession(stt=comps["stt"], llm=comps["llm"], tts=comps["tts"], vad=comps["vad"],
-                           turn_handling=turn_handling(claim.get("interruption_enabled", True)))
+                           turn_handling=turn_handling(claim.get("interruption_enabled", False)))  # 13 Nov: barge-in off by default
     run.session = session
     names = {s["function"]["name"] for s in tools_for_mode(_schemas(), run.mode)}
     run.agent = make_agent_class()(run, run.instructions, [t for t in run.all_tools if _tool_name(t) in names])

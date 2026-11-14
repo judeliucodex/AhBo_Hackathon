@@ -53,6 +53,19 @@ class TurnAgent:
                 await self.bridge.reply_end(session_id, turn_id)
             return
         try:
+            from ahbo.agent.fastpath import match as fp_match, tool_for as fp_tool, answer as fp_answer
+            kind = fp_match(text)
+            s0 = self.bridge.kernel.state.session
+            if kind and (s0 is None or s0.mode in ("companion", "reminder")):
+                tool, args = fp_tool(kind)
+                await self.bridge.steps_plan(session_id, turn_id, [tool])
+                res = await self.bridge.call_tool(session_id, turn_id, tool, args, None)
+                reply = fp_answer(kind, res, text)
+                if reply:
+                    say_id = await self.bridge.reply_start(session_id, turn_id, reply)
+                    if say_id:
+                        await self.bridge.wait_say(say_id)
+                    return                      # reply_end is emitted by the finally below
             for _ in range(MAX_ROUNDS):
                 s = self.bridge.kernel.state.session
                 resp = await self.llm.chat(msgs, schemas(s.mode if s else "companion"), purpose="voice_turn",

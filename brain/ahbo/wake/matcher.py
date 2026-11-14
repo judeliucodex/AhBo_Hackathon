@@ -35,7 +35,8 @@ log = logging.getLogger(__name__)
 
 EXACT_STRINGS = ("喂阿寶", "喂，阿寶")
 MAX_SYLLABLES = 6
-DEFAULTS: dict[str, Any] = {"require_wai": True, "allow_missing_aa": True, "plain_abou_wakes": False}
+DEFAULTS: dict[str, Any] = {"require_wai": True, "allow_missing_aa": True, "plain_abou_wakes": False,
+                            "exact_only": False}
 
 
 def is_separator(ch: str) -> bool:
@@ -73,6 +74,7 @@ class WakeMatcher:
         self.require_wai = bool(cfg["require_wai"])
         self.allow_missing_aa = bool(cfg["allow_missing_aa"])
         self.plain_abou = bool(cfg["plain_abou_wakes"]) or not self.require_wai
+        self.exact_only = bool(cfg.get("exact_only", False))
 
     def _is(self, cls: str, syl: list[tuple[str, int]], i: int) -> bool:
         return i < len(syl) and syl[i][0] in self.h[cls]
@@ -91,11 +93,9 @@ class WakeMatcher:
             return WakeMatch(False)
 
         candidates: list[tuple[str, int]] = []   # (rule, number of syllables in the wake phrase)
-        head = strip_leading_separators(text)
-        for exact in EXACT_STRINGS:
-            if head.startswith(exact):
-                candidates.append(("exact", sum(1 for c in exact if not is_separator(c))))
-        if self._is("wai", syl, 0):
+        if "".join(c for c, _ in syl).startswith("喂阿寶"):     # separators already skipped in syl
+            candidates.append(("exact", 3))
+        if not self.exact_only and self._is("wai", syl, 0):
             if self._is("aa", syl, 1) and self._is("bou", syl, 2):
                 candidates.append(("full", 3))
             if self.allow_missing_aa and self._is("bou", syl, 1):

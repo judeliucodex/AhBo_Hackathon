@@ -99,7 +99,8 @@ def today_view(svc: Any) -> Reply:
     knobs = db.kv_get("knobs", {}) or {}
     if knobs.get("muted"):
         lines.append("🔇 阿寶而家靜音緊。")
-    return Reply("\n".join(lines), [[("🔔 最近通知", cb("v", "alerts")), ("🔄 更新", cb("v", "today"))], back_row()])
+    return Reply("\n".join(lines), [[("🎤 錄段聲俾媽媽", cb("vn")), ("🔔 最近通知", cb("v", "alerts"))],
+                                    [("🔄 更新", cb("v", "today"))], back_row()])
 
 
 # ---------------------------------------------------------------- 藥物

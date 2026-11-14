@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Ah Bo · Console</title>
+<style>
+:root { color-scheme: dark;
+  --bg:#0b0b0d; --card:#17171a; --line:rgba(236,227,231,.14); --ink:#ECE3E7; --dim:rgba(236,227,231,.5);
+  --green:#5bd08a; --amber:#FFC46B; --red:#ff6b6b; }
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"PingFang HK","Noto Sans HK",sans-serif;touch-action:manipulation}
+button,.big,.reset{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.tabbar{display:flex;gap:8px;margin:14px 0 4px;position:sticky;top:0;z-index:8;background:var(--bg);padding:8px 0}
+.tab{flex:1;font:700 14px system-ui;color:var(--dim);background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:12px 6px;cursor:pointer;text-align:center}
+.tab.on{color:#000;background:var(--amber);border-color:var(--amber)}
+.sec[hidden]{display:none}
+header{position:sticky;top:0;z-index:9;background:rgba(11,11,13,.96);padding:12px 16px;border-bottom:1px solid var(--line);
+  display:flex;gap:10px;align-items:center}
+header b{font-size:15px;flex:1}
+.pill{font:600 11px system-ui;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--dim)}
+main{max-width:680px;margin:0 auto;padding:14px 14px 60px}
+.sec{margin:22px 0}
+.sec h2{font-size:14px;letter-spacing:.06em;color:var(--amber);margin:0 0 4px}
+.sec .sub{font-size:13px;color:var(--dim);margin:0 0 10px}
+.big{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);
+  border:1px solid var(--line);border-radius:14px;padding:16px 16px;margin:10px 0;cursor:pointer;font:inherit}
+.big:active{background:#222}
+.big:disabled{opacity:.35}
+.big .n{display:inline-block;font:700 13px system-ui;background:var(--ink);color:#000;border-radius:8px;padding:2px 9px;margin-right:10px}
+.big .say{font-size:18px;font-weight:700}
+.big .do{font-size:13px;color:var(--dim);margin-top:5px}
+.big .reply{font-size:13px;color:var(--green);margin-top:5px}
+.big.ok{border-color:var(--green)} .big.err{border-color:var(--red)}
+button.reset{font:700 14px system-ui;color:#000;background:var(--amber);border:0;border-radius:12px;padding:12px 20px;cursor:pointer;width:100%}
+.hint{font-size:12.5px;color:var(--dim);margin:8px 2px}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:8px 14px;font-size:13px;display:none;z-index:20;max-width:90vw}
+#toast.err{border-color:var(--red);color:var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <b>🎬 阿寶 Console</b>
+  <span class="pill" id="conn">checking…</span>
+</header>
+<main>
+  <button class="reset" data-kind="reset">↺ 準備 — Reset demo（每個場景前按）</button>
+  <button class="reset" id="noInt" data-kind="no_int" data-on="false" style="background:var(--green);margin-top:8px">🚫 No-interrupt: OFF（喂阿寶可以先打斷）</button>
+  <p class="hint" style="color:var(--dim)">ON = 阿寶答嘢嗰陣冇人可以打斷（連「喂阿寶」都唔得）。淨係影響新開嘅 session — 轉完再開始對話。</p>
+  <p class="hint">Demo iPad: Safari → /sim/ → ⛶ App mode（只有阿寶對眼，全黑畫面）→ 撳一下面解鎖聲音。
+  講嘢嗰陣，撳下面對應大掣 — 話會變成阿寶「聽到」嘅說話，佢會即場用真 AI 回答。</p>
+
+  <div class="tabbar">
+    <button class="tab on" data-sec="s1">💊 場景 1 · 食藥</button>
+    <button class="tab" data-sec="s3">🤕 場景 2 · 跌倒</button>
+  </div>
+
+  <div class="sec" id="sec-s1">
+    <h2>場景 1 · 食藥 S2</h2>
+    <p class="sub">Clock anchors to 10:00 → 下一劑 12:00（兩個鐘之後）。答完之後，阿珍會收到 Telegram。</p>
+    <button class="big" data-kind="s2">
+      <span class="n">1</span><span class="say">「喂阿寶，早晨。我幾時食藥呀？」</span>
+      <div class="do">Anchor 10:00 + inject the line (wake word 喂阿寶 matched)</div>
+      <div class="reply">阿寶答：「十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。」＋ 4 粒藥丸 chips
+      ＋ 📲 阿珍 Telegram 收到：「媽媽（王婆婆）託阿寶話你知：我啱啱問阿寶幾時食藥……」</div>
+    </button>
+  </div>
+
+  <div class="sec" id="sec-s3" hidden>
+    <h2>場景 2 · 跌倒 S4</h2>
+    <p class="sub">The alarm starts on your word. Let the 5s countdown run out by itself — it escalates automatically.</p>
+    <button class="big" data-kind="fall">
+      <span class="n">1</span><span class="say">「救命！」→ 撳 RED 掣</span>
+      <div class="do">Trigger the fall (operator path)</div>
+      <div class="reply">FACE: amber alarm → F1「跌低咗！」→ 影相 → F3「請講我冇事」＋ countdown → 5 秒後自動升級</div>
+    </button>
+    <p class="hint">⏳ Countdown 完：阿珍部電話真系震 — Telegram ALERT（相片、時間、地址、我處理緊/錄段聲俾媽媽/已解決）。
+    停兩秒，俾全場聽到 buzz。</p>
+    <button class="big" data-kind="outbox">
+      <span class="n">2</span><span class="say">答咗</span>
+      <div class="do">Press the call row in the Outbox</div>
+      <div class="reply">ACKNOWLEDGED → cards 轉「已致電阿珍」→ 阿寶安心模式</div>
+    </button>
+  </div>
+
+  <p class="hint">完場：𡲢上面 ↺ Reset demo 回到開場狀態（≤5 秒）。出事就撳兩次 Reset — 一切重嚟。</p>
+</main>
+<div id="toast"></div>
+<script>
+const $ = s => document.querySelector(s);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+async function api(path, body){
+  const r = await fetch("/operator/api/"+path, body!==undefined
+    ? {method:"POST", headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)}
+    : {});
+  const j = await r.json().catch(()=>({ok:false,reason:"http_"+r.status}));
+  if(!j.ok) throw new Error(j.reason || ("http_"+r.status));
+  return j;
+}
+function toast(msg, err){
+  const t=$("#toast"); t.textContent=msg; t.className=err?"err":""; t.style.display="block";
+  clearTimeout(t._h); t._h=setTimeout(()=>t.style.display="none", err?6000:2500);
+}
+async function run(kind, btn){
+  btn.disabled = true;
+  try{
+    if(kind==="reset"){       await api("reset", {}); toast("✓ Reset — 開場狀態"); }
+    else if(kind==="s2"){     await api("clock", {anchor:"S2"}); await sleep(400);
+                              await api("trigger", {kind:"utterance", text:"喂阿寶，早晨。我幾時食藥呀？"});
+                              await sleep(600);
+                              await api("trigger", {kind:"family_info",
+                                text:"我啱啱問阿寶幾時食藥，佢話十二點正，有血壓藥、糖尿藥、膽固醇藥、薄血丸，到時會提我。"});
+                              toast("✓ S2 — 阿寶答咗 ＋ 阿珍收到 Telegram"); }
+    else if(kind==="fall"){   await api("trigger", {kind:"fall"}); }
+    else if(kind==="outbox"){
+      const list = await api("outbox?limit=50");
+      const rows = list.items || [];
+      const row  = rows.find(x => x.channel==="twilio") ;
+      if(!row) throw new Error("冇 call row — 先撳 RED 掣");
+      await api("outbox/"+row.id+"/press", {button: "press1"});
+    }
+    else if (kind === "no_int") {
+      const turnOn = b.dataset.on !== "true";
+      await api("override", {kind: "interruption", on: !turnOn});
+      b.dataset.on = turnOn ? "true" : "false";
+      b.textContent = turnOn ? "🚫 No-interrupt: ON（冇人可以打斷）" : "🚫 No-interrupt: OFF（喂阿寶可以先打斷）";
+      b.style.background = turnOn ? "var(--err)" : "var(--green)";
+    }
+    else { btn.disabled=false; return; }
+    btn.classList.add("ok");
+  }catch(e){
+    btn.disabled=false; btn.classList.add("err");
+    toast("✗ " + e.message + (String(e.message).includes("auth")||String(e.message).includes("login") ? " — 呢個瀏覽器開返 /login" : ""), true);
+  }
+}
+document.addEventListener("click", ev=>{
+  const t = ev.target.closest(".tab");
+  if(t){
+    document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on", x===t));
+    document.querySelectorAll(".sec").forEach(s=>{ s.hidden = s.id !== "sec-"+t.dataset.sec; });
+    scrollTo({top:0, behavior:"smooth"});
+    return;
+  }
+  const b = ev.target.closest("button[data-kind]"); if(!b) return;
+  run(b.dataset.kind, b);
+});
+fetch("/operator/api/state").then(r=>{ $("#conn").textContent = r.ok ? "operator ✓" : "login needed"; })
+  .catch(()=>{ $("#conn").textContent = "offline"; });
+</script>
+</body>
+</html>

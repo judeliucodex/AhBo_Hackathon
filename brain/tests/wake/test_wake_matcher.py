@@ -30,8 +30,8 @@ def test_reject(matcher: WakeMatcher, text: str) -> None:
 
 
 @pytest.mark.parametrize("text,remainder", [
-    ("喂阿寶", ""), ("喂，阿寶", ""), ("喂 阿寶", ""), ("喂寶", ""),
-    ("喂阿寶，今日有咩做呀？", "今日有咩做呀？"), ("威阿寶 我幾時食藥呀", "我幾時食藥呀"),
+    ("喂阿寶", ""), ("喂，阿寶", ""), ("喂 阿寶", ""),
+    ("喂阿寶，今日有咩做呀？", "今日有咩做呀？"), ("喂阿寶 我幾時食藥呀", "我幾時食藥呀"),
     ("  喂阿寶。", ""),
 ])
 def test_remainder(matcher: WakeMatcher, text: str, remainder: str) -> None:
@@ -40,10 +40,9 @@ def test_remainder(matcher: WakeMatcher, text: str, remainder: str) -> None:
 
 
 def test_rules(matcher: WakeMatcher) -> None:
-    assert matcher.match("喂寶").rule == "missing_aa"
-    assert matcher.match("喂喂阿寶").rule == "filler"
-    assert matcher.match("喂亞寶").rule == "full"
-    assert matcher.match("喂阿寶").rule == "exact"
+    assert matcher.match("喂阿寶").rule == "exact"   # exact_only (13 Nov): 喂阿寶 and nothing else
+    for old in ("喂寶", "喂喂阿寶", "喂亞寶", "威阿寶", "喂阿保"):
+        assert not matcher.match(old).ok, old       # homophones / missing-aa / filler no longer wake
     assert not matcher.match("喂阿寶寶").ok          # reduplication guard (寶寶 = baby)
 
 

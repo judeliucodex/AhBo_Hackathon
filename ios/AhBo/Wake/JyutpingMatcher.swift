@@ -21,6 +21,7 @@ struct WakeMatchConfig: Equatable, Sendable {
     var utteranceStartSilenceMs = 300
     var cooldownAfterRejectS = 5.0
     var allowMissingAa = true
+    var exactOnly = false
     var plainAbouWakes = false
 
     /// Parses the `key: value` lines of brain/config/wake_match.yaml (bundled as-is; comments skipped).
@@ -53,6 +54,7 @@ struct WakeMatchConfig: Equatable, Sendable {
         if let v = num("utterance_start_silence_ms") { c.utteranceStartSilenceMs = Int(v) }
         if let v = num("cooldown_after_reject_s") { c.cooldownAfterRejectS = v }
         if let v = bool("allow_missing_aa") { c.allowMissingAa = v }
+        if let v = bool("exact_only") { c.exactOnly = v }
         if let v = bool("plain_abou_wakes") { c.plainAbouWakes = v }
         return c
     }
@@ -123,12 +125,11 @@ struct JyutpingMatcher: Sendable {
         func isClass(_ set: Set<Character>, _ k: Int) -> Bool { k < syl.count && set.contains(syl[k].ch) }
 
         var candidates: [(rule: String, n: Int)] = []
-        let head = Self.stripLeadingSeparators(transcript[...])
-        for exact in Self.exactStrings where head.hasPrefix(exact) {
-            candidates.append(("exact", exact.filter { !Self.isSeparator($0) }.count))
+        if syl.map({ $0.ch }).hasPrefix("喂阿寶") {     // separators already skipped in syl
+            candidates.append(("exact", 3))
         }
         let plain = config.plainAbouWakes || !config.requireWai
-        if isClass(wai, 0) {
+        if !config.exactOnly && isClass(wai, 0) {
             if isClass(aa, 1) && isClass(bou, 2) { candidates.append(("full", 3)) }
             if config.allowMissingAa && isClass(bou, 1) { candidates.append(("missing_aa", 2)) }
             if isClass(aa, 2) && isClass(bou, 3) { candidates.append(("filler", 4)) }

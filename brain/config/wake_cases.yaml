@@ -1,3 +1,5 @@
 # config/wake_cases.yaml  — shared fixture for the Python (Stage 3) and Swift (Stage 2) Jyutping matchers (§25.6)
-accept: ["喂阿寶", "喂，阿寶", "喂亞寶", "威阿寶", "喂阿保", "喂寶", "喂阿寶，今日有咩做呀？", "喂 阿寶"]
-reject: ["阿寶", "喂阿爸", "喂阿婆", "喂寶寶", "我話喂阿寶", "餵飽", "", "今日天氣好好"]
+# 13 Nov: exact_only — only 「喂阿寶」 (with separators) wakes; homophones (威阿寶/喂阿保/喂亞寶), 喂寶 and
+# fillers (喂喂阿寶) no longer wake (owner: bulletproof the demo — nothing else may wake her).
+accept: ["喂阿寶", "喂，阿寶", "喂 阿寶", "喂阿寶，今日有咩做呀？"]
+reject: ["阿寶", "喂阿爸", "喂阿婆", "喂寶寶", "我話喂阿寶", "餵飽", "", "今日天氣好好", "喂亞寶", "威阿寶", "喂阿保", "喂寶", "喂喂阿寶", "喂呀阿寶"]

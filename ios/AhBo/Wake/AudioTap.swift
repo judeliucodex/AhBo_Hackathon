@@ -24,8 +24,9 @@ final class AudioTap: @unchecked Sendable {
     private var lastSpeechWall = Date.distantPast
     private var lastLevel: Float = 0
 
-    /// dBFS below which a buffer counts as silence.
-    var silenceThresholdDB: Float = -45
+    /// dBFS below which a buffer counts as silence. 13 Nov: raised -45 → -30 — the wake word needs a
+    /// clearly audible voice; ambient room noise and far-away speech no longer arm the wake engine.
+    var silenceThresholdDB: Float = -30
     var silenceMs: Int = 300
 
     /// Start tapping the mic. `sink` gets buffers in `format` (the analyzer's best format).
