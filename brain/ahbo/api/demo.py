@@ -226,7 +226,13 @@ async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
         text = str(body.get("text") or "").strip()
         if not text or svc.text_loop is None:
             return {"ok": False, "reason": "bad_args"}
-        r = await svc.text_loop.utterance(text)
+        try:                                    # live voice session open? she answers OUT LOUD
+            from ahbo.agent.wiring import push_user_text
+            if push_user_text(svc, text):
+                return {"ok": True, "spoken": True}
+        except Exception:
+            log.warning("voice-session injection unavailable; falling back to text", exc_info=True)
+        r = await svc.text_loop.utterance(text)   # no voice session: captions only
         return {"ok": bool(r.get("ok", True)), **{x: r[x] for x in ("turn_id", "reason") if x in r}}
     elif kind == "play_voice":
         links = _links()

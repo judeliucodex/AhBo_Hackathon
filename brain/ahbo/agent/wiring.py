@@ -308,6 +308,20 @@ def internal_claim(svc: Any, body: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+def push_user_text(svc: Any, text: str) -> bool:
+    """Console demo buttons: inject her words into the LIVE voice session so she thinks (tools)
+    and answers OUT LOUD through LiveKit TTS. False when there is no voice session to speak in
+    (the caller then falls back to the text loop — captions only)."""
+    s = svc.kernel.state.session
+    if s is None or s.text_only:
+        return False
+    pq = _PQ.get(id(svc))
+    if pq is None:
+        return False
+    pq.put(s.id, {"kind": "user_text", "text": str(text)})
+    return True
+
+
 async def internal_pull(svc: Any, session_id: str) -> dict[str, Any]:
     s = svc.kernel.state.session
     pq = _pq(svc)

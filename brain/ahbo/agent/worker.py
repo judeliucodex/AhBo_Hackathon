@@ -550,6 +550,12 @@ class SessionRun:
             await self.apply_mode(item.get("mode") or "companion")
         elif kind == "interrupt" and self.session is not None:
             self.session.interrupt(force=True)
+        elif kind == "user_text" and self.session is not None:
+            text = str(item.get("text") or "").strip()
+            if text:
+                log.info("console-injected her words → full turn (tools + spoken)")
+                await self.session.generate_reply(
+                    instructions=f"（媽媽啱啱咁講：「{text}」）— 用廣東話自然咁回答佢；需要事實就用工具查，兩句之內。")
         elif kind == "config" and "interruption_enabled" in item:
             self.no_interrupt = not bool(item["interruption_enabled"])   # 🚫 toggle hits the live session
             log.info("interruption knob live → no_interrupt=%s", self.no_interrupt)
