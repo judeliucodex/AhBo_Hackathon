@@ -559,6 +559,21 @@ class SessionRun:
                         instructions=f"（媽媽啱啱咁講：「{text}」）— 用廣東話自然咁回答佢；需要事實就用工具查，兩句之內。")
                 except RuntimeError as e:   # session closing mid-press: drop it, never kill the pull loop
                     log.warning("user_text dropped (session closing): %s", e)
+        elif kind == "say_fixed" and self.session is not None and not self.closed.is_set():
+            text = str(item.get("text") or "").strip()
+            delay = float(item.get("delay_s") or 0.0)
+            if text:
+                async def _say_later() -> None:
+                    await asyncio.sleep(delay)
+                    try:
+                        await self.session.say(text)          # fixed line, no LLM (hardcoded demo)
+                        log.info("hardcoded line spoken")
+                    except RuntimeError as e:
+                        log.warning("say_fixed dropped (session closing): %s", e)
+                t = asyncio.create_task(_say_later())
+                self._tasks = getattr(self, "_tasks", set())
+                self._tasks.add(t)
+                t.add_done_callback(self._tasks.discard)
         elif kind == "config" and "interruption_enabled" in item:
             self.no_interrupt = not bool(item["interruption_enabled"])   # 🚫 toggle hits the live session
             log.info("interruption knob live → no_interrupt=%s", self.no_interrupt)

@@ -81,10 +81,11 @@ button.reset{font:700 14px system-ui;color:#000;background:var(--amber);border:0
       <div class="do">Her words → the deep agent researches live → she recommends OUT LOUD</div>
       <div class="reply">阿寶出聲答：「下晝三點有粵曲班……想唔想去？我幫你報名吖。」＋ 可代報名 card</div>
     </button>
-    <button class="big" data-kind="s3c">
+    <button class="big" data-kind="enroll">
       <span class="n">3</span><span class="say">「好呀，幫我報名啦」</span>
-      <div class="do">Her spoken yes → the browser really books it (~5s)</div>
-      <div class="reply">Card 「已報名 · 編號 DEMO-04xx」 → 📲 阿珍 Telegram NOTIFY ＋ 兩張截圖 → 日程 15:00 粵曲班 booked</div>
+      <div class="do">Hardcoded — books the real form (~5s)，阿寶出聲講固定一句確認（冇 LLM，唔會揀錯）</div>
+      <div class="reply">阿寶出聲：「好呀，我幫你報咗名喇！聽日下晝三點，長者中心粵曲班見。」
+      ＋ Card 「已報名 · 編號 DEMO-04xx」 → 📲 阿珍 Telegram NOTIFY ＋ 兩張截圖 → 日程 15:00 booked</div>
     </button>
     <p class="hint">同場景 1 一樣：iPad 開「Talk (browser mic)」→ 撳掣後阿寶思考＋出聲答。佢答嘅係「聽日」（tomorrow）— seed 真系排喺聽日。步驟 2 用真 deep agent。</p>
   </div>
@@ -122,8 +123,8 @@ async function run(kind, btn){
                               toast("✓ 聽日安排 — 阿寶出聲答緊"); }
     else if(kind==="s3b"){    await api("trigger", {kind:"utterance", text:"咁我下晝好悶喎……"});
                               toast("✓ 悶 — deep agent 推薦緊，等幾秒"); }
-    else if(kind==="s3c"){    await api("trigger", {kind:"utterance", text:"好呀，幫我報名啦"});
-                              toast("✓ 報名中 — 瀏覽器填表 ＋ 阿珍收到 Telegram"); }
+    else if(kind==="enroll"){ await api("trigger", {kind:"enroll"});
+                              toast("✓ 報名中 — 阿寶 6 秒後出聲確認 ＋ 阿珍收到 Telegram"); }
     else if (kind === "no_int") {
       const turnOn = b.dataset.on !== "true";
       await api("override", {kind: "interruption", on: !turnOn});

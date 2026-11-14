@@ -208,6 +208,33 @@ async def trigger(svc: Services, body: dict[str, Any]) -> dict[str, Any]:
             return await links.inject_text(svc, text)
         await k.process(Event(type="family.text", source="operator",
                               payload={"contact_id": body.get("contact_id") or "c_chun", "text": text}))
+    elif kind == "enroll":
+        # Hardcoded Demo 2 turn 3 (owner 14 Nov): no LLM — propose + confirm the seeded 粵曲班 directly.
+        # The runner books the real form (~5 s), 阿珍 gets the NOTIFY, and the fixed confirmation line is
+        # spoken through the voice session (session.say — no model involved).
+        s_sess = svc.kernel.state.session
+        if s_sess is None:
+            return {"ok": False, "reason": "no_session"}
+        res = await k.request(Event(type="action.propose_request", source="operator",
+                                    payload={"kind": "signup", "target": "act_opera_1500",
+                                             "details": {"activity_id": "act_opera_1500"},
+                                             "session_id": s_sess.id}))
+        if not (isinstance(res, dict) and res.get("ok", False)):
+            return {"ok": False, "reason": (res or {}).get("reason", "propose_failed")
+                    if isinstance(res, dict) else "propose_failed"}
+        action_id = str(res.get("action_id"))
+        await k.request(Event(type="action.confirm_request", source="operator",
+                              payload={"action_id": action_id, "utterance": "好呀，幫我報名啦",
+                                       "stt_confidence": 0.95}))
+        try:
+            from ahbo.agent.wiring import _PQ
+            pq = _PQ.get(id(svc))
+            if pq is not None:
+                pq.put(s_sess.id, {"kind": "say_fixed", "delay_s": 6.0,
+                                   "text": "好呀，我幫你報咗名喇！聽日下晝三點，長者中心粵曲班見。"})
+        except Exception:
+            log.warning("say_fixed unavailable (no voice session)", exc_info=True)
+        return {"ok": True, "action_id": action_id, "spoken_line_scheduled": True}
     elif kind == "reset":
         return await reset_demo(svc)
     elif kind == "family_info":
