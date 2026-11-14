@@ -40,9 +40,7 @@ life_stories:
 sessions:                          # episodic: makes 「我琴日同你講咗咩？」 work
   - { days_ago: 1, summary: ["佢話琴日膝頭有啲痛，所以冇落街。", "傾咗阿明下個月生日想送咩。", "佢話想學用電話同阿珍視像。"], mood: calm }
   - { days_ago: 2, summary: ["佢講起以前教書嘅學生。", "聽咗一段《帝女花》，好開心。"], mood: happy }
-voice_messages:
-  - { id: vm_demo, from: 阿珍, received: "07:42", file: seed/voice/demo_daughter.m4a,
-      transcript: "媽，記得食飯呀！星期日我帶阿明嚟探你。" }   # generated with zh-HK-HiuGaaiNeural, or silent in fake mode
+voice_messages: []                   # owner 14 Nov: no seeded note — Ah Bo must not offer one unprompted
 scenario_anchors:                  # profile demo: console "Prepare Sx" sets the virtual clock here
   S1: "09:00"
   S2: "10:00"                      # next slot 12:00 → 「兩個鐘之後，十二點正」

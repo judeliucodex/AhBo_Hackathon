@@ -97,17 +97,19 @@ text box runs the identical brain — the demo never depends on the mic.
 The fall is NOT demoed** — voice-note (S1), check-ins, the S3 sign-up and the fall drill stay in the
 product but off-stage (Telegram `/fall` still works if a judge asks to see escalation).
 
-Drive each with the Director console (`/sim/script.html`) — or Telegram `/scenario Sx`. Anchor clocks:
-**Demo 1 → S2 10:00 · Demo 2 → S3 08:30**.
+**This is a REAL-VOICE demo — no injected text.** Jovan speaks to the iPad mic (Talk/browser mic on),
+Ah Bo genuinely hears and answers with live AI. The Director console (`/sim/script.html`) now only does the
+invisible stage-hand ops: **anchor the clock**, **fire the caregiver Telegram**, **reset**. Off-stage presses:
+**Demo 1 → ⏰ Anchor 10:00** before, **📲 Telegram 阿珍** after her answer; **Demo 2 → ⏰ Anchor 08:30** (optional).
 
-### S2 — the medicine question (anchor 10:00) — now with the caregiver Telegram moment
-- Say **「阿寶，我幾時食藥呀？」**
+### Demo 1 — 食藥 (natural voice, anchor 10:00)
+- **Off-stage first:** ⏰ Anchor 10:00 (Director console) — so the next dose is 「兩個鐘之後」.
+- Jovan speaks aloud: **「我幾時食藥呀？」**
   - Steps: 「查緊藥物時間表…」 → ✓ 「下一次：十二點正，四隻藥」
   - Reply names the 4 medicines (血壓藥、糖尿藥、膽固醇藥、薄血丸); **4 pill chips** appear.
-- **📲 Caregiver moment (automatic):** right after her answer, **阿珍's phone buzzes** — Telegram
-  「媽媽（王婆婆）託阿寶話你知：「我啱啱問阿寶幾時食藥，佢話十二點正，有血壓藥、糖尿藥、膽固醇藥、
-  薄血丸，到時會提我。」」 — the family sees mum is on top of her meds, live. (Director console does this
-  in the same button press; the message goes through the Kernel's family link — INV-1 safe, template-fixed.)
+- **📲 Caregiver moment:** right after her answer, Jude presses **📲 Telegram 阿珍** → 阿珍's phone buzzes —
+  「媽媽（王婆婆）託阿寶話你知：「我啱啱問阿寶幾時食藥，佢話十二點正……」」 (Kernel family link — INV-1 safe,
+  template-fixed; invisible to the audience).
 - **Reminder moment:** Telegram `/clock 11:58` → wait ~2 min → reminder fires with chips + R-clip.
   (Or 💊即刻食藥 button / `/dose` for instant.)
 - **Confirm taken:** 「我食咗喇」 → confirm within the 3 h window; dose_events updated; 阿珍 sees it in /meds.

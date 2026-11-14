@@ -40,10 +40,12 @@ def test_remainder(matcher: WakeMatcher, text: str, remainder: str) -> None:
 
 
 def test_rules(matcher: WakeMatcher) -> None:
-    assert matcher.match("喂阿寶").rule == "exact"   # exact_only (13 Nov): 喂阿寶 and nothing else
-    for old in ("喂寶", "喂喂阿寶", "喂亞寶", "威阿寶", "喂阿保"):
-        assert not matcher.match(old).ok, old       # homophones / missing-aa / filler no longer wake
-    assert not matcher.match("喂阿寶寶").ok          # reduplication guard (寶寶 = baby)
+    assert matcher.match("喂阿寶").rule == "exact"
+    assert matcher.match("威阿寶").rule == "full"        # homophone (owner 14 Nov: STT tolerance back)
+    assert matcher.match("喂寶").rule == "missing_aa"    # missing aa
+    assert matcher.match("喂喂阿寶").rule == "filler"    # repeated 喂
+    assert matcher.match("喂呀阿寶").rule == "filler"    # 呀 sounds like aa — same by ear
+    assert not matcher.match("喂阿寶寶").ok              # reduplication guard (寶寶 = baby)
 
 
 def test_switches() -> None:

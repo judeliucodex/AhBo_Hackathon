@@ -57,35 +57,31 @@ button.reset{font:700 14px system-ui;color:#000;background:var(--amber);border:0
   </div>
 
   <div class="sec" id="sec-s1">
-    <h2>場景 1 · 食藥 S2</h2>
-    <p class="sub">Clock anchors to 10:00 → 下一劑 12:00（兩個鐘之後）。答完之後，阿珍會收到 Telegram。</p>
-    <button class="big" data-kind="s2">
-      <span class="n">1</span><span class="say">「我幾時食藥呀？」</span>
-      <div class="do">Anchor 10:00 + inject + Telegram 阿珍 — one press</div>
-      <div class="reply">阿寶答：「十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。」＋ 4 粒藥丸 chips
-      ＋ 📲 阿珍 Telegram 收到：「媽媽（王婆婆）託阿寶話你知：我啱啱問阿寶幾時食藥……」</div>
+    <h2>場景 1 · 食藥 S2 — 全自然對話（真聲音）</h2>
+    <p class="sub">Jovan speaks to the iPad mic — no injection. These two buttons are invisible stage-hand ops.</p>
+    <button class="big" data-kind="anchor_s2">
+      <span class="n">1</span><span class="say">⏰ 撥鐘至 10:00</span>
+      <div class="do">Press OFF-STAGE before Demo 1 — so 下一劑 12:00 = 「兩個鐘之後」</div>
     </button>
+    <button class="big" data-kind="tg">
+      <span class="n">2</span><span class="say">📲 Telegram 阿珍</span>
+      <div class="do">Press AFTER Ah Bo's answer</div>
+      <div class="reply">阿珍收到：「媽媽（王婆婆）託阿寶話你知：我啱啱問阿寶幾時食藥，佢話十二點正……」</div>
+    </button>
+    <p class="hint">Jovan 講：「我幾時食藥呀？」 → 阿寶答：「十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。」＋ 4 粒藥丸 chips。</p>
   </div>
 
   <div class="sec" id="sec-s3" hidden>
-    <h2>場景 2 · 聽日安排 → 悶 → 推薦 → 報名</h2>
-    <p class="sub">Clock anchors to 08:30. Tomorrow's real calendar → bored → deep agent recommends → she says yes → the browser books it → 阿珍 gets the Telegram.</p>
-    <button class="big" data-kind="s3a">
-      <span class="n">1</span><span class="say">「喂阿寶，我聽日有咩安排呀？」</span>
-      <div class="do">Anchor 08:30 + inject — she reads tomorrow's real calendar</div>
-      <div class="reply">阿寶答：聽日 10:30 基督教聯合醫院覆診 · 12:30 同阿珍飲茶 ＋ 日程 cards（9:30 出門 · 樓下巴士站）</div>
+    <h2>場景 2 · 聽日安排 → 悶 → 推薦 → 報名 — 全自然對話</h2>
+    <p class="sub">Hands-free: ask tomorrow → bored → she recommends (live deep agent) → say yes → the browser books it → 阿珍 gets the Telegram automatically.</p>
+    <button class="big" data-kind="anchor_s3">
+      <span class="n">1</span><span class="say">⏰ 撥鐘至 08:30（可選）</span>
+      <div class="do">Optional — tomorrow works from the real clock too</div>
     </button>
-    <button class="big" data-kind="s3b">
-      <span class="n">2</span><span class="say">「咁我下晝好悶喎……」</span>
-      <div class="do">Inject — the deep agent researches and offers the 粵曲班</div>
-      <div class="reply">阿寶答：「下晝三點有粵曲班……想唔想去？我幫你報名吖。」＋ 可代報名 card</div>
-    </button>
-    <button class="big" data-kind="s3c">
-      <span class="n">3</span><span class="say">「好呀，幫我報名啦」</span>
-      <div class="do">Inject — her spoken yes; the browser really books it (~5s)</div>
-      <div class="reply">Card 「已報名 · 編號 DEMO-04xx」 → 📲 阿珍 Telegram 收到 NOTIFY ＋ 兩張截圖 → 日程 15:00 粵曲班 booked</div>
-    </button>
-    <p class="hint">佢答嘅係「聽日」（tomorrow）— 事件喺 seed 入面真系排喺聽日。步驟 2 會用真 deep agent（幾秒）。措辭即場真 AI，事實 deterministic。</p>
+    <p class="hint">Jovan 謝三句（完全唔使撳掣）：<br>
+    ① 「喂阿寶，我聽日有咩安排呀？」 → 聽日 10:30 聯合醫院覆診 · 12:30 同阿珍飲茶 ＋ 日程 cards<br>
+    ② 「咁我下晝好悶喎……」 → deep agent（幾秒）→ 「下晝三點有粵曲班……想唔想去？我幫你報名吖。」<br>
+    ③ 「好呀，幫我報名啦」 → 瀏覽器真系報名（~5s）→ 「已報名 · 編號 DEMO-04xx」 → 📲 阿珍 Telegram NOTIFY ＋ 兩張截圖</p>
   </div>
 
   <p class="hint">完場：𡲢上面 ↺ Reset demo 回到開場狀態（≤5 秒）。出事就撳兩次 Reset — 一切重嚟。</p>
@@ -110,19 +106,11 @@ async function run(kind, btn){
   btn.disabled = true;
   try{
     if(kind==="reset"){       await api("reset", {}); toast("✓ Reset — 開場狀態"); }
-    else if(kind==="s2"){     await api("clock", {anchor:"S2"}); await sleep(400);
-                              await api("trigger", {kind:"utterance", text:"我幾時食藥呀？"});
-                              await sleep(600);
-                              await api("trigger", {kind:"family_info",
+    else if(kind==="anchor_s2"){ await api("clock", {anchor:"S2"}); toast("✓ 鐘撥至 10:00 — 開始講嘢"); }
+    else if(kind==="tg"){     await api("trigger", {kind:"family_info",
                                 text:"我啱啱問阿寶幾時食藥，佢話十二點正，有血壓藥、糖尿藥、膽固醇藥、薄血丸，到時會提我。"});
-                              toast("✓ S2 — 阿寶答咗 ＋ 阿珍收到 Telegram"); }
-    else if(kind==="s3a"){    await api("clock", {anchor:"S3"}); await sleep(400);
-                              await api("trigger", {kind:"utterance", text:"喂阿寶，我聽日有咩安排呀？"});
-                              toast("✓ 聽日安排 — 阿寶答緊"); }
-    else if(kind==="s3b"){    await api("trigger", {kind:"utterance", text:"咁我下晝好悶喎……"});
-                              toast("✓ 悶 — deep agent 推薦緊"); }
-    else if(kind==="s3c"){    await api("trigger", {kind:"utterance", text:"好呀，幫我報名啦"});
-                              toast("✓ 報名中 — 瀏覽器填表 ＋ 阿珍收到 Telegram"); }
+                              toast("✓ 阿珍收到 Telegram"); }
+    else if(kind==="anchor_s3"){ await api("clock", {anchor:"S3"}); toast("✓ 鐘撥至 08:30"); }
     else if (kind === "no_int") {
       const turnOn = b.dataset.on !== "true";
       await api("override", {kind: "interruption", on: !turnOn});
