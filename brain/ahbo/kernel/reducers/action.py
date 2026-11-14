@@ -71,7 +71,7 @@ def propose(state: KernelState, ctx: Any, kind: str, target: str | None, details
         method = METHOD.get(signup.get("method") or details.get("method") or "", "handoff")
         details.update({"activity_id": (act or {}).get("id") or details.get("activity_id") or target,
                         "title": title, "time": hhmm, "venue": (act or {}).get("venue"),
-                        "venue_short": (act or {}).get("venue_short"), "url": signup.get("url") or details.get("url"),
+                        "venue_short": (act or {}).get("venue_short"), "url": details.get("url") or signup.get("url"),   # an explicitly passed url wins: domain checks judge the REAL target (fail-safe order)
                         "signup_method": signup.get("method")})
         question = f"我幫你報名{when}嘅{title}，好唔好呀？" if when else f"我幫你報名{title}，好唔好呀？"
     else:
