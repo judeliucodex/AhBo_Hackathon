@@ -27,7 +27,7 @@ const els = {
   sound: $("sound"), camera: $("camera"), sayForm: $("sayForm"), sayText: $("sayText"),
   sayBtn: $("sayBtn"), sayHint: $("sayHint"), okBtn: $("okBtn"), tapBtn: $("tapBtn"),
   talkBox: $("talkBox"), talk: $("talk"), log: $("log"), clearLog: $("clearLog"),
-  appMode: $("appMode"), exitApp: $("exitApp"),
+  appMode: $("appMode"), exitApp: $("exitApp"), soundChip: $("soundChip"),
 };
 
 /* ---------- log + protocol trace ---------- */
@@ -304,6 +304,7 @@ els.rot.onclick = () => { els.bezel.classList.toggle("portrait"); fitBezel(); };
 function setAppMode(on) {
   document.body.classList.toggle("appmode", on);
   els.exitApp.hidden = !on;
+  if (on) { unlockSound(); if (els.soundChip) els.soundChip.hidden = soundIsOn(); }
   const root = document.documentElement;
   if (on) {
     const req = root.requestFullscreen || root.webkitRequestFullscreen;
@@ -328,10 +329,26 @@ els.reloadFace.onclick = () => {
   els.face.src = "/face/index.html";   // re-setting src reloads; the face sends `ready` again
 };
 
-els.sound.onclick = () => {
+/* Audio unlock (iOS autoplay policy): one real gesture starts the AudioContext, and from then on
+ * every clip plays through it — no further gestures needed. In ⛶ App mode the panel is hidden, so the
+ * 🔊 chip (a real button), the ⚙ chip, entering App mode, and any pointerdown on the page all unlock.
+ * iOS also suspends the context when the tab is backgrounded → re-resume on visibilitychange. */
+function soundIsOn() { return !!player.actx && player.actx.state === "running"; }
+function unlockSound() {
   player.unlock();
-  els.audioState.textContent = player.actx && player.actx.state === "running" ? "unlocked (clips + mouth level)" : "still locked";
-};
+  const on = soundIsOn();
+  els.audioState.textContent = on ? "unlocked (clips + mouth level)" : "still locked";
+  if (els.soundChip) els.soundChip.hidden = on || !document.body.classList.contains("appmode");
+}
+els.sound.onclick = () => unlockSound();
+if (els.soundChip) els.soundChip.onclick = () => unlockSound();
+if (els.exitApp) els.exitApp.onclick = () => { unlockSound(); setAppMode(false); };
+document.addEventListener("pointerdown", () => { if (!soundIsOn()) unlockSound(); });
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && player.actx && player.actx.state !== "running") unlockSound();
+});
+window.__soundState = () => els.audioState.textContent;   // debug hook
+window.__setAppMode = setAppMode;                         // debug hook
 
 els.clearLog.onclick = () => { els.log.textContent = ""; };
 
