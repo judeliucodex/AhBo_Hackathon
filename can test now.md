@@ -13,7 +13,7 @@ scripting fallback.
 
 1. [Control surfaces](#1-control-surfaces)
 2. [Pre-demo prep](#2-pre-demo-prep-10-minutes)
-3. [The core scenarios S2–S4](#3-the-core-scenarios)
+3. [The core scenarios — Demo 1 食藥 · Demo 2 聽日安排](#3-the-core-scenarios)
 4. [Free conversation & Cantonese tests](#4-free-conversation--cantonese-tests)
 5. [Safety red-team tests you can run live](#5-safety-red-team-tests-you-can-run-live)
 6. [Memory tests](#6-memory-tests)
@@ -82,7 +82,7 @@ Panel controls: **Rotate · Reload face · Enable sound · Camera checkbox · �
 | 5 | Reset the demo | Telegram 🔄重設示範 (or `/reset`) | Face idle, no cards; ≤5 s |
 | 6 | Demo device | `/sim/` on the stage machine → login → **Enable sound** → **Talk (browser mic)** → allow mic | **One live test utterance NOW**: 「阿寶，早晨」 |
 | 7 | 阿珍's phone ready | Telegram logged in, notifications ON, volume up | This is where alerts land |
-| 8 | Backup video | On the presenter's laptop | Covers: real voice, fall escalation |
+| 8 | Backup video | On the presenter's laptop | Covers: real voice + caregiver Telegram + tomorrow schedule |
 | 9 | Panic rehearsal | Press **`/panic`** once | Audio stops, face idles |
 | 10 | Latency proof ready | `docker exec ahbo-api-1 python -m ahbo.ops.doctor --latency` | p50/p95 of last 50 turns |
 
@@ -93,13 +93,12 @@ text box runs the identical brain — the demo never depends on the mic.
 
 ## 3. The core scenarios
 
-**Stage script = S2 (medicine) → S4 (fall).** Voice-note (S1), check-ins and the S3 sign-up demo are
-**cut from the demo** — the capabilities still exist live (a real incoming voice note is still announced,
-the browser can still sign her up, check-ins still fire 3×/day unless disabled in `checkins.yaml`).
+**Stage script = Demo 1 食藥 (S2, with caregiver Telegram) → Demo 2 聽日安排 (tomorrow's schedule).
+The fall is NOT demoed** — voice-note (S1), check-ins, the S3 sign-up and the fall drill stay in the
+product but off-stage (Telegram `/fall` still works if a judge asks to see escalation).
 
-Drive each with the Telegram `/scenario Sx` (resets + anchors the clock + drives) — or run the utterances
-live after `/clock Sx`. Anchor clocks: **S2 10:00 · S4 15:00**. The **Director console**
-(`/sim/script.html`) fires every step for you.
+Drive each with the Director console (`/sim/script.html`) — or Telegram `/scenario Sx`. Anchor clocks:
+**Demo 1 → S2 10:00 · Demo 2 → S3 08:30**.
 
 ### S2 — the medicine question (anchor 10:00) — now with the caregiver Telegram moment
 - Say **「阿寶，我幾時食藥呀？」**
@@ -116,8 +115,18 @@ live after `/clock Sx`. Anchor clocks: **S2 10:00 · S4 15:00**. The **Director 
 - **Evidence:** the answer comes from `get_med_status` — Kernel dose state; the Telegram row is in the
   **Outbox**; show `trace?correlation_id=<sess_…>`.
 
-### S4 — the fall (anchor 15:00)
-Full detail in §7. Telegram `/fall` or `/scenario S4` (escalating) / `S4ok` (resolved).
+### Demo 2 — 「聽日」 tomorrow's schedule (anchor 08:30)
+- Say **「喂阿寶，我聽日有咩安排呀？」** — note **聽日 = tomorrow**, not today (the seeded events really
+  are tomorrow: 09:30 出門 · 樓下巴士站 → 10:30 覆診 · 基督教聯合醫院 → 12:30 同阿珍飲茶 · 觀塘).
+  - Steps ✓ 「睇緊今日日程…」-style, then **schedule cards** appear.
+  - Her answer names the hospital appointment and the family tea — live AI phrasing, deterministic facts.
+- **Evidence:** `get_day_plan` / `list_events` from the real calendar tables; the answer changes if 阿珍
+  edits the calendar in Telegram.
+- Director button: **📅 場景 2 · 聽日安排 ▶** (anchor 08:30 + inject, one press).
+
+> **The fall is off-stage.** If a judge asks to see emergency handling: Telegram `/fall` (or 🤕模擬跌倒)
+> still runs the whole drill — alarm → photo → countdown → real Telegram ALERT → simulated call row.
+> Full drill detail stays in §7 for Q&A.
 
 ---
 
@@ -299,11 +308,11 @@ S2 a few times so you know her natural phrasing.
 - [ ] `/sim/` login works; **Enable sound** clicked
 - [ ] **Mic test** on the stage machine: 「阿寶，早晨」 → reply heard
 - [ ] Text-box fallback tested once (王婆婆講)
-- [ ] S1 / S3 / check-ins are CUT from the stage script (Director console drives S2 → S4 only)
-- [ ] S2 utterance → 4 chips + **阿珍 gets the 「媽媽託阿寶話你知」 Telegram**; reminder via `/clock 11:58`
+- [ ] Voice note / fall / check-ins are OFF-STAGE (Director console drives Demo 1 食藥 → Demo 2 聽日安排 only)
+- [ ] Demo 1: S2 utterance → 4 chips + **阿珍 gets the 「媽媽託阿寶話你知」 Telegram**; reminder via `/clock 11:58`
+- [ ] Demo 2: 「我聽日有咩安排呀？」 → tomorrow's cards (覆診 + 飲茶)
 - [ ] Double-dose refusal + 999 refusal delivered naturally
-- [ ] S4 branch B (救命) → ALERT on 阿珍's phone → Outbox 答咗 → ACKNOWLEDGED
-- [ ] S4ok branch A → INFO only
+- [ ] FALL IS OFF-STAGE — know where §7 is for Q&A; `/fall` works if a judge asks
 - [ ] Memory demo (tell → forget → recall) once
 - [ ] `/panic` + `/reset` rehearsed by muscle memory
 - [ ] Backup video plays

@@ -53,7 +53,7 @@ button.reset{font:700 14px system-ui;color:#000;background:var(--amber);border:0
 
   <div class="tabbar">
     <button class="tab on" data-sec="s1">💊 場景 1 · 食藥</button>
-    <button class="tab" data-sec="s3">🤕 場景 2 · 跌倒</button>
+    <button class="tab" data-sec="s3">📅 場景 2 · 聽日安排</button>
   </div>
 
   <div class="sec" id="sec-s1">
@@ -68,20 +68,14 @@ button.reset{font:700 14px system-ui;color:#000;background:var(--amber);border:0
   </div>
 
   <div class="sec" id="sec-s3" hidden>
-    <h2>場景 2 · 跌倒 S4</h2>
-    <p class="sub">The alarm starts on your word. Let the 5s countdown run out by itself — it escalates automatically.</p>
-    <button class="big" data-kind="fall">
-      <span class="n">1</span><span class="say">「救命！」→ 撳 RED 掣</span>
-      <div class="do">Trigger the fall (operator path)</div>
-      <div class="reply">FACE: amber alarm → F1「跌低咗！」→ 影相 → F3「請講我冇事」＋ countdown → 5 秒後自動升級</div>
+    <h2>場景 2 · 聽日安排</h2>
+    <p class="sub">Clock anchors to 08:30. She reads tomorrow from her real calendar — hospital, family, times.</p>
+    <button class="big" data-kind="tmr">
+      <span class="n">1</span><span class="say">「喂阿寶，我聽日有咩安排呀？」</span>
+      <div class="do">Anchor 08:30 + inject — she reads tomorrow's real calendar</div>
+      <div class="reply">阿寶答：聽日 10:30 基督教聯合醫院覆診 · 12:30 同阿珍飲茶 ＋ 日程 cards（9:30 出門 · 樓下巴士站）</div>
     </button>
-    <p class="hint">⏳ Countdown 完：阿珍部電話真系震 — Telegram ALERT（相片、時間、地址、我處理緊/錄段聲俾媽媽/已解決）。
-    停兩秒，俾全場聽到 buzz。</p>
-    <button class="big" data-kind="outbox">
-      <span class="n">2</span><span class="say">答咗</span>
-      <div class="do">Press the call row in the Outbox</div>
-      <div class="reply">ACKNOWLEDGED → cards 轉「已致電阿珍」→ 阿寶安心模式</div>
-    </button>
+    <p class="hint">佢答嘅係「聽日」（tomorrow）— 事件喺 seed 入面真系排喺聽日。措辭係即場真 AI，事實係 deterministic。</p>
   </div>
 
   <p class="hint">完場：𡲢上面 ↺ Reset demo 回到開場狀態（≤5 秒）。出事就撳兩次 Reset — 一切重嚟。</p>
@@ -112,14 +106,9 @@ async function run(kind, btn){
                               await api("trigger", {kind:"family_info",
                                 text:"我啱啱問阿寶幾時食藥，佢話十二點正，有血壓藥、糖尿藥、膽固醇藥、薄血丸，到時會提我。"});
                               toast("✓ S2 — 阿寶答咗 ＋ 阿珍收到 Telegram"); }
-    else if(kind==="fall"){   await api("trigger", {kind:"fall"}); }
-    else if(kind==="outbox"){
-      const list = await api("outbox?limit=50");
-      const rows = list.items || [];
-      const row  = rows.find(x => x.channel==="twilio") ;
-      if(!row) throw new Error("冇 call row — 先撳 RED 掣");
-      await api("outbox/"+row.id+"/press", {button: "press1"});
-    }
+    else if(kind==="tmr"){    await api("clock", {anchor:"S3"}); await sleep(400);
+                              await api("trigger", {kind:"utterance", text:"喂阿寶，我聽日有咩安排呀？"});
+                              toast("✓ 聽日安排 — 阿寶答緊"); }
     else if (kind === "no_int") {
       const turnOn = b.dataset.on !== "true";
       await api("override", {kind: "interruption", on: !turnOn});
