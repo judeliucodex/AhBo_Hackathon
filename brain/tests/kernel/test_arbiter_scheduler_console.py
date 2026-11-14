@@ -8,6 +8,16 @@ from kt import clips, ev, faces, of, until
 from ahbo.kernel.scheduler import Scheduler, due_events
 
 
+def _note(h, vid="vm_demo"):
+    """A stored note for the announce flow — the seed no longer ships one (owner 14 Nov: Ah Bo must
+    never offer a recording unprompted), so tests create exactly what they announce."""
+    h.kernel.db.execute(
+        "INSERT OR REPLACE INTO voice_messages (id, direction, from_name, contact_id, file_path, "
+        "transcript, received_at) VALUES (?, 'in', '阿珍', 'c_chun', 'seed/voice/demo_daughter.m4a', "
+        "'媽，記得食飯呀！星期日我帶阿明嚟探你。', ?)",
+        (vid, h.kernel.clock.now().isoformat()))
+
+
 def decisions(h):
     from ahbo.core.jsonutil import loads
     return [loads(r["payload"]) for r in h.kernel.db.query("SELECT payload FROM events WHERE type='arbiter.decision'")]
@@ -16,6 +26,7 @@ def decisions(h):
 async def test_voice_note_when_idle_plays_a1_then_session(kh):
     h = kh
     h.kernel.clock.set_time("09:00")
+    _note(h)
     await ev(h, "family.voice_note", "telegram", contact_id="c_chun", voice_id="vm_demo")
     assert decisions(h)[0]["outcome"] == "now" and clips(h) == ["A1"]
     assert faces(h, "mood")[0]["mood"] == "warm"
@@ -28,6 +39,7 @@ async def test_voice_note_waits_during_a_turn(kh):
     h = kh
     h.kernel.clock.set_time("10:00")
     await h.say("阿寶，我幾時食藥呀？", wait=False)
+    _note(h)
     await ev(h, "family.voice_note", "telegram", contact_id="c_chun", voice_id="vm_demo")
     assert decisions(h)[0]["outcome"] == "queued"
     await h.loop.wait_idle()
@@ -37,6 +49,7 @@ async def test_voice_note_waits_during_a_turn(kh):
 async def test_quiet_hours_and_p3(kh):
     h = kh
     h.kernel.clock.set_time("23:30")
+    _note(h)
     await ev(h, "family.voice_note", "telegram", contact_id="c_chun", voice_id="vm_demo")
     assert decisions(h)[-1]["reason"] == "quiet_hours_next_session" and not clips(h)
     await ev(h, "event.leave_soon", "scheduler", event_id="x")     # P1 non-dose at night: dropped

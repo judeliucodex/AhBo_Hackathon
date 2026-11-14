@@ -23,6 +23,10 @@ async def test_install_is_idempotent_and_starts_the_scheduler(kh):
 async def test_arbiter_queue_persists(kh):
     h = kh
     await h.say("你好呀阿寶", wait=False)
+    h.kernel.db.execute(
+        "INSERT OR REPLACE INTO voice_messages (id, direction, from_name, contact_id, file_path, "
+        "transcript, received_at) VALUES ('vm_demo', 'in', '阿珍', 'c_chun', "
+        "'seed/voice/demo_daughter.m4a', '媽，記得食飯呀！星期日我帶阿明嚟探你。', '2026-11-14T07:42:00+08:00')")
     await ev(h, "family.voice_note", "telegram", contact_id="c_chun", voice_id="vm_demo")
     assert h.kernel.db.kv_get(arbiter.KV)
     h.kernel.state.arbiter = {}
