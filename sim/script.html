@@ -53,29 +53,39 @@ button.reset{font:700 14px system-ui;color:#000;background:var(--amber);border:0
 
   <div class="tabbar">
     <button class="tab on" data-sec="s1">💊 場景 1 · 食藥</button>
-    <button class="tab" data-sec="s3">📅 場景 2 · 聽日安排</button>
+    <button class="tab" data-sec="s3">📅🎨 場景 2 · 聽日＋報名</button>
   </div>
 
   <div class="sec" id="sec-s1">
     <h2>場景 1 · 食藥 S2</h2>
     <p class="sub">Clock anchors to 10:00 → 下一劑 12:00（兩個鐘之後）。答完之後，阿珍會收到 Telegram。</p>
     <button class="big" data-kind="s2">
-      <span class="n">1</span><span class="say">「喂阿寶，早晨。我幾時食藥呀？」</span>
-      <div class="do">Anchor 10:00 + inject the line (wake word 喂阿寶 matched)</div>
+      <span class="n">1</span><span class="say">「我幾時食藥呀？」</span>
+      <div class="do">Anchor 10:00 + inject + Telegram 阿珍 — one press</div>
       <div class="reply">阿寶答：「十二點正。有血壓藥、糖尿藥、膽固醇藥，同埋薄血丸。到時我會提你㗎。」＋ 4 粒藥丸 chips
       ＋ 📲 阿珍 Telegram 收到：「媽媽（王婆婆）託阿寶話你知：我啱啱問阿寶幾時食藥……」</div>
     </button>
   </div>
 
   <div class="sec" id="sec-s3" hidden>
-    <h2>場景 2 · 聽日安排</h2>
-    <p class="sub">Clock anchors to 08:30. She reads tomorrow from her real calendar — hospital, family, times.</p>
-    <button class="big" data-kind="tmr">
+    <h2>場景 2 · 聽日安排 → 悶 → 推薦 → 報名</h2>
+    <p class="sub">Clock anchors to 08:30. Tomorrow's real calendar → bored → deep agent recommends → she says yes → the browser books it → 阿珍 gets the Telegram.</p>
+    <button class="big" data-kind="s3a">
       <span class="n">1</span><span class="say">「喂阿寶，我聽日有咩安排呀？」</span>
       <div class="do">Anchor 08:30 + inject — she reads tomorrow's real calendar</div>
       <div class="reply">阿寶答：聽日 10:30 基督教聯合醫院覆診 · 12:30 同阿珍飲茶 ＋ 日程 cards（9:30 出門 · 樓下巴士站）</div>
     </button>
-    <p class="hint">佢答嘅係「聽日」（tomorrow）— 事件喺 seed 入面真系排喺聽日。措辭係即場真 AI，事實係 deterministic。</p>
+    <button class="big" data-kind="s3b">
+      <span class="n">2</span><span class="say">「咁我下晝好悶喎……」</span>
+      <div class="do">Inject — the deep agent researches and offers the 粵曲班</div>
+      <div class="reply">阿寶答：「下晝三點有粵曲班……想唔想去？我幫你報名吖。」＋ 可代報名 card</div>
+    </button>
+    <button class="big" data-kind="s3c">
+      <span class="n">3</span><span class="say">「好呀，幫我報名啦」</span>
+      <div class="do">Inject — her spoken yes; the browser really books it (~5s)</div>
+      <div class="reply">Card 「已報名 · 編號 DEMO-04xx」 → 📲 阿珍 Telegram 收到 NOTIFY ＋ 兩張截圖 → 日程 15:00 粵曲班 booked</div>
+    </button>
+    <p class="hint">佢答嘅係「聽日」（tomorrow）— 事件喺 seed 入面真系排喺聽日。步驟 2 會用真 deep agent（幾秒）。措辭即場真 AI，事實 deterministic。</p>
   </div>
 
   <p class="hint">完場：𡲢上面 ↺ Reset demo 回到開場狀態（≤5 秒）。出事就撳兩次 Reset — 一切重嚟。</p>
@@ -101,14 +111,18 @@ async function run(kind, btn){
   try{
     if(kind==="reset"){       await api("reset", {}); toast("✓ Reset — 開場狀態"); }
     else if(kind==="s2"){     await api("clock", {anchor:"S2"}); await sleep(400);
-                              await api("trigger", {kind:"utterance", text:"喂阿寶，早晨。我幾時食藥呀？"});
+                              await api("trigger", {kind:"utterance", text:"我幾時食藥呀？"});
                               await sleep(600);
                               await api("trigger", {kind:"family_info",
                                 text:"我啱啱問阿寶幾時食藥，佢話十二點正，有血壓藥、糖尿藥、膽固醇藥、薄血丸，到時會提我。"});
                               toast("✓ S2 — 阿寶答咗 ＋ 阿珍收到 Telegram"); }
-    else if(kind==="tmr"){    await api("clock", {anchor:"S3"}); await sleep(400);
+    else if(kind==="s3a"){    await api("clock", {anchor:"S3"}); await sleep(400);
                               await api("trigger", {kind:"utterance", text:"喂阿寶，我聽日有咩安排呀？"});
                               toast("✓ 聽日安排 — 阿寶答緊"); }
+    else if(kind==="s3b"){    await api("trigger", {kind:"utterance", text:"咁我下晝好悶喎……"});
+                              toast("✓ 悶 — deep agent 推薦緊"); }
+    else if(kind==="s3c"){    await api("trigger", {kind:"utterance", text:"好呀，幫我報名啦"});
+                              toast("✓ 報名中 — 瀏覽器填表 ＋ 阿珍收到 Telegram"); }
     else if (kind === "no_int") {
       const turnOn = b.dataset.on !== "true";
       await api("override", {kind: "interruption", on: !turnOn});

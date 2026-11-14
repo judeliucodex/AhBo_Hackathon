@@ -13,7 +13,7 @@ scripting fallback.
 
 1. [Control surfaces](#1-control-surfaces)
 2. [Pre-demo prep](#2-pre-demo-prep-10-minutes)
-3. [The core scenarios — Demo 1 食藥 · Demo 2 聽日安排](#3-the-core-scenarios)
+3. [The core scenarios — Demo 1 食藥 · Demo 2 聽日＋報名](#3-the-core-scenarios)
 4. [Free conversation & Cantonese tests](#4-free-conversation--cantonese-tests)
 5. [Safety red-team tests you can run live](#5-safety-red-team-tests-you-can-run-live)
 6. [Memory tests](#6-memory-tests)
@@ -93,7 +93,7 @@ text box runs the identical brain — the demo never depends on the mic.
 
 ## 3. The core scenarios
 
-**Stage script = Demo 1 食藥 (S2, with caregiver Telegram) → Demo 2 聽日安排 (tomorrow's schedule).
+**Stage script = Demo 1 食藥 (S2 + caregiver Telegram) → Demo 2 聽日＋報名 (tomorrow → bored → recommend → yes → booked + Telegram).
 The fall is NOT demoed** — voice-note (S1), check-ins, the S3 sign-up and the fall drill stay in the
 product but off-stage (Telegram `/fall` still works if a judge asks to see escalation).
 
@@ -115,14 +115,17 @@ Drive each with the Director console (`/sim/script.html`) — or Telegram `/scen
 - **Evidence:** the answer comes from `get_med_status` — Kernel dose state; the Telegram row is in the
   **Outbox**; show `trace?correlation_id=<sess_…>`.
 
-### Demo 2 — 「聽日」 tomorrow's schedule (anchor 08:30)
-- Say **「喂阿寶，我聽日有咩安排呀？」** — note **聽日 = tomorrow**, not today (the seeded events really
+### Demo 2 — 聽日安排 → 悶 → 推薦 → 報名 (anchor 08:30) — three presses
+- **Turn 1 — ask schedule:** 「喂阿寶，我聽日有咩安排呀？」 (**聽日 = tomorrow** — the seeded events really
   are tomorrow: 09:30 出門 · 樓下巴士站 → 10:30 覆診 · 基督教聯合醫院 → 12:30 同阿珍飲茶 · 觀塘).
-  - Steps ✓ 「睇緊今日日程…」-style, then **schedule cards** appear.
-  - Her answer names the hospital appointment and the family tea — live AI phrasing, deterministic facts.
-- **Evidence:** `get_day_plan` / `list_events` from the real calendar tables; the answer changes if 阿珍
-  edits the calendar in Telegram.
-- Director button: **📅 場景 2 · 聽日安排 ▶** (anchor 08:30 + inject, one press).
+  **Schedule cards** appear. Director: **s3a ▶** (anchor 08:30 + inject, one press).
+- **Turn 2 — bored:** 「咁我下晝好悶喎……」 → the **deep agent researches live** (~seconds) → offers
+  粵曲班 3:00 長者中心 + card 「可代報名」. Director: **s3b ▶**.
+- **Turn 3 — yes:** 「好呀，幫我報名啦」 → her spoken yes → **Playwright fills the real form** (~5 s) →
+  card 「已報名 · 編號 DEMO-04xx」 → **📲 阿珍's Telegram gets the NOTIFY with both screenshots** →
+  calendar 15:00 粵曲班 booked. Director: **s3c ▶**.
+- **Evidence:** `get_day_plan` / `list_events` from the calendar tables; `deep.result` in the trace for
+  turn 2; the action row + screenshots for turn 3; the answer changes if 阿珍 edits the calendar in Telegram.
 
 > **The fall is off-stage.** If a judge asks to see emergency handling: Telegram `/fall` (or 🤕模擬跌倒)
 > still runs the whole drill — alarm → photo → countdown → real Telegram ALERT → simulated call row.
@@ -310,7 +313,7 @@ S2 a few times so you know her natural phrasing.
 - [ ] Text-box fallback tested once (王婆婆講)
 - [ ] Voice note / fall / check-ins are OFF-STAGE (Director console drives Demo 1 食藥 → Demo 2 聽日安排 only)
 - [ ] Demo 1: S2 utterance → 4 chips + **阿珍 gets the 「媽媽託阿寶話你知」 Telegram**; reminder via `/clock 11:58`
-- [ ] Demo 2: 「我聽日有咩安排呀？」 → tomorrow's cards (覆診 + 飲茶)
+- [ ] Demo 2: s3a tomorrow cards → s3b deep-agent offer → s3c booked DEMO-04xx + 阿珍 NOTIFY
 - [ ] Double-dose refusal + 999 refusal delivered naturally
 - [ ] FALL IS OFF-STAGE — know where §7 is for Q&A; `/fall` works if a judge asks
 - [ ] Memory demo (tell → forget → recall) once
