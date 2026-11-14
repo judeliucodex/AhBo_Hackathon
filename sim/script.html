@@ -136,8 +136,14 @@ document.addEventListener("click", ev=>{
   const b = ev.target.closest("button[data-kind]"); if(!b) return;
   run(b.dataset.kind, b);
 });
-fetch("/operator/api/state").then(r=>{ $("#conn").textContent = r.ok ? "operator ✓" : "login needed"; })
-  .catch(()=>{ $("#conn").textContent = "offline"; });
+fetch("/operator/api/state").then(r=>r.json().then(j=>({ok:r.ok,j})).catch(()=>({ok:false}))).then(({ok,j})=>{
+  $("#conn").textContent = ok ? "operator ✓" : "login needed";
+  const b = $("#noInt"); if(!b || !ok) return;
+  const en = !!(j && j.knobs && j.knobs.interruption_enabled);   // knob truth, survives page reloads
+  b.dataset.on = String(!en);
+  b.textContent = en ? "🚫 No-interrupt: OFF（喂阿寶可以先打斷）" : "🚫 No-interrupt: ON（冇人可以打斷）";
+  b.style.background = en ? "var(--green)" : "var(--err)";
+}).catch(()=>{ $("#conn").textContent = "offline"; });
 </script>
 </body>
 </html>

@@ -103,6 +103,13 @@ def install(svc: Any) -> None:
         if kind == "kernel_event" and obj.get("type") == "device.wake":
             last_wake.clear()
             last_wake.update(obj.get("payload") or {})
+        elif kind == "kernel_event" and obj.get("type") == "operator.model_config":
+            # the 🚫 no-interrupt toggle: apply to the RUNNING session, not just the next one
+            if "interruption_enabled" in (obj.get("payload") or {}):
+                s = svc.kernel.state.session
+                if s is not None:
+                    pq.put(s.id, {"kind": "config",
+                                  "interruption_enabled": bool(obj["payload"]["interruption_enabled"])})
 
     k.subscribe(on_event)
 
@@ -294,7 +301,7 @@ def internal_claim(svc: Any, body: dict[str, Any]) -> dict[str, Any]:
         return {"ok": False, "reason": "unknown_session"}
     out: dict[str, Any] = {"ok": True, "session_id": s.id, "reason": s.reason, "mode": s.mode,
                            "interruption_enabled": bool((svc.db.kv_get("knobs", {}) or {}).get("interruption_enabled",
-                                                                                              True))}
+                                                                                              False))}   # default: NO interruption
     wake = _pq(svc).wake.get(s.id)
     if wake:
         out["wake"] = wake

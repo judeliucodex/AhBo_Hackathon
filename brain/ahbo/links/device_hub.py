@@ -462,7 +462,7 @@ class DeviceHub:
         wake_keys = ("require_wai", "require_two_updates", "utterance_start_silence_ms", "cooldown_after_reject_s",
                      "allow_missing_aa", "plain_abou_wakes")
         wm = self.svc.config.wake_match or {}
-        return {"quiet_hours": quiet, "interruption_enabled": bool(knobs.get("interruption_enabled", True)),
+        return {"quiet_hours": quiet, "interruption_enabled": bool(knobs.get("interruption_enabled", False)),
                 "wake": {k: wm[k] for k in wake_keys if k in wm}, "reminder_mirror": self.reminder_mirror()}
 
     def reminder_mirror(self) -> dict[str, Any]:

@@ -477,7 +477,7 @@ class SessionRun:
         self.speaking = False                # True while a reply is streaming (interruption gate)
         self.wake_bargein = False            # 「喂阿寶」 heard mid-reply → deliberate interrupt
         self.last_reply_interrupted = False  # the previous reply was cut by barge-in
-        self.no_interrupt = not claim.get("interruption_enabled", True)  # console 🚫 toggle (default OFF)
+        self.no_interrupt = not claim.get("interruption_enabled", False)  # default: NO interruption (owner 14 Nov)
         self.session: Any = None
         self.agent: Any = None
         self.instructions = ""
@@ -550,6 +550,9 @@ class SessionRun:
             await self.apply_mode(item.get("mode") or "companion")
         elif kind == "interrupt" and self.session is not None:
             self.session.interrupt(force=True)
+        elif kind == "config" and "interruption_enabled" in item:
+            self.no_interrupt = not bool(item["interruption_enabled"])   # 🚫 toggle hits the live session
+            log.info("interruption knob live → no_interrupt=%s", self.no_interrupt)
         elif kind == "close":
             self.closed.set()
 

@@ -52,7 +52,7 @@ final class AppSettings {
 
     init() {
         d.register(defaults: ["host": "", "wakeOn": true, "liveKitOn": true, "cameraOn": true,
-                              "interruptionOn": true, "debugOverlay": false])
+                              "interruptionOn": false, "debugOverlay": false])
         host = d.string(forKey: "host") ?? ""
         wakeOn = d.bool(forKey: "wakeOn")
         liveKitOn = d.bool(forKey: "liveKitOn")

@@ -66,7 +66,7 @@ def state_snapshot(svc: Services) -> dict[str, Any]:
     s = st.session
     session = None if s is None else {"id": s.id, "mode": s.mode, "reason": s.reason, "text_only": s.text_only,
                                       "agent_state": s.agent_state, "opened_at": s.opened_at.isoformat()}
-    knobs = {"flash_thinking": "off", "sonnet_thinking": "low", "interruption_enabled": True,
+    knobs = {"flash_thinking": "off", "sonnet_thinking": "low", "interruption_enabled": False,
              **(svc.db.kv_get("knobs", {}) or {}), "muted": st.muted}
     arb = _plain(st.arbiter) if st.arbiter else {}
     return {
